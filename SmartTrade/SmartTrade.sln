@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTradeLib", "SmartTradeLib\SmartTradeLib.csproj", "{47304128-9C5D-4E89-889A-E69CFC7B8410}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{DC6FB5C5-F23D-4140-A703-0EF45CA646A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{30B944C6-747B-4061-B5CD-E677745E3D42}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{BB107C21-C7DB-4CAC-B977-B743BB474CEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBTest", "DBTest\DBTest.csproj", "{566D2D50-6FB2-4C42-8FCF-8D380807E98F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTrade", "SmartTrade\SmartTrade.csproj", "{25CA5E5B-924B-4893-AC7E-B38017DBDE13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTrade.Android", "SmartTrade.Android\SmartTrade.Android.csproj", "{3E9DA091-F3E8-4795-B6AE-26CE61C95CF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTrade.Desktop", "SmartTrade.Desktop\SmartTrade.Desktop.csproj", "{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47304128-9C5D-4E89-889A-E69CFC7B8410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47304128-9C5D-4E89-889A-E69CFC7B8410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47304128-9C5D-4E89-889A-E69CFC7B8410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47304128-9C5D-4E89-889A-E69CFC7B8410}.Release|Any CPU.Build.0 = Release|Any CPU
+		{566D2D50-6FB2-4C42-8FCF-8D380807E98F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{566D2D50-6FB2-4C42-8FCF-8D380807E98F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{566D2D50-6FB2-4C42-8FCF-8D380807E98F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{566D2D50-6FB2-4C42-8FCF-8D380807E98F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25CA5E5B-924B-4893-AC7E-B38017DBDE13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25CA5E5B-924B-4893-AC7E-B38017DBDE13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25CA5E5B-924B-4893-AC7E-B38017DBDE13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25CA5E5B-924B-4893-AC7E-B38017DBDE13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E9DA091-F3E8-4795-B6AE-26CE61C95CF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E9DA091-F3E8-4795-B6AE-26CE61C95CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E9DA091-F3E8-4795-B6AE-26CE61C95CF7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3E9DA091-F3E8-4795-B6AE-26CE61C95CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E9DA091-F3E8-4795-B6AE-26CE61C95CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E9DA091-F3E8-4795-B6AE-26CE61C95CF7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{47304128-9C5D-4E89-889A-E69CFC7B8410} = {DC6FB5C5-F23D-4140-A703-0EF45CA646A0}
+		{566D2D50-6FB2-4C42-8FCF-8D380807E98F} = {BB107C21-C7DB-4CAC-B977-B743BB474CEB}
+		{25CA5E5B-924B-4893-AC7E-B38017DBDE13} = {30B944C6-747B-4061-B5CD-E677745E3D42}
+		{3E9DA091-F3E8-4795-B6AE-26CE61C95CF7} = {30B944C6-747B-4061-B5CD-E677745E3D42}
+		{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3} = {30B944C6-747B-4061-B5CD-E677745E3D42}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4817CAB7-8AFD-4D85-AFE0-5C4DB634B944}
+	EndGlobalSection
+EndGlobal
