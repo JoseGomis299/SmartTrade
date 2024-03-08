@@ -4,16 +4,28 @@ public partial class Toy : Product
 {
     public override string GetInfo()
     {
-        throw new NotImplementedException();
+        return $"- Brand: {Brand}" +
+               $"\n- Material: {Material}" +
+               $"\n- Age: {Age}";
     }
 
     public override ICollection<Category> GetCategories()
     {
-        throw new NotImplementedException();
+        return new List<Category> { Category.Toy };
     }
 
     public override string GetDifferences(Product product)
     {
-        throw new NotImplementedException();
+        string differences = "";
+
+        if (product is Toy toy)
+        {
+            if (Material != toy.Material)
+            {
+                differences += Material;
+            }
+        }
+
+        return differences;
     }
 }
