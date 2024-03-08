@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Avalonia.Media;
 
 namespace SmartTradeLib.Entities;
 
