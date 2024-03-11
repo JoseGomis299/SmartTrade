@@ -2,6 +2,16 @@
 
 public partial class Nutrition : Product
 {
+    public Nutrition(string name, string certification, string ecologicPrint, int minimumAge, bool validated, byte[] image, Post post, string calories, string proteins, string carbohydrates, string fats, string allergens, string weight) : base(name, certification, ecologicPrint, minimumAge, validated, image, post)
+    {
+        Calories = calories;
+        Proteins = proteins;
+        Carbohydrates = carbohydrates;
+        Fats = fats;
+        Allergens = allergens;
+        Weight = weight;
+    }
+
     public override string GetInfo()
     {
         return $"- Calories: {Calories}kcal" +

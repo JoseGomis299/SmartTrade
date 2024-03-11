@@ -2,6 +2,14 @@
 
 public partial class Clothing : Product
 {
+    public Clothing(string name, string certification, string ecologicPrint, int minimumAge, bool validated, byte[] image, Post post, string brand, string size, string color, string material) : base(name, certification, ecologicPrint, minimumAge, validated, image, post)
+    {
+        Brand = brand;
+        Size = size;
+        Color = color;
+        Material = material;
+    }
+
     public override string GetInfo()
     {
         return $"- Brand: {Brand}" +
