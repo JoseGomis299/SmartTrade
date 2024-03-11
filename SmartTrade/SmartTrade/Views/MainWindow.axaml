@@ -8,5 +8,5 @@
         x:Class="SmartTrade.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="SmartTrade">
-        <views:MainView />
+    <views:MainView></views:MainView>
 </Window>

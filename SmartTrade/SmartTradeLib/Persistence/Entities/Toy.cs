@@ -4,5 +4,5 @@ public partial class Toy : Product
 {
     public string Brand { get; set; }
     public string Material { get; set; }
-    public int Age { get; set; }
+    public string Age { get; set; }
 }
