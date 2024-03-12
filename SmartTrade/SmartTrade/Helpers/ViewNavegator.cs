@@ -8,6 +8,10 @@ namespace GetStartedProject
     {
         private readonly Dictionary<Type, UserControl> _views = new();
 
+        public ViewNavigator(ContentControl mainView) : base(mainView)
+        {
+        }
+
         public override void NavigateTo(Type viewType)
         {
             UserControl? view = null;
