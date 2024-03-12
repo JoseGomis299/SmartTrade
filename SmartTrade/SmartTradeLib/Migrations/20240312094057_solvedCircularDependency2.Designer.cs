@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTradeLib.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTradeLib.Persistence;
 namespace SmartTradeLib.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240312094057_solvedCircularDependency2")]
+    partial class solvedCircularDependency2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("CostumerEmail");
 
-                    b.ToTable("Adresses", (string)null);
+                    b.ToTable("Adresses");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Alert", b =>
@@ -90,7 +93,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("UserEmail");
 
-                    b.ToTable("Alerts", (string)null);
+                    b.ToTable("Alerts");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.BizumInfo", b =>
@@ -105,7 +108,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("CostumerEmail");
 
-                    b.ToTable("Bizums", (string)null);
+                    b.ToTable("Bizums");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.CreditCardInfo", b =>
@@ -132,7 +135,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("CostumerEmail");
 
-                    b.ToTable("CreditCards", (string)null);
+                    b.ToTable("CreditCards");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Offer", b =>
@@ -164,7 +167,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Offers", (string)null);
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.PayPalInfo", b =>
@@ -183,7 +186,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("CostumerEmail");
 
-                    b.ToTable("PayPals", (string)null);
+                    b.ToTable("PayPals");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Post", b =>
@@ -223,7 +226,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("SellerEmail");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Product", b =>
@@ -273,7 +276,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
 
@@ -305,7 +308,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasKey("Email");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("User");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
 
@@ -409,7 +412,7 @@ namespace SmartTradeLib.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Products", null, t =>
+                    b.ToTable("Products", t =>
                         {
                             t.Property("Brand")
                                 .HasColumnName("Toy_Brand");
@@ -444,7 +447,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("BillingAddressId");
 
-                    b.ToTable("User", null, t =>
+                    b.ToTable("User", t =>
                         {
                             t.Property("DNI")
                                 .HasColumnName("Costumer_DNI");

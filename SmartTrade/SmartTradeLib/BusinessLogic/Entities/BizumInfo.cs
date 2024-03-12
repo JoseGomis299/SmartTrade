@@ -2,6 +2,8 @@
 
 public partial class BizumInfo : IPayMethod
 {
+    public BizumInfo() { }
+
     public BizumInfo(string telephonNumber)
     {
         TelephonNumber = telephonNumber;

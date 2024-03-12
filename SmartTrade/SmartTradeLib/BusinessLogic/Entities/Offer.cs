@@ -2,6 +2,7 @@
 
 public partial class Offer
 {
+    public Offer() { }
     public Offer(Post post, Product product, float price, float shippingCost, int stock)
     {
         Post = post;

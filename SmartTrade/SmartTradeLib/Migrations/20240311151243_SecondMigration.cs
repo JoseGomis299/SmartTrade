@@ -12,7 +12,7 @@ namespace SmartTradeLib.Migrations
         {
             migrationBuilder.AddColumn<string>(
                 name: "Number",
-                table: "Adresses",
+                table: "Addresses",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
@@ -23,7 +23,7 @@ namespace SmartTradeLib.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Number",
-                table: "Adresses");
+                table: "Addresses");
         }
     }
 }

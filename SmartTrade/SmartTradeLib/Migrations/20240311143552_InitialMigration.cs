@@ -12,7 +12,7 @@ namespace SmartTradeLib.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Adresses",
+                name: "Addresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -51,7 +51,7 @@ namespace SmartTradeLib.Migrations
                     table.ForeignKey(
                         name: "FK_User_Adresses_BillingAddressId",
                         column: x => x.BillingAddressId,
-                        principalTable: "Adresses",
+                        principalTable: "Addresses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -251,7 +251,7 @@ namespace SmartTradeLib.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Adresses_CostumerEmail",
-                table: "Adresses",
+                table: "Addresses",
                 column: "CostumerEmail");
 
             migrationBuilder.CreateIndex(
@@ -321,7 +321,7 @@ namespace SmartTradeLib.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Adresses_User_CostumerEmail",
-                table: "Adresses",
+                table: "Addresses",
                 column: "CostumerEmail",
                 principalTable: "User",
                 principalColumn: "Email");
@@ -332,7 +332,7 @@ namespace SmartTradeLib.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Adresses_User_CostumerEmail",
-                table: "Adresses");
+                table: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Alerts");
@@ -359,7 +359,7 @@ namespace SmartTradeLib.Migrations
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "Adresses");
+                name: "Addresses");
         }
     }
 }

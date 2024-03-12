@@ -2,7 +2,8 @@
 
 public partial class Toy : Product
 {
-    public Toy(string name, string certification, string ecologicPrint, int minimumAge, bool validated, byte[] image, Post post, string brand, string material, string age) : base(name, certification, ecologicPrint, minimumAge, validated, image, post)
+    public Toy(){}
+    public Toy(string name, string certification, string ecologicPrint, int minimumAge, string brand, string material, string age) : base(name, certification, ecologicPrint, minimumAge)
     {
         Brand = brand;
         Material = material;

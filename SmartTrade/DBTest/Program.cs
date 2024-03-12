@@ -1,8 +1,24 @@
-﻿//using SmartTradeLib.BusinessLogic;
-//using SmartTradeLib.Entities;
+﻿using SmartTradeLib.BusinessLogic;
+using SmartTradeLib.Entities;
 
-//ISmartTradeService service = new SmartTradeService();
-//service.RemoveAll();
+ISmartTradeService service = new SmartTradeService();
+service.RemoveAll();
+
+Seller pepito = new Seller("ChiclesPepito@gmail.com", "123", "Pepito", "1", "1", "2", "3");
+Product product = new Toy("Balancín", "", "", 1,  "a", "metal", "1");
+Product product2 = new Toy("Balancín", "", "", 1,  "asda", "plastico", "1");
+Post post = new Post("Balancines", "", true, pepito);
+Offer offer = new Offer(post, product, 1, 2, 100);
+Offer offer2 = new Offer(post, product2, 1, 2, 100);
+post.Offers.Add(offer);
+post.Offers.Add(offer2);
+product.Posts.Add(post);
+product2.Posts.Add(post);
+pepito.AddPost(post);
+
+service.AddSeller(pepito);
+
+service.SaveChanges();
 
 //Seller pepito = new Seller()
 //{

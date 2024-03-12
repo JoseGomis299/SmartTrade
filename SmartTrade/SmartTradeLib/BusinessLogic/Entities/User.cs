@@ -2,6 +2,7 @@
 
 public partial class User
 {
+    public User(){}
     public User(string email, string password, string name, string lastNames)
     {
         Email = email;

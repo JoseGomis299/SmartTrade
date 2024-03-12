@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SmartTradeLib.Entities;
 
 namespace SmartTradeLib.Persistence;
@@ -37,21 +38,21 @@ public class SmartTradeContext : BaseDbContext
     /// </summary>
     public virtual void RemoveAllData()
     {
-        if(Products.Any()) Products.RemoveRange(Products);
-        if(Admins.Any()) Admins.RemoveRange(Admins); 
-        if(Books.Any()) Books.RemoveRange(Books);
-        if(Costumers.Any()) Costumers.RemoveRange(Costumers);
-        if(Alerts.Any()) Alerts.RemoveRange(Alerts);
-        if(CreditCards.Any()) CreditCards.RemoveRange(CreditCards);
-        if(PayPals.Any()) PayPals.RemoveRange(PayPals);
-        if(Bizums.Any()) Bizums.RemoveRange(Bizums);
-        if(Adresses.Any()) Adresses.RemoveRange(Adresses);
-        if(Sellers.Any()) Sellers.RemoveRange(Sellers);
-        if(Posts.Any()) Posts.RemoveRange(Posts);
-        if(Offers.Any()) Offers.RemoveRange(Offers);
-        if(Clothing.Any()) Clothing.RemoveRange(Clothing);
-        if(Toys.Any()) Toys.RemoveRange(Toys);
-        if(Foods.Any()) Foods.RemoveRange(Foods);
+       // if(!Foods.IsNullOrEmpty()) Foods.RemoveRange(Foods);
+        if(!Toys.IsNullOrEmpty()) Toys.RemoveRange(Toys);
+        if(!Books.IsNullOrEmpty()) Books.RemoveRange(Books);
+        if(!Admins.IsNullOrEmpty()) Admins.RemoveRange(Admins);
+        if(!Costumers.IsNullOrEmpty()) Costumers.RemoveRange(Costumers);
+        if(!Sellers.IsNullOrEmpty()) Sellers.RemoveRange(Sellers);
+        if(!Posts.IsNullOrEmpty()) Posts.RemoveRange(Posts);
+        if(!Offers.IsNullOrEmpty()) Offers.RemoveRange(Offers);
+        if(!Clothing.IsNullOrEmpty()) Clothing.RemoveRange(Clothing);
+        if(!CreditCards.IsNullOrEmpty()) CreditCards.RemoveRange(CreditCards);
+        if(!PayPals.IsNullOrEmpty()) PayPals.RemoveRange(PayPals);
+        if(!Bizums.IsNullOrEmpty()) Bizums.RemoveRange(Bizums);
+        if(!Alerts.IsNullOrEmpty()) Alerts.RemoveRange(Alerts);
+        if(!Adresses.IsNullOrEmpty()) Adresses.RemoveRange(Adresses);
+
 
         SaveChanges();
     }

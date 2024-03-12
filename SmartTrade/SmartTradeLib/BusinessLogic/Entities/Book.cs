@@ -5,7 +5,8 @@ namespace SmartTradeLib.Entities;
 
 public partial class Book : Product
 {
-    public Book(string name, string certification, string ecologicPrint, int minimumAge, bool validated, byte[] image, Post post, string author, string publisher, string pages, string language, string isbn) : base(name, certification, ecologicPrint, minimumAge, validated, image, post)
+    public Book(){}
+    public Book(string name, string certification, string ecologicPrint, int minimumAge, string author, string publisher, string pages, string language, string isbn) : base(name, certification, ecologicPrint, minimumAge)
     {
         Author = author;
         Publisher = publisher;
