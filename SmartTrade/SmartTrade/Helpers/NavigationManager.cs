@@ -4,23 +4,21 @@ using Avalonia.Controls;
 
 namespace GetStartedProject;
 
-public class NavigationManager<T> where T : Navigator, new()
+public class NavigationManager
 {
     private static Navigator? _navigator;
     private static Stack<ICommand> _commands = new();
 
     public static void Initialize(ContentControl mainView, Type targetViewType)
     {
-        _navigator = new T();
-        _navigator.MainView = mainView;
+        if (mainView is UserControl) _navigator = new ViewNavigator(mainView);
 
         NavigateTo(targetViewType);
     }
 
     public static void Initialize(ContentControl mainView, ContentControl targetView)
     {
-        _navigator = new T();
-        _navigator.MainView = mainView;
+        if (mainView is UserControl) _navigator = new ViewNavigator(mainView);
 
         NavigateTo(targetView);
     }
