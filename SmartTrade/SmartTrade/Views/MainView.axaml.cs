@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using GetStartedProject;
 
 namespace SmartTrade.Views;
 

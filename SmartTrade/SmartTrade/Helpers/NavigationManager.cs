@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
 
-namespace GetStartedProject;
+namespace SmartTrade;
 
 public class NavigationManager
 {

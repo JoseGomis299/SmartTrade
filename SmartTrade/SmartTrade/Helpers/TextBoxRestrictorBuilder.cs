@@ -1,8 +1,7 @@
 ﻿using System.Globalization;
 using Avalonia.Controls;
 
-namespace GetStartedProject;
-
+namespace SmartTrade;
 public class TextBoxRestrictorBuilder
 {
     private TextBoxRestrictor _textBoxRestrictor;

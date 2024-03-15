@@ -1,4 +1,4 @@
-﻿namespace GetStartedProject;
+﻿namespace SmartTrade;
 
 public interface IRestrictor
 {

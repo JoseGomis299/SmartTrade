@@ -8,7 +8,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Microsoft.IdentityModel.Tokens;
 
-namespace GetStartedProject
+namespace SmartTrade    
 {
     public static class Extensions
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia.Controls;
 
-namespace GetStartedProject;
+namespace SmartTrade;
 
 public abstract class Navigator
 {
