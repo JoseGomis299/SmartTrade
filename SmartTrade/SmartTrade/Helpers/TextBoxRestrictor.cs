@@ -7,8 +7,8 @@ namespace GetStartedProject
     public class TextBoxRestrictor : IRestrictor
     {
         public bool AllowNegative { get; set; }
-        private List<Func<bool>> _restrictions;
-        private TextBox _textBox;
+        private readonly List<Func<bool>> _restrictions;
+        private readonly TextBox _textBox;
 
         public string Text
         {
@@ -28,9 +28,9 @@ namespace GetStartedProject
             _textBox = textBox;
         }
 
-        public void AddRestriction(Func<bool> restiction)
+        public void AddRestriction(Func<bool> restriction)
         {
-            _restrictions.Add(restiction);
+            _restrictions.Add(restriction);
         }
 
         public void ApplyRestrictions()
