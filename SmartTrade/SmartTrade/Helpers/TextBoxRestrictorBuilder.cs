@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Avalonia.Controls;
+using SmartTrade.Restrictors;
 
 namespace SmartTrade;
 public class TextBoxRestrictorBuilder

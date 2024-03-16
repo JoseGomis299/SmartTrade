@@ -1,4 +1,4 @@
-﻿namespace SmartTrade;
+﻿namespace SmartTrade.Navigation;
 
 public interface ICommand
 {

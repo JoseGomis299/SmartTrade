@@ -1,9 +1,9 @@
 ﻿namespace SmartTradeLib.Entities;
 
-public partial class User
+public abstract partial class User
 {
-    public User(){}
-    public User(string email, string password, string name, string lastNames)
+    protected User(){}
+    protected User(string email, string password, string name, string lastNames)
     {
         Email = email;
         Password = password;

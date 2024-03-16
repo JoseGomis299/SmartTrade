@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartTradeLib.Entities;
 
-public partial class User
+public abstract partial class User
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Email { get; set; }
