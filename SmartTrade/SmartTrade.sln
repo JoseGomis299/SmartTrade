@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTradeLib", "SmartTradeLib\SmartTradeLib.csproj", "{47304128-9C5D-4E89-889A-E69CFC7B8410}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTradeLib", "SmartTradeLib\SmartTradeLib.csproj", "{47304128-9C5D-4E89-889A-E69CFC7B8410}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{DC6FB5C5-F23D-4140-A703-0EF45CA646A0}"
 EndProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{BB107C21-C7DB-4CAC-B977-B743BB474CEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBTest", "DBTest\DBTest.csproj", "{566D2D50-6FB2-4C42-8FCF-8D380807E98F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBTest", "DBTest\DBTest.csproj", "{566D2D50-6FB2-4C42-8FCF-8D380807E98F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTrade", "SmartTrade\SmartTrade.csproj", "{25CA5E5B-924B-4893-AC7E-B38017DBDE13}"
 EndProject

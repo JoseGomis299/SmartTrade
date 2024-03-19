@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1285"
+             x:Class="SmartTrade.Views.RegisterPost"
+             xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+             x:DataType="vm:RegisterPostModel"
+             xmlns:controls="clr-namespace:SmartTrade.Controls"
+             >
+    <Design.DataContext>
+        <vm:RegisterPostModel/>
+    </Design.DataContext>
+    <ScrollViewer>
+        <StackPanel Spacing="25">
+
+			<StackPanel HorizontalAlignment="Center" Spacing="10">
+                <TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 30 0 25">POST A PRODUCT</TextBlock>
+				<controls:ST_TextBox LabelText="Title*" TextHeight="40" TextBox.Text="{Binding Title}" Name="Title"/>
+			    <controls:ST_TextBox LabelText="Description*" TextMinHeight="80" AcceptsReturn="True" TextBox.Text="{Binding Description}" Name="Description"/>
+                <controls:ST_TextBox LabelText="Product name*" TextHeight="40" TextBox.Text="{Binding ProductName}" Name="ProductName"/>
+                <controls:ST_TextBox LabelText="Minimum use age*" TextHeight="40" TextBox.Text="{Binding MinimumAge}" Name="MinAge"/>
+                <controls:ST_TextBox LabelText="Ecologic certifications" TextHeight="40" TextBox.Text="{Binding Certifications}" Name="Certifications"/>
+                <controls:ST_TextBox LabelText="Ecologic print" TextHeight="40" TextBox.Text="{Binding EcologicPrint}" Name="EcologicPrint"/>
+                <controls:ST_ComboBox LabelText="Category" Name="CategoryComboBox"/>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Stretch">
+                <Border BorderThickness="0 0 0 1" BorderBrush="#32C378">
+                    <Button Name="AddStockButton" Margin="0 0 100 0" HorizontalAlignment="Center" Background="Transparent" Content="+ Add Stock" Foreground="#32C378" FontSize="20" FontWeight="Bold" FontFamily="Inter"/>
+				</Border>
+
+				<ItemsControl ItemsSource="{Binding Stocks}" >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderThickness="0 0 0 1" BorderBrush="#32C378">
+                            <StackPanel>
+
+                                <Button HorizontalAlignment="Right" Margin="5 0" Foreground="#0A413E" Command="{Binding RemoveFromStock}">X</Button>
+								
+                                <Grid Margin="0 0 0 10" ColumnDefinitions="120 *" RowDefinitions="* *" HorizontalAlignment="Left">
+                                    <controls:ST_TextBox Margin="0 10" Grid.Row="0" Grid.Column="0" LabelText="Stock" Width="200" TextWidth="10" TextHeight="10" OnlyPositiveInt="True" TextBox.Text="{Binding StockQuantity}" WaterMark="100"/>
+                                    <controls:ST_TextBox Margin="0 10" Grid.Row="0" Grid.Column="1" LabelText="Price (€)"  Width="200" TextWidth="10" TextHeight="10" OnlyPositiveDouble="True" TextBox.Text="{Binding Price}" WaterMark="10"/>
+                                    <controls:ST_TextBox Margin="0 0 25 10" Grid.Row="1" Grid.Column="1" LabelText="Shipping cost (€)" TextWidth="10" TextHeight="10" OnlyPositiveDouble="True" TextBox.Text="{Binding ShippingCost}" LableWidth="150" WaterMark="2"/>
+                                </Grid>
+                                
+                                <Button HorizontalAlignment="Center" Height="40" Width="200" Classes="Green" Command="{Binding AddImagesCommand}">+ Suggest Image</Button>
+                              
+                                <ItemsControl ItemsSource="{Binding CategoryAttributes}"  Margin="0 10" >
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="0 5" Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <TextBlock Width="125" VerticalAlignment="Center" Classes="h2" Text="{Binding Name, Mode=OneTime}" TextWrapping="Wrap" TextAlignment="Right"></TextBlock>
+                                                <TextBox VerticalAlignment="Center"  Margin="10, 0" Watermark="Some value..." Width="150"  Height="40" Text="{Binding Value}"></TextBox>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                            </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+			</StackPanel>
+
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

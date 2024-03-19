@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using SmartTrade;
+
 
 namespace SmartTrade.Views
 {

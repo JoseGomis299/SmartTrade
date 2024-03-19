@@ -12,14 +12,14 @@ public class NavigationManager
 
     public static void Initialize(ContentControl mainView, Type targetViewType)
     {
-        if (mainView is UserControl) _navigator = new ViewNavigator(mainView);
+       _navigator = new ViewNavigator(mainView);
 
         NavigateTo(targetViewType);
     }
 
     public static void Initialize(ContentControl mainView, ContentControl targetView)
     {
-        if (mainView is UserControl) _navigator = new ViewNavigator(mainView);
+        _navigator = new ViewNavigator(mainView);
 
         NavigateTo(targetView);
     }

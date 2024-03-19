@@ -2,10 +2,10 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
-using SmartTrade.ViewModels;
-using SmartTrade.Views;
+using SmartTradeApp.ViewModels;
+using SmartTradeApp.Views;
 
-namespace SmartTrade;
+namespace SmartTradeApp;
 
 public partial class App : Application
 {

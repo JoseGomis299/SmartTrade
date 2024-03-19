@@ -4,5 +4,5 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
              x:Class="SmartTrade.Views.Product">
-  Welcome to Avalonia!
+   
 </UserControl>

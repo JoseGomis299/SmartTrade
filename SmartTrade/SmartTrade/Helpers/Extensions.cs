@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Microsoft.IdentityModel.Tokens;
+using SmartTradeLib.Entities;
 
 namespace SmartTrade    
 {
@@ -45,11 +46,10 @@ namespace SmartTrade
 
             foreach (var filter in filtersList)
                 filePickerFileTypes.Add(new FilePickerFileType(filter));
-
             var files = await TopLevel.GetTopLevel(caller).StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 Title = title,
-                AllowMultiple = true, 
+                AllowMultiple = true,
                 FileTypeFilter = filePickerFileTypes
             });
 
@@ -96,5 +96,15 @@ namespace SmartTrade
             return Array.Empty<byte>();
         }
 
+        public static string[] GetAttributes(this Category category)
+        {
+            return category switch
+            {
+                Category.Book => new[] { "Author", "Publisher", "Language", "ISBN", "Pages" },
+                Category.Clothing => new[] { "Brand","Size", "Color", "Material" },
+                Category.Nutrition => new[] { "Weight", "Calories", "Proteins", "Carbohydrates", "Fats", "Allergens" },
+                Category.Toy => new[] {"Brand", "Material", "Minimum Age" },
+            };
+        }
     }
 }

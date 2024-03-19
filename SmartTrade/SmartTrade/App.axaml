@@ -2,9 +2,75 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SmartTrade.App"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" Accent="#ff32c378" AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="#ff32c378" BaseLow="White" BaseMedium="#0A413E" BaseMediumHigh="#0A413E" BaseMediumLow="#0A413E" ChromeAltLow="#0A413E" ChromeBlackHigh="#ff32c378" ChromeBlackLow="White" ChromeBlackMedium="#0A413E" ChromeBlackMediumLow="#0A413E" ChromeDisabledHigh="White" ChromeDisabledLow="#ffb1b1b1" ChromeGray="#0A413E" ChromeHigh="White" ChromeLow="White" ChromeMedium="White" ChromeMediumLow="White" ChromeWhite="White" ListLow="White" ListMedium="White" RegionColor="White" />
+                <ColorPaletteResources x:Key="Dark" Accent="#ff32c378" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff333333" BaseMedium="#ff9a9a9a" BaseMediumHigh="#ffb4b4b4" BaseMediumLow="#ff676767" ChromeAltLow="#ffb4b4b4" ChromeBlackHigh="Black" ChromeBlackLow="#ffb4b4b4" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff333333" ChromeDisabledLow="#ff9a9a9a" ChromeGray="Gray" ChromeHigh="Gray" ChromeLow="#ff151515" ChromeMedium="#ff1d1d1d" ChromeMediumLow="#ff2c2c2c" ChromeWhite="White" ListLow="#ff1d1d1d" ListMedium="#ff333333" RegionColor="Black" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+		<Styles>
+            <Style Selector="TextBlock.h1">
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontFamily" Value="Inter"/>
+                <Setter Property="FontWeight" Value="Bold"></Setter>
+                <Setter Property="Foreground" Value="#0A413E"/>
+            </Style>
+
+            <Style Selector="TextBlock.h2">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontFamily" Value="Inter"/>
+                <Setter Property="FontWeight" Value="Bold"></Setter>
+                <Setter Property="Foreground" Value="#0A413E"/>
+            </Style>
+
+            <Style Selector="TextBox">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontFamily" Value="Inter"/>
+                <Setter Property="FontWeight" Value="Normal"></Setter>
+                <Setter Property="Foreground" Value="#0A413E"/>
+                <Setter Property="BorderBrush" Value="#0A413E"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="25"/>
+            </Style>
+            <Style Selector="TextBox /template/ TextBlock#PART_Watermark">
+                <Setter Property="Foreground" Value="#A5DFB7"/>
+            </Style>
+            <Style Selector="Button">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontFamily" Value="Inter"/>
+                <Setter Property="FontWeight" Value="Bold"></Setter>
+                <Setter Property="CornerRadius" Value="25"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+            <Style Selector="ComboBox">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontFamily" Value="Inter"/>
+                <Setter Property="FontWeight" Value="Normal"></Setter>
+                <Setter Property="BorderBrush" Value="#0A413E"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="15"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+            <Style Selector="Button.Green">
+                <Setter Property="BorderBrush" Value="#0A413E"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="white"/>
+                <Setter Property="Background" Value="#32C378"/>
+            </Style>
+            <Style Selector="Button.White">
+                <Setter Property="BorderBrush" Value="#0A413E"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="#0A413E"/>
+                <Setter Property="Background" Value="White"/>
+            </Style>
+
+
+        </Styles>
+
     </Application.Styles>
+
 </Application>

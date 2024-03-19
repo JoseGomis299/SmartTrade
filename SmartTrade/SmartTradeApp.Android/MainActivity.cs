@@ -1,13 +1,14 @@
 ﻿using Android.App;
 using Android.Content.PM;
+
 using Avalonia;
 using Avalonia.Android;
 using Avalonia.ReactiveUI;
 
-namespace SmartTrade.Android;
+namespace SmartTradeApp.Android;
 
 [Activity(
-    Label = "SmartTrade.Android",
+    Label = "SmartTradeApp.Android",
     Theme = "@style/MyTheme.NoActionBar",
     Icon = "@drawable/icon",
     MainLauncher = true,

@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
+             x:Class="SmartTrade.Controls.ST_TextBox">
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+        <TextBlock Name="MyTextBlock" Margin="0 7.5" Width="120" VerticalAlignment="Top" Classes="h2" Text="Label Text" TextWrapping="Wrap" TextAlignment="Right"></TextBlock>
+        <TextBox Name="MyTextBox" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10, 0" Watermark="Type Something..." Width="200"  MinHeight="40" ></TextBox>
+	</StackPanel>
+</UserControl>
