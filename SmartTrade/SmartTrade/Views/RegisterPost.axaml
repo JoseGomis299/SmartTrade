@@ -17,8 +17,8 @@
 			<StackPanel HorizontalAlignment="Center" Spacing="10">
                 <TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 30 0 25">POST A PRODUCT</TextBlock>
 				<controls:ST_TextBox LabelText="Title*" TextHeight="40" TextBox.Text="{Binding Title}" Name="Title"/>
-			    <controls:ST_TextBox LabelText="Description*" TextMinHeight="80" AcceptsReturn="True" TextBox.Text="{Binding Description}" Name="Description"/>
-                <controls:ST_TextBox LabelText="Product name*" TextHeight="40" TextBox.Text="{Binding ProductName}" Name="ProductName"/>
+			    <controls:ST_TextBox LabelText="Description*" TextWrapping="Wrap" TextMinHeight="80" AcceptsReturn="True" TextBox.Text="{Binding Description}" Name="Description"/>
+                <controls:ST_TextBox LabelText="Product name*" TextWrapping="Wrap" TextBox.Text="{Binding ProductName}" Name="ProductName"/>
                 <controls:ST_TextBox LabelText="Minimum use age*" TextHeight="40" TextBox.Text="{Binding MinimumAge}" Name="MinAge"/>
                 <controls:ST_TextBox LabelText="Ecologic certifications" TextHeight="40" TextBox.Text="{Binding Certifications}" Name="Certifications"/>
                 <controls:ST_TextBox LabelText="Ecologic print" TextHeight="40" TextBox.Text="{Binding EcologicPrint}" Name="EcologicPrint"/>

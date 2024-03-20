@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Metadata;
 using SmartTrade.Restrictors;
 
@@ -66,6 +67,12 @@ namespace SmartTrade.Controls
         {
             get => MyTextBox.MinHeight;
             set => MyTextBox.MinHeight = value;
+        }
+
+        public TextWrapping TextWrapping
+        {
+            get => MyTextBox.TextWrapping;
+            set => MyTextBox.TextWrapping = value;
         }
 
         public bool AcceptsReturn

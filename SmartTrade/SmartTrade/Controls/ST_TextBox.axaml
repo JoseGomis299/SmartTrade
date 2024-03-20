@@ -6,6 +6,6 @@
              x:Class="SmartTrade.Controls.ST_TextBox">
     <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
         <TextBlock Name="MyTextBlock" Margin="0 7.5" Width="120" VerticalAlignment="Top" Classes="h2" Text="Label Text" TextWrapping="Wrap" TextAlignment="Right"></TextBlock>
-        <TextBox Name="MyTextBox" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10, 0" Watermark="Type Something..." Width="200"  MinHeight="40" ></TextBox>
+        <TextBox Name="MyTextBox" TextWrapping="NoWrap" VerticalAlignment="Top" Margin="10, 0" Watermark="Type Something..." Width="200"  MinHeight="40" ></TextBox>
 	</StackPanel>
 </UserControl>
