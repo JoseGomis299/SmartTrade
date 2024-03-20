@@ -8,7 +8,7 @@ namespace SmartTradeLib.BusinessLogic
         public void RemoveAll();
 
         public void AddAdmin(Admin admin);
-        public void AddCostumer(Costumer costumer);
+        public void AddCostumer(Consumer costumer);
         public void AddSeller(Seller seller);
     }
 }

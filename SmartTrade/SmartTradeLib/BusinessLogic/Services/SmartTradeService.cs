@@ -1,5 +1,6 @@
 ﻿using SmartTradeLib.Entities;
 using SmartTradeLib.Persistence;
+using System.Collections.Concurrent;
 
 namespace SmartTradeLib.BusinessLogic;
 
@@ -26,9 +27,9 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public void AddCostumer(Costumer costumer)
+    public void AddCostumer(Consumer costumer)
     {
-        _dal.Insert<Costumer>(costumer);
+        _dal.Insert<Consumer>(costumer);
         _dal.Commit();
     }
 
@@ -48,5 +49,33 @@ public class SmartTradeService : ISmartTradeService
     {
         _dal.Insert<Alert>(alert);
         _dal.Commit();
+    }
+
+    public void registerConsumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address)
+    {
+        if (_dal.GetWhere<Consumer>(x => x.Email == email).Any() || _dal.GetWhere<Consumer>(x => x.DNI == dni).Any())
+        {
+            throw new Exception("Usuario existente");
+        }
+        else
+        {
+            _dal.Insert<Consumer>(new Consumer(email, password, name, lastNames, dni, birthDate, billingAddress, address));
+            _dal.Commit();
+
+        }
+    }
+
+    public void registerSeller(string email, string password, string name, string lastNames, string dni, string companyName, string iban)
+    {
+        if (_dal.GetWhere<Seller>(x => x.Email == email).Any() || _dal.GetWhere<Seller>(x => x.DNI == dni).Any() || _dal.GetWhere<Seller>(x => x.IBAN == iban).Any())
+        {
+            throw new Exception("Usuario existente");
+        }
+        else
+        {
+            _dal.Insert<Seller>(new Seller(email, password, name, lastNames, dni, companyName, iban));
+            _dal.Commit();
+
+        }
     }
 }

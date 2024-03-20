@@ -1,6 +1,6 @@
 ﻿namespace SmartTradeLib.Entities;
 
-public partial class Costumer : User
+public partial class Consumer : User
 {
     public string DNI { get; set; }
     public DateTime BirthDate { get; set; }
