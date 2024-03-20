@@ -1,8 +1,8 @@
 ﻿namespace SmartTradeLib.Entities;
 
-public partial class Costumer : User
+public partial class Consumer : User
 {
-    public Costumer()
+    public Consumer()
     {
         Addresses = new List<Address>();
         PayPalAccounts = new List<PayPalInfo>();
@@ -11,7 +11,7 @@ public partial class Costumer : User
         Alerts = new List<Alert>();
     }
 
-    public Costumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address) : base(email, password, name, lastNames)
+    public Consumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address) : base(email, password, name, lastNames)
     {
         DNI = dni;
         BirthDate = birthDate;

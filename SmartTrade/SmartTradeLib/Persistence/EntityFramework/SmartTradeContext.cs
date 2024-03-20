@@ -9,7 +9,7 @@ public class SmartTradeContext : BaseDbContext
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Admin> Admins { get; set; }
-    public DbSet<Costumer> Costumers { get; set; }
+    public DbSet<Consumer> Costumers { get; set; }
     public DbSet<Seller> Sellers { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Offer> Offers { get; set; }
