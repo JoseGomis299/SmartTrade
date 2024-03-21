@@ -7,6 +7,8 @@ namespace SmartTradeLib.BusinessLogic;
 public class SmartTradeService : ISmartTradeService
 {
     private readonly IDAL _dal;
+    private User user;
+    private User logged = null;
     public SmartTradeService()
     {
         _dal = new EntityFrameworkDAL(new SmartTradeContext());
@@ -77,5 +79,29 @@ public class SmartTradeService : ISmartTradeService
             _dal.Commit();
 
         }
+    }
+
+    public void LogIn(string Email, string Password)
+    {
+        if (_dal.GetWhere<User>(x => x.Email == Email).Any())
+        {
+            user = _dal.GetById<User>(Email);
+            if (user != null)
+            {
+                if (user.Password == Password)
+                {
+                    logged = user;
+                }
+                else throw new Exception("Contraseña incorrecta.");
+            }
+        }
+        else throw new Exception("No está registrado.");
+        //prueba
+
+    }
+
+    public void LogOut()
+    {
+        logged = null;
     }
 }
