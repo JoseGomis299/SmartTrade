@@ -15,11 +15,56 @@ using SmartTradeLib.Entities;
 
 namespace SmartTrade.ViewModels
 {
+    public class RegisterPostModel : ViewModelBase
+    {
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public string? ProductName { get; set; }
+
+        public Category Category
+        {
+            get => _category;
+            set
+            {
+                foreach (var stock in Stocks)
+                {
+                    stock.ChangeCategory(value);
+                }
+                _category = value;
+            }
+        }
+        public int MinimumAge { get; set; }
+        public string? Certifications { get; set; }
+        public string? EcologicPrint { get; set; }
+        public ObservableCollection<Stock> Stocks { get; } = new ObservableCollection<Stock>();
+
+        private Category _category;
+
+        public void AddStock()
+        {
+            Stocks.Add(new Stock(Category, this));
+        }
+
+        public void PublishPost()
+        {
+            List<OfferDTO> offers = new();
+            List<List<byte[]>> images = new();
+
+            foreach (var stock in Stocks)
+            {
+                images.Add(stock.Images.Select(image => image.Image.ToByteArray()).ToList());
+                offers.Add(new OfferDTO(Convert.ToSingle(stock.Price), Convert.ToSingle(stock.ShippingCost), Convert.ToInt32(stock.StockQuantity)));
+            }
+
+            MainViewModel.SmartTradeService.AddPost(Title, Description, ProductName, Category, MinimumAge, Certifications, EcologicPrint, offers, images);
+        }
+    }
+
     public class CategoryAttribute
     {
         public string? Name { get; set; }
         public string? Value { get; set; }
-        
+
         public CategoryAttribute(string name)
         {
             Name = name;
@@ -86,38 +131,5 @@ namespace SmartTrade.ViewModels
                 CategoryAttributes.Add(new CategoryAttribute(attribute));
             }
         }
-    }
-
-    public class RegisterPostModel : ViewModelBase
-    {
-        public string? Title { get; set; }
-        public string? Description { get; set; }
-        public string? ProductName { get; set; }
-
-        public Category Category
-        {
-            get => _category;
-            set
-            {
-                foreach (var stock in Stocks)
-                {
-                    stock.ChangeCategory(value);
-                }
-                _category = value;
-            }
-        }
-        public int MinimumAge { get; set; }
-        public string? Certifications { get; set; }
-        public string? EcologicPrint { get; set; }
-        public ObservableCollection<Stock> Stocks { get; } = new ObservableCollection<Stock>();
-
-        private Category _category;
-
-        public void AddStock()
-        {
-            Stocks.Add(new Stock(Category, this));
-        }
-
-
     }
 }

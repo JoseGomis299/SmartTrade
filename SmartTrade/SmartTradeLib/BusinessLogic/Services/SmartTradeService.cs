@@ -41,6 +41,12 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
+    public void AddPost(string? title, string? description, string? productName, Category category, int minimumAge,
+        string? certifications, string? ecologicPrint, List<OfferDTO> offers, List<List<byte[]>> images)
+    {
+        
+    }
+
     public void AddPost(Post post)
     {
         _dal.Insert<Post>(post);
@@ -53,7 +59,7 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public void registerConsumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address)
+    public void RegisterConsumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address)
     {
         if (_dal.GetWhere<Consumer>(x => x.Email == email).Any() || _dal.GetWhere<Consumer>(x => x.DNI == dni).Any())
         {
@@ -67,7 +73,7 @@ public class SmartTradeService : ISmartTradeService
         }
     }
 
-    public void registerSeller(string email, string password, string name, string lastNames, string dni, string companyName, string iban)
+    public void RegisterSeller(string email, string password, string name, string lastNames, string dni, string companyName, string iban)
     {
         if (_dal.GetWhere<Seller>(x => x.Email == email).Any() || _dal.GetWhere<Seller>(x => x.DNI == dni).Any() || _dal.GetWhere<Seller>(x => x.IBAN == iban).Any())
         {

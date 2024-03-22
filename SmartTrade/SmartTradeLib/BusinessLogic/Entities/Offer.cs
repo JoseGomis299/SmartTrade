@@ -1,4 +1,6 @@
-﻿namespace SmartTradeLib.Entities;
+﻿using System.Diagnostics;
+
+namespace SmartTradeLib.Entities;
 
 public partial class Offer
 {
@@ -7,6 +9,16 @@ public partial class Offer
     {
         Post = post;
         Product = product;
+        Price = price;
+        ShippingCost = shippingCost;
+        Stock = stock;
+    }
+}
+
+public partial class OfferDTO
+{
+    public OfferDTO(float price, float shippingCost, int stock)
+    {
         Price = price;
         ShippingCost = shippingCost;
         Stock = stock;

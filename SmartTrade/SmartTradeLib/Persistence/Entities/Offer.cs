@@ -19,3 +19,10 @@ public partial class Offer
     public int Stock { get; set; }
 
 }
+
+public partial class OfferDTO
+{
+    public float Price { get; set; }
+    public float ShippingCost { get; set; }
+    public int Stock { get; set; }
+}

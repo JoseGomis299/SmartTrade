@@ -22,6 +22,12 @@ namespace SmartTrade.Views
 
             AddStockButton.Click += AddStock;
             CategoryComboBox.ComboBox.SelectionChanged += CategoryChanged;
+            ConfirmButton.Click += OnConfirmButtonOnClick;
+        }
+
+        private void OnConfirmButtonOnClick(object? sender, RoutedEventArgs e)
+        {
+            _model.PublishPost();
         }
 
         private void AddStock(object? sender, RoutedEventArgs e)

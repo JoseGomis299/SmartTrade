@@ -38,6 +38,13 @@ namespace SmartTrade
             return image;
         }
 
+        public static byte[] ToByteArray(this Bitmap bitmap)
+        {
+            using var ms = new MemoryStream();
+            bitmap.Save(ms);
+            return ms.ToArray();
+        }
+
         public static async Task<List<Byte[]>> OpenFileDialogMultiple(this UserControl caller, string title, string filters = "")
         {
             List<FilePickerFileType> filePickerFileTypes = new();
