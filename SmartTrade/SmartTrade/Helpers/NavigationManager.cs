@@ -7,6 +7,8 @@ namespace SmartTrade;
 
 public class NavigationManager
 {
+    public static event Action<Type> OnNavigate;
+
     private static Navigator? _navigator;
     private static Stack<ICommand> _commands = new();
 
@@ -32,6 +34,8 @@ public class NavigationManager
         ICommand command = new NavigateToCommand(_navigator, targetViewType);
         _commands.Push(command);
         command.Execute();
+
+        OnNavigate?.Invoke(targetViewType);
     }
 
     public static void NavigateTo(ContentControl targetView)
@@ -42,6 +46,8 @@ public class NavigationManager
         ICommand command = new NavigateToCommand(_navigator, targetView);
         _commands.Push(command);
         command.Execute();
+
+        OnNavigate?.Invoke(targetView.GetType());
     }
 
     public static void NavigateBack()
@@ -50,6 +56,8 @@ public class NavigationManager
         {
             var command = _commands.Pop();
             command.UnExecute();
+
+            OnNavigate?.Invoke(_navigator.CurrentView.GetType());
         }
     }
 
