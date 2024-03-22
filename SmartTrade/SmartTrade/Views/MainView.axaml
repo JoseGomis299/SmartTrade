@@ -11,9 +11,11 @@
   </Design.DataContext>
 	<Grid RowDefinitions="Auto * Auto" >
 		<!--SearchBar-->
-		<Border Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
+		<Border Name="SearchBar" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
 			<Grid Height="70" ColumnDefinitions="Auto *" VerticalAlignment="Center">
-				<Button Grid.Column="0" Margin="10" Background="#32c378" Width="50" Height="50"></Button>
+				<Button Grid.Column="0" Margin="10" Background="#32c378" Width="50" Height="50">
+					<Image Name="TopButtonImage" Stretch="Fill"></Image>
+				</Button>
 				<TextBox Margin="0 0 20 0" Grid.Column="1" VerticalAlignment="Center" Watermark="Search something..."></TextBox>
 			</Grid>
 		</Border>
