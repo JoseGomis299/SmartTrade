@@ -16,14 +16,20 @@ public class NavigationManager
     {
        _navigator = new ViewNavigator(mainView);
 
-        NavigateTo(targetViewType);
+       ICommand command = new NavigateToCommand(_navigator, targetViewType);
+       command.Execute();
+
+       OnNavigate?.Invoke(targetViewType);
     }
 
     public static void Initialize(ContentControl mainView, ContentControl targetView)
     {
         _navigator = new ViewNavigator(mainView);
 
-        NavigateTo(targetView);
+        ICommand command = new NavigateToCommand(_navigator, targetView);
+        command.Execute();
+
+        OnNavigate?.Invoke(targetView.GetType());
     }
 
     public static void NavigateTo(Type targetViewType) 
@@ -50,7 +56,7 @@ public class NavigationManager
         OnNavigate?.Invoke(targetView.GetType());
     }
 
-    public static void NavigateBack()
+    public static bool NavigateBack()
     {
         if (_commands.Count > 0)
         {
@@ -58,7 +64,10 @@ public class NavigationManager
             command.UnExecute();
 
             OnNavigate?.Invoke(_navigator.CurrentView.GetType());
+            return true;
         }
+
+        return false;
     }
 
 }

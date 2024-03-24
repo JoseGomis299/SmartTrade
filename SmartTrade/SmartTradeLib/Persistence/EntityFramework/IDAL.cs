@@ -17,6 +17,7 @@ namespace SmartTradeLib.Persistence
         void Clear<T>() where T : class;
         IEnumerable<T> GetWhere<T>(Expression<Func<T, bool>> predicate) where T : class;
 
+        void CommitAsync();
         void Commit();
         void Rollback();
         void RemoveAllData();

@@ -46,6 +46,11 @@ namespace SmartTradeLib.Persistence
             return dbContext.Set<T>().Where(predicate).AsEnumerable();
         }
 
+        public async void CommitAsync()
+        {
+            await dbContext.SaveChangesAsync();
+        }
+
         public void Commit()
         {
             dbContext.SaveChanges();

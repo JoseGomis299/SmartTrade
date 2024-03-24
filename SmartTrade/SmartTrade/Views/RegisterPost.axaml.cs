@@ -82,6 +82,7 @@ namespace SmartTrade.Views
             if (hasErrors) return;
 
             _model.PublishPost();
+            NavigationManager.NavigateBack();
         }
 
         private void ClearErrors()

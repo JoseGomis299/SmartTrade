@@ -20,4 +20,12 @@ public class MainActivity : AvaloniaMainActivity<App>
             .WithInterFont()
             .UseReactiveUI();
     }
+
+    public override void OnBackPressed()
+    {
+        if (!NavigationManager.NavigateBack())
+        {
+            base.OnBackPressed();
+        }
+    }
 }

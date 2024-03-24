@@ -60,7 +60,6 @@ public class SmartTradeService : ISmartTradeService
             offers.Add(new Offer(products[i], prices[i], shippingCosts[i], stocks[i]));
         }
 
-        ((Seller)Logged).AddPost(post);
         post.Offers = offers;
 
         for (int i = 0; i < products.Count; i++)

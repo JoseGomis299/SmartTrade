@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using System;
+using Avalonia.Input;
 using Avalonia.VisualTree;
 
 namespace SmartTrade.Views;
@@ -24,7 +25,6 @@ public partial class MainView : UserControl
 
         ResetVisibility();
     }
-
     private void ResetVisibility()
     {
         SearchBar.IsVisible = true;
