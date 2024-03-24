@@ -24,7 +24,7 @@
 		<ContentControl Grid.Row="1" Name="ViewContent"></ContentControl>
 
 		<!--Buttons-->
-		<Border Grid.Row="2" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
+		<Border Name="BottomBar" Grid.Row="2" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
 			<Grid Height="70" ColumnDefinitions="* * *" VerticalAlignment="Center">
 				<Button Grid.Column="0" HorizontalAlignment="Left" Margin=" 25 0" Background="#32C378" Width="50" Height="50"></Button>
 				<Button Grid.Column="1" HorizontalAlignment="Center" Background="#32C378" Width="50" Height="50"></Button>

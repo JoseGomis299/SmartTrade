@@ -62,8 +62,6 @@
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
             </Style>
             <Style Selector="Button.Green">
-                <Setter Property="BorderBrush" Value="#0A413E"/>
-                <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="Foreground" Value="white"/>
                 <Setter Property="Background" Value="#32C378"/>
             </Style>
@@ -72,6 +70,16 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="Foreground" Value="#0A413E"/>
                 <Setter Property="Background" Value="White"/>
+            </Style>
+            <Style Selector="Button.Black">
+
+                <Setter Property="Background" Value="#0A413E"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+            <Style Selector="Button.Red">
+
+                <Setter Property="Background" Value="#F15C5C"/>
+                <Setter Property="Foreground" Value="White"/>
             </Style>
 
 

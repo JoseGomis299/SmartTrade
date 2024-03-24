@@ -30,6 +30,12 @@ namespace SmartTrade.Views
             AddStockButton.Click += AddStock;
             CategoryComboBox.ComboBox.SelectionChanged += CategoryChanged;
             ConfirmButton.Click += OnConfirmButtonOnClick;
+            CancelButton.Click += OnCancelButtonOnClick;
+        }
+
+        private void OnCancelButtonOnClick(object? sender, RoutedEventArgs e)
+        {
+           NavigationManager.NavigateBack();
         }
 
         private void OnConfirmButtonOnClick(object? sender, RoutedEventArgs e)
