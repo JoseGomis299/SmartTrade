@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using SmartTradeLib.BusinessLogic;
 
 namespace SmartTradeLib.Entities;
 
@@ -44,4 +45,14 @@ public partial class Book : Product
 
         return differences;
     }
+
+    public override bool Equals(object? obj)
+    {
+        return base.Equals(obj) && obj is Book book 
+                                && Author.ToCommonSyntax() == book.Author.ToCommonSyntax() 
+                                && Publisher.ToCommonSyntax() == book.Publisher.ToCommonSyntax() 
+                                && Pages.ToCommonSyntax() == book.Pages.ToCommonSyntax() 
+                                && Language.ToCommonSyntax() == book.Language.ToCommonSyntax() 
+                                && ISBN.ToCommonSyntax() == book.ISBN.ToCommonSyntax();
+    }   
 }

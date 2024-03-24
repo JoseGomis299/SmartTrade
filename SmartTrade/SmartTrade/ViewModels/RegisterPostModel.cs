@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media.Imaging;
@@ -33,7 +36,7 @@ namespace SmartTrade.ViewModels
                 _category = value;
             }
         }
-        public int MinimumAge { get; set; }
+        public string? MinimumAge { get; set; }
         public string? Certifications { get; set; }
         public string? EcologicPrint { get; set; }
         public ObservableCollection<Stock> Stocks { get; } = new ObservableCollection<Stock>();
@@ -45,29 +48,83 @@ namespace SmartTrade.ViewModels
             Stocks.Add(new Stock(Category, this));
         }
 
+        public void CheckErrors()
+        {
+            if(Stocks.Count == 0)
+                throw new Exception("Post must have at least one stock");
+
+            for (var i = 0; i < Stocks.Count; i++)
+            {
+                var stock = Stocks[i];
+                if (string.IsNullOrEmpty(stock.StockQuantity) || string.IsNullOrEmpty(stock.Price) ||
+                    string.IsNullOrEmpty(stock.ShippingCost))
+                    throw new Exception("Stock must have all fields filled");
+
+                foreach (var attribute in stock.CategoryAttributes)
+                {
+                    if (string.IsNullOrEmpty(attribute.Value))
+                        throw new Exception($"Stock {i} must have all fields filled");
+
+                    if (attribute.OnlyInt && !int.TryParse(attribute.Value, out _))
+                        throw new Exception($"Field \"{attribute.Name}\" in stock {i} must be a number");
+
+                    if (attribute.OnlyFloat && !float.TryParse(attribute.Value, out _))
+                        throw new Exception($"Field \"{attribute.Name}\" in stock {i}  must be a number");
+                }
+
+                if (stock.Images.Count == 0)
+                    throw new Exception($"Stock {i} must have at least one image");
+
+                for (var j = 0; j < Stocks.Count; j++)
+                {
+                    var otherStock = Stocks[j];
+                    if (stock != otherStock && stock.CategoryAttributes.SequenceEqual(otherStock.CategoryAttributes))
+                        throw new Exception($"Stocks {i} and {j} must have different attributes");
+                }
+            }
+        }
+
         public void PublishPost()
         {
-            List<OfferDTO> offers = new();
+            List<int> stocks = new();
+            List<float> prices = new();
+            List<float> shippingCosts = new();
+
             List<List<byte[]>> images = new();
+            List<List<string>> attributes = new();
 
             foreach (var stock in Stocks)
             {
-                images.Add(stock.Images.Select(image => image.Image.ToByteArray()).ToList());
-                offers.Add(new OfferDTO(Convert.ToSingle(stock.Price), Convert.ToSingle(stock.ShippingCost), Convert.ToInt32(stock.StockQuantity)));
+                images.Add(stock.Images.Select(image => image.Bytes).ToList());
+
+                stocks.Add(int.Parse(stock.StockQuantity));
+                prices.Add(float.Parse(stock.Price));
+                shippingCosts.Add(float.Parse(stock.ShippingCost));
+
+                attributes.Add(stock.CategoryAttributes.Select(attribute => attribute.Value).ToList());
             }
 
-            MainViewModel.SmartTradeService.AddPost(Title, Description, ProductName, Category, MinimumAge, Certifications, EcologicPrint, offers, images);
+            MainViewModel.SmartTradeService.AddPost(Title, Description, ProductName, Category, int.Parse(MinimumAge), Certifications, EcologicPrint, stocks, prices, shippingCosts, images, attributes);
         }
     }
-
     public class CategoryAttribute
     {
         public string? Name { get; set; }
         public string? Value { get; set; }
+        public bool OnlyInt { get; set; }
+        public bool OnlyFloat { get; set; }
 
         public CategoryAttribute(string name)
         {
-            Name = name;
+            if (name.EndsWith('i')) OnlyInt = true;
+            else if (name.EndsWith('f')) OnlyFloat = true;
+            
+            Name = name.Substring(0, name.Length - 2);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is CategoryAttribute attribute && attribute.Name == Name && attribute.Value == Value;
         }
     }
 
@@ -75,11 +132,14 @@ namespace SmartTrade.ViewModels
     {
         public Bitmap? Image { get; set; }
 
+        public byte[] Bytes { get; set; }
+
         public ICommand RemoveImage { get; }
 
-        public ImageSource(Bitmap image, Stock stock)
+        public ImageSource(byte[] image, Stock stock)
         {
-            Image = image;
+            Bytes = image;
+            Image = image.ToBitmap();
 
             RemoveImage = ReactiveCommand.Create(() =>
             {
@@ -90,9 +150,9 @@ namespace SmartTrade.ViewModels
 
     public class Stock
     {
-        public string? StockQuantity { get; set; } = "0";
-        public string? Price { get; set; } = "0";
-        public string? ShippingCost { get; set; } = "0";
+        public string? StockQuantity { get; set; }
+        public string? Price { get; set; }
+        public string? ShippingCost { get; set; }
         public ObservableCollection<ImageSource> Images { get; set; } = new ObservableCollection<ImageSource>();
         public ObservableCollection<CategoryAttribute> CategoryAttributes { get; set; } = new ObservableCollection<CategoryAttribute>();
         public ICommand AddImagesCommand { get; }
@@ -108,10 +168,9 @@ namespace SmartTrade.ViewModels
 
                     foreach (var image in await mainView.OpenFileDialogMultiple("Select images", "png jpg jpeg"))
                     {
-                        Images.Add(new ImageSource(image.ToBitmap(), this));
+                        Images.Add(new ImageSource(image, this));
                     }
 
-                    Console.WriteLine(Images.Count);
                 }
             });
 
@@ -119,6 +178,10 @@ namespace SmartTrade.ViewModels
             {
                 model.Stocks.Remove(this);
             });
+
+            StockQuantity = "0";
+            Price = "0";
+            ShippingCost = "0";
 
             ChangeCategory(category);
         }

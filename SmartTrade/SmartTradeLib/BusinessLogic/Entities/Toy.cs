@@ -1,20 +1,20 @@
-﻿namespace SmartTradeLib.Entities;
+﻿using SmartTradeLib.BusinessLogic;
+
+namespace SmartTradeLib.Entities;
 
 public partial class Toy : Product
 {
     public Toy(){}
-    public Toy(string name, string certification, string ecologicPrint, int minimumAge, string brand, string material, string age) : base(name, certification, ecologicPrint, minimumAge)
+    public Toy(string name, string certification, string ecologicPrint, int minimumAge, string brand, string material) : base(name, certification, ecologicPrint, minimumAge)
     {
         Brand = brand;
         Material = material;
-        Age = age;
     }
 
     public override string GetInfo()
     {
         return $"- Brand: {Brand}" +
-               $"\n- Material: {Material}" +
-               $"\n- Age: {Age}";
+               $"\n- Material: {Material}";
     }
 
     public override ICollection<Category> GetCategories()
@@ -35,5 +35,10 @@ public partial class Toy : Product
         }
 
         return differences;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return base.Equals(obj) && obj is Toy toy && Brand.ToCommonSyntax() == toy.Brand.ToCommonSyntax() && Material.ToCommonSyntax() == toy.Material.ToCommonSyntax();
     }
 }

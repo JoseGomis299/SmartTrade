@@ -5,9 +5,8 @@ namespace SmartTradeLib.Entities;
 public partial class Offer
 {
     public Offer() { }
-    public Offer(Post post, Product product, float price, float shippingCost, int stock)
+    public Offer(Product product, float price, float shippingCost, int stock)
     {
-        Post = post;
         Product = product;
         Price = price;
         ShippingCost = shippingCost;
@@ -15,12 +14,3 @@ public partial class Offer
     }
 }
 
-public partial class OfferDTO
-{
-    public OfferDTO(float price, float shippingCost, int stock)
-    {
-        Price = price;
-        ShippingCost = shippingCost;
-        Stock = stock;
-    }
-}

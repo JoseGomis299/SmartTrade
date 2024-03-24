@@ -25,6 +25,14 @@ public class TextBoxRestrictorBuilder
             {
                 return false;
             }
+
+            if (_textBoxRestrictor.Text.Length == 0)
+            {
+                _textBoxRestrictor.Text = "0";
+                _textBoxRestrictor.CaretIndex = _textBoxRestrictor.Text.Length;
+                return false;
+            }
+
             return true;
         });
 
@@ -59,6 +67,13 @@ public class TextBoxRestrictorBuilder
             if (_textBoxRestrictor.Text.Length == 1 && (_textBoxRestrictor.Text[0] == decimalSeparator || _textBoxRestrictor.Text[0] == notDecimalSeparator))
             {
                 _textBoxRestrictor.Text = "0" + decimalSeparator;
+                _textBoxRestrictor.CaretIndex = _textBoxRestrictor.Text.Length;
+                return false;
+            }
+
+            if (_textBoxRestrictor.Text.Length == 0)
+            {
+                _textBoxRestrictor.Text = "0";
                 _textBoxRestrictor.CaretIndex = _textBoxRestrictor.Text.Length;
                 return false;
             }

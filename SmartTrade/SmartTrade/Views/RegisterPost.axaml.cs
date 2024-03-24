@@ -3,8 +3,15 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using SmartTrade.ViewModels;
 using System.Collections.ObjectModel;
+using Avalonia.Controls.Templates;
+using Avalonia.Markup.Xaml.Templates;
 using SmartTradeLib.Entities;
 using Avalonia.Media;
+using Microsoft.IdentityModel.Tokens;
+using ReactiveUI;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.VisualTree;
+using Avalonia;
 
 namespace SmartTrade.Views
 {
@@ -27,7 +34,56 @@ namespace SmartTrade.Views
 
         private void OnConfirmButtonOnClick(object? sender, RoutedEventArgs e)
         {
+            ClearErrors();
+            bool hasErrors = false;
+
+            if (_model.Title.IsNullOrEmpty())
+            {
+                Title.BringIntoView();
+                Title.Focus();
+                Title.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+
+            if(_model.Description.IsNullOrEmpty())
+            {
+                Description.BringIntoView();
+                Description.Focus();
+                Description.ErrorText = "Description cannot be empty";
+                hasErrors = true;
+            }
+
+            if (_model.ProductName.IsNullOrEmpty())
+            {
+                ProductName.BringIntoView();
+                ProductName.Focus();
+                ProductName.ErrorText = "Product name cannot be empty";
+                hasErrors = true;
+            }
+
+
+            try
+            {
+                _model.CheckErrors();
+            }
+            catch (Exception exception)
+            {
+                StockErrorMessage.BringIntoView();
+                StockErrorMessage.Text = exception.Message;
+                return;
+            }
+
+            if (hasErrors) return;
+
             _model.PublishPost();
+        }
+
+        private void ClearErrors()
+        {
+            Title.ErrorText = "";
+            Description.ErrorText = "";
+            ProductName.ErrorText = "";
+            StockErrorMessage.Text = "";
         }
 
         private void AddStock(object? sender, RoutedEventArgs e)

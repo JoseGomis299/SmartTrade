@@ -11,9 +11,6 @@ public abstract partial class Product
     public string Certification { get; set; }
     public string EcologicPrint { get; set; }
     public int MinimumAge { get; set; }
-    public bool Validated { get; set; }
-    public virtual IList<byte[]> Images { get; set; }
-    public virtual ICollection<Product> VariantOf { get; set; }
-    public virtual ICollection<Alert> Alerts { get; set; }
+    public virtual ICollection<Image> Images { get; set; }
     public virtual ICollection<Post> Posts { get; set; }
 }

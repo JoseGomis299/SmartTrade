@@ -1,4 +1,6 @@
-﻿namespace SmartTradeLib.Entities;
+﻿using SmartTradeLib.BusinessLogic;
+
+namespace SmartTradeLib.Entities;
 
 public partial class Clothing : Product
 {
@@ -45,5 +47,10 @@ public partial class Clothing : Product
        }
 
        return differences;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return base.Equals(obj) && obj is Clothing clothing && Brand.ToCommonSyntax() == clothing.Brand.ToCommonSyntax() && Size.ToCommonSyntax() == clothing.Size.ToCommonSyntax() && Color.ToCommonSyntax() == clothing.Color.ToCommonSyntax() && Material.ToCommonSyntax() == clothing.Material.ToCommonSyntax();
     }
 }

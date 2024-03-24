@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SmartTradeLib.Entities;
 
@@ -9,7 +10,7 @@ public class SmartTradeContext : BaseDbContext
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Admin> Admins { get; set; }
-    public DbSet<Consumer> Costumers { get; set; }
+    public DbSet<Consumer> Consumers { get; set; }
     public DbSet<Seller> Sellers { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Offer> Offers { get; set; }
@@ -21,7 +22,7 @@ public class SmartTradeContext : BaseDbContext
     public DbSet<PayPalInfo> PayPals { get; set; }
     public DbSet<BizumInfo> Bizums { get; set; }
     public DbSet<Alert> Alerts { get; set; }
-    public DbSet<Address> Adresses { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 
     public SmartTradeContext()
     {
@@ -29,8 +30,10 @@ public class SmartTradeContext : BaseDbContext
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlServer("Server=tcp:furgoneta.database.windows.net,1433;Initial Catalog=SmartTradeDB;Persist Security Info=False;User ID=CloudSAf9df27ed;Password=123456789Aa;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-
+    {
+        options.UseLazyLoadingProxies();
+        options.UseSqlServer("Server=tcp:furgoneta.database.windows.net,1433;Initial Catalog=SmartTradeDB;Persist Security Info=False;User ID=CloudSAf9df27ed;Password=123456789Aa;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+    }
 
     /// <summary>
     /// Delete every object stored in the DbSets
@@ -42,7 +45,7 @@ public class SmartTradeContext : BaseDbContext
         if(!Toys.IsNullOrEmpty()) Toys.RemoveRange(Toys);
         if(!Books.IsNullOrEmpty()) Books.RemoveRange(Books);
         if(!Admins.IsNullOrEmpty()) Admins.RemoveRange(Admins);
-        if(!Costumers.IsNullOrEmpty()) Costumers.RemoveRange(Costumers);
+        if(!Consumers.IsNullOrEmpty()) Consumers.RemoveRange(Consumers);
         if(!Sellers.IsNullOrEmpty()) Sellers.RemoveRange(Sellers);
         if(!Posts.IsNullOrEmpty()) Posts.RemoveRange(Posts);
         if(!Offers.IsNullOrEmpty()) Offers.RemoveRange(Offers);
@@ -51,7 +54,7 @@ public class SmartTradeContext : BaseDbContext
         if(!PayPals.IsNullOrEmpty()) PayPals.RemoveRange(PayPals);
         if(!Bizums.IsNullOrEmpty()) Bizums.RemoveRange(Bizums);
         if(!Alerts.IsNullOrEmpty()) Alerts.RemoveRange(Alerts);
-        if(!Adresses.IsNullOrEmpty()) Adresses.RemoveRange(Adresses);
+        if(!Addresses.IsNullOrEmpty()) Addresses.RemoveRange(Addresses);
 
 
         SaveChanges();

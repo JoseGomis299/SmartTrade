@@ -10,7 +10,7 @@ namespace SmartTrade.Restrictors
         private readonly List<Func<bool>> _restrictions;
         private readonly TextBox _textBox;
 
-        public string Text
+        public string? Text
         {
             get => _textBox.Text;
             set => _textBox.Text = value;
@@ -35,7 +35,7 @@ namespace SmartTrade.Restrictors
 
         public void ApplyRestrictions()
         {
-            if(Text.Length <= 0) return;
+            if(string.IsNullOrEmpty(Text)) return;
             bool removeLastChar = true;
 
             foreach (var restriction in _restrictions)

@@ -107,10 +107,10 @@ namespace SmartTrade
         {
             return category switch
             {
-                Category.Book => new[] { "Author", "Publisher", "Language", "ISBN", "Pages" },
-                Category.Clothing => new[] { "Brand","Size", "Color", "Material" },
-                Category.Nutrition => new[] { "Weight", "Calories", "Proteins", "Carbohydrates", "Fats", "Allergens" },
-                Category.Toy => new[] {"Brand", "Material", "Minimum Age" },
+                Category.Book => new[] { "Author/s", "Publisher/s", "Language/s", "ISBN/i", "Pages/i" },
+                Category.Clothing => new[] { "Brand/s","Size/s", "Color/s", "Material/s" },
+                Category.Nutrition => new[] { "Weight (g)/f", "Calories (Kcal)/f", "Proteins (g)/f", "Carbohydrates (g)/f", "Fats (g)/f", "Allergens/l" },
+                Category.Toy => new[] {"Brand/l", "Material/l"},
             };
         }
     }

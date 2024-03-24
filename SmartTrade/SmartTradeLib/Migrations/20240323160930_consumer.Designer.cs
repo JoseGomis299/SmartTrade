@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTradeLib.Persistence;
 
@@ -11,16 +12,15 @@ using SmartTradeLib.Persistence;
 namespace SmartTradeLib.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240323160930_consumer")]
+    partial class consumer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -64,7 +64,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ConsumerEmail");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Adresses");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Alert", b =>
@@ -136,28 +136,6 @@ namespace SmartTradeLib.Migrations
                     b.HasIndex("ConsumerEmail");
 
                     b.ToTable("CreditCards");
-                });
-
-            modelBuilder.Entity("SmartTradeLib.Entities.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("ImageSource")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Offer", b =>
@@ -272,6 +250,10 @@ namespace SmartTradeLib.Migrations
                         .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("EcologicPrint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Images")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -410,6 +392,10 @@ namespace SmartTradeLib.Migrations
                 {
                     b.HasBaseType("SmartTradeLib.Entities.Product");
 
+                    b.Property<string>("Age")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Brand")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -525,13 +511,6 @@ namespace SmartTradeLib.Migrations
                         .HasForeignKey("ConsumerEmail");
                 });
 
-            modelBuilder.Entity("SmartTradeLib.Entities.Image", b =>
-                {
-                    b.HasOne("SmartTradeLib.Entities.Product", null)
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("SmartTradeLib.Entities.Offer", b =>
                 {
                     b.HasOne("SmartTradeLib.Entities.Post", "Post")
@@ -602,8 +581,6 @@ namespace SmartTradeLib.Migrations
 
             modelBuilder.Entity("SmartTradeLib.Entities.Product", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("Posts");
                 });
 

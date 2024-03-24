@@ -1,10 +1,12 @@
-﻿namespace SmartTradeLib.Entities;
+﻿using SmartTradeLib.BusinessLogic;
+
+namespace SmartTradeLib.Entities;
 
 public partial class Nutrition : Product
 {
     public Nutrition() { }
 
-    public Nutrition(string name, string certification, string ecologicPrint, int minimumAge, string calories, string proteins, string carbohydrates, string fats, string allergens, string weight) : base(name, certification, ecologicPrint, minimumAge)
+    public Nutrition(string name, string certification, string ecologicPrint, int minimumAge, string weight, string calories, string proteins, string carbohydrates, string fats, string allergens) : base(name, certification, ecologicPrint, minimumAge)
     {
         Calories = calories;
         Proteins = proteins;
@@ -40,5 +42,16 @@ public partial class Nutrition : Product
         }  
         
         return differences;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return base.Equals(obj) && obj is Nutrition nutrition 
+                                && Calories.ToCommonSyntax() == nutrition.Calories.ToCommonSyntax() 
+                                && Proteins.ToCommonSyntax() == nutrition.Proteins.ToCommonSyntax() 
+                                && Carbohydrates.ToCommonSyntax() == nutrition.Carbohydrates.ToCommonSyntax() 
+                                && Fats.ToCommonSyntax() == nutrition.Fats.ToCommonSyntax() 
+                                && Allergens.ToCommonSyntax() == nutrition.Allergens.ToCommonSyntax() 
+                                && Weight.ToCommonSyntax() == nutrition.Weight.ToCommonSyntax();
     }
 }

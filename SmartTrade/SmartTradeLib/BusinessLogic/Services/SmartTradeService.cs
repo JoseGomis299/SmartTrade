@@ -7,8 +7,8 @@ namespace SmartTradeLib.BusinessLogic;
 public class SmartTradeService : ISmartTradeService
 {
     private readonly IDAL _dal;
-    private User user;
-    private User logged = null;
+    public User? Logged {get; set; }
+
     public SmartTradeService()
     {
         _dal = new EntityFrameworkDAL(new SmartTradeContext());
@@ -42,9 +42,45 @@ public class SmartTradeService : ISmartTradeService
     }
 
     public void AddPost(string? title, string? description, string? productName, Category category, int minimumAge,
-        string? certifications, string? ecologicPrint, List<OfferDTO> offers, List<List<byte[]>> images)
+        string? certifications, string? ecologicPrint, List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes)
     {
-        
+        Post post = new Post(title, description, false, (Seller) Logged);
+
+        List<Product> products = new();
+        List<Offer> offers = new();
+
+        for (int i = 0; i < stocks.Count; i++)
+        {
+            Product product = ProductFactory.GetFactory(category).CreateProduct(productName, certifications, ecologicPrint, minimumAge, attributes[i]);
+            Product? retrievedProduct = _dal.GetWhere<Product>(x => x.Equals(product)).FirstOrDefault();
+
+            if (retrievedProduct != null) products.Add(retrievedProduct);
+            else products.Add(product);
+
+            offers.Add(new Offer(products[i], prices[i], shippingCosts[i], stocks[i]));
+        }
+
+        ((Seller)Logged).AddPost(post);
+        post.Offers = offers;
+
+        for (int i = 0; i < products.Count; i++)
+        {
+            products[i].Posts.Add(post);
+            offers[i].Post = post;
+
+            List<Image> imagesList = new();
+            foreach (var productImages in images)
+            {
+                foreach (var image in productImages)
+                {
+                    imagesList.Add(new Image(image));
+                }
+            }
+
+            products[i].Images = imagesList;
+        }
+
+        _dal.Commit();
     }
 
     public void AddPost(Post post)
@@ -87,16 +123,16 @@ public class SmartTradeService : ISmartTradeService
         }
     }
 
-    public void LogIn(string Email, string Password)
+    public void LogIn(string email, string password)
     {
-        if (_dal.GetWhere<User>(x => x.Email == Email).Any())
+        if (_dal.GetWhere<User>(x => x.Email == email).Any())
         {
-            user = _dal.GetById<User>(Email);
+            User user = user = _dal.GetById<User>(email);
             if (user != null)
             {
-                if (user.Password == Password)
+                if (user.Password == password)
                 {
-                    logged = user;
+                    Logged = user;
                 }
                 else throw new Exception("Contraseña incorrecta.");
             }
@@ -108,6 +144,6 @@ public class SmartTradeService : ISmartTradeService
 
     public void LogOut()
     {
-        logged = null;
+        Logged = null;
     }
 }
