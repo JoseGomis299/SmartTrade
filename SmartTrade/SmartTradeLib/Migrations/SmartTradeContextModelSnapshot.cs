@@ -64,7 +64,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ConsumerEmail");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Alert", b =>
@@ -93,7 +93,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("UserEmail");
 
-                    b.ToTable("Alerts");
+                    b.ToTable("Alerts", (string)null);
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.BizumInfo", b =>
@@ -108,7 +108,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ConsumerEmail");
 
-                    b.ToTable("Bizums");
+                    b.ToTable("Bizums", (string)null);
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.CreditCardInfo", b =>
@@ -135,7 +135,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ConsumerEmail");
 
-                    b.ToTable("CreditCards");
+                    b.ToTable("CreditCards", (string)null);
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Image", b =>
@@ -157,7 +157,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Image");
+                    b.ToTable("Image", (string)null);
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Offer", b =>
@@ -189,7 +189,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Offers");
+                    b.ToTable("Offers", (string)null);
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.PayPalInfo", b =>
@@ -208,7 +208,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ConsumerEmail");
 
-                    b.ToTable("PayPals");
+                    b.ToTable("PayPals", (string)null);
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Post", b =>
@@ -248,7 +248,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("SellerEmail");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Product", b =>
@@ -286,7 +286,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("AdminEmail");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
 
@@ -318,7 +318,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasKey("Email");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
 
@@ -418,7 +418,7 @@ namespace SmartTradeLib.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Products", t =>
+                    b.ToTable("Products", null, t =>
                         {
                             t.Property("Brand")
                                 .HasColumnName("Toy_Brand");
@@ -453,7 +453,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("BillingAddressId");
 
-                    b.ToTable("User", t =>
+                    b.ToTable("User", null, t =>
                         {
                             t.Property("DNI")
                                 .HasColumnName("Consumer_DNI");

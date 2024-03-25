@@ -23,7 +23,6 @@ public class SmartTradeContext : BaseDbContext
     public DbSet<BizumInfo> Bizums { get; set; }
     public DbSet<Alert> Alerts { get; set; }
     public DbSet<Address> Addresses { get; set; }
-    public DbSet<Image> Images { get; set; }
 
     public SmartTradeContext()
     {
@@ -56,7 +55,6 @@ public class SmartTradeContext : BaseDbContext
         if(!Bizums.IsNullOrEmpty()) Bizums.RemoveRange(Bizums);
         if(!Alerts.IsNullOrEmpty()) Alerts.RemoveRange(Alerts);
         if(!Addresses.IsNullOrEmpty()) Addresses.RemoveRange(Addresses);
-        if(!Images.IsNullOrEmpty()) Images.RemoveRange(Images);
 
         SaveChanges();
     }
