@@ -20,4 +20,16 @@ public partial class Admin : User
         ValidatedPosts = new List<Post>();
         ValidatedProducts = new List<Product>();
     }
+
+    public void ValidatePost(Post post)
+    {
+        ValidatedPosts.Add(post);
+
+        foreach (var offer in post.Offers)
+        {
+            ValidatedProducts.Add(offer.Product);
+        }
+
+        post.Validated = true;
+    }
 }

@@ -23,6 +23,7 @@ namespace SmartTradeLib.Entities;
             MinimumAge = minimumAge;
         }
 
+        public abstract string[] GetAttributes();
         public abstract string GetInfo();
         public abstract ICollection<Category> GetCategories();
         public abstract string GetDifferences(Product product);

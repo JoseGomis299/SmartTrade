@@ -41,10 +41,12 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public void AddPost(string? title, string? description, string? productName, Category category, int minimumAge,
-        string? certifications, string? ecologicPrint, List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes)
+    public Post AddPost(string? title, string? description, string? productName, Category category, int minimumAge,
+        string? certifications, string? ecologicPrint, List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes, Seller? seller = null)
     {
-        Post post = new Post(title, description, false, (Seller) Logged);
+        //LogIn("ChiclesPepito@gmail.com", "123");
+        
+        Post post = new Post(title, description, false, seller ?? (Seller) Logged);
 
         List<Product> products = new();
         List<Offer> offers = new();
@@ -68,17 +70,51 @@ public class SmartTradeService : ISmartTradeService
             offers[i].Post = post;
 
             List<Image> imagesList = new();
-            foreach (var productImages in images)
+            foreach (var image in images[i])
             {
-                foreach (var image in productImages)
-                {
-                    imagesList.Add(new Image(image));
-                }
+                imagesList.Add(new Image(image));
             }
 
             products[i].Images = imagesList;
         }
 
+        _dal.Commit();
+        return post;
+    }
+
+    public void ValidatePost(string? title, string? description, string? productName, Category category, int parse, string? certifications, string? ecologicPrint, List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes, Post post)
+    {
+        RemovePost(post);
+
+        post = AddPost(title, description, productName, category, parse, certifications, ecologicPrint, stocks, prices, shippingCosts, images, attributes, post.Seller);
+        ((Admin)Logged).ValidatePost(post);
+        _dal.Commit();
+    }
+
+    public void RejectPost(Post post)
+    {
+        RemovePost(post);
+
+        _dal.Commit();
+    }
+
+    private void RemovePost(Post post)
+    {
+        post.Seller.Posts.Remove(post);
+
+        foreach (var offer in post.Offers)
+        {
+            post.Offers.Remove(offer);
+
+            IEnumerable<Product> porducts = _dal.GetWhere<Product>(p => p.Posts.Contains(post) && p.Posts.Count == 1);
+            foreach (var product in porducts)
+            {
+                _dal.Delete<Product>(product);
+            }
+            _dal.Delete<Offer>(offer);
+        }
+        _dal.Delete<Post>(post);
+     
         _dal.Commit();
     }
 

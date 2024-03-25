@@ -26,6 +26,11 @@ public partial class Book : Product
             $"\n- ISBN: {ISBN}";
     }
 
+    public override string[] GetAttributes()
+    {
+        return new[] { Author, Publisher, Pages, Language, ISBN };
+    }
+
     public override ICollection<Category> GetCategories()
     {
         return new List<Category> { Category.Book };

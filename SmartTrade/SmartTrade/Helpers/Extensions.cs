@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Microsoft.IdentityModel.Tokens;
+using SmartTrade.ViewModels;
 using SmartTradeLib.Entities;
 
 namespace SmartTrade    
@@ -107,11 +108,23 @@ namespace SmartTrade
         {
             return category switch
             {
-                Category.Book => new[] { "Author/s", "Publisher/s", "Language/s", "ISBN/i", "Pages/i" },
+                Category.Book => new[] { "Author/s", "Publisher/s", "Pages/i", "Language/s", "ISBN/i"},
                 Category.Clothing => new[] { "Brand/s","Size/s", "Color/s", "Material/s" },
                 Category.Nutrition => new[] { "Weight (g)/f", "Calories (Kcal)/f", "Proteins (g)/f", "Carbohydrates (g)/f", "Fats (g)/f", "Allergens/l" },
                 Category.Toy => new[] {"Brand/l", "Material/l"},
             };
         }
+
+        public static int[] GetNonRepeatableAttributes(this Category category)
+        {
+            return category switch
+            {
+                Category.Book => new[] { 0, 1, 2, 4 },
+                Category.Clothing => new[] { 0, 3},
+                Category.Nutrition => new[] { 5, 1, 2, 3, 4 },
+                Category.Toy => new[] { 0 },
+            };
+        }
+
     }
 }

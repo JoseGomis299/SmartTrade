@@ -18,12 +18,18 @@ public partial class Nutrition : Product
 
     public override string GetInfo()
     {
-        return $"- Calories: {Calories}kcal" +
+        return $"- Weight: {Weight}g" +
+               $"\n- Calories: {Calories}kcal" +
                $"\n- Proteins: {Proteins}g" +
                $"\n- Carbohydrates: {Carbohydrates}g" +
                $"\n- Fats: {Fats}g" +
-               $"\n- Allergens: {Allergens}g" +
-               $"\n- Weight: {Weight}g";
+               $"\n- Allergens: {Allergens}g";
+
+    }
+
+    public override string[] GetAttributes()
+    {
+        return new[] { Weight, Calories, Proteins, Carbohydrates, Fats, Allergens };
     }
 
     public override ICollection<Category> GetCategories()

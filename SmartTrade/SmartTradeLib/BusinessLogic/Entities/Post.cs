@@ -6,7 +6,7 @@ public partial class Post
     {
         Offers = new List<Offer>();
     }
-    public Post(string title, string description, bool validated, Seller seller) : this()
+    public Post(string title, string description, bool validated, Seller? seller) : this()
     {
         Title = title;
         Description = description;

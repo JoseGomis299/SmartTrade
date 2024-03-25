@@ -7,7 +7,7 @@
     <StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
             <TextBlock Name="MyTextBlock" Margin="0 7.5" Width="120" VerticalAlignment="Top" Classes="h2" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LabelText, Mode=TwoWay}" TextWrapping="Wrap" TextAlignment="Right"></TextBlock>
-            <TextBox Name="MyTextBox" TextWrapping="NoWrap" VerticalAlignment="Top" Margin="10, 0" Watermark="Type Something..." Width="200"  MinHeight="40" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Text, Mode=TwoWay}"/>
+            <TextBox Name="MyTextBox" TextWrapping="NoWrap" VerticalAlignment="Top" Margin="10, 0" Width="200"  MinHeight="40" IsReadOnly="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsReadOnly, Mode=TwoWay}" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Text, Mode=TwoWay}"/>
         </StackPanel>
         <TextBlock Name="ErrorMessage" MaxWidth="320" Margin="0 1" HorizontalAlignment="Center"  VerticalAlignment="Top" Classes="Error" Text="" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
 	</StackPanel>

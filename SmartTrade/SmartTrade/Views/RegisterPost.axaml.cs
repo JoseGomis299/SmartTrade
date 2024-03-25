@@ -67,6 +67,14 @@ namespace SmartTrade.Views
                 hasErrors = true;
             }
 
+            if (_model.MinimumAge.IsNullOrEmpty())
+            {
+                MinAge.BringIntoView();
+                MinAge.Focus();
+                MinAge.ErrorText = "Minimum age cannot be empty";
+                hasErrors = true;
+            }
+
 
             try
             {
@@ -90,6 +98,7 @@ namespace SmartTrade.Views
             Title.ErrorText = "";
             Description.ErrorText = "";
             ProductName.ErrorText = "";
+            MinAge.ErrorText = "";
             StockErrorMessage.Text = "";
         }
 

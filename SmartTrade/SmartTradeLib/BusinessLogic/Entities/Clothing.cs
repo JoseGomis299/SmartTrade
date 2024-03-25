@@ -22,6 +22,11 @@ public partial class Clothing : Product
                $"\n- Material: {Material}";
     }
 
+    public override string[] GetAttributes()
+    {
+        return new[] { Brand, Size, Color, Material };
+    }
+
     public override ICollection<Category> GetCategories()
     {
         return new List<Category> { Category.Clothing };

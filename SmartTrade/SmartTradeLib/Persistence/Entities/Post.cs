@@ -12,6 +12,6 @@ public partial class Post
     public string Description { get; set; }
     public bool Validated { get; set; }
     [Required]
-    public virtual Seller Seller { get; set; }
+    public virtual Seller? Seller { get; set; }
     public virtual ICollection<Offer> Offers { get; set; }
 }

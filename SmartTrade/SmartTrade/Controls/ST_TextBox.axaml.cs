@@ -71,6 +71,12 @@ namespace SmartTrade.Controls
             set => MyTextBox.Width = value;
         }
 
+        public bool IsReadOnly
+        {
+            get => GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
+        }
+
         public double LabelHeight
         {
             get => MyTextBlock.Height;
@@ -169,6 +175,9 @@ namespace SmartTrade.Controls
 
         public static readonly StyledProperty<string?> LabelTextProperty =
             AvaloniaProperty.Register<ST_TextBox, string?>(nameof(LabelText), defaultValue: "");
+
+        public static readonly StyledProperty<bool> IsReadOnlyProperty =
+            AvaloniaProperty.Register<ST_TextBox, bool>(nameof(IsReadOnly), defaultValue: false);
 
     }
 }
