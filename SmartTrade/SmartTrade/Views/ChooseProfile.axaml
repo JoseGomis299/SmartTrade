@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1285"
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1385"
              x:Class="SmartTrade.Views.ChooseProfile">
   <StackPanel HorizontalAlignment="Center" Spacing="10">
 	  <TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">CHOOSE PROFILE</TextBlock>

@@ -6,8 +6,7 @@
              x:Class="SmartTrade.Views.RegisterPost"
              xmlns:vm="clr-namespace:SmartTrade.ViewModels"
              x:DataType="vm:RegisterPostModel"
-             xmlns:controls="clr-namespace:SmartTrade.Controls"
-             >
+             xmlns:controls="clr-namespace:SmartTrade.Controls">
     <Design.DataContext>
         <vm:RegisterPostModel/>
     </Design.DataContext>
