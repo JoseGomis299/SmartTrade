@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -16,34 +17,22 @@ public class Stock
     public string? Price { get; set; }
     public string? ShippingCost { get; set; }
     public ObservableCollection<ImageSource> Images { get; set; } = new ObservableCollection<ImageSource>();
-    public ObservableCollection<CategoryAttribute> CategoryAttributes { get; set; } = new ObservableCollection<CategoryAttribute>();
+
+    public ObservableCollection<CategoryAttribute> CategoryAttributes { get; set; } =
+        new ObservableCollection<CategoryAttribute>();
+
     public ICommand AddImagesCommand { get; set; }
     public ICommand RemoveFromStock { get; set; }
 
     private PostModificationModel? _model;
 
+    // Constructor for creating a new stock from an offer (Used in Validate Post)
     public Stock(Offer offer, PostModificationModel model)
     {
         _model = model;
 
-        AddImagesCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            if (App.Current.ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-            {
-                UserControl? mainView = (UserControl?)singleViewPlatform.MainView;
-
-                foreach (var image in await mainView.OpenFileDialogMultiple("Select images", "png jpg jpeg"))
-                {
-                    Images.Add(new ImageSource(image, this));
-                }
-
-            }
-        });
-
-        RemoveFromStock = ReactiveCommand.Create(() =>
-        {
-            model.Stocks.Remove(this);
-        });
+        AddImagesCommand = ReactiveCommand.CreateFromTask(AddImage);
+        RemoveFromStock = ReactiveCommand.Create(() => { model.Stocks.Remove(this); });
 
         foreach (var image in offer.Product.Images)
         {
@@ -77,24 +66,13 @@ public class Stock
         }
     }
 
+
+    // Constructor for creating a new stock from a category
     public Stock(Category category, PostModificationModel model)
     {
         _model = model;
 
-        AddImagesCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            if (App.Current.ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-            {
-                UserControl? mainView = (UserControl?)singleViewPlatform.MainView;
-
-                foreach (var image in await mainView.OpenFileDialogMultiple("Select images", "png jpg jpeg"))
-                {
-                    Images.Add(new ImageSource(image, this));
-                }
-
-            }
-        });
-
+        AddImagesCommand = ReactiveCommand.CreateFromTask(AddImage);
         RemoveFromStock = ReactiveCommand.Create(RemoveStock);
 
         StockQuantity = "0";
@@ -108,28 +86,16 @@ public class Stock
 
         foreach (var attribute in CategoryAttributes)
         {
-            attribute.OnValueChanged += OnAttributeChanged;   
+            attribute.OnValueChanged += OnAttributeChanged;
         }
     }
 
-
+    // Constructor for creating a new stock from an existing stock (Used when there is already a stock in the model)
     public Stock(Stock other, Category category, PostModificationModel model)
     {
         _model = model;
 
-        AddImagesCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            if (App.Current.ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-            {
-                UserControl? mainView = (UserControl?)singleViewPlatform.MainView;
-
-                foreach (var image in await mainView.OpenFileDialogMultiple("Select images", "png jpg jpeg"))
-                {
-                    Images.Add(new ImageSource(image, this));
-                }
-            }
-        });
-
+        AddImagesCommand = ReactiveCommand.CreateFromTask(AddImage);
         RemoveFromStock = ReactiveCommand.Create(RemoveStock);
 
         StockQuantity = other.StockQuantity;
@@ -180,6 +146,7 @@ public class Stock
         {
             attribute.OnValueChanged -= OnAttributeChanged;
         }
+
         CategoryAttributes.Clear();
 
         foreach (var attribute in category.GetAttributes())
@@ -198,7 +165,7 @@ public class Stock
 
     private void RemoveStock()
     {
-        if(_model == null) return;
+        if (_model == null) return;
 
         bool isFirst = _model.Stocks[0] == this;
 
@@ -218,6 +185,18 @@ public class Stock
             }
 
             _model.Stocks[0].OnValuesChanged -= _model.Stocks[0].CopyAttributesFromFirst;
+        }
+    }
+    private async Task AddImage()
+    {
+        if (App.Current.ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
+        {
+            UserControl? mainView = (UserControl?)singleViewPlatform.MainView;
+
+            foreach (var image in await mainView.OpenFileDialogMultiple("Select images", "png jpg jpeg"))
+            {
+                Images.Add(new ImageSource(image, this));
+            }
         }
     }
 }
