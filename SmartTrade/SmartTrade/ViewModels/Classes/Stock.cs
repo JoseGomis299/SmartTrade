@@ -16,23 +16,20 @@ public class Stock
     public string? StockQuantity { get; set; }
     public string? Price { get; set; }
     public string? ShippingCost { get; set; }
-    public ObservableCollection<ImageSource> Images { get; set; } = new ObservableCollection<ImageSource>();
-
-    public ObservableCollection<CategoryAttribute> CategoryAttributes { get; set; } =
-        new ObservableCollection<CategoryAttribute>();
+    public ObservableCollection<ImageSource> Images { get; set; } = new();
+    public ObservableCollection<CategoryAttribute> CategoryAttributes { get; set; } = new();
 
     public ICommand AddImagesCommand { get; set; }
     public ICommand RemoveFromStock { get; set; }
 
     private PostModificationModel? _model;
 
-    // Constructor for creating a new stock from an offer (Used in Validate Post)
-    public Stock(Offer offer, PostModificationModel model)
-    {
-        _model = model;
+    #region Constructors
 
-        AddImagesCommand = ReactiveCommand.CreateFromTask(AddImage);
-        RemoveFromStock = ReactiveCommand.Create(() => { model.Stocks.Remove(this); });
+    // Constructor for creating a new stock from an offer (Used in Validate Post)
+    public Stock(Offer offer, ValidatePostModel model)
+    {
+        InitializeValues(model);
 
         foreach (var image in offer.Product.Images)
         {
@@ -57,7 +54,7 @@ public class Stock
 
         foreach (var attribute in CategoryAttributes)
         {
-            attribute.OnValueChanged += OnAttributeChanged;
+            attribute.OnValueChanged += InvokeValuesChanged;
         }
 
         foreach (var stock in model.Stocks)
@@ -68,12 +65,9 @@ public class Stock
 
 
     // Constructor for creating a new stock from a category
-    public Stock(Category category, PostModificationModel model)
+    public Stock(Category category, RegisterPostModel model)
     {
-        _model = model;
-
-        AddImagesCommand = ReactiveCommand.CreateFromTask(AddImage);
-        RemoveFromStock = ReactiveCommand.Create(RemoveStock);
+        InitializeValues(model);
 
         StockQuantity = "0";
         Price = "0";
@@ -86,17 +80,14 @@ public class Stock
 
         foreach (var attribute in CategoryAttributes)
         {
-            attribute.OnValueChanged += OnAttributeChanged;
+            attribute.OnValueChanged += InvokeValuesChanged;
         }
     }
 
     // Constructor for creating a new stock from an existing stock (Used when there is already a stock in the model)
-    public Stock(Stock other, Category category, PostModificationModel model)
+    public Stock(Stock other, Category category, RegisterPostModel model)
     {
-        _model = model;
-
-        AddImagesCommand = ReactiveCommand.CreateFromTask(AddImage);
-        RemoveFromStock = ReactiveCommand.Create(RemoveStock);
+        InitializeValues(model);
 
         StockQuantity = other.StockQuantity;
         Price = other.Price;
@@ -124,6 +115,18 @@ public class Stock
         other.OnValuesChanged += CopyAttributesFromFirst;
     }
 
+    #endregion
+
+    #region Methods
+
+    private void InitializeValues(PostModificationModel model)
+    {
+        _model = model;
+
+        AddImagesCommand = ReactiveCommand.CreateFromTask(AddImage);
+        RemoveFromStock = ReactiveCommand.Create(RemoveStock);
+    }
+
     private void CopyAttributesFromFirst()
     {
         if (_model == null) return;
@@ -135,7 +138,7 @@ public class Stock
         }
     }
 
-    private void OnAttributeChanged()
+    private void InvokeValuesChanged()
     {
         OnValuesChanged?.Invoke();
     }
@@ -144,7 +147,7 @@ public class Stock
     {
         foreach (var attribute in CategoryAttributes)
         {
-            attribute.OnValueChanged -= OnAttributeChanged;
+            attribute.OnValueChanged -= InvokeValuesChanged;
         }
 
         CategoryAttributes.Clear();
@@ -158,10 +161,14 @@ public class Stock
         {
             foreach (var attribute in CategoryAttributes)
             {
-                attribute.OnValueChanged += OnAttributeChanged;
+                attribute.OnValueChanged += InvokeValuesChanged;
             }
         }
     }
+
+    #endregion
+
+    #region CommandDefinitions
 
     private void RemoveStock()
     {
@@ -176,7 +183,7 @@ public class Stock
             foreach (var attribute in _model.Stocks[0].CategoryAttributes)
             {
                 attribute.IsEnabled = true;
-                attribute.OnValueChanged += _model.Stocks[0].OnAttributeChanged;
+                attribute.OnValueChanged += _model.Stocks[0].InvokeValuesChanged;
             }
 
             for (int i = 1; i < _model.Stocks.Count; i++)
@@ -187,6 +194,7 @@ public class Stock
             _model.Stocks[0].OnValuesChanged -= _model.Stocks[0].CopyAttributesFromFirst;
         }
     }
+
     private async Task AddImage()
     {
         if (App.Current.ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
@@ -199,4 +207,6 @@ public class Stock
             }
         }
     }
+
+    #endregion
 }
