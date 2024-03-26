@@ -21,7 +21,7 @@
 				<controls:ST_TextBox LabelText="Minimum use age" TextHeight="40" Text="{Binding MinimumAge, Mode=TwoWay}" OnlyPositiveInt="True" Name="MinAge"/>
 				<controls:ST_TextBox LabelText="Ecologic certifications" TextHeight="40" Text="{Binding Certifications, Mode=TwoWay}" Name="Certifications"/>
 				<controls:ST_TextBox LabelText="Ecologic print" TextHeight="40" Text="{Binding EcologicPrint, Mode=TwoWay}" Name="EcologicPrint"/>
-				<controls:ST_ComboBox LabelText="Category" Name="CategoryComboBox"/>
+				<controls:ST_ComboBox LabelText="Category" Name="CategoryComboBox" IsEnabled="False"/>
 			</StackPanel>
 
 			<Rectangle Grid.Row="0" Width="360" Height="300" Fill="#32C378" HorizontalAlignment="Right"  Margin="0 0 -200 -210" ZIndex="-1" ClipToBounds="True" >

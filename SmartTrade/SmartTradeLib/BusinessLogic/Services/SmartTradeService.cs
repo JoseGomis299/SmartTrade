@@ -1,5 +1,6 @@
 ﻿using SmartTradeLib.Entities;
 using SmartTradeLib.Persistence;
+using System;
 using System.Collections.Concurrent;
 
 namespace SmartTradeLib.BusinessLogic;
@@ -85,11 +86,15 @@ public class SmartTradeService : ISmartTradeService
 
     public void ValidatePost(string? title, string? description, string? productName, Category category, int parse, string? certifications, string? ecologicPrint, List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes, Post post)
     {
+        Seller seller = _dal.GetById<Seller>(post.Seller.Email);
         RemovePost(post);
 
-        post = AddPost(title, description, productName, category, parse, certifications, ecologicPrint, stocks, prices, shippingCosts, images, attributes, post.Seller);
-        post.Validated = true;
-//        ((Admin)Logged).ValidatePost(post);
+        var newPost = AddPost(title, description, productName, category, parse, certifications, ecologicPrint, stocks, prices, shippingCosts, images, attributes, seller);
+        newPost.Validated = true;
+
+
+      //  RemovePost(post);
+        //        ((Admin)Logged).ValidatePost(post);
         _dal.Commit();
     }
 
@@ -106,16 +111,14 @@ public class SmartTradeService : ISmartTradeService
 
         foreach (var offer in post.Offers)
         {
-            List<Product> products = _dal.GetWhere<Product>(p => p.Posts.Contains(post) && p.Posts.Count == 1).ToList();
-            foreach (var product in products)
-            {
-                var images = product.Images.ToList();
-                foreach (var image in images)
-                {
-                    if (products.FindAll(p => image.Products.Contains(p)).Count == image.Products.Count)
-                        _dal.Delete<Image>(image);
-                }
+            Product product = offer.Product;
 
+            product.Posts.Remove(post);
+            if (product.Posts.Count == 0)
+            {
+                foreach (var image in product.Images)
+                    _dal.Delete<Image>(image);
+                product.Images.Clear();
                 _dal.Delete<Product>(product);
             }
             _dal.Delete<Offer>(offer);

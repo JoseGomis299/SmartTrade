@@ -27,8 +27,9 @@ namespace SmartTrade.Views
             DataContext = _model = new ValidatePostModel(post);
             InitializeComponent();
 
-            CategoryComboBox.ComboBox.ItemsSource = new[] { "Nutrition", "Clothing", "Toys", "Books" };
-            CategoryComboBox.SelectedItem = _model.Category.ToString();
+            var categories = new[] { "Nutrition", "Clothing", "Toys", "Books" };
+            CategoryComboBox.ComboBox.ItemsSource = categories;
+            CategoryComboBox.SelectedItem = categories[(int)_model.Category];
 
             ConfirmButton.Click += Validate;
             RejectButton.Click += Reject;
