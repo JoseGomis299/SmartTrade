@@ -2,34 +2,42 @@
 using SmartTradeLib.Entities;
 
 ISmartTradeService service = new SmartTradeService();
-//service.RemoveAll();
+service.RemoveAll();
 
-//Seller pepito = new Seller("ChiclesPepito@gmail.com", "123", "Pepito", "1", "1", "2", "3");
-//Product product = new Toy("Balancín", "", "", 1, "a", "metal");
-//Product product2 = new Toy("Balancín", "", "", 1, "asda", "plastico");
-//Post post = new Post("Balancines", "", true, pepito);
-//Offer offer = new Offer(product, 1, 2, 100);
-//Offer offer2 = new Offer(product2, 1, 2, 100);
-//offer.Post = post;
-//offer2.Post = post;
-//post.Offers.Add(offer);
-//post.Offers.Add(offer2);
-//product.Posts.Add(post);
-//product2.Posts.Add(post);
-//pepito.AddPost(post);
+Seller pepito = new Seller("ChiclesPepito@gmail.com", "123", "Pepito", "1", "1", "2", "3");
+service.AddSeller(pepito);
+////Product product = new Toy("Balancín", "", "", 1, "a", "metal");
+////Product product2 = new Toy("Balancín", "", "", 1, "asda", "plastico");
+////Post post = new Post("Balancines", "", true, pepito);
+////Offer offer = new Offer(product, 1, 2, 100);
+////Offer offer2 = new Offer(product2, 1, 2, 100);
+////offer.Post = post;
+////offer2.Post = post;
+////post.Offers.Add(offer);
+////post.Offers.Add(offer2);
+////product.Posts.Add(post);
+////product2.Posts.Add(post);
+////pepito.AddPost(post);
 
-//List<string> attributes = new List<string>() { "100", "1"};
-//List<string> attributes2 = new List<string>() { "100", "1"};
+////Set file equal to the image stored in C:\Users\Jose Gomis\Documents\GitHub\SmartTrade\SmartTrade\SmartTrade\Assets\Arrow.png
 
-//service.AddPost("Jugaauete", "buenos Juguetes", "Juguyete", Category.Toy, 3, "", "", new List<int>(){100}, new List<float>(){5}, new List<float>(){1}, new List<List<byte[]>>() { new() { new byte[10] }}, new List<List<string>>(){attributes});
+var imageData = File.ReadAllBytes(@"C:\Users\Jose Gomis\Documents\GitHub\SmartTrade\SmartTrade\SmartTrade\Assets\Arrow.png");
 
-//service.SaveChanges();
+List<string> attributes = new List<string>() { "100", "1" };
+List<string> attributes2 = new List<string>() { "100", "1" };
 
 service.LogIn("ChiclesPepito@gmail.com", "123");
-foreach (var post in ((Seller)service.Logged).Posts)
-{
-    Console.WriteLine(post.Title);
-}
+Post postt = service.AddPost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { imageData } }, new List<List<string>>() { attributes });
+service.ValidatePost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { imageData } }, new List<List<string>>() { attributes }, postt);
+//service.SaveChanges();
+
+//foreach (var post in ((Seller)service.Logged).Posts)
+//{
+//    foreach (var offer in post.Offers)
+//    {
+//        Console.WriteLine(offer.Product.Name);
+//    }
+//}
 
 ////Seller pepito = new Seller()
 ////{
@@ -63,7 +71,7 @@ foreach (var post in ((Seller)service.Logged).Posts)
 ////    Proteins = "0",
 ////    Weight = "10",
 ////    MinimumAge = 3,
-////    Images = new List<byte[]>(){Array.Empty<byte>()}
+////    Image = new List<byte[]>(){Array.Empty<byte>()}
 ////};
 
 ////Offer offer = new Offer()

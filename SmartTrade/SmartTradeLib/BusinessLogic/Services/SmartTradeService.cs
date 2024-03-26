@@ -46,7 +46,7 @@ public class SmartTradeService : ISmartTradeService
     {
         //LogIn("ChiclesPepito@gmail.com", "123");
         
-        Post post = new Post(title, description, false, seller ?? (Seller) Logged);
+        Post post = new Post(title, description, false, seller ??= (Seller) Logged);
 
         List<Product> products = new();
         List<Offer> offers = new();
@@ -62,6 +62,7 @@ public class SmartTradeService : ISmartTradeService
             offers.Add(new Offer(products[i], prices[i], shippingCosts[i], stocks[i]));
         }
 
+        seller.Posts.Add(post);
         post.Offers = offers;
 
         for (int i = 0; i < products.Count; i++)
@@ -87,7 +88,8 @@ public class SmartTradeService : ISmartTradeService
         RemovePost(post);
 
         post = AddPost(title, description, productName, category, parse, certifications, ecologicPrint, stocks, prices, shippingCosts, images, attributes, post.Seller);
-        ((Admin)Logged).ValidatePost(post);
+        post.Validated = true;
+//        ((Admin)Logged).ValidatePost(post);
         _dal.Commit();
     }
 
@@ -104,15 +106,21 @@ public class SmartTradeService : ISmartTradeService
 
         foreach (var offer in post.Offers)
         {
-            post.Offers.Remove(offer);
-
-            IEnumerable<Product> porducts = _dal.GetWhere<Product>(p => p.Posts.Contains(post) && p.Posts.Count == 1);
-            foreach (var product in porducts)
+            List<Product> products = _dal.GetWhere<Product>(p => p.Posts.Contains(post) && p.Posts.Count == 1).ToList();
+            foreach (var product in products)
             {
+                var images = product.Images.ToList();
+                foreach (var image in images)
+                {
+                    if (products.FindAll(p => image.Products.Contains(p)).Count == image.Products.Count)
+                        _dal.Delete<Image>(image);
+                }
+
                 _dal.Delete<Product>(product);
             }
             _dal.Delete<Offer>(offer);
         }
+        post.Offers.Clear();
         _dal.Delete<Post>(post);
      
         _dal.Commit();

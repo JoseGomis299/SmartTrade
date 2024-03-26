@@ -11,7 +11,7 @@ namespace SmartTradeLib.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Images",
+                name: "Image",
                 table: "Products");
 
             migrationBuilder.CreateTable(
@@ -46,7 +46,7 @@ namespace SmartTradeLib.Migrations
                 name: "Image");
 
             migrationBuilder.AddColumn<string>(
-                name: "Images",
+                name: "Image",
                 table: "Products",
                 type: "nvarchar(max)",
                 nullable: false,

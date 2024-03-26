@@ -34,17 +34,6 @@ public class PostModificationModel : ViewModelBase
 
     private Category _category;
 
-    public void AddStock()
-    {
-
-        if (Stocks.Count >= 1)
-        {
-            Stocks.Add(new Stock(Stocks[0], Category, this));
-        }
-        else Stocks.Add(new Stock(Category, this));
-
-    }
-
     public void CheckErrors()
     {
         if (Stocks.Count == 0)

@@ -8,4 +8,6 @@ public partial class Image
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; } 
     public byte[] ImageSource { get; set; }
+
+    public virtual ICollection<Product> Products { get; set; }
 }

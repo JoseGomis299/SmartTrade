@@ -23,6 +23,7 @@ public class SmartTradeContext : BaseDbContext
     public DbSet<BizumInfo> Bizums { get; set; }
     public DbSet<Alert> Alerts { get; set; }
     public DbSet<Address> Addresses { get; set; }
+    public DbSet<Image> Image { get; set; }
 
     public SmartTradeContext()
     {
@@ -41,15 +42,13 @@ public class SmartTradeContext : BaseDbContext
     /// </summary>
     public virtual void RemoveAllData()
     {
-        if(!Foods.IsNullOrEmpty()) Foods.RemoveRange(Foods);
-        if(!Toys.IsNullOrEmpty()) Toys.RemoveRange(Toys);
-        if(!Books.IsNullOrEmpty()) Books.RemoveRange(Books);
+        if (!Image.IsNullOrEmpty()) Image.RemoveRange(Image);
+        if (!Products.IsNullOrEmpty()) Products.RemoveRange(Products);
         if(!Admins.IsNullOrEmpty()) Admins.RemoveRange(Admins);
         if(!Consumers.IsNullOrEmpty()) Consumers.RemoveRange(Consumers);
         if(!Sellers.IsNullOrEmpty()) Sellers.RemoveRange(Sellers);
         if(!Posts.IsNullOrEmpty()) Posts.RemoveRange(Posts);
         if(!Offers.IsNullOrEmpty()) Offers.RemoveRange(Offers);
-        if(!Clothing.IsNullOrEmpty()) Clothing.RemoveRange(Clothing);
         if(!CreditCards.IsNullOrEmpty()) CreditCards.RemoveRange(CreditCards);
         if(!PayPals.IsNullOrEmpty()) PayPals.RemoveRange(PayPals);
         if(!Bizums.IsNullOrEmpty()) Bizums.RemoveRange(Bizums);

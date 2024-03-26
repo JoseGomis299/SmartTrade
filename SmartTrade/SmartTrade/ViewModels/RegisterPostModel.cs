@@ -5,6 +5,20 @@ namespace SmartTrade.ViewModels
 {
     public class RegisterPostModel : PostModificationModel
     {
+        public void AddStock()
+        {
+            bool canAddStock = Category.GetNonRepeatableAttributes().Length == Category.GetAttributes().Length;
+
+            if (Stocks.Count >= 1)
+            {
+                Stocks.Add(new Stock(Stocks[0], Category, this));
+            }
+            else if(canAddStock)
+            {
+                Stocks.Add(new Stock(Category, this));
+            }
+        }
+
         public void PublishPost()
         {
             List<int> stocks = new();

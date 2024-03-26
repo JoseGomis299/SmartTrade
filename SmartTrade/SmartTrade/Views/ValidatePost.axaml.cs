@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 using SmartTradeLib.Entities;
 
@@ -16,7 +17,9 @@ namespace SmartTrade.Views
             DataContext = _model = new ValidatePostModel();
             InitializeComponent();
 
-            CategoryComboBox.ComboBox.ItemsSource = new[] { "Nutrition", "Clothing", "Toys", "Books" };
+            var categories = new[] { "Nutrition", "Clothing", "Toys", "Books" };
+            CategoryComboBox.ComboBox.ItemsSource = categories;
+            CategoryComboBox.SelectedItem = categories[(int) _model.Category];
         }
 
         public ValidatePost(Post post)
@@ -44,7 +47,52 @@ namespace SmartTrade.Views
 
         private void Validate(object? sender, RoutedEventArgs e)
         {
+            ClearErrors();
+            bool hasErrors = false;
+
+            if (_model.Title.IsNullOrEmpty())
+            {
+                Title.BringIntoView();
+                Title.Focus();
+                Title.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+
+            if (_model.Description.IsNullOrEmpty())
+            {
+                Description.BringIntoView();
+                Description.Focus();
+                Description.ErrorText = "Description cannot be empty";
+                hasErrors = true;
+            }
+
+            if (_model.ProductName.IsNullOrEmpty())
+            {
+                ProductName.BringIntoView();
+                ProductName.Focus();
+                ProductName.ErrorText = "Product name cannot be empty";
+                hasErrors = true;
+            }
+
+            if (_model.MinimumAge.IsNullOrEmpty())
+            {
+                MinAge.BringIntoView();
+                MinAge.Focus();
+                MinAge.ErrorText = "Minimum age cannot be empty";
+                hasErrors = true;
+            }
+
+            if (hasErrors) return;
+
             _model.ValidatePost();
+        }
+
+        private void ClearErrors()
+        {
+            Title.ErrorText = "";
+            Description.ErrorText = "";
+            ProductName.ErrorText = "";
+            MinAge.ErrorText = "";
         }
     }
 }

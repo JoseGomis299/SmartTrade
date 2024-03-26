@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTradeLib.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTradeLib.Persistence;
 namespace SmartTradeLib.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240326113846_imagess")]
+    partial class imagess
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,21 +27,6 @@ namespace SmartTradeLib.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ImageProduct", b =>
-                {
-                    b.Property<int>("ImagesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ImagesId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("ImageProduct");
-                });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Address", b =>
                 {
@@ -79,7 +67,7 @@ namespace SmartTradeLib.Migrations
 
                     b.HasIndex("ConsumerEmail");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Alert", b =>
@@ -165,7 +153,12 @@ namespace SmartTradeLib.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Image");
                 });
@@ -491,21 +484,6 @@ namespace SmartTradeLib.Migrations
                     b.HasDiscriminator().HasValue("Seller");
                 });
 
-            modelBuilder.Entity("ImageProduct", b =>
-                {
-                    b.HasOne("SmartTradeLib.Entities.Image", null)
-                        .WithMany()
-                        .HasForeignKey("ImagesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SmartTradeLib.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SmartTradeLib.Entities.Address", b =>
                 {
                     b.HasOne("SmartTradeLib.Entities.Consumer", null)
@@ -548,6 +526,13 @@ namespace SmartTradeLib.Migrations
                     b.HasOne("SmartTradeLib.Entities.Consumer", null)
                         .WithMany("CreditCards")
                         .HasForeignKey("ConsumerEmail");
+                });
+
+            modelBuilder.Entity("SmartTradeLib.Entities.Image", b =>
+                {
+                    b.HasOne("SmartTradeLib.Entities.Product", null)
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("SmartTradeLib.Entities.Offer", b =>
@@ -620,6 +605,8 @@ namespace SmartTradeLib.Migrations
 
             modelBuilder.Entity("SmartTradeLib.Entities.Product", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Posts");
                 });
 

@@ -18,8 +18,6 @@
 		<controls:ST_TextBox LabelText="DNI" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="DNI"/>
 		<controls:ST_TextBox LabelText="Email" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Email"/>
 		<controls:ST_TextBox LabelText="Password" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Password"/>
-		<controls:ST_TextBox LabelText="Name*" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Name"/>
-		<controls:ST_TextBox LabelText="Name*" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Name"/>
 		
 
 	</StackPanel>
