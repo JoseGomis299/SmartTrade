@@ -11,7 +11,7 @@ namespace SmartTradeLib.Entities;
     {
         protected Product()
         {
-            Images = new List<Image>();
+            Images = new HashSet<Image>();
             Posts = new List<Post>();
         }
 
@@ -21,6 +21,16 @@ namespace SmartTradeLib.Entities;
             Certification = certification;
             EcologicPrint = ecologicPrint;
             MinimumAge = minimumAge;
+        }
+
+        public void AddImage(Image image)
+        {
+            if(!Images.Contains(image)) Images.Add(image);
+        }
+
+        public void AddPost(Post post)
+        {
+            Posts.Add(post);
         }
 
         public abstract string[] GetAttributes();

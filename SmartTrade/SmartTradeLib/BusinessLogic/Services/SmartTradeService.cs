@@ -49,16 +49,34 @@ public class SmartTradeService : ISmartTradeService
         
         Post post = new Post(title, description, validated, seller ??= (Seller) Logged);
 
+
         List<Product> products = new();
         List<Offer> offers = new();
+
+        var dbProducts = _dal.GetAll<Product>();
 
         for (int i = 0; i < stocks.Count; i++)
         {
             Product product = ProductFactory.GetFactory(category).CreateProduct(productName, certifications, ecologicPrint, minimumAge, attributes[i]);
-            Product? retrievedProduct = _dal.GetWhere<Product>(x => x.Equals(product)).FirstOrDefault();
+            List<Image> imagesList = new();
+            foreach (var image in images[i])
+            {
+                imagesList.Add(new Image(image));
+            }
+            product.Images = imagesList;
 
-            if (retrievedProduct != null) products.Add(retrievedProduct);
-            else products.Add(product);
+            foreach (var prod in dbProducts)
+            {
+                if (!prod.Equals(product)) continue;
+                foreach (var image in product.Images)
+                {
+                    prod.AddImage(image);
+                }
+
+                product = prod;
+                break;
+            }
+            products.Add(product);
 
             offers.Add(new Offer(products[i], prices[i], shippingCosts[i], stocks[i]));
         }
@@ -68,16 +86,8 @@ public class SmartTradeService : ISmartTradeService
 
         for (int i = 0; i < products.Count; i++)
         {
-            products[i].Posts.Add(post);
+            products[i].AddPost(post);
             offers[i].Post = post;
-
-            List<Image> imagesList = new();
-            foreach (var image in images[i])
-            {
-                imagesList.Add(new Image(image));
-            }
-
-            products[i].Images = imagesList;
         }
 
         _dal.Commit();
