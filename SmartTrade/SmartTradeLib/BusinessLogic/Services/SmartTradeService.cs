@@ -53,17 +53,17 @@ public class SmartTradeService : ISmartTradeService
         List<Product> products = new();
         List<Offer> offers = new();
 
-        var dbProducts = _dal.GetAll<Product>();
+        //var dbProducts = _dal.GetAll<Product>();
 
         for (int i = 0; i < stocks.Count; i++)
         {
             Product product = ProductFactory.GetFactory(category).CreateProduct(productName, certifications, ecologicPrint, minimumAge, attributes[i]);
-            List<Image> imagesList = new();
             foreach (var image in images[i])
             {
-                imagesList.Add(new Image(image));
+                product.AddImage(new Image(image));
             }
-            product.Images = imagesList;
+
+            var dbProducts = _dal.GetWhere<Product>(p => p.Name == product.Name).ToList();
 
             foreach (var prod in dbProducts)
             {

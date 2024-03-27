@@ -11,7 +11,7 @@ namespace SmartTradeLib.Entities;
     {
         protected Product()
         {
-            Images = new HashSet<Image>();
+            Images = new List<Image>();
             Posts = new List<Post>();
         }
 
