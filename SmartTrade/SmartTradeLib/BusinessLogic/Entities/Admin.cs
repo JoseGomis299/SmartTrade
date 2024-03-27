@@ -29,7 +29,5 @@ public partial class Admin : User
         {
             ValidatedProducts.Add(offer.Product);
         }
-
-        post.Validated = true;
     }
 }

@@ -22,4 +22,10 @@
   <ItemGroup>
     <ProjectReference Include="..\SmartTradeLib\SmartTradeLib.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\ProductView.axaml.cs">
+      <DependentUpon>ProductView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

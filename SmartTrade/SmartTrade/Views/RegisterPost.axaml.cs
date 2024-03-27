@@ -63,7 +63,7 @@ namespace SmartTrade.Views
             {
                 ProductName.BringIntoView();
                 ProductName.Focus();
-                ProductName.ErrorText = "Product name cannot be empty";
+                ProductName.ErrorText = "ProductView name cannot be empty";
                 hasErrors = true;
             }
 

@@ -17,7 +17,7 @@
                 <TextBlock Classes="h1" HorizontalAlignment="Stretch" Margin="-10 30 0 25" TextAlignment="Center">POST A PRODUCT</TextBlock>
                 <controls:ST_TextBox LabelText="Title*" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Title"/>
 			    <controls:ST_TextBox LabelText="Description*" TextWrapping="Wrap" TextMinHeight="80" AcceptsReturn="True" Text="{Binding Description, Mode=OneWayToSource}" Name="Description"/>
-                <controls:ST_TextBox LabelText="Product name*" TextWrapping="Wrap" Text="{Binding ProductName, Mode=OneWayToSource}" Name="ProductName"/>
+                <controls:ST_TextBox LabelText="ProductView name*" TextWrapping="Wrap" Text="{Binding ProductName, Mode=OneWayToSource}" Name="ProductName"/>
                 <controls:ST_TextBox LabelText="Minimum use age*" TextHeight="40" Text="{Binding MinimumAge, Mode=OneWayToSource}" OnlyPositiveInt="True" Name="MinAge"/>
                 <controls:ST_TextBox LabelText="Ecologic certifications" TextHeight="40" Text="{Binding Certifications, Mode=OneWayToSource}" Name="Certifications"/>
                 <controls:ST_TextBox LabelText="Ecologic print" TextHeight="40" Text="{Binding EcologicPrint, Mode=OneWayToSource}" Name="EcologicPrint"/>

@@ -7,13 +7,13 @@ namespace SmartTrade.ViewModels
     {
         public void AddStock()
         {
-            bool canAddStock = Category.GetNonRepeatableAttributes().Length == Category.GetAttributes().Length;
+            bool canAddStock = Category.GetNonRepeatableAttributes().Length != Category.GetAttributes().Length;
 
-            if (Stocks.Count >= 1)
+            if (Stocks.Count >= 1 && canAddStock)
             {
                 Stocks.Add(new Stock(Stocks[0], Category, this));
             }
-            else if(canAddStock)
+            else if (Stocks.Count == 0)
             {
                 Stocks.Add(new Stock(Category, this));
             }
@@ -39,7 +39,7 @@ namespace SmartTrade.ViewModels
                 attributes.Add(stock.CategoryAttributes.Select(attribute => attribute.Value).ToList());
             }
 
-            MainViewModel.SmartTradeService.AddPost(Title, Description, ProductName, Category, int.Parse(MinimumAge), Certifications, EcologicPrint, stocks, prices, shippingCosts, images, attributes);
+            MainViewModel.SmartTradeService.AddPost(Title, Description, ProductName, Category, int.Parse(MinimumAge), Certifications, EcologicPrint, false,stocks, prices, shippingCosts, images, attributes);
         }
     }
 }

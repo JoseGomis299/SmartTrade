@@ -35,7 +35,30 @@ ISmartTradeService service = new SmartTradeService();
 //service.ValidatePost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { posts.Offers.First().Product.Images.First().ImageSource, imageData } }, new List<List<string>>() { attributes }, posts);
 
 //AddPost();
-ValidatePost();
+AddPosts(20);
+
+void AddPosts(int n)
+{
+    string[] imagePaths = new[]
+    {
+        "C:\\Users\\Jose Gomis\\Documents\\GitHub\\SmartTrade\\SmartTrade\\SmartTrade\\Assets\\Arrow.png",
+        "C:\\Users\\Jose Gomis\\Documents\\GitHub\\SmartTrade\\SmartTrade\\SmartTrade\\Assets\\Cart.png",
+        "C:\\Users\\Jose Gomis\\Documents\\GitHub\\SmartTrade\\SmartTrade\\SmartTrade\\Assets\\HalfStar.png",
+        "C:\\Users\\Jose Gomis\\Documents\\GitHub\\SmartTrade\\SmartTrade\\SmartTrade\\Assets\\Star.png",
+        "C:\\Users\\Jose Gomis\\Documents\\GitHub\\SmartTrade\\SmartTrade\\SmartTrade\\Assets\\Home.png",
+        "C:\\Users\\Jose Gomis\\Documents\\GitHub\\SmartTrade\\SmartTrade\\SmartTrade\\Assets\\User.png",
+        "C:\\Users\\Jose Gomis\\Documents\\GitHub\\SmartTrade\\SmartTrade\\SmartTrade\\Assets\\VoidStar.png",
+    };
+    List<string> attributes = new List<string>() { "100", "1" };
+
+    service.LogIn("ChiclesPepito@gmail.com", "123");
+
+    for (int i = 0; i < n; i++)
+    {
+        byte[] imageData = File.ReadAllBytes(imagePaths[Random.Shared.Next(0, imagePaths.Length)]);
+        service.AddPost("Juguete" + i, "buenos Juguetes", "Juguete" + i, Category.Toy, 3, "", "", true, new List<int>() { 100 }, new List<float>() { i }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { imageData } }, new List<List<string>>() { attributes });
+    }
+}
 
 void AddPost()
 {
@@ -49,7 +72,7 @@ void AddPost()
     List<string> attributes = new List<string>() { "100", "1" };
 
     service.LogIn("ChiclesPepito@gmail.com", "123");
-    service.AddPost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { imageData } }, new List<List<string>>() { attributes });
+    service.AddPost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "", "", true,new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { imageData } }, new List<List<string>>() { attributes });
 }
 
 void ValidatePost()

@@ -15,8 +15,7 @@ public partial class MainView : UserControl
         NavigationManager.OnNavigate += HandleNavigation;
         InitializeComponent();
 
-        IDAL dal = new EntityFrameworkDAL(new SmartTradeContext());
-        NavigationManager.Initialize(ViewContent, new ValidatePost(dal.GetAll<Post>().First()));
+        NavigationManager.Initialize(ViewContent, new RegisterPost());
     }
 
     private void HandleNavigation(Type type)

@@ -43,11 +43,11 @@ public class SmartTradeService : ISmartTradeService
     }
 
     public Post AddPost(string? title, string? description, string? productName, Category category, int minimumAge,
-        string? certifications, string? ecologicPrint, List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes, Seller? seller = null)
+        string? certifications, string? ecologicPrint, bool validated, List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes, Seller? seller = null)
     {
         //LogIn("ChiclesPepito@gmail.com", "123");
         
-        Post post = new Post(title, description, false, seller ??= (Seller) Logged);
+        Post post = new Post(title, description, validated, seller ??= (Seller) Logged);
 
         List<Product> products = new();
         List<Offer> offers = new();
@@ -89,13 +89,17 @@ public class SmartTradeService : ISmartTradeService
         Seller seller = _dal.GetById<Seller>(post.Seller.Email);
         RemovePost(post);
 
-        var newPost = AddPost(title, description, productName, category, parse, certifications, ecologicPrint, stocks, prices, shippingCosts, images, attributes, seller);
-        newPost.Validated = true;
+        var newPost = AddPost(title, description, productName, category, parse, certifications, ecologicPrint, true, stocks, prices, shippingCosts, images, attributes, seller);
 
 
       //  RemovePost(post);
         //        ((Admin)Logged).ValidatePost(post);
         _dal.Commit();
+    }
+
+    public List<Post> GetPosts()
+    {
+       return _dal.GetWhere<Post>(x => x.Validated).ToList();
     }
 
     public void RejectPost(Post post)
