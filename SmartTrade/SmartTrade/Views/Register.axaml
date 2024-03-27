@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1385"
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1500"
              x:Class="SmartTrade.Views.Register"
 			 xmlns:vm="clr-namespace:SmartTrade.ViewModels"
              x:DataType="vm:RegisterModel"
@@ -12,7 +12,7 @@
 	</Design.DataContext>
 	<Grid RowDefinitions="Auto Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
 		<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="10 0 0 0">
-		<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">REGISTER AS A USER</TextBlock>
+		<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">REGISTER AS A CONSUMER</TextBlock>
 		<controls:ST_TextBox LabelText="Name" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Name"/>
 		<controls:ST_TextBox LabelText="Username" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Username"/>
 		<controls:ST_TextBox LabelText="DNI" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="DNI"/>
@@ -47,8 +47,14 @@
 			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White">Credit Cart</Button>
 			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White">Bizum</Button>
 			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 0" Classes="Black">SIGN UP!</Button>
-
-
+			<StackPanel Grid.Row="4" HorizontalAlignment="Stretch" >
+				<Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin="20"></Border>
+				<TextBlock Margin="0 30 0 0" HorizontalAlignment="Center" Background="Transparent" Foreground="#32C378" FontSize="20" FontFamily="Inter">do you already have an account?</TextBlock>
+				<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 5 0 0" Classes="Transparent">Log In!</Button>
+				<Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin="20"></Border>
+				<TextBlock Margin="0 2 0 0" HorizontalAlignment="Center" Background="Transparent" Foreground="#32C378" FontSize="20" FontFamily="Inter">do you want to sell products?</TextBlock>
+				<Button HorizontalAlignment="Center" Height="40" Width="300" Margin="0 5 0 0" Classes="Transparent">Register as a Seller</Button>
+			</StackPanel>
 		</StackPanel>
 	</Grid>
 </UserControl>
