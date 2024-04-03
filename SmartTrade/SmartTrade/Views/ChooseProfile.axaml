@@ -6,8 +6,8 @@
              x:Class="SmartTrade.Views.ChooseProfile">
   <StackPanel HorizontalAlignment="Center" Spacing="10">
 	  <TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">CHOOSE PROFILE</TextBlock>
-	  <Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 70 0 30" Classes="White">Purchase</Button>
-	  <Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 20" Classes="White">Sell</Button>
+	  <Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 70 0 30" Classes="White" Name="PurchaseButton">Purchase</Button>
+	  <Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 20" Classes="White" Name="SellButton">Sell</Button>
 	  <Rectangle Width="200" Height="200" Fill="#32C378" Margin="295 0 0 0">
 		  <Rectangle.RenderTransform>
 			  <RotateTransform Angle="45" />
