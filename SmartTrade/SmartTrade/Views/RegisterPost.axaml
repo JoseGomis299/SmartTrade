@@ -73,6 +73,7 @@
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
+
 										</ItemsControl>
                                     </ScrollViewer>
                                 </Border>

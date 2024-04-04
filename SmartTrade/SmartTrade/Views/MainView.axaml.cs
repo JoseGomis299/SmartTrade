@@ -15,7 +15,7 @@ public partial class MainView : UserControl
         NavigationManager.OnNavigate += HandleNavigation;
         InitializeComponent();
 
-        NavigationManager.Initialize(ViewContent, new RegisterPost());
+        NavigationManager.Initialize(ViewContent, new ProductCatalog());
     }
 
     private void HandleNavigation(Type type)

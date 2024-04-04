@@ -11,12 +11,13 @@
         <vm:ProductCatalogModel/>
     </Design.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel>
-            <TextBlock Classes="h1" Margin="10">You will love it</TextBlock>
+        <StackPanel >
+            <controls:ST_Carousel Title="Recommended" DataSource="{Binding Products}"></controls:ST_Carousel>
+            <TextBlock Classes="h1" HorizontalAlignment="Stretch" MaxWidth="320" Margin="0 10">You will love it</TextBlock>
             <ItemsControl ItemsSource="{Binding Products}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="450"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>

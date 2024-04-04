@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SmartTrade.Controls.ST_Carousel"
+             xmlns:controls="clr-namespace:SmartTrade.Controls">
+
+    <StackPanel>
+        <TextBlock MaxWidth="300" Classes="h1" HorizontalAlignment="Stretch" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Title, Mode=OneWay}"></TextBlock>
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"  MaxWidth="300" MinHeight="225">
+                <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataSource, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left">
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"  Margin="5 0" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="225"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<controls:ST_Product Margin=" 0  0 10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+            </ScrollViewer>
+    </StackPanel>
+</UserControl>

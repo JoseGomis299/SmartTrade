@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using SmartTrade.ViewModels;
 
 namespace SmartTrade.Views
 {
@@ -6,7 +7,8 @@ namespace SmartTrade.Views
     {
         public ProductCatalog()
         {
-            InitializeComponent();
+            DataContext = new ProductCatalogModel();
+            InitializeComponent();  
         }
     }
 }
