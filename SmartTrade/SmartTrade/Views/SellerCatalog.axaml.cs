@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace SmartTrade.Views
 {
-    public partial class Register : UserControl
+    public partial class SellerCatalog : UserControl
     {
-        public Register()
+        public SellerCatalog()
         {
             InitializeComponent();
         }

@@ -14,11 +14,15 @@ namespace SmartTrade.ViewModels
 {
     public class ProductCatalogModel : ViewModelBase
     {
-        public ObservableCollection<ProductModel> Products { get; set; }
+        public ObservableCollection<ProductModel> OtherProducts { get; set; }
+        public ObservableCollection<ProductModel> RecommendedProducts { get; set; }
+        public ObservableCollection<ProductModel> RelatedProducts { get; set; }
 
         public ProductCatalogModel()
         {
-            Products = new ObservableCollection<ProductModel>();
+            OtherProducts = new ObservableCollection<ProductModel>();
+            RecommendedProducts = new ObservableCollection<ProductModel>();
+            RelatedProducts = new ObservableCollection<ProductModel>();
             LoadProducts();
         }
 
@@ -26,8 +30,25 @@ namespace SmartTrade.ViewModels
         {
             MainViewModel.SmartTradeService.GetPosts().ForEach(post =>
             {
-                Products.Add(new ProductModel(post));
+                if (IsEcologic(post))
+                {
+                    RecommendedProducts.Add(new ProductModel(post));
+                }else if (IsRelated(post))
+                {
+                    RelatedProducts.Add(new ProductModel(post));
+                }
+                else OtherProducts.Add(new ProductModel(post));
             });
+        }
+
+        public bool IsEcologic(Post post)
+        {
+            return int.TryParse(post.Offers.First().Product.EcologicPrint, out int ecologicPrint) && ecologicPrint < 100;
+        }
+
+        public bool IsRelated(Post post)
+        {
+            return Random.Shared.Next(0, 2) == 1;
         }
         
     }

@@ -108,8 +108,10 @@ public class SmartTradeService : ISmartTradeService
     }
 
     public List<Post> GetPosts()
-    {
-       return _dal.GetWhere<Post>(x => x.Validated).ToList();
+    { 
+        if(Logged is Seller seller) return seller.Posts.ToList();
+
+        return _dal.GetWhere<Post>(x => x.Validated).ToList();
     }
 
     public void RejectPost(Post post)

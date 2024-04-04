@@ -12,9 +12,10 @@
     </Design.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
         <StackPanel >
-            <controls:ST_Carousel Title="Recommended" DataSource="{Binding Products}"></controls:ST_Carousel>
+            <controls:ST_Carousel Title="Recommended" Subtitle="100% sustainable products" DataSource="{Binding RecommendedProducts}"></controls:ST_Carousel>
+            <controls:ST_Carousel Title="You might like it" DataSource="{Binding RelatedProducts}"></controls:ST_Carousel>
             <TextBlock Classes="h1" HorizontalAlignment="Stretch" MaxWidth="320" Margin="0 10">You will love it</TextBlock>
-            <ItemsControl ItemsSource="{Binding Products}">
+            <ItemsControl ItemsSource="{Binding OtherProducts}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="450"/>

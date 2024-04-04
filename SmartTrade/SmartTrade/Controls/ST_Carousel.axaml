@@ -7,8 +7,9 @@
              xmlns:controls="clr-namespace:SmartTrade.Controls">
 
     <StackPanel>
-        <TextBlock MaxWidth="300" Classes="h1" HorizontalAlignment="Stretch" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Title, Mode=OneWay}"></TextBlock>
-            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"  MaxWidth="300" MinHeight="225">
+        <TextBlock MaxWidth="300" Classes="h1" HorizontalAlignment="Stretch" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Title, Mode=OneWay}" Name="TitleTextBlock"></TextBlock>
+        <TextBlock MaxWidth="300" Classes="h2" Foreground="#A5DFB7" HorizontalAlignment="Stretch" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Subtitle, Mode=OneWay}" Name="SubtitleTextBlock"></TextBlock>
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"  MaxWidth="300" MinHeight="225" Name="Carousel" Margin="0 10 0 0">
                 <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataSource, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left">
 
                     <ItemsControl.ItemsPanel>

@@ -27,7 +27,7 @@
 		<StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="10" Margin="10 85 0 0">
 			<controls:ST_TextBox LabelText="Province" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Province"/>
 			<controls:ST_TextBox LabelText="Municipality" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Municipality"/>
-			<controls:ST_TextBox LabelText="Postal Code" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Postal Code"/>
+			<controls:ST_TextBox LabelText="Postal Code" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="PostalCode"/>
 			<controls:ST_TextBox LabelText="Street" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Street"/>
 			<controls:ST_TextBox LabelText="Number" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Number"/>
 			<controls:ST_TextBox LabelText="Door" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Door"/>
