@@ -2,7 +2,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
-             x:Class="SmartTrade.Views.Login">
-  Welcome to Avalonia!
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1000"
+             x:Class="SmartTrade.Views.Register"
+			 xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+             x:DataType="vm:RegisterModel"
+             xmlns:controls="clr-namespace:SmartTrade.Controls">
+	<Design.DataContext>
+		<vm:RegisterModel/>
+	</Design.DataContext>
+	<Grid RowDefinitions="Auto Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
+		<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="10 0 0 0">
+			<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">LOGIN</TextBlock>
+			<controls:ST_TextBox LabelText="Email" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Email"/>
+			<controls:ST_TextBox LabelText="Password" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Password"/>
+			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 0" Classes="Black">SIGN UP!</Button>
+			<StackPanel Grid.Row="1" HorizontalAlignment="Stretch" >
+				<Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin="20"></Border>
+				<TextBlock Margin="0 30 0 0" HorizontalAlignment="Center" Background="Transparent" Foreground="#32C378" FontSize="20" FontFamily="Inter">yo don't have an account?</TextBlock>
+				<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 5 0 0" Classes="Transparent">Register</Button>			
+			</StackPanel>
+			<Rectangle Grid.Row="0" Width="250" Height="300" Fill="#32C378" HorizontalAlignment="Right"  Margin="0 -150 -250 -210" ZIndex="-1" ClipToBounds="True" >
+				<Rectangle.RenderTransform>
+					<RotateTransform Angle="126" />
+				</Rectangle.RenderTransform>
+			</Rectangle>
+		</StackPanel>
+	</Grid>
 </UserControl>
