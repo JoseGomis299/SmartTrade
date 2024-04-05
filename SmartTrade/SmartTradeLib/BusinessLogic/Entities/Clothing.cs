@@ -6,13 +6,13 @@ public partial class Clothing : Product
 {
     public Clothing() { }
 
-    public Clothing(string name, string certification, string ecologicPrint, int minimumAge, string brand, string size, string color, string material) : base(name, certification, ecologicPrint, minimumAge)
-    {
-        Brand = brand;
-        Size = size;
-        Color = color;
-        Material = material;
-    }
+    //public Clothing(string name, string certification, string ecologicPrint, int minimumAge, string howToUse, string brand, string size, string color, string material) : base(name, certification, ecologicPrint, minimumAge, howToUse, howToReducePrint)
+    //{
+    //    Brand = brand;
+    //    Size = size;
+    //    Color = color;
+    //    Material = material;
+    //}
 
     public override string GetInfo()
     {

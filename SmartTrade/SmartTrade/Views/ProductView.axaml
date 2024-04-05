@@ -10,9 +10,6 @@
 		<StackPanel Spacing="25">
 
 			<StackPanel HorizontalAlignment="Left" Spacing="15">
-				<Button Name="GoBack" Margin="15 15" HorizontalAlignment="Left" >
-					<Image Source="/Assets/flecha.png"></Image>
-				</Button>
 			</StackPanel>
 		</StackPanel>
 	</ScrollViewer>

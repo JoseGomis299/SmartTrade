@@ -17,10 +17,12 @@
 				<TextBlock Classes="h1" HorizontalAlignment="Stretch" Margin="-10 30 0 25" TextAlignment="Center">POST VALIDATION</TextBlock>
 				<controls:ST_TextBox LabelText="Title" Text="{Binding Title, Mode=TwoWay}" TextHeight="40" Name="Title"/>
 				<controls:ST_TextBox LabelText="Description" TextWrapping="Wrap" TextMinHeight="80" AcceptsReturn="True" Text="{Binding Description, Mode=TwoWay}" Name="Description"/>
-				<controls:ST_TextBox LabelText="ProductView name" TextWrapping="Wrap" Text="{Binding ProductName, Mode=TwoWay}" Name="ProductName"/>
+				<controls:ST_TextBox LabelText="Product name" TextWrapping="Wrap" Text="{Binding ProductName, Mode=TwoWay}" Name="ProductName"/>
 				<controls:ST_TextBox LabelText="Minimum use age" TextHeight="40" Text="{Binding MinimumAge, Mode=TwoWay}" OnlyPositiveInt="True" Name="MinAge"/>
+                <controls:ST_TextBox LabelText="How to use/consume" TextWrapping="Wrap" TextMinHeight="80" AcceptsReturn="True" Text="{Binding Use, Mode=OneWayToSource}" Name="Use"/>
 				<controls:ST_TextBox LabelText="Ecologic certifications" TextHeight="40" Text="{Binding Certifications, Mode=TwoWay}" Name="Certifications"/>
-				<controls:ST_TextBox LabelText="Ecologic print" TextHeight="40" Text="{Binding EcologicPrint, Mode=TwoWay}" Name="EcologicPrint"/>
+				<controls:ST_TextBox LabelText="Ecologic print (Co2 Tons)" TextHeight="40" Text="{Binding EcologicPrint, Mode=TwoWay}" Name="EcologicPrint"/>
+                <controls:ST_TextBox LabelText="How to reduce the ecologic print" TextWrapping="Wrap" TextMinHeight="80" AcceptsReturn="True" Text="{Binding ReducePrint, Mode=OneWayToSource}" Name="ReduceEcologicPrint"/>
 				<controls:ST_ComboBox LabelText="Category" Name="CategoryComboBox" IsEnabled="False"/>
 			</StackPanel>
 

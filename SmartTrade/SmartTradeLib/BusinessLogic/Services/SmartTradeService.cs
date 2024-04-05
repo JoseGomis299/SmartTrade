@@ -43,7 +43,10 @@ public class SmartTradeService : ISmartTradeService
     }
 
     public Post AddPost(string? title, string? description, string? productName, Category category, int minimumAge,
-        string? certifications, string? ecologicPrint, bool validated, List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes, Seller? seller = null)
+        string howToUse,
+        string? certifications, string? ecologicPrint, string? howToReducePrint, bool validated, List<int> stocks,
+        List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
+        Seller? seller = null)
     {
         //LogIn("ChiclesPepito@gmail.com", "123");
         
@@ -57,7 +60,7 @@ public class SmartTradeService : ISmartTradeService
 
         for (int i = 0; i < stocks.Count; i++)
         {
-            Product product = ProductFactory.GetFactory(category).CreateProduct(productName, certifications, ecologicPrint, minimumAge, attributes[i]);
+            Product product = ProductFactory.GetFactory(category).CreateProduct(productName, certifications, ecologicPrint, minimumAge, howToUse, howToReducePrint, attributes[i]);
             foreach (var image in images[i])
             {
                 product.AddImage(new Image(image));
@@ -94,12 +97,15 @@ public class SmartTradeService : ISmartTradeService
         return post;
     }
 
-    public void ValidatePost(string? title, string? description, string? productName, Category category, int parse, string? certifications, string? ecologicPrint, List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes, Post post)
+    public void ValidatePost(string? title, string? description, string? productName, Category category, int minimumAge,
+        string howToUse, string? certifications, string? ecologicPrint, string? howToReducePrint, List<int> stocks,
+        List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
+        Post post)
     {
         Seller seller = _dal.GetById<Seller>(post.Seller.Email);
         RemovePost(post);
 
-        var newPost = AddPost(title, description, productName, category, parse, certifications, ecologicPrint, true, stocks, prices, shippingCosts, images, attributes, seller);
+        var newPost = AddPost(title, description, productName, category, minimumAge, howToUse,certifications, ecologicPrint, howToReducePrint, true, stocks, prices, shippingCosts, images, attributes, seller);
 
 
       //  RemovePost(post);

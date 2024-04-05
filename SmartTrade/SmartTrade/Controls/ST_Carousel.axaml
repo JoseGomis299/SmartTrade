@@ -7,20 +7,20 @@
              xmlns:controls="clr-namespace:SmartTrade.Controls">
 
     <StackPanel>
-        <TextBlock MaxWidth="300" Classes="h1" HorizontalAlignment="Stretch" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Title, Mode=OneWay}" Name="TitleTextBlock"></TextBlock>
-        <TextBlock MaxWidth="300" Classes="h2" Foreground="#A5DFB7" HorizontalAlignment="Stretch" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Subtitle, Mode=OneWay}" Name="SubtitleTextBlock"></TextBlock>
-            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"  MaxWidth="300" MinHeight="225" Name="Carousel" Margin="0 10 0 0">
+        <TextBlock MaxWidth="320" Classes="h1" HorizontalAlignment="Stretch" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Title, Mode=OneWay}" Name="TitleTextBlock"></TextBlock>
+        <TextBlock MaxWidth="320" Classes="h2" Foreground="#A5DFB7" HorizontalAlignment="Stretch" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Subtitle, Mode=OneWay}" Name="SubtitleTextBlock"></TextBlock>
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"  HorizontalAlignment="Stretch" MinHeight="225" Name="Carousel" Margin="0 10 0 0">
                 <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataSource, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left">
 
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"  Margin="5 0" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="225"/>
+                            <StackPanel Orientation="Horizontal" Margin="5 0" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="225"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<controls:ST_Product Margin=" 0  0 10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
+							<controls:ST_Product Margin=" 10  0 10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

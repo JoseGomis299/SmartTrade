@@ -17,11 +17,13 @@
                 <TextBlock Classes="h1" HorizontalAlignment="Stretch" Margin="-10 30 0 25" TextAlignment="Center">POST A PRODUCT</TextBlock>
                 <controls:ST_TextBox LabelText="Title*" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Title"/>
 			    <controls:ST_TextBox LabelText="Description*" TextWrapping="Wrap" TextMinHeight="80" AcceptsReturn="True" Text="{Binding Description, Mode=OneWayToSource}" Name="Description"/>
-                <controls:ST_TextBox LabelText="ProductView name*" TextWrapping="Wrap" Text="{Binding ProductName, Mode=OneWayToSource}" Name="ProductName"/>
+                <controls:ST_TextBox LabelText="Product name*" TextWrapping="Wrap" Text="{Binding ProductName, Mode=OneWayToSource}" Name="ProductName"/>
                 <controls:ST_TextBox LabelText="Minimum use age*" TextHeight="40" Text="{Binding MinimumAge, Mode=OneWayToSource}" OnlyPositiveInt="True" Name="MinAge"/>
-                <controls:ST_TextBox LabelText="Ecologic certifications" TextHeight="40" Text="{Binding Certifications, Mode=OneWayToSource}" Name="Certifications"/>
-                <controls:ST_TextBox LabelText="Ecologic print" TextHeight="40" Text="{Binding EcologicPrint, Mode=OneWayToSource}" Name="EcologicPrint"/>
-                <controls:ST_ComboBox LabelText="Category" Name="CategoryComboBox"/>
+				<controls:ST_TextBox LabelText="How to use/consume*" TextWrapping="Wrap" TextMinHeight="80" AcceptsReturn="True" Text="{Binding Use, Mode=OneWayToSource}" Name="Use"/>
+				<controls:ST_TextBox LabelText="Ecologic certifications" TextHeight="40" Text="{Binding Certifications, Mode=OneWayToSource}" Name="Certifications"/>
+                <controls:ST_TextBox LabelText="Ecologic print (Co2 Tons)" TextHeight="40" Text="{Binding EcologicPrint, Mode=OneWayToSource}" Name="EcologicPrint"/>
+				<controls:ST_TextBox LabelText="How to reduce the ecologic print" TextWrapping="Wrap" TextMinHeight="80" AcceptsReturn="True" Text="{Binding ReducePrint, Mode=OneWayToSource}" Name="ReduceEcologicPrint"/>
+				<controls:ST_ComboBox LabelText="Category" Name="CategoryComboBox"/>
             </StackPanel>
 
             <Rectangle Grid.Row="0" Width="360" Height="300" Fill="#32C378" HorizontalAlignment="Right"  Margin="0 0 -200 -210" ZIndex="-1" ClipToBounds="True" >

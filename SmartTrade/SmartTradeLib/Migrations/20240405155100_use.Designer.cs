@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTradeLib.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTradeLib.Persistence;
 namespace SmartTradeLib.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240405155100_use")]
+    partial class use
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,6 +266,7 @@ namespace SmartTradeLib.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Certification")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discriminator")
@@ -271,9 +275,7 @@ namespace SmartTradeLib.Migrations
                         .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("EcologicPrint")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HowToReducePrint")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HowToUse")

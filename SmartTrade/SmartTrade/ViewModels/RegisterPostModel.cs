@@ -39,7 +39,7 @@ namespace SmartTrade.ViewModels
                 attributes.Add(stock.CategoryAttributes.Select(attribute => attribute.Value).ToList());
             }
 
-            MainViewModel.SmartTradeService.AddPost(Title, Description, ProductName, Category, int.Parse(MinimumAge), Certifications, EcologicPrint, false,stocks, prices, shippingCosts, images, attributes);
+            MainViewModel.SmartTradeService.AddPost(Title, Description, ProductName, Category, int.Parse(MinimumAge), Use,Certifications, EcologicPrint, ReducePrint, false,stocks, prices, shippingCosts, images, attributes);
         }
     }
 }

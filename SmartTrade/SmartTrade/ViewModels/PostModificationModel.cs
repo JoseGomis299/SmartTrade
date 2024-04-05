@@ -9,6 +9,7 @@ public class PostModificationModel : ViewModelBase
 {
     public string? Title { get; set; }
     public string? Description { get; set; }
+    public string? Use { get; set; }
     public string? ProductName { get; set; }
 
     public Category Category
@@ -30,6 +31,7 @@ public class PostModificationModel : ViewModelBase
     public string? MinimumAge { get; set; }
     public string? Certifications { get; set; }
     public string? EcologicPrint { get; set; }
+    public string? ReducePrint { get; set; }
     public ObservableCollection<Stock> Stocks { get; } = new ObservableCollection<Stock>();
 
     private Category _category;

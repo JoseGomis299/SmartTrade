@@ -6,15 +6,15 @@ public partial class Nutrition : Product
 {
     public Nutrition() { }
 
-    public Nutrition(string name, string certification, string ecologicPrint, int minimumAge, string weight, string calories, string proteins, string carbohydrates, string fats, string allergens) : base(name, certification, ecologicPrint, minimumAge)
-    {
-        Calories = calories;
-        Proteins = proteins;
-        Carbohydrates = carbohydrates;
-        Fats = fats;
-        Allergens = allergens;
-        Weight = weight;
-    }
+    //public Nutrition(string name, string certification, string ecologicPrint, int minimumAge, string howToUse, string weight, string calories, string proteins, string carbohydrates, string fats, string allergens) : base(name, certification, ecologicPrint, minimumAge, howToUse, howToReducePrint)
+    //{
+    //    Calories = calories;
+    //    Proteins = proteins;
+    //    Carbohydrates = carbohydrates;
+    //    Fats = fats;
+    //    Allergens = allergens;
+    //    Weight = weight;
+    //}
 
     public override string GetInfo()
     {

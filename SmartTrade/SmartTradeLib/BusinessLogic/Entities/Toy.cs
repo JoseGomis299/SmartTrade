@@ -5,11 +5,11 @@ namespace SmartTradeLib.Entities;
 public partial class Toy : Product
 {
     public Toy(){}
-    public Toy(string name, string certification, string ecologicPrint, int minimumAge, string brand, string material) : base(name, certification, ecologicPrint, minimumAge)
-    {
-        Brand = brand;
-        Material = material;
-    }
+    //public Toy(string name, string certification, string ecologicPrint, int minimumAge, string howToUse, string brand, string material) : base(name, certification, ecologicPrint, minimumAge, howToUse, howToReducePrint)
+    //{
+    //    Brand = brand;
+    //    Material = material;
+    //}
 
     public override string GetInfo()
     {

@@ -15,12 +15,14 @@ namespace SmartTradeLib.Entities;
             Posts = new List<Post>();
         }
 
-        protected Product(string name, string certification, string ecologicPrint, int minimumAge) : this()
+        protected Product(string name, string certification, string ecologicPrint, int minimumAge, string howToUse, string howToReducePrint) : this()
         {
             Name = name;
             Certification = certification;
             EcologicPrint = ecologicPrint;
             MinimumAge = minimumAge;
+            HowToUse = howToUse;
+            HowToReducePrint = howToReducePrint;
         }
 
         public void AddImage(Image image)

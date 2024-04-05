@@ -59,6 +59,14 @@ namespace SmartTrade.Views
                 hasErrors = true;
             }
 
+            if (_model.Description.IsNullOrEmpty())
+            {
+                Use.BringIntoView();
+                Use.Focus();
+                Use.ErrorText = "How to use/consume cannot be empty";
+                hasErrors = true;
+            }
+
             if (_model.ProductName.IsNullOrEmpty())
             {
                 ProductName.BringIntoView();
@@ -99,6 +107,7 @@ namespace SmartTrade.Views
             Description.ErrorText = "";
             ProductName.ErrorText = "";
             MinAge.ErrorText = "";
+            Use.ErrorText = "";
             StockErrorMessage.Text = "";
         }
 

@@ -55,7 +55,7 @@ public class ValidatePostModel : PostModificationModel
             attributes.Add(stock.CategoryAttributes.Select(attribute => attribute.Value).ToList());
         }
 
-        MainViewModel.SmartTradeService.ValidatePost(Title, Description, ProductName, Category, int.Parse(MinimumAge), Certifications, EcologicPrint, stocks, prices, shippingCosts, images, attributes, _post);
+        MainViewModel.SmartTradeService.ValidatePost(Title, Description, ProductName, Category, int.Parse(MinimumAge), Use,Certifications, EcologicPrint, ReducePrint, stocks, prices, shippingCosts, images, attributes, _post);
     }
 
     public void RejectPost()
