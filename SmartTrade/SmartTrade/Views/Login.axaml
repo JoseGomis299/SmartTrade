@@ -13,9 +13,9 @@
 	<Grid RowDefinitions="Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
 		<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="0 0 0 0">
 			<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">LOGIN</TextBlock>
-			<controls:ST_TextBox LabelText="Email" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Email"/>
-			<controls:ST_TextBox LabelText="Password" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Password"/>
-			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 0" Classes="Black">SIGN UP!</Button>
+			<controls:ST_TextBox LabelText="Email" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
+			<controls:ST_TextBox LabelText="Password" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
+			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 0" Classes="Black" Name="SignUpButton">SIGN UP!</Button>
 		</StackPanel>
         <StackPanel Grid.Row="1" HorizontalAlignment="Stretch">
             <Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin="0 30 0 0"></Border>
