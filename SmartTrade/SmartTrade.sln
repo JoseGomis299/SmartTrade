@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTrade.Android", "Smart
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTrade.Desktop", "SmartTrade.Desktop\SmartTrade.Desktop.csproj", "{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTradeAPI", "SmartTradeAPI\SmartTradeAPI.csproj", "{4C4FE2E4-1963-49C2-BFF8-FDF03EF07DF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{020C8B77-62E7-4E0B-82F3-2A067B7DE7C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C4FE2E4-1963-49C2-BFF8-FDF03EF07DF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4FE2E4-1963-49C2-BFF8-FDF03EF07DF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C4FE2E4-1963-49C2-BFF8-FDF03EF07DF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C4FE2E4-1963-49C2-BFF8-FDF03EF07DF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

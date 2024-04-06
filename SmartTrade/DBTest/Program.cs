@@ -1,4 +1,5 @@
-﻿using SmartTradeLib.BusinessLogic;
+﻿using Newtonsoft.Json;
+using SmartTradeLib.BusinessLogic;
 using SmartTradeLib.Entities;
 using SmartTradeLib.Persistence;
 
@@ -34,8 +35,9 @@ ISmartTradeService service = new SmartTradeService();
 //var posts = new EntityFrameworkDAL(new SmartTradeContext()).GetAll<Post>().First();
 //service.ValidatePost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { posts.Offers.First().Product.Images.First().ImageSource, imageData } }, new List<List<string>>() { attributes }, posts);
 
-AddPost();
-AddPosts(20);
+await ConnectToAPI();
+//AddPost();
+//AddPosts(20);
 
 void AddPosts(int n)
 {
@@ -87,6 +89,55 @@ void ValidatePost()
     var posts = new EntityFrameworkDAL(new SmartTradeContext()).GetAll<Post>().First();
     service.ValidatePost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "","", "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { posts.Offers.First().Product.Images.First().ImageSource, imageData } }, new List<List<string>>() { attributes }, posts);
 
+}
+
+async Task ConnectToAPI()
+{
+    using var client = new HttpClient();
+
+    // Configura la base URL de la API
+    client.BaseAddress = new Uri("https://localhost:7185/");
+
+    // Realiza una solicitud GET a la ruta "SmartTradeAPI/Post"
+    try
+    {
+        var response = await client.GetAsync("SmartTradeAPI/Post");
+
+        if (response.IsSuccessStatusCode)
+        {
+            // Lee la respuesta como una cadena
+            var content = await response.Content.ReadAsStringAsync();
+            List<Producto> listaDeProductos = JsonConvert.DeserializeObject<List<Producto>>(content);
+          
+            foreach (var producto in listaDeProductos)
+            {
+                Console.WriteLine($"ID: {producto.Id}");
+                Console.WriteLine($"Título: {producto.Title}");
+                Console.WriteLine($"Descripción: {producto.Description}");
+                // ... otras propiedades
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Error al conectar a la API. Código de estado: {response.StatusCode}");
+        }
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine($"Error al conectar a la API: {e.Message}");
+    }
+}
+
+public class Producto
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public bool Validated { get; set; }
+    public string SellerID { get; set; }
+    public string SellerCompanyName { get; set; }
+    public List<int> OffersIDs { get; set; }
+    public decimal Price { get; set; }
 }
 
 //foreach (var post in posts)
