@@ -2,7 +2,68 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
-             x:Class="SmartTrade.Views.SearchResult">
-  Welcome to Avalonia!
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1285"
+             x:Class="SmartTrade.Views.SearchResult"
+			 xmlns:controls="clr-namespace:SmartTrade.Controls"
+			 >
+	<Design.DataContext>
+		
+	</Design.DataContext>
+	<Grid RowDefinitions="Auto Auto * Auto" >
+		<!--SearchBar-->
+		<Border Name="SearchBar" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
+			<Grid Height="70" ColumnDefinitions="Auto *" VerticalAlignment="Center">
+				<Button Classes="NoChange" CornerRadius="15" Grid.Column="0" Margin="10" Background="#32c378" Width="50" Height="50">
+					<Grid Margin="-3 1 1 1" ColumnDefinitions="Auto * *" RowDefinitions="Auto * *" HorizontalAlignment="Stretch">
+						<Rectangle Margin="1 3 1 3" HorizontalAlignment="Left" Height="4" Width="33" Fill="White" Grid.Row="0" Grid.Column="0"></Rectangle>
+						<Rectangle Margin="1 3 1 3" HorizontalAlignment="Left" Height="4" Width="33" Fill="White" Grid.Row="1" Grid.Column="0"></Rectangle>
+						<Rectangle Margin="1 3 1 3" HorizontalAlignment="Left" Height="4" Width="33" Fill="White" Grid.Row="2" Grid.Column="0"></Rectangle>
+					</Grid>
+				</Button>
+				<AutoCompleteBox Name="AutoCompleteBox" Text="{Binding SearchText}" ItemsSource="{Binding SearchAutoComplete}" FilterMode="StartsWith" Margin="0 0 20 0" Grid.Column="1" VerticalAlignment="Center" Watermark="Search something..."></AutoCompleteBox>
+			</Grid>
+		</Border>
+
+		<!--Filters-->
+		<Border Name="Filter" Grid.Row="1" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
+			<Grid Height="45" ColumnDefinitions="Auto *" VerticalAlignment="Center">
+				<TextBlock Grid.Column="0" Margin="10 -3 0 0" VerticalAlignment="Center" Classes="h1">Ordenar:</TextBlock>
+				<ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
+					<StackPanel Spacing="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="10 0 0 0">
+						<Button Name="PriceAscendingButton" Classes="White">Precio ></Button>
+						<Button Name="PriceDescendingButton" Classes="White">Precio &lt;</Button>
+						<Button Name="SustainableButton" Classes="White">Sostenible</Button>
+					</StackPanel>
+						
+				</ScrollViewer>
+			</Grid>
+		</Border>
+
+		<!--Content-->
+		<ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+			<ItemsControl ItemsSource="{Binding SearchedProducts}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="450"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<controls:ST_Product Margin=" 10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+		
+		
+		<!--Buttons-->
+		<Border Name="BottomBar" Grid.Row="3" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
+			<Grid Height="70" ColumnDefinitions="* * *" VerticalAlignment="Center">
+				<Button Grid.Column="0" HorizontalAlignment="Left" Margin=" 25 0" Background="#32C378" Width="50" Height="50"></Button>
+				<Button Grid.Column="1" HorizontalAlignment="Center" Background="#32C378" Width="50" Height="50"></Button>
+				<Button Grid.Column="2" HorizontalAlignment="Right" Margin="25 0" Background="#32C378" Width="50" Height="50"></Button>
+			</Grid>
+		</Border>
+	</Grid>
+	
 </UserControl>

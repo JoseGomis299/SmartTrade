@@ -71,7 +71,7 @@ namespace SmartTrade
                 await stream.ReadAsync(imageData, 0, imageData.Length);
                 list.Add(imageData);
             }
-
+            
             return list;
         }
 

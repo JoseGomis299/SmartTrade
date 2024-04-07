@@ -24,5 +24,7 @@ namespace SmartTradeLib.BusinessLogic
             List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
             Post post);
         public List<Post> GetPosts();
+        public List<Post> GetPostsFuzzyContain(string searchFor);
+        public List<String> GetPostsNamesStartWith(string startWith, int numPosts);
     }
 }

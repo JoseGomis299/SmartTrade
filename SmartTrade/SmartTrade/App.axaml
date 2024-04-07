@@ -43,6 +43,18 @@
             <Style Selector="TextBox /template/ TextBlock#PART_Watermark">
                 <Setter Property="Foreground" Value="#A5DFB7"/>
             </Style>
+			<Style Selector="AutoCompleteBox">
+				<Setter Property="FontSize" Value="18"/>
+				<Setter Property="FontFamily" Value="Inter"/>
+				<Setter Property="FontWeight" Value="Normal"></Setter>
+				<Setter Property="Foreground" Value="#0A413E"/>
+				<Setter Property="BorderBrush" Value="#0A413E"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="CornerRadius" Value="25"/>
+			</Style>
+			<Style Selector="AutoCompleteBox /template/ AutoCompleteBox#PART_Watermark">
+				<Setter Property="Foreground" Value="#A5DFB7"/>
+			</Style>
             <Style Selector="Button">
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="FontFamily" Value="Inter"/>
@@ -81,8 +93,6 @@
                 <Setter Property="Background" Value="#F15C5C"/>
                 <Setter Property="Foreground" Value="White"/>
             </Style>
-
-
         </Styles>
 
     </Application.Styles>

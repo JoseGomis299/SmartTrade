@@ -1,4 +1,5 @@
-﻿using SmartTradeLib.Entities;
+﻿using FuzzySharp;
+using SmartTradeLib.Entities;
 using SmartTradeLib.Persistence;
 using System;
 using System.Collections.Concurrent;
@@ -118,6 +119,17 @@ public class SmartTradeService : ISmartTradeService
         if(Logged is Seller seller) return seller.Posts.ToList();
 
         return _dal.GetWhere<Post>(x => x.Validated).ToList();
+    }
+
+    public List<Post> GetPostsFuzzyContain(string searchFor)
+    {
+        return _dal.GetWhere<Post>(x => Fuzz.PartialTokenSortRatio(searchFor,x.Title) > 60)
+            .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title)).ToList();
+    }
+
+    public List<string> GetPostsNamesStartWith(string startWith, int numPosts)
+    {
+        return _dal.GetWhere<Post>(x => x.Title.StartsWith(startWith)).Select(y => new string(y.Title)).Take(numPosts).ToList();
     }
 
     public void RejectPost(Post post)
