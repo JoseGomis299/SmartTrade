@@ -16,33 +16,19 @@ namespace SmartTrade.ViewModels
 {
     public class SearchResultModel : ViewModelBase
     {
-        public string SearchText { get; set; }
-        public ObservableCollection<string> SearchAutoComplete { get; set; }
         public ObservableCollection<ProductModel> SearchedProducts { get; set; }
         public ObservableCollection<ProductModel> OriginalSearchedProducts { get; set; }
         public bool PriceAscend, PriceDescend, Sustainable;
         public SearchResultModel()
         {
-            SearchAutoComplete = new ObservableCollection<string>();
             SearchedProducts = new ObservableCollection<ProductModel>();
             OriginalSearchedProducts = new ObservableCollection<ProductModel>();
-            SearchText = "";
             PriceAscend = PriceDescend = Sustainable = false;
-        }
-
-        public List<Post> LoadProducts()
-        {
-            return MainViewModel.SmartTradeService.GetPostsFuzzyContain(SearchText);
-        }
-
-        public List<string> GetNamesProducts() 
-        {
-            return MainViewModel.SmartTradeService.GetPostsNamesStartWith(SearchText,8);
         }
 
         public void ApplyFilters() 
         {
-            SearchedProducts = OriginalSearchedProducts;
+            SearchedProducts = new ObservableCollection<ProductModel>(OriginalSearchedProducts);
             if (PriceAscend) { sortPriceAscend(); }
             if (PriceDescend) { sortPriceDescend(); }
             if (Sustainable) { }

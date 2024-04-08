@@ -5,13 +5,14 @@
              mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1285"
              x:Class="SmartTrade.Views.SearchResult"
 			 xmlns:controls="clr-namespace:SmartTrade.Controls"
-			 >
+			 xmlns:viewModels="clr-namespace:SmartTrade.ViewModels"
+			 x:DataType="viewModels:SearchResultModel">
 	<Design.DataContext>
-		
+		<viewModels:SearchResultModel/>
 	</Design.DataContext>
 	<Grid RowDefinitions="Auto Auto * Auto" >
 		<!--SearchBar-->
-		<Border Name="SearchBar" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
+		<!--<Border Name="SearchBar" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
 			<Grid Height="70" ColumnDefinitions="Auto *" VerticalAlignment="Center">
 				<Button Classes="NoChange" CornerRadius="15" Grid.Column="0" Margin="10" Background="#32c378" Width="50" Height="50">
 					<Grid Margin="-3 1 1 1" ColumnDefinitions="Auto * *" RowDefinitions="Auto * *" HorizontalAlignment="Stretch">
@@ -22,7 +23,7 @@
 				</Button>
 				<AutoCompleteBox Name="AutoCompleteBox" Text="{Binding SearchText}" ItemsSource="{Binding SearchAutoComplete}" FilterMode="StartsWith" Margin="0 0 20 0" Grid.Column="1" VerticalAlignment="Center" Watermark="Search something..."></AutoCompleteBox>
 			</Grid>
-		</Border>
+		</Border>-->
 
 		<!--Filters-->
 		<Border Name="Filter" Grid.Row="1" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
@@ -54,16 +55,7 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</ScrollViewer>
-		
-		
-		<!--Buttons-->
-		<Border Name="BottomBar" Grid.Row="3" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
-			<Grid Height="70" ColumnDefinitions="* * *" VerticalAlignment="Center">
-				<Button Grid.Column="0" HorizontalAlignment="Left" Margin=" 25 0" Background="#32C378" Width="50" Height="50"></Button>
-				<Button Grid.Column="1" HorizontalAlignment="Center" Background="#32C378" Width="50" Height="50"></Button>
-				<Button Grid.Column="2" HorizontalAlignment="Right" Margin="25 0" Background="#32C378" Width="50" Height="50"></Button>
-			</Grid>
-		</Border>
+
 	</Grid>
 	
 </UserControl>

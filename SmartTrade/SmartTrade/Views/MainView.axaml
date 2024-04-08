@@ -11,14 +11,18 @@
   </Design.DataContext>
 	<Grid RowDefinitions="Auto * Auto" >
 		<!--SearchBar-->
-		<Border Name="SearchBar" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
-			<Grid Height="70" ColumnDefinitions="Auto *" VerticalAlignment="Center">
-				<Button Grid.Column="0" Margin="10" Background="#32c378" Width="50" Height="50">
-					<Image Name="TopButtonImage" Stretch="Fill"></Image>
-				</Button>
-				<TextBox Margin="0 0 20 0" Grid.Column="1" VerticalAlignment="Center" Watermark="Search something..."></TextBox>
-			</Grid>
-		</Border>
+        <Border Name="SearchBar" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
+            <Grid Height="70" ColumnDefinitions="Auto *" VerticalAlignment="Center">
+                <Button Classes="NoChange" CornerRadius="15" Grid.Column="0" Margin="10" Background="#32c378" Width="50" Height="50">
+                    <Grid Margin="-3 1 1 1" ColumnDefinitions="Auto * *" RowDefinitions="Auto * *" HorizontalAlignment="Stretch">
+                        <Rectangle Margin="1 3 1 3" HorizontalAlignment="Left" Height="4" Width="33" Fill="White" Grid.Row="0" Grid.Column="0"></Rectangle>
+                        <Rectangle Margin="1 3 1 3" HorizontalAlignment="Left" Height="4" Width="33" Fill="White" Grid.Row="1" Grid.Column="0"></Rectangle>
+                        <Rectangle Margin="1 3 1 3" HorizontalAlignment="Left" Height="4" Width="33" Fill="White" Grid.Row="2" Grid.Column="0"></Rectangle>
+                    </Grid>
+                </Button>
+                <AutoCompleteBox Name="AutoCompleteBox" Margin="0 0 20 0" Grid.Column="1" VerticalAlignment="Center" Watermark="Search something..."></AutoCompleteBox>
+            </Grid>
+        </Border>
 
 		<!--Content-->
 		<ContentControl Grid.Row="1" Name="ViewContent"></ContentControl>

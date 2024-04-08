@@ -1,21 +1,26 @@
 ﻿using Avalonia.Controls;
 using System;
-using System.Linq;
 using Avalonia.Input;
-using Avalonia.VisualTree;
-using SmartTradeLib.Entities;
-using SmartTradeLib.Persistence;
+using SmartTrade.ViewModels;
 
 namespace SmartTrade.Views;
 
 public partial class MainView : UserControl
 {
+    private MainViewModel _model;
+
     public MainView()
     {
+        _model = new MainViewModel();
         NavigationManager.OnNavigate += HandleNavigation;
         InitializeComponent();
 
         NavigationManager.Initialize(ViewContent, new ProductCatalog());
+
+        AutoCompleteBox.TextChanged += AutoCompleteBox_TextChanged;
+        AutoCompleteBox.KeyDown += AutoCompleteBox_KeyDown;
+
+        AutoCompleteBox.ItemsSource = _model.SearchAutoComplete;
     }
 
     private void HandleNavigation(Type type)
@@ -32,5 +37,18 @@ public partial class MainView : UserControl
     {
         SearchBar.IsVisible = true;
         BottomBar.IsVisible = true;
+    }
+
+    private void AutoCompleteBox_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key.Equals(Key.Enter))
+        {
+            NavigationManager.NavigateToOverriding(new SearchResult(_model.LoadProducts()));
+        }
+    }
+
+    private void AutoCompleteBox_TextChanged(object? sender, TextChangedEventArgs e)
+    {
+        _model.SearchText = AutoCompleteBox.Text;
     }
 }

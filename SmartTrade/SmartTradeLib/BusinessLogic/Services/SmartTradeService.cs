@@ -123,13 +123,14 @@ public class SmartTradeService : ISmartTradeService
 
     public List<Post> GetPostsFuzzyContain(string searchFor)
     {
-        return _dal.GetWhere<Post>(x => Fuzz.PartialTokenSortRatio(searchFor,x.Title) > 60)
+        return _dal.GetAll<Post>().Where(x => Fuzz.PartialTokenSortRatio(searchFor,x.Title) > 60)
             .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title)).ToList();
     }
 
     public List<string> GetPostsNamesStartWith(string startWith, int numPosts)
     {
-        return _dal.GetWhere<Post>(x => x.Title.StartsWith(startWith)).Select(y => new string(y.Title)).Take(numPosts).ToList();
+        var res = _dal.GetWhere<Post>(x => x.Title.StartsWith(startWith)).Select(y => new string(y.Title)).ToList();
+        return res.Take(Math.Min(numPosts, res.Count)).ToList();
     }
 
     public void RejectPost(Post post)

@@ -5,19 +5,24 @@ using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 using System;
 using System.Collections.Generic;
+using SmartTradeLib.Entities;
 
 namespace SmartTrade.Views
 {
     public partial class SearchResult : UserControl
     {
         private SearchResultModel? _model;
-        public SearchResult()
+
+        public SearchResult(List<Post> posts)
         {
             DataContext = _model = new SearchResultModel();
+            foreach (var post in posts)
+            {
+                _model.OriginalSearchedProducts.Add(new ProductModel(post));
+                _model.SearchedProducts.Add(new ProductModel(post));
+            }
             InitializeComponent();
 
-            AutoCompleteBox.TextChanged += AutoCompleteBox_TextChanged;
-            AutoCompleteBox.KeyDown += AutoCompleteBox_KeyDown;
             PriceAscendingButton.Click += PriceAscendingButton_Click; ;
             PriceDescendingButton.Click += PriceDescendingButton_Click;
         }
@@ -52,28 +57,28 @@ namespace SmartTrade.Views
             _model.ApplyFilters();
         }
 
-        private void AutoCompleteBox_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
-        {
-            if (e.Equals(Avalonia.Input.Key.Enter)) {
+        //private void AutoCompleteBox_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
+        //{
+        //    if (e.Equals(Avalonia.Input.Key.Enter)) {
 
-                _model.OriginalSearchedProducts.Clear();
-                _model.SearchedProducts.Clear();
-                _model.LoadProducts().ForEach(post =>
-                {
-                    _model.OriginalSearchedProducts.Add(new ProductModel(post));
-                    _model.SearchedProducts.Add(new ProductModel(post));
-                });
-            }
-        }
+        //        _model.OriginalSearchedProducts.Clear();
+        //        _model.SearchedProducts.Clear();
+        //        _model.LoadProducts().ForEach(post =>
+        //        {
+        //            _model.OriginalSearchedProducts.Add(new ProductModel(post));
+        //            _model.SearchedProducts.Add(new ProductModel(post));
+        //        });
+        //    }
+        //}
 
-        private void AutoCompleteBox_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (_model.SearchText.IsNullOrEmpty()) { _model.SearchAutoComplete.Clear(); return; }
-            _model.SearchAutoComplete.Clear();
-            _model.GetNamesProducts().ForEach(Name => {
-                _model.SearchAutoComplete.Add(Name);
-            });
-        }
+        //private void AutoCompleteBox_TextChanged(object? sender, TextChangedEventArgs e)
+        //{
+        //    if (_model.SearchText.IsNullOrEmpty()) { _model.SearchAutoComplete.Clear(); return; }
+        //    _model.SearchAutoComplete.Clear();
+        //    _model.GetNamesProducts().ForEach(Name => {
+        //        _model.SearchAutoComplete.Add(Name);
+        //    });
+        //}
         
     }
 }

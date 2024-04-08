@@ -56,6 +56,23 @@ public class NavigationManager
         OnNavigate?.Invoke(targetView.GetType());
     }
 
+    public static void NavigateToOverriding(ContentControl targetView)
+    {
+        if (_navigator == null)
+            throw new InvalidOperationException("Navigator not initialized");
+
+        ICommand command = new NavigateToCommand(_navigator, targetView);
+        if (_commands.Count > 0 && _navigator.CurrentView.GetType() == targetView.GetType())
+        {
+            command = new NavigateToCommand((NavigateToCommand)_commands.Peek(), targetView);
+            _commands.Pop();
+        }
+        _commands.Push(command);
+        command.Execute();
+
+        OnNavigate?.Invoke(targetView.GetType());
+    }
+
     public static bool NavigateBack()
     {
         if (_commands.Count > 0)

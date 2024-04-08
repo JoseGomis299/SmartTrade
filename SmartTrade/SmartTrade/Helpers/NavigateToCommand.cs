@@ -14,18 +14,26 @@ public class NavigateToCommand : ICommand
     {
         _navigator = navigator;
         _viewType = viewType;
+        _previousView = _navigator.CurrentView;
     }
 
     public NavigateToCommand(Navigator navigator, ContentControl view)
     {
         _navigator = navigator;
         _view = view;
+        _previousView = _navigator.CurrentView;
+    }
+
+    public NavigateToCommand(NavigateToCommand command, ContentControl view)
+    {
+        _navigator = command._navigator;
+        _viewType = command._viewType;
+        _previousView = command._previousView;
+        _view = view;
     }
 
     public void Execute()
     {
-        _previousView = _navigator.CurrentView;
-
         if (_viewType != null)
         {
             _navigator.NavigateTo(_viewType);
