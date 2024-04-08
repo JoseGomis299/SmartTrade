@@ -23,5 +23,5 @@ namespace SmartTradeAPI.Library.Persistence.NewFolder
             OffersIDs = post.Offers.Select(offer => offer.Id).ToList();
             Price = post.Offers.First().Price;
         }
-}
+    }
 }

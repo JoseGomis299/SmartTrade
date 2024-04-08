@@ -49,7 +49,7 @@ public class SmartTradeService : ISmartTradeService
         List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
         Seller? seller = null)
     {
-        //LogIn("ChiclesPepito@gmail.com", "123");
+        LogIn("ChiclesPepito@gmail.com", "123");
         
         Post post = new Post(title, description, validated, seller ??= (Seller) Logged);
 
@@ -98,20 +98,28 @@ public class SmartTradeService : ISmartTradeService
         return post;
     }
 
-    public void ValidatePost(string? title, string? description, string? productName, Category category, int minimumAge,
+    public void EditPost(string? title, string? description, string? productName, Category category, int minimumAge,
         string howToUse, string? certifications, string? ecologicPrint, string? howToReducePrint, List<int> stocks,
         List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
-        Post post)
+        int postID, bool validated)
     {
+        Post post = _dal.GetById<Post>(postID);
         Seller seller = _dal.GetById<Seller>(post.Seller.Email);
         RemovePost(post);
 
-        var newPost = AddPost(title, description, productName, category, minimumAge, howToUse,certifications, ecologicPrint, howToReducePrint, true, stocks, prices, shippingCosts, images, attributes, seller);
+        var newPost = AddPost(title, description, productName, category, minimumAge, howToUse,certifications, ecologicPrint, howToReducePrint, validated, stocks, prices, shippingCosts, images, attributes, seller);
 
 
       //  RemovePost(post);
-        //        ((Admin)Logged).ValidatePost(post);
+        //        ((Admin)Logged).EditPost(post);
         _dal.Commit();
+    }
+
+    public void EditPost(string? title, string? description, string? productName, Category category, int minimumAge,
+        string howToUse, string? certifications, string? ecologicPrint, string? howToReducePrint, List<int> stocks, List<float> prices,
+        List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes, Post post)
+    {
+        throw new NotImplementedException();
     }
 
     public List<PostDTO> GetPosts()
@@ -124,11 +132,10 @@ public class SmartTradeService : ISmartTradeService
         return posts.Select(post => new PostDTO(post)).ToList();
     }
 
-    public void RejectPost(Post post)
+    public void RejectPost(int postID)
     {
+        Post post = _dal.GetById<Post>(postID);
         RemovePost(post);
-
-        _dal.Commit();
     }
 
     private void RemovePost(Post post)
@@ -181,6 +188,11 @@ public class SmartTradeService : ISmartTradeService
         }
     }
 
+    public void RejectPost(Post post)
+    {
+        throw new NotImplementedException();
+    }
+
     public void RegisterSeller(string email, string password, string name, string lastNames, string dni, string companyName, string iban)
     {
         if (_dal.GetWhere<Seller>(x => x.Email == email).Any() || _dal.GetWhere<Seller>(x => x.DNI == dni).Any() || _dal.GetWhere<Seller>(x => x.IBAN == iban).Any())
@@ -217,5 +229,11 @@ public class SmartTradeService : ISmartTradeService
     public void LogOut()
     {
         Logged = null;
+    }
+
+    public PostDTO GetPost(int id)
+    {
+        Post post = _dal.GetById<Post>(id);
+        return new PostDTO(post);
     }
 }
