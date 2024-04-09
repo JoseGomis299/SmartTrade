@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -30,32 +31,26 @@ namespace SmartTrade.ViewModels
 
         public void ApplyFilters() 
         {
-            SearchedProducts = new ObservableCollection<ProductModel>(OriginalSearchedProducts);
             if (PriceAscend) { sortPriceAscend(); }
-            if (PriceDescend) { sortPriceDescend(); }
+            else if (PriceDescend) { sortPriceDescend(); }
+            else
+            {
+                UpdateSearchedProducts(OriginalSearchedProducts);
+            }
+
             if (Sustainable) { }
         }
 
         public void sortPriceAscend()
         {
           var sortedList = SearchedProducts.OrderBy(x => float.Parse(x.Price.Substring(0, x.Price.Length-1))).ToList();
-          SearchedProducts.Clear();
-
-          for (int i = 0; i < sortedList.Count; i++)
-          {
-              SearchedProducts.Add(sortedList[i]);
-          }
+          UpdateSearchedProducts(sortedList);
         }
 
         public void sortPriceDescend()
         {
             var sortedList = SearchedProducts.OrderByDescending(x => float.Parse(x.Price.Substring(0, x.Price.Length - 1))).ToList();
-            SearchedProducts.Clear();
-
-            for (int i = 0; i < sortedList.Count; i++)
-            {
-                SearchedProducts.Add(sortedList[i]);
-            }
+            UpdateSearchedProducts(sortedList);
         }
 
         /*public void sortSustainable()
@@ -66,5 +61,13 @@ namespace SmartTrade.ViewModels
             }
         }*/
 
+        private void UpdateSearchedProducts(IEnumerable<ProductModel> list)
+        {
+            SearchedProducts.Clear();
+            foreach (var product in list)
+            {
+                SearchedProducts.Add(product);
+            }
+        }
     }
 }

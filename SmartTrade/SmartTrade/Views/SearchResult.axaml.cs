@@ -18,8 +18,6 @@ namespace SmartTrade.Views
             DataContext = _model = new SearchResultModel();
             InitializeComponent();
 
-            FoundProducts.ItemsSource = _model.SearchedProducts;
-
             PriceAscendingButton.Click += PriceAscendingButton_Click; ;
             PriceDescendingButton.Click += PriceDescendingButton_Click;
         }
@@ -33,8 +31,6 @@ namespace SmartTrade.Views
                 _model.SearchedProducts.Add(new ProductModel(post));
             }
             InitializeComponent();
-
-            FoundProducts.ItemsSource = _model.SearchedProducts;
 
             PriceAscendingButton.Click += PriceAscendingButton_Click; ;
             PriceDescendingButton.Click += PriceDescendingButton_Click;
@@ -53,7 +49,6 @@ namespace SmartTrade.Views
             }
 
             _model.ApplyFilters();
-            FoundProducts.ItemsSource = _model.SearchedProducts;
         }
 
         private void PriceDescendingButton_Click(object? sender, RoutedEventArgs e)
@@ -69,7 +64,6 @@ namespace SmartTrade.Views
             }
 
             _model.ApplyFilters();
-            FoundProducts.ItemsSource = _model.SearchedProducts;
         }
 
         //private void AutoCompleteBox_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
@@ -94,6 +88,6 @@ namespace SmartTrade.Views
         //        _model.SearchAutoComplete.Add(Name);
         //    });
         //}
-
+        
     }
 }
