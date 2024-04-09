@@ -31,14 +31,13 @@ namespace SmartTrade.ViewModels
 
         public void ApplyFilters() 
         {
+            UpdateSearchedProducts(OriginalSearchedProducts);
+
+            if (Sustainable) { sortSustainable(); }
+
             if (PriceAscend) { sortPriceAscend(); }
             else if (PriceDescend) { sortPriceDescend(); }
-            else
-            {
-                UpdateSearchedProducts(OriginalSearchedProducts);
-            }
-
-            if (Sustainable) { }
+            
         }
 
         public void sortPriceAscend()
@@ -53,13 +52,18 @@ namespace SmartTrade.ViewModels
             UpdateSearchedProducts(sortedList);
         }
 
-        /*public void sortSustainable()
+        public void sortSustainable()
         {
+            var sortedList = new List<ProductModel>();
             foreach (var product in SearchedProducts)
             {
-                if(int.TryParse(product.post.Offers.First().Product.EcologicPrint, out int ecologicPrint) && ecologicPrint < 100)
+                if (int.TryParse(product._post.Offers.First().Product.EcologicPrint, out int ecologicPrint) && ecologicPrint < 100) 
+                {
+                    sortedList.Add(product);
+                }
             }
-        }*/
+            UpdateSearchedProducts(sortedList);
+        }
 
         private void UpdateSearchedProducts(IEnumerable<ProductModel> list)
         {

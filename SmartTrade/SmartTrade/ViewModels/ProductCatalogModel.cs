@@ -58,7 +58,7 @@ namespace SmartTrade.ViewModels
         public string? Name { get; set; }
         public string? Price { get; set; }
         public Bitmap? Image { get; set; }
-        private Post _post { get; set; }
+        public Post _post { get; set; }
 
         public ICommand OpenProductCommand { get; }
         public ICommand EditProductCommand { get; }

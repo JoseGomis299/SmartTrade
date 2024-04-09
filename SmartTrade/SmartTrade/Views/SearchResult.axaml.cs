@@ -34,6 +34,7 @@ namespace SmartTrade.Views
 
             PriceAscendingButton.Click += PriceAscendingButton_Click; ;
             PriceDescendingButton.Click += PriceDescendingButton_Click;
+
         }
 
         private void PriceAscendingButton_Click(object? sender, RoutedEventArgs e)
