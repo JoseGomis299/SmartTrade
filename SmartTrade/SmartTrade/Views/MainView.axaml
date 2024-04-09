@@ -30,9 +30,15 @@
 		<!--Buttons-->
 		<Border Name="BottomBar" Grid.Row="2" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
 			<Grid Height="70" ColumnDefinitions="* * *" VerticalAlignment="Center">
-				<Button Grid.Column="0" HorizontalAlignment="Left" Margin=" 25 0" Background="#32C378" Width="50" Height="50"></Button>
-				<Button Grid.Column="1" HorizontalAlignment="Center" Background="#32C378" Width="50" Height="50"></Button>
-				<Button Grid.Column="2" HorizontalAlignment="Right" Margin="25 0" Background="#32C378" Width="50" Height="50"></Button>
+				<Button Grid.Column="0" HorizontalAlignment="Left" Margin=" 25 0" Width="60" Height="60" Name="HomeButton">
+                    <Image Stretch="Uniform" Width="80" Name="HomeImage"></Image>
+				</Button>
+				<Button Grid.Column="1" HorizontalAlignment="Center" Width="60" Height="60" Name="ShoppingCartButton">
+                    <Image Stretch="Uniform" Name="CartImage" Width="80"></Image>
+				</Button>
+				<Button Grid.Column="2" HorizontalAlignment="Right" Margin="25 0" Width="60" Height="60" Name="ProfileButton">
+                    <Image Stretch="Uniform"  Name="UserImage" Width="80"></Image>
+				</Button>
 			</Grid>
 		</Border>
 	</Grid>

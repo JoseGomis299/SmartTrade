@@ -11,7 +11,7 @@
 	<Design.DataContext>
 		<viewModels:SellerCatalogModel/>
 	</Design.DataContext>
-	<ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+	<ScrollViewer Margin="0 10 0 0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
 		<StackPanel >
 			<TextBlock Classes="h1" HorizontalAlignment="Stretch" MaxWidth="320" Margin="0 10">My products</TextBlock>
 			<ItemsControl ItemsSource="{Binding MyProducts}">

@@ -7,84 +7,79 @@ namespace SmartTrade;
 
 public class NavigationManager
 {
-    public static event Action<Type> OnNavigate;
+    public event Action<Type> OnNavigate;
 
-    private static Navigator? _navigator;
-    private static Stack<ICommand> _commands = new();
+    protected Navigator? Navigator;
+    protected Stack<ICommand> Commands = new();
 
-    public static void Initialize(ContentControl mainView, Type targetViewType)
+    protected static NavigationManager _instance;
+    public static NavigationManager Instance => _instance ??= new NavigationManager();
+
+    public virtual void Initialize(ContentControl mainView, ContentControl targetView)
     {
-       _navigator = new ViewNavigator(mainView);
+        Navigator = new ViewNavigator(mainView);
 
-       ICommand command = new NavigateToCommand(_navigator, targetViewType);
-       command.Execute();
-
-       OnNavigate?.Invoke(targetViewType);
-    }
-
-    public static void Initialize(ContentControl mainView, ContentControl targetView)
-    {
-        _navigator = new ViewNavigator(mainView);
-
-        ICommand command = new NavigateToCommand(_navigator, targetView);
+        ICommand command = new NavigateToCommand(Navigator, targetView);
         command.Execute();
 
         OnNavigate?.Invoke(targetView.GetType());
     }
 
-    public static void NavigateTo(Type targetViewType) 
+    public virtual void NavigateTo(Type targetViewType) 
     {
-        if(_navigator == null)
+        if(Navigator == null)
             throw new InvalidOperationException("Navigator not initialized");
 
-        ICommand command = new NavigateToCommand(_navigator, targetViewType);
-        _commands.Push(command);
+        ICommand command = new NavigateToCommand(Navigator, targetViewType);
+        Commands.Push(command);
         command.Execute();
 
         OnNavigate?.Invoke(targetViewType);
     }
 
-    public static void NavigateTo(ContentControl targetView)
+    public virtual void NavigateTo(ContentControl targetView)
     {
-        if (_navigator == null)
+        if (Navigator == null)
             throw new InvalidOperationException("Navigator not initialized");
 
-        ICommand command = new NavigateToCommand(_navigator, targetView);
-        _commands.Push(command);
+        ICommand command = new NavigateToCommand(Navigator, targetView);
+        Commands.Push(command);
         command.Execute();
 
         OnNavigate?.Invoke(targetView.GetType());
     }
 
-    public static void NavigateToOverriding(ContentControl targetView)
+    public virtual void NavigateToOverriding(ContentControl targetView)
     {
-        if (_navigator == null)
+        if (Navigator == null)
             throw new InvalidOperationException("Navigator not initialized");
 
-        ICommand command = new NavigateToCommand(_navigator, targetView);
-        if (_commands.Count > 0 && _navigator.CurrentView.GetType() == targetView.GetType())
+        ICommand command = new NavigateToCommand(Navigator, targetView);
+        if (Commands.Count > 0 && Navigator.CurrentView.GetType() == targetView.GetType())
         {
-            command = new NavigateToCommand((NavigateToCommand)_commands.Peek(), targetView);
-            _commands.Pop();
+            command = new NavigateToCommand((NavigateToCommand)Commands.Peek(), targetView);
+            Commands.Pop();
         }
-        _commands.Push(command);
+        Commands.Push(command);
         command.Execute();
 
         OnNavigate?.Invoke(targetView.GetType());
     }
 
-    public static bool NavigateBack()
+    public virtual bool NavigateBack()
     {
-        if (_commands.Count > 0)
+        if (Commands.Count > 0)
         {
-            var command = _commands.Pop();
+            var command = Commands.Pop();
             command.UnExecute();
 
-            OnNavigate?.Invoke(_navigator.CurrentView.GetType());
+            OnNavigate?.Invoke(Navigator.CurrentView.GetType());
             return true;
         }
 
         return false;
     }
+
+    protected void InvokeOnNavigate(Type viewType) => OnNavigate?.Invoke(viewType);
 
 }

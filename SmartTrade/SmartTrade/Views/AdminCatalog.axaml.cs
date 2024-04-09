@@ -3,11 +3,11 @@ using SmartTrade.ViewModels;
 
 namespace SmartTrade.Views
 {
-    public partial class SellerCatalog : UserControl
+    public partial class AdminCatalog : UserControl
     {
-        public SellerCatalog()
+        public AdminCatalog()
         {
-            DataContext = new SellerCatalogModel();
+            DataContext = new AdminCatalogModel();
             InitializeComponent();
         }
     }

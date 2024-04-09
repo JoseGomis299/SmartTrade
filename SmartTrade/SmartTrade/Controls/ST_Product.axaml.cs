@@ -2,6 +2,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SmartTrade.Controls
 {
@@ -47,5 +48,21 @@ namespace SmartTrade.Controls
 
         public static readonly StyledProperty<Bitmap?> ImageProperty =
             AvaloniaProperty.Register<ST_Product, Bitmap?>(nameof(Image));
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            if (change.Property == ProductNameProperty)
+            {
+                if (ProductName.IsNullOrEmpty())
+                {
+                    ProductNameTextBlock.IsVisible = false;
+                }
+                else
+                {
+                    ProductNameTextBlock.IsVisible = true;
+                }
+            }
+            base.OnPropertyChanged(change);
+        }
     }
 }

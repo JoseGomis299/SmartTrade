@@ -38,7 +38,7 @@ namespace SmartTrade.Views
 
         private void Cancel(object? sender, RoutedEventArgs e)
         {
-            NavigationManager.NavigateBack();
+            SmartTradeNavigationManager.Instance.NavigateBack();
         }
 
         private void Reject(object? sender, RoutedEventArgs e)

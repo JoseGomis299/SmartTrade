@@ -23,7 +23,7 @@ public class MainActivity : AvaloniaMainActivity<App>
 
     public override void OnBackPressed()
     {
-        if (!NavigationManager.NavigateBack())
+        if (!SmartTradeNavigationManager.Instance.NavigateBack())
         {
             base.OnBackPressed();
         }

@@ -27,17 +27,17 @@ namespace SmartTrade.Views
                 user=_model.getloggeduser();
                 if (user is Seller seller)
                 {
-                    NavigationManager.NavigateTo(new SellerCatalog());
+                    SmartTradeNavigationManager.Instance.NavigateTo(new SellerCatalog());
 
                 }
                 if(user is Consumer consumer)
                 {
-                    NavigationManager.NavigateTo(new ProductCatalog());
+                    SmartTradeNavigationManager.Instance.NavigateTo(new ProductCatalog());
 
                 }
                 if (user is Admin admin)
                 {
-                    NavigationManager.NavigateTo(new ValidatePost());
+                    SmartTradeNavigationManager.Instance.NavigateTo(new ValidatePost());
                 }
             }
             catch (Exception ex)

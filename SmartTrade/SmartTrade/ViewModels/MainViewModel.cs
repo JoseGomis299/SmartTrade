@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using SmartTrade.Views;
 using SmartTradeLib.BusinessLogic;
 using SmartTradeLib.Entities;
 
@@ -12,6 +18,7 @@ public class MainViewModel : ViewModelBase
     public static ISmartTradeService SmartTradeService { get; } = new SmartTradeService();
     public string? SearchText { get; set; }
     public ObservableCollection<string> SearchAutoComplete { get; set; }
+
     public MainViewModel()
     {
         SearchAutoComplete = new ObservableCollection<string>();
@@ -20,6 +27,7 @@ public class MainViewModel : ViewModelBase
         {
             SearchAutoComplete.Add(name);
         }
+
     }
 
     public List<Post> LoadProducts()
@@ -27,8 +35,19 @@ public class MainViewModel : ViewModelBase
         return SmartTradeService.GetPostsFuzzyContain(SearchText);
     }
 
-    public List<string> GetNamesProducts()
+    public UserControl GetCatalog()
     {
-        return SmartTradeService.GetPostsNamesStartWith(SearchText, 8);
+        if (SmartTradeService.Logged is Seller)
+        {
+            return new SellerCatalog();
+        }
+
+        if (SmartTradeService.Logged is Admin)
+        {
+            return new AdminCatalog();
+        }
+
+        return new ProductCatalog();
     }
+
 }

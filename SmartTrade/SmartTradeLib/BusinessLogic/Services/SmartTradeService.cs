@@ -117,7 +117,8 @@ public class SmartTradeService : ISmartTradeService
 
     public List<Post> GetPosts()
     { 
-        if(Logged is Seller seller) return seller.Posts.ToList();
+        if(Logged is Admin) return _dal.GetWhere<Post>(x => !x.Validated).ToList();
+        if (Logged is Seller seller) return seller.Posts.Where(x=>x.Validated).ToList();
 
         return _dal.GetWhere<Post>(x => x.Validated).ToList();
     }

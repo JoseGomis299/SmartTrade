@@ -35,7 +35,7 @@ namespace SmartTrade.Views
 
         private void OnCancelButtonOnClick(object? sender, RoutedEventArgs e)
         {
-           NavigationManager.NavigateBack();
+            SmartTradeNavigationManager.Instance.NavigateBack();
         }
 
         private void OnConfirmButtonOnClick(object? sender, RoutedEventArgs e)
@@ -98,7 +98,7 @@ namespace SmartTrade.Views
             if (hasErrors) return;
 
             _model.PublishPost();
-            NavigationManager.NavigateBack();
+            SmartTradeNavigationManager.Instance.NavigateBack();
         }
 
         private void ClearErrors()

@@ -15,12 +15,12 @@ namespace SmartTrade.Views
 
         private void PurchaseButton_Click(object? sender, RoutedEventArgs e)
         {
-            NavigationManager.NavigateTo(new Register());
+            SmartTradeNavigationManager.Instance.NavigateTo(new Register());
         }
 
         private void SellButton_Click(object? sender, RoutedEventArgs e)
         {
-            NavigationManager.NavigateTo(new SellerRegister());
+            SmartTradeNavigationManager.Instance.NavigateTo(new SellerRegister());
 
         }
 

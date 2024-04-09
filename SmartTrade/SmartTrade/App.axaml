@@ -93,7 +93,10 @@
                 <Setter Property="Background" Value="#F15C5C"/>
                 <Setter Property="Foreground" Value="White"/>
             </Style>
-        </Styles>
+			<Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+		</Styles>
 
     </Application.Styles>
 

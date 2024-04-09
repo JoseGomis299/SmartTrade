@@ -61,11 +61,13 @@ namespace SmartTrade.ViewModels
         private Post _post { get; set; }
 
         public ICommand OpenProductCommand { get; }
+        public ICommand EditProductCommand { get; }
 
         public ProductModel(Post post)
         {
             _post = post;
             OpenProductCommand = ReactiveCommand.Create(OpenProduct);
+            EditProductCommand = ReactiveCommand.Create(() => SmartTradeNavigationManager.Instance.NavigateTo(new ValidatePost(post)));
 
             Name = post.Title;
             Price = post.Offers.First().Price + "€";
@@ -74,7 +76,7 @@ namespace SmartTrade.ViewModels
 
         private void OpenProduct()
         {
-            NavigationManager.NavigateTo(new ProductView(_post));
+            SmartTradeNavigationManager.Instance.NavigateTo(new ProductView(_post));
         }
     }
 }

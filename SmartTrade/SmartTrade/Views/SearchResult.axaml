@@ -10,7 +10,8 @@
 	<Design.DataContext>
 		<viewModels:SearchResultModel/>
 	</Design.DataContext>
-	<Grid RowDefinitions="Auto Auto * Auto" >
+    <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+	<Grid RowDefinitions="Auto *" >
 		<!--SearchBar-->
 		<!--<Border Name="SearchBar" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
 			<Grid Height="70" ColumnDefinitions="Auto *" VerticalAlignment="Center">
@@ -26,7 +27,7 @@
 		</Border>-->
 
 		<!--Filters-->
-		<Border Name="Filter" Grid.Row="1" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
+		<Border Name="Filter" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
 			<Grid Height="45" ColumnDefinitions="Auto *" VerticalAlignment="Center">
 				<TextBlock Grid.Column="0" Margin="10 -3 0 0" VerticalAlignment="Center" Classes="h1">Ordenar:</TextBlock>
 				<ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
@@ -41,8 +42,8 @@
 		</Border>
 
 		<!--Content-->
-		<ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
-			<ItemsControl ItemsSource="{Binding SearchedProducts}">
+
+			<ItemsControl Grid.Row="1" Margin="0 10 0 0" ItemsSource="{Binding SearchedProducts}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="450"/>
@@ -54,8 +55,8 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-		</ScrollViewer>
 
 	</Grid>
-	
+    </ScrollViewer>
+
 </UserControl>

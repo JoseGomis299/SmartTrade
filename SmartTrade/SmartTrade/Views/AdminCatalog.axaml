@@ -2,20 +2,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="353" d:DesignHeight="1385"
-             x:Class="SmartTrade.Views.ProductCatalog"
+             mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="800"
+             x:Class="SmartTrade.Views.AdminCatalog"   
              xmlns:vm="clr-namespace:SmartTrade.ViewModels"
-             x:DataType="vm:ProductCatalogModel"
-             xmlns:controls="clr-namespace:SmartTrade.Controls">
+             xmlns:controls="clr-namespace:SmartTrade.Controls"
+             x:DataType="vm:AdminCatalogModel">
     <Design.DataContext>
-        <vm:ProductCatalogModel/>
+        <vm:AdminCatalogModel/>
     </Design.DataContext>
     <ScrollViewer Margin="0 10 0 0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
         <StackPanel >
-            <controls:ST_Carousel Title="Recommended" Subtitle="100% sustainable products" DataSource="{Binding RecommendedProducts}"></controls:ST_Carousel>
-            <controls:ST_Carousel Title="You might like it" DataSource="{Binding RelatedProducts}"></controls:ST_Carousel>
-            <TextBlock Classes="h1" HorizontalAlignment="Stretch" MaxWidth="320" Margin="0 10">You will love it</TextBlock>
-            <ItemsControl ItemsSource="{Binding OtherProducts}">
+            <TextBlock Classes="h1" HorizontalAlignment="Stretch" MaxWidth="320" Margin="0 10">Pending Validation</TextBlock>
+            <ItemsControl ItemsSource="{Binding MyProducts}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="450"/>
@@ -23,7 +21,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <controls:ST_Product Margin=" 10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
+                        <controls:ST_Product Margin=" 10 0 10 -20" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Name}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
