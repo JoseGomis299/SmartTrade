@@ -4,7 +4,7 @@ namespace SmartTradeLib.BusinessLogic
 {
     public interface ISmartTradeService
     {
-        User? Logged { get; set; }
+        public User? Logged { get; set; }
         public void SaveChanges();
         public void RemoveAll();
 
@@ -26,5 +26,3 @@ namespace SmartTradeLib.BusinessLogic
         public List<Post> GetPosts();
         public List<Post> GetPostsFuzzyContain(string searchFor);
         public List<String> GetPostsNamesStartWith(string startWith, int numPosts);
-    }
-}
