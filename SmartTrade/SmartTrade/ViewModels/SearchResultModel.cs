@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media.Imaging;
+using DynamicData.Binding;
 using ReactiveUI;
 using SmartTrade.Views;
 using SmartTradeLib.Entities;
@@ -34,14 +36,26 @@ namespace SmartTrade.ViewModels
             if (Sustainable) { }
         }
 
-        public void sortPriceAscend() 
+        public void sortPriceAscend()
         {
-            SearchedProducts.OrderBy(x => x.Price);
+          var sortedList = SearchedProducts.OrderBy(x => float.Parse(x.Price.Substring(0, x.Price.Length-1))).ToList();
+          SearchedProducts.Clear();
+
+          for (int i = 0; i < sortedList.Count; i++)
+          {
+              SearchedProducts.Add(sortedList[i]);
+          }
         }
 
         public void sortPriceDescend()
         {
-            SearchedProducts.OrderByDescending(x => x.Price);
+            var sortedList = SearchedProducts.OrderByDescending(x => float.Parse(x.Price.Substring(0, x.Price.Length - 1))).ToList();
+            SearchedProducts.Clear();
+
+            for (int i = 0; i < sortedList.Count; i++)
+            {
+                SearchedProducts.Add(sortedList[i]);
+            }
         }
 
         /*public void sortSustainable()

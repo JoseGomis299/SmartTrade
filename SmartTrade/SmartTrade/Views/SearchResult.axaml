@@ -43,7 +43,7 @@
 
 		<!--Content-->
 
-			<ItemsControl Grid.Row="1" Margin="0 10 0 0" ItemsSource="{Binding SearchedProducts}">
+			<ItemsControl Grid.Row="1" Margin="0 10 0 0" Name="FoundProducts">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="450"/>
