@@ -34,7 +34,15 @@ namespace SmartTrade.Views
 
             PriceAscendingButton.Click += PriceAscendingButton_Click; ;
             PriceDescendingButton.Click += PriceDescendingButton_Click;
+            SustainableButton.Click += SustainableButton_Click;
+        }
 
+        private void SustainableButton_Click(object? sender, RoutedEventArgs e)
+        {
+            if (_model.Sustainable) { _model.Sustainable = false; }
+            else { _model.Sustainable = true; }
+
+            _model.ApplyFilters();
         }
 
         private void PriceAscendingButton_Click(object? sender, RoutedEventArgs e)
@@ -43,6 +51,8 @@ namespace SmartTrade.Views
             {
                 _model.PriceAscend = true;
                 _model.PriceDescend = false;
+
+                PriceDescendingButton.IsChecked = false;
             }
             else 
             {
@@ -58,6 +68,8 @@ namespace SmartTrade.Views
             {
                 _model.PriceDescend = true;
                 _model.PriceAscend = false;
+
+                PriceAscendingButton.IsChecked = false;
             }
             else
             {

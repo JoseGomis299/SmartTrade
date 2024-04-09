@@ -32,9 +32,9 @@
 				<TextBlock Grid.Column="0" Margin="10 -3 0 0" VerticalAlignment="Center" Classes="h1">Ordenar:</TextBlock>
 				<ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
 					<StackPanel Spacing="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="10 0 0 0">
-						<Button Name="PriceAscendingButton" Classes="White">Precio ></Button>
-						<Button Name="PriceDescendingButton" Classes="White">Precio &lt;</Button>
-						<Button Name="SustainableButton" Classes="White">Sostenible</Button>
+						<ToggleButton Name="PriceAscendingButton">Precio ></ToggleButton>
+						<ToggleButton Name="PriceDescendingButton">Precio &lt;</ToggleButton>
+						<ToggleButton Name="SustainableButton">Sostenible</ToggleButton>
 					</StackPanel>
 						
 				</ScrollViewer>

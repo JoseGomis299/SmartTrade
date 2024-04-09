@@ -96,6 +96,33 @@
 			<Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="Transparent" />
             </Style>
+			
+			<Style Selector="ToggleButton">
+				<Setter Property="FontSize" Value="18"/>
+				<Setter Property="FontFamily" Value="Inter"/>
+				<Setter Property="FontWeight" Value="Bold"></Setter>
+				<Setter Property="CornerRadius" Value="25"/>
+				<Setter Property="HorizontalContentAlignment" Value="Center"/>
+				<Setter Property="VerticalContentAlignment" Value="Center"/>
+				<Setter Property="BorderBrush" Value="#0A413E"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Foreground" Value="#0A413E"/>
+				<Setter Property="Background" Value="White"/>
+			</Style>
+			<Style Selector="ToggleButton:checked">
+				<Setter Property="Background" Value="#0A413E"/>
+				<Setter Property="Foreground" Value="White"/>
+			</Style>
+			<Style Selector="ToggleButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+				<Setter Property="Background" Value="#0A413E"/>
+				<Setter Property="Foreground" Value="White"/>
+				<Setter Property="BorderBrush" Value="{Binding $parent[Button].BorderBrush} "/>
+			</Style>
+			<Style Selector="ToggleButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+				<Setter Property="Background" Value="#0A413E"/>
+				<Setter Property="Foreground" Value="White"/>
+			</Style>
+			
 		</Styles>
 
     </Application.Styles>
