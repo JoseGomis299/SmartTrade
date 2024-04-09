@@ -1,8 +1,11 @@
-﻿using System;
+﻿using SmartTradeLib.BusinessLogic;
+using SmartTradeLib.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace SmartTrade.ViewModels
 {
@@ -10,15 +13,19 @@ namespace SmartTrade.ViewModels
     {
         string name;
         string password;
+        private SmartTradeService smartTradeService;
+        User? loggeduser = MainViewModel.SmartTradeService.Logged;
+
         public LoginModel(string name, string password)
         {
             this.name = name;
             this.password = password;
         }
 
-        internal void Login(string email, string password)
+        public void Login(string email, string password)
         {
             MainViewModel.SmartTradeService.LogIn(email, password);
         }
+        public User getloggeduser(){ return loggeduser;}
     }
 }

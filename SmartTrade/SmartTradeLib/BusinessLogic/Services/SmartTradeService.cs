@@ -11,6 +11,7 @@ public class SmartTradeService : ISmartTradeService
     private readonly IDAL _dal;
     public User? Logged {get; set; }
 
+
     public SmartTradeService()
     {
         _dal = new EntityFrameworkDAL(new SmartTradeContext());
@@ -215,10 +216,10 @@ public class SmartTradeService : ISmartTradeService
                 {
                     Logged = user;
                 }
-                else throw new Exception("Contraseña incorrecta.");
+                else throw new Exception("Contraseña incorrecta");
             }
         }
-        else throw new Exception("No está registrado.");
+        else throw new Exception("Usuario no registrado");
         //prueba
 
     }
@@ -226,5 +227,10 @@ public class SmartTradeService : ISmartTradeService
     public void LogOut()
     {
         Logged = null;
+    }
+
+    public User getuser()
+    {
+        return Logged; 
     }
 }
