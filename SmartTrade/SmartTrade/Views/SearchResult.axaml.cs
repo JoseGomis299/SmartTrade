@@ -13,6 +13,15 @@ namespace SmartTrade.Views
     {
         private SearchResultModel? _model;
 
+        public SearchResult()
+        {
+            DataContext = _model = new SearchResultModel();
+            InitializeComponent();
+
+            PriceAscendingButton.Click += PriceAscendingButton_Click; ;
+            PriceDescendingButton.Click += PriceDescendingButton_Click;
+        }
+
         public SearchResult(List<Post> posts)
         {
             DataContext = _model = new SearchResultModel();
