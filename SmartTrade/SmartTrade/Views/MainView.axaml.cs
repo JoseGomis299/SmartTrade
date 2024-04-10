@@ -25,7 +25,7 @@ public partial class MainView : UserControl
     {
         _model = new MainViewModel();
         SmartTradeNavigationManager.Instance.OnNavigate += HandleNavigation;
-        SmartTradeNavigationManager.Instance.OnLogin += () => SelectButton(0);
+        SmartTradeNavigationManager.Instance.OnChangeNavigationStack += SelectButton;
         InitializeComponent();
 
         SmartTradeNavigationManager.Instance.Initialize(ViewContent, new ProductCatalog());
@@ -54,13 +54,11 @@ public partial class MainView : UserControl
     private void OnShoppingCartButtonOnClick(object? sender, RoutedEventArgs e)
     {
         SmartTradeNavigationManager.Instance.NavigateWithButton(new ShoppingCartView(), _selectedButton, 1);
-        SelectButton(1);
     }
 
     private void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
     {
         SmartTradeNavigationManager.Instance.NavigateWithButton(_model.GetCatalog(), _selectedButton, 0);
-        SelectButton(0);
     }
 
     private void OnProfileButtonOnClick(object? sender, RoutedEventArgs e)
@@ -68,7 +66,6 @@ public partial class MainView : UserControl
         if(MainViewModel.SmartTradeService.Logged == null) 
             SmartTradeNavigationManager.Instance.NavigateWithButton(new Login(), _selectedButton, 2);
         else SmartTradeNavigationManager.Instance.NavigateWithButton(new Profile(), _selectedButton, 2);
-        SelectButton(2);
     }
 
     private void SelectButton(int i)

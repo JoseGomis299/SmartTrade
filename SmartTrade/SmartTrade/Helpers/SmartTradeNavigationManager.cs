@@ -8,7 +8,7 @@ namespace SmartTrade;
 
 public class SmartTradeNavigationManager : NavigationManager
 {
-    public event Action OnLogin;
+    public event Action<int> OnChangeNavigationStack;
 
     protected Stack<ICommand> HomeCommands = new();
     protected Stack<ICommand> UserCommands = new();
@@ -31,17 +31,20 @@ public class SmartTradeNavigationManager : NavigationManager
         if (targetButton == 0)
         {
             Commands = HomeCommands;
+            OnChangeNavigationStack?.Invoke(0);
         }
         else if (targetButton == 2)
         {
             Commands = UserCommands;
+            OnChangeNavigationStack?.Invoke(2);
         }
         else if (targetButton == 1)
         {
             Commands = CartCommands;
+            OnChangeNavigationStack?.Invoke(1);
         }
 
-        if(previousButton == targetButton) Commands.Clear();
+        if (previousButton == targetButton) Commands.Clear();
 
         if(Commands.TryPeek(out var top)) top.Execute();
         else
@@ -65,6 +68,7 @@ public class SmartTradeNavigationManager : NavigationManager
             CartCommands.Clear();
 
             Commands = HomeCommands;
+            OnChangeNavigationStack?.Invoke(0);
         }
         else {
             throw new InvalidOperationException("You can only go to a Catalog when reinitializing");
@@ -74,6 +78,5 @@ public class SmartTradeNavigationManager : NavigationManager
         command.Execute();
 
         InvokeOnNavigate(targetView.GetType());
-        OnLogin?.Invoke();
     }
 }

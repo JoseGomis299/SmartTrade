@@ -12,6 +12,7 @@ namespace SmartTrade.Views
         private LoginModel? _model;
         public Login()
         {
+            DataContext = _model = new LoginModel();
             InitializeComponent();
             SignUpButton.Click += SignUpButton_click;
         }
@@ -27,16 +28,16 @@ namespace SmartTrade.Views
                 user=_model.Logged;
                 if (user is Seller seller)
                 {
-                    SmartTradeNavigationManager.Instance.NavigateAfterLogin(new SellerCatalog());
+                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(new SellerCatalog());
                 }
                 if(user is Consumer consumer)
                 {
-                    SmartTradeNavigationManager.Instance.NavigateAfterLogin(new ProductCatalog());
+                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(new ProductCatalog());
 
                 }
                 if (user is Admin admin)
                 {
-                    SmartTradeNavigationManager.Instance.NavigateAfterLogin(new AdminCatalog());
+                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(new AdminCatalog());
                 }
             }
             catch (Exception ex)
