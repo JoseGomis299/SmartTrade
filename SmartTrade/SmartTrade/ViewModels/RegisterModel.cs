@@ -1,5 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SmartTradeLib.Entities;
+using SmartTrade.Entities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,7 +11,7 @@ namespace SmartTrade.ViewModels
 {
     public class RegisterModel : ViewModelBase
     {
-        public DateTime convertDate(string dateString)
+        public DateTime ConvertDate(string dateString)
         {
             DateTime date;
             try
@@ -25,9 +25,9 @@ namespace SmartTrade.ViewModels
             }
         }
 
-        internal void RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
+        public async Task RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
         {
-            MainViewModel.SmartTradeService.RegisterConsumer(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
+           await SmartTradeService.Instance.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
         }
     }        
 }

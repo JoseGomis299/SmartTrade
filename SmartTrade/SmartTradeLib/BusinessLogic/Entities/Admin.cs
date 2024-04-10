@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace SmartTradeLib.Entities;
+namespace SmartTrade.Entities;
 
 public partial class Admin : User
 {

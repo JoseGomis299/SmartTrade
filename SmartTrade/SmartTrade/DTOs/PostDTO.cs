@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SmartTradeLib.Entities;
+using SmartTrade.Entities;
 
 namespace SmartTradeDTOs;
 
@@ -18,4 +18,5 @@ public class PostDTO
     public bool Validated { get; set; }
     public string? SellerID { get; set; }
     public List<OfferDTO> Offers { get; set; }
+
 }

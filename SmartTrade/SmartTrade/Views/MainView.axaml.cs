@@ -26,7 +26,7 @@ public partial class MainView : UserControl
 
     public MainView()
     {
-        _model = new MainViewModel();
+        DataContext = _model = new MainViewModel();
         SmartTradeNavigationManager.Instance.OnNavigate += HandleNavigation;
         SmartTradeNavigationManager.Instance.OnChangeNavigationStack += SelectButton;
         InitializeComponent();
@@ -59,14 +59,44 @@ public partial class MainView : UserControl
         SmartTradeNavigationManager.Instance.NavigateWithButton(new ShoppingCartView(), _selectedButton, 1);
     }
 
-    private void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
+    private async void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        SmartTradeNavigationManager.Instance.NavigateWithButton(_model.GetCatalog(), _selectedButton, 0);
+        if (SmartTradeService.Instance.Logged == null)
+        {
+            ProductCatalog productCatalog = new ProductCatalog();
+
+            if(SmartTradeNavigationManager.Instance.NavigateWithButton(productCatalog, _selectedButton, 0))
+                await ((ProductCatalogModel)productCatalog.DataContext).LoadProductsAsync();
+            return;
+        }
+
+        if (SmartTradeService.Instance.Logged.IsSeller)
+        {
+            SellerCatalog sellerCatalog = new SellerCatalog();
+
+            if(SmartTradeNavigationManager.Instance.NavigateWithButton(sellerCatalog, _selectedButton, 0))
+              await ((SellerCatalogModel)sellerCatalog.DataContext).LoadProductsAsync();
+            return;
+        }
+
+        if (SmartTradeService.Instance.Logged.IsAdmin)
+        {
+            AdminCatalog adminCatalog = new AdminCatalog();
+
+            if(SmartTradeNavigationManager.Instance.NavigateWithButton(adminCatalog, _selectedButton, 0))
+                await ((AdminCatalogModel)adminCatalog.DataContext).LoadProductsAsync();
+            return;
+        }
+
+        ProductCatalog productCatalogg = new ProductCatalog();
+
+        if(SmartTradeNavigationManager.Instance.NavigateWithButton(productCatalogg, _selectedButton, 0))
+         await ((ProductCatalogModel)productCatalogg.DataContext).LoadProductsAsync();
     }
 
     private void OnProfileButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        if(MainViewModel.SmartTradeService.Logged == null) 
+        if(SmartTradeService.Instance.Logged == null) 
             SmartTradeNavigationManager.Instance.NavigateWithButton(new Login(), _selectedButton, 2);
         else SmartTradeNavigationManager.Instance.NavigateWithButton(new Profile(), _selectedButton, 2);
     }
@@ -100,12 +130,12 @@ public partial class MainView : UserControl
         BottomBar.IsVisible = true;
     }
 
-    private void AutoCompleteBox_KeyDown(object? sender, KeyEventArgs e)
+    private async void AutoCompleteBox_KeyDown(object? sender, KeyEventArgs e)
     {
 
         if (e.Key.Equals(Key.Enter))
         {
-            SmartTradeNavigationManager.Instance.NavigateToOverriding(new SearchResult(_model.LoadProducts()));
+            SmartTradeNavigationManager.Instance.NavigateToOverriding(new SearchResult(await _model.LoadProductsAsync()));
         }
     }
 

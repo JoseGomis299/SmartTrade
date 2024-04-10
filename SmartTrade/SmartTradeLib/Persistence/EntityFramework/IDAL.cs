@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartTradeLib.Persistence
+namespace SmartTrade.Persistence
 {
     public interface IDAL
     {

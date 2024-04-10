@@ -1,17 +1,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using SmartTrade.ViewModels;
-using System.Collections.ObjectModel;
-using Avalonia.Controls.Templates;
-using Avalonia.Markup.Xaml.Templates;
-using SmartTradeLib.Entities;
-using Avalonia.Media;
 using Microsoft.IdentityModel.Tokens;
-using ReactiveUI;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.VisualTree;
-using Avalonia;
+using SmartTrade.ViewModels;
+using SmartTrade.Entities;
 
 namespace SmartTrade.Views
 {
@@ -38,7 +30,7 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.NavigateBack();
         }
 
-        private void OnConfirmButtonOnClick(object? sender, RoutedEventArgs e)
+        private async void OnConfirmButtonOnClick(object? sender, RoutedEventArgs e)
         {
             ClearErrors();
             bool hasErrors = false;
@@ -97,7 +89,7 @@ namespace SmartTrade.Views
 
             if (hasErrors) return;
 
-            _model.PublishPost();
+            await _model.PublishPostAsync();
             SmartTradeNavigationManager.Instance.NavigateBack();
         }
 

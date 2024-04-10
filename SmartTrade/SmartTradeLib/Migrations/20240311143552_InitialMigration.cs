@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SmartTradeLib.Migrations
+namespace SmartTrade.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration

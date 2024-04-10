@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 
 namespace SmartTrade.Controls
@@ -69,6 +67,14 @@ namespace SmartTrade.Controls
                 if (DataSource.Count == 0)
                 {
                     Hide();
+
+                    DataSource.CollectionChanged += (sender, args) =>
+                    {
+                        if (DataSource.Count > 0)
+                        {
+                            Show();
+                        }
+                    };
                 }
                 else
                 {

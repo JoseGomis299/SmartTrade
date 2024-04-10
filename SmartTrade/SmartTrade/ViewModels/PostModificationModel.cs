@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using SmartTradeDTOs;
-using SmartTradeLib.Entities;
+using SmartTrade.Entities;
 
 namespace SmartTrade.ViewModels;
 

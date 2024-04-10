@@ -7,8 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Microsoft.IdentityModel.Tokens;
-using SmartTrade.ViewModels;
-using SmartTradeLib.Entities;
+using SmartTrade.Entities;
 
 namespace SmartTrade    
 {

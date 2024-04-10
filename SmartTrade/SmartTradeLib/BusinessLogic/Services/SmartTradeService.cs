@@ -1,16 +1,14 @@
 ﻿using FuzzySharp;
-using SmartTradeLib.Entities;
-using SmartTradeLib.Persistence;
 using SmartTradeDTOs;
 using Newtonsoft.Json;
+using SmartTrade.Entities;
+using SmartTrade.Persistence;
 
-namespace SmartTradeLib.BusinessLogic;
+namespace SmartTrade.BusinessLogic;
 
 public class SmartTradeService : ISmartTradeService
 {
     private readonly IDAL _dal;
-    public User? Logged {get; set; }
-
 
     public SmartTradeService()
     {
@@ -44,16 +42,16 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public Post AddPost(string postInfoJson)
+    public Post AddPost(string postInfoJson, string loggedID)
     {
         //LogIn("ChiclesPepito@gmail.com", "123");
-
+        User? logged = _dal.GetById<User>(loggedID);
         PostDTO postDto = JsonConvert.DeserializeObject<PostDTO>(postInfoJson);
 
         Seller? seller = null;
         if(postDto.SellerID != null) seller = _dal.GetById<Seller>(postDto.SellerID);
 
-        Post post = new Post(postDto.Title, postDto.Description, postDto.Validated || Logged is Admin, seller ??= (Seller) Logged);
+        Post post = new Post(postDto.Title, postDto.Description, postDto.Validated || logged is Admin, seller ??= (Seller)logged);
 
         List<Product> products = new();
         List<Offer> offers = new();
@@ -102,21 +100,22 @@ public class SmartTradeService : ISmartTradeService
         return post;
     }
 
-    public void EditPost(int postID, string postInfoJson)
+    public void EditPost(int postID, string postInfoJson, string loggedID)
     {
         DeletePost(postID);
-        AddPost(postInfoJson);
+        AddPost(postInfoJson, loggedID);
 
         _dal.Commit();
     }
 
-    public string GetPosts()
+    public string GetPosts(string? loggedID)
     { 
+        User? logged = _dal.GetById<User>(loggedID);
         List<Post> posts = new();
         List<PostDTO> postDtos = new();
 
-        if(Logged is Admin) posts = _dal.GetWhere<Post>(x => !x.Validated).ToList();
-        else if (Logged is Seller seller) posts = seller.Posts.Where(x => x.Validated).ToList();
+        if(logged is Admin) posts = _dal.GetWhere<Post>(x => !x.Validated).ToList();
+        else if (logged is Seller seller) posts = seller.Posts.Where(x => x.Validated).ToList();
         else posts = _dal.GetWhere<Post>(x => x.Validated).ToList();
 
         foreach (var post in posts)
@@ -179,60 +178,41 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public void RegisterConsumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address)
+    public string RegisterConsumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address)
     {
         if (_dal.GetWhere<Consumer>(x => x.Email == email).Any() || _dal.GetWhere<Consumer>(x => x.DNI == dni).Any())
         {
             throw new Exception("Usuario existente");
         }
-        else
-        {
-            _dal.Insert<Consumer>(new Consumer(email, password, name, lastNames, dni, birthDate, billingAddress, address));
-            _dal.Commit();
 
-        }
+        Consumer consumer = new Consumer(email, password, name, lastNames, dni, birthDate, billingAddress, address);
+        _dal.Insert<Consumer>(consumer);
+        _dal.Commit();
+
+        return JsonConvert.SerializeObject(new ConsumerDTO(consumer));
     }
 
-    public void RegisterSeller(string email, string password, string name, string lastNames, string dni, string companyName, string iban)
+    public string RegisterSeller(string email, string password, string name, string lastNames, string dni, string companyName, string iban)
     {
         if (_dal.GetWhere<Seller>(x => x.Email == email).Any() || _dal.GetWhere<Seller>(x => x.DNI == dni).Any() || _dal.GetWhere<Seller>(x => x.IBAN == iban).Any())
         {
             throw new Exception("Usuario existente");
         }
-        else
-        {
-            _dal.Insert<Seller>(new Seller(email, password, name, lastNames, dni, companyName, iban));
-            _dal.Commit();
 
-        }
+        Seller seller = new Seller(email, password, name, lastNames, dni, companyName, iban);
+        _dal.Insert<Seller>(seller);
+        _dal.Commit();
+
+        return JsonConvert.SerializeObject(new SellerDTO(seller));
     }
 
-    public void LogIn(string email, string password)
+    public string LogIn(string email, string password)
     {
-        if (_dal.GetWhere<User>(x => x.Email == email).Any())
-        {
-            User user = user = _dal.GetById<User>(email);
-            if (user != null)
-            {
-                if (user.Password == password)
-                {
-                    Logged = user;
-                }
-                else throw new Exception("Contraseña incorrecta");
-            }
-        }
-        else throw new Exception("Usuario no registrado");
-        //prueba
+        if (!_dal.GetWhere<User>(x => x.Email == email).Any()) throw new Exception("Usuario no registrado");
+            
+        User user = _dal.GetById<User>(email);
+        if (user.Password != password) throw new Exception("Contraseña incorrecta");
 
-    }
-
-    public void LogOut()
-    {
-        Logged = null;
-    }
-
-    public User getuser()
-    {
-        return Logged; 
+        return JsonConvert.SerializeObject(new UserDTO(user));
     }
 }

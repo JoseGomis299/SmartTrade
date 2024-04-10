@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SmartTradeLib.BusinessLogic;
+using SmartTrade.BusinessLogic;
 
-namespace SmartTradeLib.Entities;
+namespace SmartTrade.Entities;
 
     public partial class Product
     {

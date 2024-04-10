@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
@@ -30,18 +31,18 @@ public class ValidatePostModel : PostModificationModel
         }
     }
 
-    public void ValidatePost()
+    public async Task ValidatePostAsync()
     {
         PostDTO postDto = CreatePostInfo(Post.SellerID);
         postDto.Validated = true;
 
         string postInfoJson = JsonConvert.SerializeObject(postDto);
 
-        MainViewModel.SmartTradeService.EditPost((int) Post.Id, postInfoJson);
+        await SmartTradeService.Instance.EditPostAsync((int) Post.Id, postInfoJson);
     }
 
-    public void RejectPost()
+    public async Task RejectPostAsync()
     {
-        MainViewModel.SmartTradeService.DeletePost((int) Post.Id);
+       await SmartTradeService.Instance.DeletePostAsync((int) Post.Id);
     }
 }

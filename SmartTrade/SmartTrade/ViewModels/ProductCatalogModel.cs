@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using ReactiveUI;
 using SmartTrade.Views;
 using SmartTradeDTOs;
-using SmartTradeLib.Entities;
+using SmartTrade.Entities;
 
 namespace SmartTrade.ViewModels
 {
@@ -25,12 +25,11 @@ namespace SmartTrade.ViewModels
             OtherProducts = new ObservableCollection<ProductModel>();
             RecommendedProducts = new ObservableCollection<ProductModel>();
             RelatedProducts = new ObservableCollection<ProductModel>();
-            LoadProducts();
         }
 
-        private void LoadProducts()
+        public async Task LoadProductsAsync()
         {
-            List<PostDTO> posts = JsonConvert.DeserializeObject<List<PostDTO>>(MainViewModel.SmartTradeService.GetPosts());
+            List<PostDTO> posts = JsonConvert.DeserializeObject<List<PostDTO>>(await SmartTradeService.Instance.GetPostsAsync());
 
             posts.ForEach(post =>
             {

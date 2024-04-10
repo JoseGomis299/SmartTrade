@@ -1,15 +1,14 @@
-﻿using SmartTradeLib.Entities;
-using SmartTradeLib.Persistence;
-using System;
-using System.Collections.Concurrent;
-using SmartTradeAPI.Library.Persistence.NewFolder;
+﻿using FuzzySharp;
+using SmartTradeDTOs;
+using Newtonsoft.Json;
+using SmartTrade.Entities;
+using SmartTrade.Persistence;
 
-namespace SmartTradeLib.BusinessLogic;
+namespace SmartTrade.BusinessLogic;
 
 public class SmartTradeService : ISmartTradeService
 {
     private readonly IDAL _dal;
-    public User? Logged {get; set; }
 
     public SmartTradeService()
     {
@@ -43,26 +42,28 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public Post AddPost(string? title, string? description, string? productName, Category category, int minimumAge,
-        string howToUse,
-        string? certifications, string? ecologicPrint, string? howToReducePrint, bool validated, List<int> stocks,
-        List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
-        Seller? seller = null)
+    public void AddPost(PostDTO postInfo, string loggedID)
     {
-        LogIn("ChiclesPepito@gmail.com", "123");
-        
-        Post post = new Post(title, description, validated, seller ??= (Seller) Logged);
+        //LogIn("ChiclesPepito@gmail.com", "123");
+        User? logged = _dal.GetById<User>(loggedID);
 
+        Seller? seller = null;
+        if(postInfo.SellerID != null) seller = _dal.GetById<Seller>(postInfo.SellerID);
+
+        Post post = new Post(postInfo.Title, postInfo.Description, postInfo.Validated || logged is Admin, seller ??= (Seller)logged);
 
         List<Product> products = new();
         List<Offer> offers = new();
 
         //var dbProducts = _dal.GetAll<Product>();
 
-        for (int i = 0; i < stocks.Count; i++)
+        for (int i = 0; i < postInfo.Offers.Count; i++)
         {
-            Product product = ProductFactory.GetFactory(category).CreateProduct(productName, certifications, ecologicPrint, minimumAge, howToUse, howToReducePrint, attributes[i]);
-            foreach (var image in images[i])
+            OfferDTO offerDto = postInfo.Offers[i];
+            ProductDTO productDto = offerDto.Product;
+
+            Product product = ProductFactory.GetFactory(postInfo.Category).CreateProduct(postInfo.ProductName, postInfo.Certifications, postInfo.EcologicPrint, postInfo.MinimumAge, postInfo.HowToUse, postInfo.HowToReducePrint, productDto.Attributes);
+            foreach (var image in productDto.Images)
             {
                 product.AddImage(new Image(image));
             }
@@ -82,7 +83,7 @@ public class SmartTradeService : ISmartTradeService
             }
             products.Add(product);
 
-            offers.Add(new Offer(products[i], prices[i], shippingCosts[i], stocks[i]));
+            offers.Add(new Offer(product, offerDto.Price, offerDto.ShippingCost, offerDto.Stock));
         }
 
         seller.Posts.Add(post);
@@ -95,51 +96,56 @@ public class SmartTradeService : ISmartTradeService
         }
 
         _dal.Commit();
-        return post;
     }
 
-    public void EditPost(string? title, string? description, string? productName, Category category, int minimumAge,
-        string howToUse, string? certifications, string? ecologicPrint, string? howToReducePrint, List<int> stocks,
-        List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
-        int postID, bool validated)
+    public void EditPost(int postID, PostDTO postInfo, string loggedID)
     {
-        Post post = _dal.GetById<Post>(postID);
-        Seller seller = _dal.GetById<Seller>(post.Seller.Email);
-        RemovePost(post);
+        DeletePost(postID);
+        AddPost(postInfo, loggedID);
 
-        var newPost = AddPost(title, description, productName, category, minimumAge, howToUse,certifications, ecologicPrint, howToReducePrint, validated, stocks, prices, shippingCosts, images, attributes, seller);
-
-
-      //  RemovePost(post);
-        //        ((Admin)Logged).EditPost(post);
         _dal.Commit();
     }
 
-    public void EditPost(string? title, string? description, string? productName, Category category, int minimumAge,
-        string howToUse, string? certifications, string? ecologicPrint, string? howToReducePrint, List<int> stocks, List<float> prices,
-        List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes, Post post)
-    {
-        throw new NotImplementedException();
-    }
+    public List<PostDTO> GetPosts(string? loggedID)
+    { 
+        User? logged = _dal.GetById<User>(loggedID);
+        List<Post> posts = new();
+        List<PostDTO> postDtos = new();
 
-    public List<PostDTO> GetPosts()
-    {
-        List<Post> posts;
-
-        if(Logged is Seller seller) posts = seller.Posts.ToList();
+        if(logged is Admin) posts = _dal.GetWhere<Post>(x => !x.Validated).ToList();
+        else if (logged is Seller seller) posts = seller.Posts.Where(x => x.Validated).ToList();
         else posts = _dal.GetWhere<Post>(x => x.Validated).ToList();
 
-        return posts.Select(post => new PostDTO(post)).ToList();
+        foreach (var post in posts)
+        {
+            postDtos.Add(new PostDTO(post));   
+        }
+
+        return postDtos;
     }
 
-    public void RejectPost(int postID)
+    public PostDTO GetPost(int postId)
+    {
+        return new PostDTO(_dal.GetById<Post>(postId));
+    }
+
+    public List<PostDTO> GetPostsFuzzyContain(string searchFor)
+    {
+        List<Post> posts = _dal.GetAll<Post>().Where(x => Fuzz.PartialTokenSortRatio(searchFor,x.Title) > 60)
+            .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title)).ToList();
+
+        return posts.Select(x => new PostDTO(x)).ToList();
+    }
+
+    public List<string> GetPostsNamesStartWith(string startWith, int numPosts)
+    {
+        var res = _dal.GetWhere<Post>(x => x.Title.StartsWith(startWith)).Select(y => new string(y.Title)).ToList();
+        return res.Take(Math.Min(numPosts, res.Count)).ToList();
+    }
+
+    public void DeletePost(int postID)
     {
         Post post = _dal.GetById<Post>(postID);
-        RemovePost(post);
-    }
-
-    private void RemovePost(Post post)
-    {
         post.Seller.Posts.Remove(post);
 
         foreach (var offer in post.Offers)
@@ -158,82 +164,45 @@ public class SmartTradeService : ISmartTradeService
         }
         post.Offers.Clear();
         _dal.Delete<Post>(post);
-     
+
         _dal.Commit();
     }
 
-    public void AddPost(Post post)
+    public ConsumerDTO RegisterConsumer(ConsumerRegisterData registerData)
     {
-        _dal.Insert<Post>(post);
-        _dal.Commit();
-    }
-
-    public void AddAlert(Alert alert)
-    {
-        _dal.Insert<Alert>(alert);
-        _dal.Commit();
-    }
-
-    public void RegisterConsumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address)
-    {
-        if (_dal.GetWhere<Consumer>(x => x.Email == email).Any() || _dal.GetWhere<Consumer>(x => x.DNI == dni).Any())
+        if (_dal.GetWhere<Consumer>(x => x.Email == registerData.Email).Any() || _dal.GetWhere<Consumer>(x => x.DNI == registerData.DNI).Any())
         {
             throw new Exception("Usuario existente");
         }
-        else
-        {
-            _dal.Insert<Consumer>(new Consumer(email, password, name, lastNames, dni, birthDate, billingAddress, address));
-            _dal.Commit();
 
-        }
+        Consumer consumer = new Consumer(registerData.Email, registerData.Password, registerData.Password, registerData.Password, registerData.DNI, registerData.BirthDate, registerData.BillingAddress, registerData.Address);
+        _dal.Insert<Consumer>(consumer);
+        _dal.Commit();
+
+        return new ConsumerDTO(consumer);
     }
 
-    public void RejectPost(Post post)
+    public SellerDTO RegisterSeller(SellerRegisterData registerData)
     {
-        throw new NotImplementedException();
-    }
-
-    public void RegisterSeller(string email, string password, string name, string lastNames, string dni, string companyName, string iban)
-    {
-        if (_dal.GetWhere<Seller>(x => x.Email == email).Any() || _dal.GetWhere<Seller>(x => x.DNI == dni).Any() || _dal.GetWhere<Seller>(x => x.IBAN == iban).Any())
+        if (_dal.GetWhere<Seller>(x => x.Email == registerData.Email).Any() || _dal.GetWhere<Seller>(x => x.DNI == registerData.DNI).Any())
         {
             throw new Exception("Usuario existente");
         }
-        else
-        {
-            _dal.Insert<Seller>(new Seller(email, password, name, lastNames, dni, companyName, iban));
-            _dal.Commit();
 
-        }
+        Seller seller = new Seller(registerData.Email, registerData.Password, registerData.Name, registerData.LastNames, registerData.DNI, registerData.CompanyName, registerData.IBAN);
+        _dal.Insert<Seller>(seller);
+        _dal.Commit();
+
+        return new SellerDTO(seller);
     }
 
-    public void LogIn(string email, string password)
+    public UserDTO LogIn(string email, string password)
     {
-        if (_dal.GetWhere<User>(x => x.Email == email).Any())
-        {
-            User user = user = _dal.GetById<User>(email);
-            if (user != null)
-            {
-                if (user.Password == password)
-                {
-                    Logged = user;
-                }
-                else throw new Exception("Contraseña incorrecta.");
-            }
-        }
-        else throw new Exception("No está registrado.");
-        //prueba
+        if (!_dal.GetWhere<User>(x => x.Email == email).Any()) throw new Exception("Usuario no registrado");
+            
+        User user = _dal.GetById<User>(email);
+        if (user.Password != password) throw new Exception("Contraseña incorrecta");
 
-    }
-
-    public void LogOut()
-    {
-        Logged = null;
-    }
-
-    public PostDTO GetPost(int id)
-    {
-        Post post = _dal.GetById<Post>(id);
-        return new PostDTO(post);
+        return new UserDTO(user);
     }
 }

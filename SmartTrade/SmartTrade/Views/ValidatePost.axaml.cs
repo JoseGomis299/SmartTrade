@@ -1,11 +1,9 @@
-using System;
-using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 using SmartTradeDTOs;
-using SmartTradeLib.Entities;
 
 namespace SmartTrade.Views
 {
@@ -32,7 +30,7 @@ namespace SmartTrade.Views
             CategoryComboBox.ComboBox.ItemsSource = categories;
             CategoryComboBox.SelectedItem = categories[(int)_model.Category];
 
-            ConfirmButton.Click += Validate;
+            ConfirmButton.Click += ValidateAsync;
             RejectButton.Click += Reject;
             CancelButton.Click += Cancel;
         }
@@ -42,12 +40,12 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.NavigateBack();
         }
 
-        private void Reject(object? sender, RoutedEventArgs e)
+        private async void Reject(object? sender, RoutedEventArgs e)
         {
-            _model.RejectPost();
+            await _model.RejectPostAsync();
         }
 
-        private void Validate(object? sender, RoutedEventArgs e)
+        private async void ValidateAsync(object? sender, RoutedEventArgs e)
         {
             ClearErrors();
             bool hasErrors = false;
@@ -94,7 +92,7 @@ namespace SmartTrade.Views
 
             if (hasErrors) return;
 
-            _model.ValidatePost();
+           await _model.ValidatePostAsync();
         }
 
         private void ClearErrors()

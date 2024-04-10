@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 
-namespace SmartTradeLib.Persistence
+namespace SmartTrade.Persistence
 {
     public class EntityFrameworkDAL : IDAL
     {
@@ -40,11 +39,6 @@ namespace SmartTradeLib.Persistence
         public void Clear<T>() where T : class
         {
             dbContext.Set<T>().RemoveRange(dbContext.Set<T>());
-        }
-
-        public async Task<IEnumerable<T>> GetWhereAsync<T>(Expression<Func<T, bool>> predicate) where T : class
-        {
-            return await dbContext.Set<T>().Where(predicate).ToListAsync();
         }
 
         public IEnumerable<T> GetWhere<T>(Expression<Func<T, bool>> predicate) where T : class

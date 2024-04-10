@@ -1,8 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using SmartTrade.ViewModels;
-using SmartTradeLib.BusinessLogic;
-using SmartTradeLib.Entities;
 using System;
 
 namespace SmartTrade.Views
@@ -24,27 +22,35 @@ namespace SmartTrade.Views
 
         }
         
-        private void SignUpButton_click(object? sender, RoutedEventArgs e)
+        private async void SignUpButton_click(object? sender, RoutedEventArgs e)
         {
             string email = TextBoxEmail.Text;
             string password = TextBoxPassword.Text;
-            User user;
+
             try
             {
-                _model.Login(email, password);
-                user=_model.Logged;
-                if (user is Seller seller)
-                {
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(new SellerCatalog());
-                }
-                if(user is Consumer consumer)
-                {
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(new ProductCatalog());
+                await _model.Login(email, password);
 
-                }
-                if (user is Admin admin)
+                if (_model.Logged.IsSeller)
                 {
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(new AdminCatalog());
+                    SellerCatalog sellerCatalog = new SellerCatalog();
+
+                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(sellerCatalog);
+                    await ((SellerCatalogModel) sellerCatalog.DataContext).LoadProductsAsync();
+                }
+                if(_model.Logged.IsConsumer)
+                {
+                    ProductCatalog productCatalog = new ProductCatalog();
+
+                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(productCatalog);
+                    await ((ProductCatalogModel) productCatalog.DataContext).LoadProductsAsync();
+                }
+                if (_model.Logged.IsAdmin)
+                {
+                    AdminCatalog adminCatalog = new AdminCatalog();
+
+                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(adminCatalog);
+                    await ((AdminCatalogModel) adminCatalog.DataContext).LoadProductsAsync();
                 }
             }
             catch (Exception ex)

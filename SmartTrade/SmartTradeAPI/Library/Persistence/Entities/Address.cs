@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SmartTradeLib.Entities;
+namespace SmartTrade.Entities;
 
 public partial class Address
 {

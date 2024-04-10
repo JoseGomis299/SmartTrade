@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmartTradeLib.Entities
+namespace SmartTrade.Entities
 {
     public abstract class ProductFactory
     {

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace SmartTradeLib.Persistence
+namespace SmartTrade.Persistence
 {
     public class EntityFrameworkDAL : IDAL
     {

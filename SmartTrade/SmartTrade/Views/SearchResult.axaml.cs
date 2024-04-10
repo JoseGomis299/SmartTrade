@@ -1,12 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
-using System;
 using System.Collections.Generic;
 using SmartTradeDTOs;
-using SmartTradeLib.Entities;
 
 namespace SmartTrade.Views
 {
@@ -23,7 +19,7 @@ namespace SmartTrade.Views
             PriceDescendingButton.Click += PriceDescendingButton_Click;
         }
 
-        public SearchResult(List<PostDTO> posts)
+        public SearchResult(List<PostDTO>? posts)
         {
             DataContext = _model = new SearchResultModel();
             foreach (var post in posts)
@@ -86,7 +82,7 @@ namespace SmartTrade.Views
 
         //        _model.OriginalSearchedProducts.Clear();
         //        _model.SearchedProducts.Clear();
-        //        _model.LoadProducts().ForEach(post =>
+        //        _model.LoadProductsAsync().ForEach(post =>
         //        {
         //            _model.OriginalSearchedProducts.Add(new ProductModel(post));
         //            _model.SearchedProducts.Add(new ProductModel(post));

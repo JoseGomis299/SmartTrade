@@ -1,11 +1,10 @@
-﻿using SmartTradeDTOs;
-using SmartTradeLib.Entities;
+﻿using SmartTrade.Entities;
+using SmartTradeDTOs;
 
-namespace SmartTradeLib.BusinessLogic
+namespace SmartTrade.BusinessLogic
 {
     public interface ISmartTradeService
     {
-        public User? Logged { get; set; }
         public void SaveChanges();
         public void RemoveAll();
 
@@ -13,22 +12,25 @@ namespace SmartTradeLib.BusinessLogic
         public void AddCostumer(Consumer costumer);
         public void AddSeller(Seller seller);
 
-        public Post AddPost(string postInfoJson);
+        public Post AddPost(string postInfoJson, string loggedID);
 
-        public void EditPost(int postID, string postInfoJson);
+        public void EditPost(int postID, string postInfoJson, string loggedID);
 
-        public void LogIn(string email, string password);
+        //Returns UserDTO
+        public string LogIn(string email, string password);
 
-        public void RegisterSeller(string email, string password, string name, string lastNames, string dni,
+        //Returns SellerDTO
+        public string RegisterSeller(string email, string password, string name, string lastNames, string dni,
             string companyName, string iban);
 
-        public void RegisterConsumer(string email, string password, string name, string lastNames, string dni,
+        //Returns ConsumerDTO
+        public string RegisterConsumer(string email, string password, string name, string lastNames, string dni,
             DateTime birthDate, Address billingAddress, Address address);
 
         public void DeletePost(int postID);
 
         //Returns List<PostDTO>
-        public string GetPosts();
+        public string GetPosts(string? loggedID);
         //Returns List<PostDTO>
         public string GetPostsFuzzyContain(string searchFor);
         public List<String> GetPostsNamesStartWith(string startWith, int numPosts);

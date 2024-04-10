@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SmartTradeDTOs;
 
@@ -21,11 +20,11 @@ namespace SmartTrade.ViewModels
             }
         }
 
-        public void PublishPost()
+        public async Task PublishPostAsync()
         {
            PostDTO postDto = CreatePostInfo(null);
 
-            MainViewModel.SmartTradeService.AddPost(JsonConvert.SerializeObject(postDto));
+           await SmartTradeService.Instance.AddPostAsync(postDto);
         }
     }
 }

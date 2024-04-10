@@ -1,4 +1,6 @@
-﻿namespace SmartTradeDTOs;
+﻿using SmartTrade.Entities;
+
+namespace SmartTradeDTOs;
 
 public class OfferDTO
 {

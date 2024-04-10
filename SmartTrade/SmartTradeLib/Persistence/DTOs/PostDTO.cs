@@ -1,4 +1,4 @@
-﻿using SmartTradeLib.Entities;
+﻿using SmartTrade.Entities;
 
 namespace SmartTradeDTOs;
 

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using SmartTradeLib.Entities;
+using SmartTrade.Entities;
 
-namespace SmartTradeLib.Persistence;
+namespace SmartTrade.Persistence;
 
 public class SmartTradeContext : BaseDbContext
 {

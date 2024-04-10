@@ -1,21 +1,17 @@
-﻿using SmartTradeLib.BusinessLogic;
-using SmartTradeLib.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SmartTradeDTOs;
+using SmartTrade.Entities;
 
 
 namespace SmartTrade.ViewModels
 {
     public class LoginModel : ViewModelBase
     {
-        public User? Logged => MainViewModel.SmartTradeService.Logged;
-
-        public void Login(string email, string password)
+        public UserDTO Logged => SmartTradeService.Instance.Logged;
+        public async Task Login(string email, string password)
         {
-            MainViewModel.SmartTradeService.LogIn(email, password);
+           await SmartTradeService.Instance.LogInAsync(email, password);
         }
     }
 }

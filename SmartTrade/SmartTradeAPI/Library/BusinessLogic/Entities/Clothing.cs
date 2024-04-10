@@ -1,6 +1,6 @@
-﻿using SmartTradeLib.BusinessLogic;
+﻿using SmartTrade.BusinessLogic;
 
-namespace SmartTradeLib.Entities;
+namespace SmartTrade.Entities;
 
 public partial class Clothing : Product
 {

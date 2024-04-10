@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using SmartTrade;
 using SmartTradeDTOs;
-using SmartTradeLib.Entities;
+using SmartTrade.Entities;
 
 
 namespace SmartTrade.Views

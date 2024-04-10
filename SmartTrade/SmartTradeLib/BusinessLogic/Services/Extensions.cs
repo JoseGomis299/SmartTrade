@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartTradeLib.BusinessLogic
+namespace SmartTrade.BusinessLogic
 {
     public static class Extensions
     {

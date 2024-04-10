@@ -14,7 +14,7 @@ public class SmartTradeNavigationManager : NavigationManager
     protected Stack<ICommand> UserCommands = new();
     protected Stack<ICommand> CartCommands = new();
 
-    protected static SmartTradeNavigationManager _instance;
+    protected static SmartTradeNavigationManager? _instance;
     public static SmartTradeNavigationManager Instance => _instance ??= new SmartTradeNavigationManager();
 
     public override void Initialize(ContentControl mainView, ContentControl targetView)
@@ -23,7 +23,7 @@ public class SmartTradeNavigationManager : NavigationManager
         NavigateWithButton(targetView, 0, 0);
     }
 
-    public void NavigateWithButton(ContentControl targetView, int previousButton, int targetButton)
+    public bool NavigateWithButton(ContentControl targetView, int previousButton, int targetButton)
     {
         if (Navigator == null)
             throw new InvalidOperationException("Navigator not initialized");
@@ -50,10 +50,13 @@ public class SmartTradeNavigationManager : NavigationManager
         else
         {
             ICommand command = new NavigateToCommand(Navigator, targetView);
+            if (previousButton != targetButton) command = new NavigateToCommand(Navigator, targetView.GetType());
+
             command.Execute();
         }
 
         InvokeOnNavigate(targetView.GetType());
+        return previousButton == targetButton;
     }
 
     public void ReInitializeNavigation(ContentControl targetView)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SmartTradeDTOs;
 
@@ -12,12 +13,11 @@ public class AdminCatalogModel : ViewModelBase
     public AdminCatalogModel()
     {
         MyProducts = new ObservableCollection<ProductModel>();
-        LoadProducts();
     }
 
-    private void LoadProducts()
+    public async Task LoadProductsAsync()
     {
-        List<PostDTO> posts = JsonConvert.DeserializeObject<List<PostDTO>>(MainViewModel.SmartTradeService.GetPosts());
+        List<PostDTO> posts = JsonConvert.DeserializeObject<List<PostDTO>>(await SmartTradeService.Instance.GetPostsAsync());
 
         posts.ForEach(post =>
         {

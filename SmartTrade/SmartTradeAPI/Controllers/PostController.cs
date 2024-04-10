@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartTradeAPI.Library.Persistence.NewFolder;
-using SmartTradeLib.BusinessLogic;
-using SmartTradeLib.Entities;
+using SmartTrade.BusinessLogic;
+using SmartTradeDTOs;
 
 namespace SmartTradeAPI.Controllers
 {
@@ -9,79 +8,61 @@ namespace SmartTradeAPI.Controllers
     [Route("SmartTradeAPI/Post")]
     public class PostController : ControllerBase
     {
-        [HttpGet(Name = "GetAll")]
+        [HttpGet("GetAll", Name = "GetAll")]
         public IEnumerable<PostDTO> Get()
         {
-            SmartTradeService service = new();
-            return service.GetPosts();
+            ISmartTradeService service = new SmartTradeService();
+            string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+            return service.GetPosts(loggedId);
         }
 
-        [HttpGet("{id}", Name = "GetPost")]
+        [HttpGet("GetContaining",Name = "GetContaining")]
+        public IEnumerable<PostDTO> GetOnesThatContain(string content)
+        {
+            ISmartTradeService service = new SmartTradeService();
+
+            return service.GetPostsFuzzyContain(content);
+        }
+
+        [HttpGet("GetAllNames", Name = "GetAllNames")]
+        public IEnumerable<String> GetNames()
+        {
+            ISmartTradeService service = new SmartTradeService();
+
+            return service.GetPostsNamesStartWith("", Int32.MaxValue);
+        }
+
+        [HttpGet("GetById")]
         public PostDTO Get(int id)
         {
-            SmartTradeService service = new();
+            ISmartTradeService service = new SmartTradeService();
             return service.GetPost(id);
         }
 
-        [HttpPost(Name = "PublishPost")]
-        public void Post([FromBody] PostInfo info)
+        [HttpPost("PublishPost")]
+        public void Post([FromBody] PostDTO info)
         {
-            SmartTradeService service = new();
+            ISmartTradeService service = new SmartTradeService();
+            string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;    
 
-            List<int> stocks = new();
-            List<float> prices = new();
-            List<float> shippingCosts = new();
-            List<List<byte[]>> images = new();
-            List<List<string>> attributes = new();
-
-            foreach (var offer in info.Offers)
-            {
-                stocks.Add(offer.stock);
-                prices.Add(offer.price);
-                shippingCosts.Add(offer.shippingCost);
-
-                foreach (var product in offer.products)
-                {
-                    images.Add(product.images);
-                    attributes.Add(product.attributes);
-                }
-            }
-
-            service.AddPost(info.Title, info.Description, info.ProductName, info.Category, info.MinimumAge, info.HowToUse, info.Certifications, info.EcologicPrint, info.HowToReducePrint, false, stocks, prices, shippingCosts, images, attributes);
+            service.AddPost(info, loggedId);
         }
 
-        [HttpPut("{id}", Name = "EditPost")]
-        public void Put(int id, [FromBody] PostInfo info)
+        [HttpPut("EditPost")]
+        public void Put(int id, [FromBody] PostDTO info)
         {
-            SmartTradeService service = new();
+            SmartTradeService service = new SmartTradeService();
+            string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
 
-            List<int> stocks = new();
-            List<float> prices = new();
-            List<float> shippingCosts = new();
-            List<List<byte[]>> images = new();
-            List<List<string>> attributes = new();
-
-            foreach (var offer in info.Offers)
-            {
-                stocks.Add(offer.stock);
-                prices.Add(offer.price);
-                shippingCosts.Add(offer.shippingCost);
-
-                foreach (var product in offer.products)
-                {
-                    images.Add(product.images);
-                    attributes.Add(product.attributes);
-                }
-            }
-
-            service.EditPost(info.Title, info.Description, info.ProductName, info.Category, info.MinimumAge, info.HowToUse, info.Certifications, info.EcologicPrint, info.HowToReducePrint, stocks, prices, shippingCosts, images, attributes, id, info.Validated);
+            service.EditPost(id, info, loggedId);
         }
 
-        [HttpDelete("{id}", Name = "RemovePost")]
+        [HttpDelete("RemovePost")]
         public void Delete(int id)
         {
             SmartTradeService service = new();
-            service.RejectPost(id);
+            service.DeletePost(id);
         }
     }
 }

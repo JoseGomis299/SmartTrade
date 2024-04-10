@@ -9,7 +9,7 @@ public class NavigationManager
 {
     public event Action<Type> OnNavigate;
 
-    protected Navigator? Navigator;
+    public Navigator? Navigator;
     protected Stack<ICommand> Commands = new();
 
     protected static NavigationManager _instance;

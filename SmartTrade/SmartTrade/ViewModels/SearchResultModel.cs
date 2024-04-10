@@ -13,7 +13,7 @@ using Avalonia.Media.Imaging;
 using DynamicData.Binding;
 using ReactiveUI;
 using SmartTrade.Views;
-using SmartTradeLib.Entities;
+using SmartTrade.Entities;
 
 namespace SmartTrade.ViewModels
 {

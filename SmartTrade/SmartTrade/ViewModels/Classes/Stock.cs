@@ -8,7 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using SmartTradeDTOs;
-using SmartTradeLib.Entities;
+using SmartTrade.Entities;
 
 namespace SmartTrade.ViewModels;
 

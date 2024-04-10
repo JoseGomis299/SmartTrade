@@ -1,8 +1,9 @@
-﻿using SmartTradeLib.Entities;
+﻿using SmartTrade.Entities;
 using System.Collections.ObjectModel;
 using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
@@ -14,12 +15,11 @@ public class SellerCatalogModel : ViewModelBase
     public SellerCatalogModel()
     {
         MyProducts = new ObservableCollection<ProductModel>();
-        LoadProducts();
     }
 
-    private void LoadProducts()
+    public async Task LoadProductsAsync()
     {
-        List<PostDTO> posts = JsonConvert.DeserializeObject<List<PostDTO>>(MainViewModel.SmartTradeService.GetPosts());
+        List<PostDTO> posts = JsonConvert.DeserializeObject<List<PostDTO>>( await SmartTradeService.Instance.GetPostsAsync());
 
         posts.ForEach(post =>
         {

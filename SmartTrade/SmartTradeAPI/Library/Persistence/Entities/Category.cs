@@ -1,4 +1,4 @@
-﻿namespace SmartTradeLib.Entities;
+﻿namespace SmartTrade.Entities;
 
 public enum Category
 {

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartTradeLib.Persistence
+namespace SmartTrade.Persistence
 {
     public class BaseDbContext : DbContext
     {

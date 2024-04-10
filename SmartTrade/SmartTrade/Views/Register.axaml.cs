@@ -1,8 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
-using SmartTradeLib;
-using SmartTradeLib.Entities;
+using SmartTrade;
+using SmartTrade.Entities;
 using Avalonia.Input;
 using System.Linq;
 using SmartTrade.ViewModels;
@@ -33,7 +33,7 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.NavigateTo(new SellerRegister());
         }
 
-        private void SignInButton_click(object? sender, RoutedEventArgs e)
+        private async void SignInButton_click(object? sender, RoutedEventArgs e)
         {
             string name = TextBoxName.Text;
             string lastnames = TextBoxLastNames.Text;
@@ -50,8 +50,8 @@ namespace SmartTrade.Views
             try
             {
                 Address consumerAddress = new Address(province, street, municipality, postalCode, number, door);
-                DateTime dateBirth = _model.convertDate(dateBirthString);
-                _model.RegisterConsumer(email,password,name,lastnames,dni,dateBirth,consumerAddress,consumerAddress);
+                DateTime dateBirth = _model.ConvertDate(dateBirthString);
+                await _model.RegisterConsumer(email,password,name,lastnames,dni,dateBirth,consumerAddress,consumerAddress);
 
             }
             catch (Exception ex)

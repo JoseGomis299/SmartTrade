@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace SmartTradeLib.Migrations
+namespace SmartTrade.Migrations
 {
     /// <inheritdoc />
     public partial class solvedCircularDependency2 : Migration

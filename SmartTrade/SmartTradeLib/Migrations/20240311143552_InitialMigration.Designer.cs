@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SmartTradeLib.Persistence;
+using SmartTrade.Persistence;
+using SmartTrade.Persistence;
 
 #nullable disable
 
-namespace SmartTradeLib.Migrations
+namespace SmartTrade.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
     [Migration("20240311143552_InitialMigration")]

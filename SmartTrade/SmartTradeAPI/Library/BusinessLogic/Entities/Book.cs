@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using SmartTradeLib.BusinessLogic;
+using SmartTrade.BusinessLogic;
 
-namespace SmartTradeLib.Entities;
+namespace SmartTrade.Entities;
 
 public partial class Book : Product
 {
