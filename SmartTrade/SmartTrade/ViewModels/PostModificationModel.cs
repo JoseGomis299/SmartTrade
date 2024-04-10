@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using SmartTradeDTOs;
 using SmartTradeLib.Entities;
 
 namespace SmartTrade.ViewModels;
@@ -77,5 +79,61 @@ public class PostModificationModel : ViewModelBase
                     throw new Exception($"Stocks {i} and {j} must have different attributes");
             }
         }
+    }
+
+    protected PostDTO CreatePostInfo(string? sellerId)
+    {
+        List<int> stocks = new();
+        List<float> prices = new();
+        List<float> shippingCosts = new();
+
+        List<List<byte[]>> images = new();
+        List<List<string>> attributes = new();
+
+        foreach (var stock in Stocks)
+        {
+            images.Add(stock.Images.Select(image => image.Bytes).ToList());
+
+            stocks.Add(int.Parse(stock.StockQuantity));
+            prices.Add(float.Parse(stock.Price));
+            shippingCosts.Add(float.Parse(stock.ShippingCost));
+
+            attributes.Add(stock.CategoryAttributes.Select(attribute => attribute.Value).ToList());
+        }
+
+        PostDTO postDto = new()
+        {
+            Title = Title,
+            Description = Description,
+            ProductName = ProductName,
+            Category = Category,
+            MinimumAge = int.Parse(MinimumAge),
+            HowToUse = Use,
+            Certifications = Certifications,
+            EcologicPrint = EcologicPrint,
+            HowToReducePrint = ReducePrint,
+            Validated = false,
+            SellerID = sellerId,
+            Offers = new List<OfferDTO>()
+        };
+
+        for (int i = 0; i < stocks.Count; i++)
+        {
+            OfferDTO offerDto = new()
+            {
+                Stock = stocks[i],
+                Price = prices[i],
+                ShippingCost = shippingCosts[i],
+                Product = new ProductDTO
+                {
+                    Images = images[i],
+                    Attributes = attributes[i]
+                }
+            };
+
+            postDto.Offers.Add(offerDto);
+        }
+
+        return postDto;
     }
 }

@@ -33,7 +33,7 @@ ISmartTradeService service = new SmartTradeService();
 ////service.SaveChanges();
 
 //var posts = new EntityFrameworkDAL(new SmartTradeContext()).GetAll<Post>().First();
-//service.ValidatePost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { posts.Offers.First().Product.Images.First().ImageSource, imageData } }, new List<List<string>>() { attributes }, posts);
+//service.EditPost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { posts.Offers.First().Product.Images.First().ImageSource, imageData } }, new List<List<string>>() { attributes }, posts);
 
 await ConnectToAPI();
 //AddPost();
@@ -59,7 +59,7 @@ void AddPosts(int n)
         List<string> attributes = new List<string>() { "100", ""+i };
 
         byte[] imageData = File.ReadAllBytes(imagePaths[Random.Shared.Next(0, imagePaths.Length)]);
-        service.AddPost("Juguete" + i, "buenos Juguetes", "Juguete", Category.Toy, 3, "","", "", "", true, new List<int>() { 100 }, new List<float>() { i }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { imageData } }, new List<List<string>>() { attributes });
+     //   service.AddPost("Juguete" + i, "buenos Juguetes", "Juguete", Category.Toy, 3, "","", "", "", true, new List<int>() { 100 }, new List<float>() { i }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { imageData } }, new List<List<string>>() { attributes });
     }
 }
 
@@ -75,7 +75,7 @@ void AddPost()
     List<string> attributes = new List<string>() { "100", "1" };
 
     service.LogIn("ChiclesPepito@gmail.com", "123");
-    service.AddPost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "","", "", "", true,new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { imageData } }, new List<List<string>>() { attributes });
+  //  service.AddPost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "","", "", "", true,new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { imageData } }, new List<List<string>>() { attributes });
 }
 
 void ValidatePost()
@@ -87,7 +87,7 @@ void ValidatePost()
     List<string> attributes2 = new List<string>() { "100", "1" };
 
     var posts = new EntityFrameworkDAL(new SmartTradeContext()).GetAll<Post>().First();
-    service.ValidatePost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "","", "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { posts.Offers.First().Product.Images.First().ImageSource, imageData } }, new List<List<string>>() { attributes }, posts);
+  //  service.EditPost("Juguete", "buenos Juguetes", "Juguete", Category.Toy, 3, "","", "", "", new List<int>() { 100 }, new List<float>() { 5 }, new List<float>() { 1 }, new List<List<byte[]>>() { new() { posts.Offers.First().Product.Images.First().ImageSource, imageData } }, new List<List<string>>() { attributes }, posts);
 
 }
 

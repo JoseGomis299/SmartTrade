@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 using System;
 using System.Collections.Generic;
+using SmartTradeDTOs;
 using SmartTradeLib.Entities;
 
 namespace SmartTrade.Views
@@ -22,7 +23,7 @@ namespace SmartTrade.Views
             PriceDescendingButton.Click += PriceDescendingButton_Click;
         }
 
-        public SearchResult(List<Post> posts)
+        public SearchResult(List<PostDTO> posts)
         {
             DataContext = _model = new SearchResultModel();
             foreach (var post in posts)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using SmartTradeDTOs;
 using SmartTradeLib.Entities;
 
 namespace SmartTrade.ViewModels;
@@ -27,13 +29,13 @@ public class Stock
     #region Constructors
 
     // Constructor for creating a new stock from an offer (Used in Validate Post)
-    public Stock(Offer offer, ValidatePostModel model)
+    public Stock(OfferDTO offer, ValidatePostModel model)
     {
         InitializeValues(model);
 
         foreach (var image in offer.Product.Images)
         {
-            Images.Add(new ImageSource(image.ImageSource, this));
+            Images.Add(new ImageSource(image, this));
         }
 
         StockQuantity = offer.Stock.ToString();
@@ -41,12 +43,12 @@ public class Stock
         ShippingCost = offer.ShippingCost.ToString();
 
 
-        foreach (var attribute in (offer.Product.GetCategories().First().GetAttributes()))
+        foreach (var attribute in (model.Post.Category.GetAttributes()))
         {
             CategoryAttributes.Add(new CategoryAttribute(attribute));
         }
 
-        string[] attributes = offer.Product.GetAttributes();
+        List<string> attributes = offer.Product.Attributes;
         for (var i = 0; i < CategoryAttributes.Count; i++)
         {
             CategoryAttributes[i].Value = attributes[i];

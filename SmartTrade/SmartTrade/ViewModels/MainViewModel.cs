@@ -7,7 +7,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Newtonsoft.Json;
 using SmartTrade.Views;
+using SmartTradeDTOs;
 using SmartTradeLib.BusinessLogic;
 using SmartTradeLib.Entities;
 
@@ -30,9 +32,9 @@ public class MainViewModel : ViewModelBase
 
     }
 
-    public List<Post> LoadProducts()
+    public List<PostDTO> LoadProducts()
     {
-        return SmartTradeService.GetPostsFuzzyContain(SearchText);
+        return JsonConvert.DeserializeObject<List<PostDTO>>(SmartTradeService.GetPostsFuzzyContain(SearchText));
     }
 
     public UserControl GetCatalog()

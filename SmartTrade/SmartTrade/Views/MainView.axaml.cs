@@ -5,6 +5,9 @@ using Avalonia.Interactivity;
 using SmartTrade.ViewModels;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using SmartTradeDTOs;
 
 namespace SmartTrade.Views;
 
@@ -99,6 +102,7 @@ public partial class MainView : UserControl
 
     private void AutoCompleteBox_KeyDown(object? sender, KeyEventArgs e)
     {
+
         if (e.Key.Equals(Key.Enter))
         {
             SmartTradeNavigationManager.Instance.NavigateToOverriding(new SearchResult(_model.LoadProducts()));

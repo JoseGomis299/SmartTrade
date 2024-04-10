@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels
 {
@@ -21,25 +23,9 @@ namespace SmartTrade.ViewModels
 
         public void PublishPost()
         {
-            List<int> stocks = new();
-            List<float> prices = new();
-            List<float> shippingCosts = new();
+           PostDTO postDto = CreatePostInfo(null);
 
-            List<List<byte[]>> images = new();
-            List<List<string>> attributes = new();
-
-            foreach (var stock in Stocks)
-            {
-                images.Add(stock.Images.Select(image => image.Bytes).ToList());
-
-                stocks.Add(int.Parse(stock.StockQuantity));
-                prices.Add(float.Parse(stock.Price));
-                shippingCosts.Add(float.Parse(stock.ShippingCost));
-
-                attributes.Add(stock.CategoryAttributes.Select(attribute => attribute.Value).ToList());
-            }
-
-            MainViewModel.SmartTradeService.AddPost(Title, Description, ProductName, Category, int.Parse(MinimumAge), Use,Certifications, EcologicPrint, ReducePrint, false,stocks, prices, shippingCosts, images, attributes);
+            MainViewModel.SmartTradeService.AddPost(JsonConvert.SerializeObject(postDto));
         }
     }
 }

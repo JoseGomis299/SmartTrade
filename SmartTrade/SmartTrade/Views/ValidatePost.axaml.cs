@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
+using SmartTradeDTOs;
 using SmartTradeLib.Entities;
 
 namespace SmartTrade.Views
@@ -22,7 +23,7 @@ namespace SmartTrade.Views
             CategoryComboBox.SelectedItem = categories[(int) _model.Category];
         }
 
-        public ValidatePost(Post post)
+        public ValidatePost(PostDTO post)
         {
             DataContext = _model = new ValidatePostModel(post);
             InitializeComponent();

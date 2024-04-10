@@ -1,4 +1,5 @@
-﻿using SmartTradeLib.Entities;
+﻿using SmartTradeDTOs;
+using SmartTradeLib.Entities;
 
 namespace SmartTradeLib.BusinessLogic
 {
@@ -12,10 +13,9 @@ namespace SmartTradeLib.BusinessLogic
         public void AddCostumer(Consumer costumer);
         public void AddSeller(Seller seller);
 
-        public Post AddPost(string? title, string? description, string? productName, Category category, int minimumAge,
-            string howToUse, string? certifications, string? ecologicPrint, string? howToReducePrint, bool validated,
-            List<int> stocks, List<float> prices, List<float> shippingCosts, List<List<byte[]>> images,
-            List<List<string>> attributes, Seller? seller = null);
+        public Post AddPost(string postInfoJson);
+
+        public void EditPost(int postID, string postInfoJson);
 
         public void LogIn(string email, string password);
 
@@ -25,15 +25,12 @@ namespace SmartTradeLib.BusinessLogic
         public void RegisterConsumer(string email, string password, string name, string lastNames, string dni,
             DateTime birthDate, Address billingAddress, Address address);
 
-        public void RejectPost(Post post);
+        public void DeletePost(int postID);
 
-        void ValidatePost(string? title, string? description, string? productName, Category category, int minimumAge,
-            string howToUse, string? certifications, string? ecologicPrint, string? howToReducePrint, List<int> stocks,
-            List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
-            Post post);
-
-        public List<Post> GetPosts();
-        public List<Post> GetPostsFuzzyContain(string searchFor);
+        //Returns List<PostDTO>
+        public string GetPosts();
+        //Returns List<PostDTO>
+        public string GetPostsFuzzyContain(string searchFor);
         public List<String> GetPostsNamesStartWith(string startWith, int numPosts);
     }
 }

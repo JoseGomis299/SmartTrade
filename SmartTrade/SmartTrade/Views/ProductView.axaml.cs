@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using SmartTrade;
+using SmartTradeDTOs;
 using SmartTradeLib.Entities;
 
 
@@ -12,7 +13,7 @@ namespace SmartTrade.Views
             InitializeComponent();
         }
 
-        public ProductView(Post post)
+        public ProductView(PostDTO post)
         {
             InitializeComponent();
            // DataContext = new ProductViewModel(post);

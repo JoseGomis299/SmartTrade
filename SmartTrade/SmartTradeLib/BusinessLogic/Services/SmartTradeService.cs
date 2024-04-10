@@ -1,8 +1,8 @@
 ﻿using FuzzySharp;
 using SmartTradeLib.Entities;
 using SmartTradeLib.Persistence;
-using System;
-using System.Collections.Concurrent;
+using SmartTradeDTOs;
+using Newtonsoft.Json;
 
 namespace SmartTradeLib.BusinessLogic;
 
@@ -44,26 +44,29 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public Post AddPost(string? title, string? description, string? productName, Category category, int minimumAge,
-        string howToUse,
-        string? certifications, string? ecologicPrint, string? howToReducePrint, bool validated, List<int> stocks,
-        List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
-        Seller? seller = null)
+    public Post AddPost(string postInfoJson)
     {
         //LogIn("ChiclesPepito@gmail.com", "123");
-        
-        Post post = new Post(title, description, validated, seller ??= (Seller) Logged);
 
+        PostDTO postDto = JsonConvert.DeserializeObject<PostDTO>(postInfoJson);
+
+        Seller? seller = null;
+        if(postDto.SellerID != null) seller = _dal.GetById<Seller>(postDto.SellerID);
+
+        Post post = new Post(postDto.Title, postDto.Description, postDto.Validated || Logged is Admin, seller ??= (Seller) Logged);
 
         List<Product> products = new();
         List<Offer> offers = new();
 
         //var dbProducts = _dal.GetAll<Product>();
 
-        for (int i = 0; i < stocks.Count; i++)
+        for (int i = 0; i < postDto.Offers.Count; i++)
         {
-            Product product = ProductFactory.GetFactory(category).CreateProduct(productName, certifications, ecologicPrint, minimumAge, howToUse, howToReducePrint, attributes[i]);
-            foreach (var image in images[i])
+            OfferDTO offerDto = postDto.Offers[i];
+            ProductDTO productDto = offerDto.Product;
+
+            Product product = ProductFactory.GetFactory(postDto.Category).CreateProduct(postDto.ProductName, postDto.Certifications, postDto.EcologicPrint, postDto.MinimumAge, postDto.HowToUse, postDto.HowToReducePrint, productDto.Attributes);
+            foreach (var image in productDto.Images)
             {
                 product.AddImage(new Image(image));
             }
@@ -83,7 +86,7 @@ public class SmartTradeService : ISmartTradeService
             }
             products.Add(product);
 
-            offers.Add(new Offer(products[i], prices[i], shippingCosts[i], stocks[i]));
+            offers.Add(new Offer(product, offerDto.Price, offerDto.ShippingCost, offerDto.Stock));
         }
 
         seller.Posts.Add(post);
@@ -99,34 +102,38 @@ public class SmartTradeService : ISmartTradeService
         return post;
     }
 
-    public void ValidatePost(string? title, string? description, string? productName, Category category, int minimumAge,
-        string howToUse, string? certifications, string? ecologicPrint, string? howToReducePrint, List<int> stocks,
-        List<float> prices, List<float> shippingCosts, List<List<byte[]>> images, List<List<string>> attributes,
-        Post post)
+    public void EditPost(int postID, string postInfoJson)
     {
-        Seller seller = _dal.GetById<Seller>(post.Seller.Email);
-        RemovePost(post);
+        DeletePost(postID);
+        AddPost(postInfoJson);
 
-        var newPost = AddPost(title, description, productName, category, minimumAge, howToUse,certifications, ecologicPrint, howToReducePrint, true, stocks, prices, shippingCosts, images, attributes, seller);
-
-
-      //  RemovePost(post);
-        //        ((Admin)Logged).ValidatePost(post);
         _dal.Commit();
     }
 
-    public List<Post> GetPosts()
+    public string GetPosts()
     { 
-        if(Logged is Admin) return _dal.GetWhere<Post>(x => !x.Validated).ToList();
-        if (Logged is Seller seller) return seller.Posts.Where(x=>x.Validated).ToList();
+        List<Post> posts = new();
+        List<PostDTO> postDtos = new();
 
-        return _dal.GetWhere<Post>(x => x.Validated).ToList();
+        if(Logged is Admin) posts = _dal.GetWhere<Post>(x => !x.Validated).ToList();
+        else if (Logged is Seller seller) posts = seller.Posts.Where(x => x.Validated).ToList();
+        else posts = _dal.GetWhere<Post>(x => x.Validated).ToList();
+
+        foreach (var post in posts)
+        {
+            postDtos.Add(new PostDTO(post));   
+        }
+
+        return JsonConvert.SerializeObject(postDtos);
     }
 
-    public List<Post> GetPostsFuzzyContain(string searchFor)
+    public string GetPostsFuzzyContain(string searchFor)
     {
-        return _dal.GetAll<Post>().Where(x => Fuzz.PartialTokenSortRatio(searchFor,x.Title) > 60)
+        List<Post> posts = _dal.GetAll<Post>().Where(x => Fuzz.PartialTokenSortRatio(searchFor,x.Title) > 60)
             .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title)).ToList();
+
+        List<PostDTO> postDtos = posts.Select(x => new PostDTO(x)).ToList();
+        return JsonConvert.SerializeObject(postDtos);
     }
 
     public List<string> GetPostsNamesStartWith(string startWith, int numPosts)
@@ -135,15 +142,9 @@ public class SmartTradeService : ISmartTradeService
         return res.Take(Math.Min(numPosts, res.Count)).ToList();
     }
 
-    public void RejectPost(Post post)
+    public void DeletePost(int postID)
     {
-        RemovePost(post);
-
-        _dal.Commit();
-    }
-
-    private void RemovePost(Post post)
-    {
+        Post post = _dal.GetById<Post>(postID);
         post.Seller.Posts.Remove(post);
 
         foreach (var offer in post.Offers)
@@ -162,7 +163,7 @@ public class SmartTradeService : ISmartTradeService
         }
         post.Offers.Clear();
         _dal.Delete<Post>(post);
-     
+
         _dal.Commit();
     }
 

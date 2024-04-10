@@ -57,7 +57,7 @@ namespace SmartTrade.ViewModels
             var sortedList = new List<ProductModel>();
             foreach (var product in SearchedProducts)
             {
-                if (int.TryParse(product._post.Offers.First().Product.EcologicPrint, out int ecologicPrint) && ecologicPrint < 100) 
+                if (int.TryParse(product.Post.EcologicPrint, out int ecologicPrint) && ecologicPrint < 100) 
                 {
                     sortedList.Add(product);
                 }
