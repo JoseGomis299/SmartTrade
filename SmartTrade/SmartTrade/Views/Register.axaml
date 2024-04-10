@@ -13,11 +13,12 @@
 	<Grid RowDefinitions="Auto Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
 		<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="10 0 0 0">
 		<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">REGISTER AS A CONSUMER</TextBlock>
-		<controls:ST_TextBox LabelText="Name" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Name"/>
-		<controls:ST_TextBox LabelText="Username" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Username"/>
-		<controls:ST_TextBox LabelText="DNI" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="DNI"/>
-		<controls:ST_TextBox LabelText="Email" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Email"/>
-		<controls:ST_TextBox LabelText="Password" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Password"/>
+		<controls:ST_TextBox LabelText="Name" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxName"/>
+		<controls:ST_TextBox LabelText="Last Names" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxLastNames"/>
+		<controls:ST_TextBox LabelText="DNI" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDNI"/>
+		<controls:ST_TextBox LabelText="Date Birth" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" WaterMark="DD/MM/YYYY" TextInput="DateTextBox_TextInput" Name="TextBoxDateBirth"/>
+		<controls:ST_TextBox LabelText="Email" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
+		<controls:ST_TextBox LabelText="Password" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
 	</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Stretch" >
 			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378">
@@ -25,12 +26,12 @@
 			</Border>
 		</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="10" Margin="10 85 0 0">
-			<controls:ST_TextBox LabelText="Province" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Province"/>
-			<controls:ST_TextBox LabelText="Municipality" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Municipality"/>
-			<controls:ST_TextBox LabelText="Postal Code" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="PostalCode"/>
-			<controls:ST_TextBox LabelText="Street" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Street"/>
-			<controls:ST_TextBox LabelText="Number" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Number"/>
-			<controls:ST_TextBox LabelText="Door" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="Door"/>
+			<controls:ST_TextBox LabelText="Province" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxProvince"/>
+			<controls:ST_TextBox LabelText="Municipality" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxMunicipality"/>
+			<controls:ST_TextBox LabelText="Postal Code" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPostalCode"/>
+			<controls:ST_TextBox LabelText="Street" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxStreet"/>
+			<controls:ST_TextBox LabelText="Number" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxNumber"/>
+			<controls:ST_TextBox LabelText="Door" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDoor"/>
 		</StackPanel>
 		<Rectangle Grid.Row="0" Width="400" Height="300" Fill="#32C378" HorizontalAlignment="Right"  Margin="0 250 -250 -210" ZIndex="-1" ClipToBounds="True" >
 			<Rectangle.RenderTransform>
@@ -43,17 +44,17 @@
 			</Border>
 		</StackPanel>
 		<StackPanel Grid.Row="2" HorizontalAlignment="Center" Spacing="10" Margin="10 105 0 0">
-			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 5 0 0" Classes="White">Paypal</Button>
-			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White">Credit Cart</Button>
-			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White">Bizum</Button>
-			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 0" Classes="Black">SIGN UP!</Button>
+			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 5 0 0" Classes="White" Name="PaypalButton">Paypal</Button>
+			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White" Name="CreditCartButton">Credit Cart</Button>
+			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White" Name="BizumButton">Bizum</Button>
+			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 0" Classes="Black" Name="SignInButton">SIGN IN!</Button>
 			<StackPanel Grid.Row="4" HorizontalAlignment="Stretch" >
 				<Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin="20"></Border>
 				<TextBlock Margin="0 30 0 0" HorizontalAlignment="Center" Background="Transparent" Foreground="#32C378" FontSize="20" FontFamily="Inter">do you already have an account?</TextBlock>
-				<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 5 0 0" Classes="Transparent">Log In!</Button>
+				<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 5 0 0" Classes="Transparent" Name="LoginButton">Log In!</Button>
 				<Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin="20"></Border>
 				<TextBlock Margin="0 2 0 0" HorizontalAlignment="Center" Background="Transparent" Foreground="#32C378" FontSize="20" FontFamily="Inter">do you want to sell products?</TextBlock>
-				<Button HorizontalAlignment="Center" Height="40" Width="300" Margin="0 5 0 0" Classes="Transparent">Register as a Seller</Button>
+				<Button HorizontalAlignment="Center" Height="40" Width="300" Margin="0 5 0 0" Classes="Transparent" Name="RegisterSellerButton">Register as a Seller</Button>
 			</StackPanel>
 		</StackPanel>
 	</Grid>
