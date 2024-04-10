@@ -24,20 +24,19 @@ namespace SmartTrade.Views
             try
             {
                 _model.Login(email, password);
-                user=_model.getloggeduser();
+                user=_model.Logged;
                 if (user is Seller seller)
                 {
-                    SmartTradeNavigationManager.Instance.NavigateTo(new SellerCatalog());
-
+                    SmartTradeNavigationManager.Instance.NavigateAfterLogin(new SellerCatalog());
                 }
                 if(user is Consumer consumer)
                 {
-                    SmartTradeNavigationManager.Instance.NavigateTo(new ProductCatalog());
+                    SmartTradeNavigationManager.Instance.NavigateAfterLogin(new ProductCatalog());
 
                 }
                 if (user is Admin admin)
                 {
-                    SmartTradeNavigationManager.Instance.NavigateTo(new ValidatePost());
+                    SmartTradeNavigationManager.Instance.NavigateAfterLogin(new AdminCatalog());
                 }
             }
             catch (Exception ex)

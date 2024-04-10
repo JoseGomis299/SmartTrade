@@ -25,6 +25,7 @@ public partial class MainView : UserControl
     {
         _model = new MainViewModel();
         SmartTradeNavigationManager.Instance.OnNavigate += HandleNavigation;
+        SmartTradeNavigationManager.Instance.OnLogin += () => SelectButton(0);
         InitializeComponent();
 
         SmartTradeNavigationManager.Instance.Initialize(ViewContent, new ProductCatalog());
@@ -52,29 +53,35 @@ public partial class MainView : UserControl
 
     private void OnShoppingCartButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        SmartTradeNavigationManager.Instance.NavigateWithButton(new ShoppingCartView(), _selectedButton);
-        HomeImage.Source = _homeImage;
-        UserImage.Source = _userImage;
-        CartImage.Source = _cartImageSelected;
-        _selectedButton = 2;
+        SmartTradeNavigationManager.Instance.NavigateWithButton(new ShoppingCartView(), _selectedButton, 1);
+        SelectButton(1);
     }
 
     private void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        SmartTradeNavigationManager.Instance.NavigateWithButton(_model.GetCatalog(), _selectedButton);
-        HomeImage.Source = _homeImageSelected;
-        UserImage.Source = _userImage;
-        CartImage.Source = _cartImage;
-        _selectedButton = 0;
+        SmartTradeNavigationManager.Instance.NavigateWithButton(_model.GetCatalog(), _selectedButton, 0);
+        SelectButton(0);
     }
 
     private void OnProfileButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        SmartTradeNavigationManager.Instance.NavigateWithButton(new Profile(), _selectedButton);
+        if(MainViewModel.SmartTradeService.Logged == null) 
+            SmartTradeNavigationManager.Instance.NavigateWithButton(new Login(), _selectedButton, 2);
+        else SmartTradeNavigationManager.Instance.NavigateWithButton(new Profile(), _selectedButton, 2);
+        SelectButton(2);
+    }
+
+    private void SelectButton(int i)
+    {
         HomeImage.Source = _homeImage;
-        UserImage.Source = _userImageSelected;
+        UserImage.Source = _userImage;
         CartImage.Source = _cartImage;
-        _selectedButton = 1;
+
+        _selectedButton = i;
+
+        if (i == 0) HomeImage.Source = _homeImageSelected;
+        else if (i == 1) CartImage.Source = _cartImageSelected;
+        else if (i == 2) UserImage.Source = _userImageSelected;
     }
 
     private void HandleNavigation(Type type)

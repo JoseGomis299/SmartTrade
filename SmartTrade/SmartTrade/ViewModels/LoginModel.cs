@@ -14,7 +14,7 @@ namespace SmartTrade.ViewModels
         string name;
         string password;
         private SmartTradeService smartTradeService;
-        User? loggeduser = MainViewModel.SmartTradeService.Logged;
+        public User? Logged => MainViewModel.SmartTradeService.Logged;
 
         public LoginModel(string name, string password)
         {
@@ -26,6 +26,5 @@ namespace SmartTrade.ViewModels
         {
             MainViewModel.SmartTradeService.LogIn(email, password);
         }
-        public User getloggeduser(){ return loggeduser;}
     }
 }
