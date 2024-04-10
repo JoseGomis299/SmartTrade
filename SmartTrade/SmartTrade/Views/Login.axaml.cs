@@ -15,8 +15,15 @@ namespace SmartTrade.Views
             DataContext = _model = new LoginModel();
             InitializeComponent();
             SignUpButton.Click += SignUpButton_click;
+            RegisterButton.Click += RegisterButton_click;
         }
 
+        private void RegisterButton_click(object? sender, RoutedEventArgs e)
+        {
+            SmartTradeNavigationManager.Instance.NavigateTo(new ChooseProfile());
+
+        }
+        
         private void SignUpButton_click(object? sender, RoutedEventArgs e)
         {
             string email = TextBoxEmail.Text;
