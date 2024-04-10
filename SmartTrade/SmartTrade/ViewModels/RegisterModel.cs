@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SmartTradeLib.Entities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,6 +23,11 @@ namespace SmartTrade.ViewModels
             {
                 throw new Exception("formato incorrecto");
             }
+        }
+
+        internal void RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
+        {
+            MainViewModel.SmartTradeService.RegisterConsumer(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
         }
     }        
 }

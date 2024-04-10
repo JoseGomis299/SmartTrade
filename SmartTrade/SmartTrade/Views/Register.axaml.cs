@@ -51,7 +51,7 @@ namespace SmartTrade.Views
             {
                 Address consumerAddress = new Address(province, street, municipality, postalCode, number, door);
                 DateTime dateBirth = _model.convertDate(dateBirthString);
-                _model.RegisterConsumer(email,password,name,lastnames,dni,dateBirth,billingAddress,consumerAddress);
+                _model.RegisterConsumer(email,password,name,lastnames,dni,dateBirth,consumerAddress,consumerAddress);
 
             }
             catch (Exception ex)
@@ -60,6 +60,11 @@ namespace SmartTrade.Views
                 {
                     TextBoxDateBirth.ErrorMessage.BringIntoView();
                     TextBoxDateBirth.ErrorMessage.Text = ex.Message;
+                }
+                if (ex.Message.Contains("Usuario existente"))
+                {
+                    TextBoxEmail.ErrorMessage.BringIntoView();
+                    TextBoxEmail.ErrorMessage.Text = ex.Message;
                 }
             }
         }
