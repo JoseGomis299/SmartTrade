@@ -22,9 +22,9 @@ public class MainViewModel : ViewModelBase
     public async Task InitializeAsync(MainView mainView)
     {
         
-        await mainView.HomeButtonClicked();
+        await mainView.ShowCatalogAsync();
 
-        foreach (var name in JsonConvert.DeserializeObject<List<string>>(await SmartTradeService.Instance.GetPostsNamesAsync())!)
+        foreach (var name in (await SmartTradeService.Instance.GetPostsNamesAsync())!)
         {
             SearchAutoComplete.Add(name);
         }
@@ -32,7 +32,7 @@ public class MainViewModel : ViewModelBase
 
     public async Task<List<PostDTO>?> LoadProductsAsync()
     {
-        return JsonConvert.DeserializeObject<List<PostDTO>>(await SmartTradeService.Instance.GetPostsFuzzyContainAsync(SearchText));
+        return await SmartTradeService.Instance.GetPostsFuzzyContainAsync(SearchText);
     }
 
     //public async Task<UserControl> GetCatalogAsync()

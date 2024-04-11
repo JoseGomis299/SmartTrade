@@ -29,7 +29,7 @@ namespace SmartTrade.ViewModels
 
         public override async Task LoadProductsAsync()
         {
-            List<PostDTO> posts = JsonConvert.DeserializeObject<List<PostDTO>>(await SmartTradeService.Instance.GetPostsAsync());
+            List<PostDTO>? posts = await SmartTradeService.Instance.GetPostsAsync();
 
             posts.ForEach(post =>
             {

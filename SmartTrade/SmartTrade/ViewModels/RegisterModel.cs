@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels
 {
     public class RegisterModel : ViewModelBase
     {
+        public UserDTO Logged => SmartTradeService.Instance.Logged;
         public DateTime ConvertDate(string dateString)
         {
             DateTime date;
@@ -53,8 +55,8 @@ namespace SmartTrade.ViewModels
         }
 
         public async Task RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
-            {
+        {
            await SmartTradeService.Instance.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
-            }
+        }
     }        
 }

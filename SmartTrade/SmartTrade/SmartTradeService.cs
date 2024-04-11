@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ public class SmartTradeService
         Logged = JsonConvert.DeserializeObject<UserDTO>(await PerformApiInstructionAsync("User/Login", ApiInstruction.Post, content));
     }
 
-    public async Task<string> RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
+    public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
     {
         string json = JsonConvert.SerializeObject(new ConsumerRegisterData()
         { 
@@ -34,11 +35,10 @@ public class SmartTradeService
         });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        return await PerformApiInstructionAsync("User/RegisterConsumer", ApiInstruction.Post, content);
+        Logged = JsonConvert.DeserializeObject<ConsumerDTO>(await PerformApiInstructionAsync("User/RegisterConsumer", ApiInstruction.Post, content));
     }
 
-    public async Task<string> RegisterSellerAsync(string email, string password, string name, string lastnames,
-        string dni, string companyName, string iban)
+    public async Task RegisterSellerAsync(string email, string password, string name, string lastnames, string dni, string companyName, string iban)
     {
         string json = JsonConvert.SerializeObject(new SellerRegisterData()
         {
@@ -49,7 +49,7 @@ public class SmartTradeService
         });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        return await PerformApiInstructionAsync("User/RegisterSeller", ApiInstruction.Post, content);
+        Logged = JsonConvert.DeserializeObject<SellerDTO>(await PerformApiInstructionAsync("User/RegisterSeller", ApiInstruction.Post, content));
     }
 
     public async Task AddPostAsync(PostDTO post)
@@ -60,19 +60,19 @@ public class SmartTradeService
         await PerformApiInstructionAsync("User/PublishPost", ApiInstruction.Post, content);
     }
 
-    public async Task<string> GetPostsAsync()
+    public async Task<List<PostDTO>?> GetPostsAsync()
     {
-        return await PerformApiInstructionAsync("Post/GetAll", ApiInstruction.Get);
+        return  JsonConvert.DeserializeObject<List<PostDTO>>(await PerformApiInstructionAsync("Post/GetAll", ApiInstruction.Get));
     }
 
-    public async Task<string> GetPostsNamesAsync()
+    public async Task<List<string>?> GetPostsNamesAsync()
     {
-        return await PerformApiInstructionAsync("Post/GetAllNames", ApiInstruction.Get);
+        return JsonConvert.DeserializeObject<List<string>>(await PerformApiInstructionAsync("Post/GetAllNames", ApiInstruction.Get));
     }
 
-    public async Task<string> GetPostsFuzzyContainAsync(string? searchText)
+    public async Task<List<PostDTO>?> GetPostsFuzzyContainAsync(string? searchText)
     {
-        return await PerformApiInstructionAsync("Post/GetContaining?content=" + Uri.EscapeDataString(searchText), ApiInstruction.Get);
+        return JsonConvert.DeserializeObject<List<PostDTO>>(await PerformApiInstructionAsync("Post/GetContaining?content=" + Uri.EscapeDataString(searchText), ApiInstruction.Get));
     }
 
     public async Task EditPostAsync(int postId, string postInfoJson)
