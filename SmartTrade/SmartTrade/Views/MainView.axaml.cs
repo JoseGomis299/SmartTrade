@@ -22,6 +22,10 @@ public partial class MainView : UserControl
 
     int _selectedButton = 0;
 
+    bool _isLoadingHome = false;
+    bool _isLoadingCart = false;
+    bool _isLoadingUser = false;
+
     public MainView()
     {
         DataContext = _model = new MainViewModel();
@@ -52,9 +56,19 @@ public partial class MainView : UserControl
         CartImage.Source = _cartImage;
     }
 
+    #region Buttons
+
     private void OnShoppingCartButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        SmartTradeNavigationManager.Instance.NavigateWithButton(new ShoppingCartView(), _selectedButton, 1);
+        if (_isLoadingCart)
+        {
+            SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 1, out _);
+            ShowLoadingScreen();
+            return;
+        }
+
+        HideLoadingScreen();
+        SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), _selectedButton, 1, out _);
     }
 
     private async void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
@@ -62,48 +76,61 @@ public partial class MainView : UserControl
         await ShowCatalogAsync();
     }
 
+    private void OnProfileButtonOnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_isLoadingUser)
+        {
+            SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 2, out _);
+            ShowLoadingScreen();
+            return;
+        }
+
+        HideLoadingScreen();
+        if (SmartTradeService.Instance.Logged == null)
+            SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), _selectedButton, 2, out _);
+        else SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Profile), _selectedButton, 2, out _);
+    }
+
     public async Task ShowCatalogAsync()
     {
+        if (_isLoadingHome)
+        {
+            SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 0, out _);
+            ShowLoadingScreen();
+            return;
+        }
+
+        HideLoadingScreen();
         if (SmartTradeService.Instance.Logged == null)
         {
-            ProductCatalog catalog = new ProductCatalog();
-            await NavigateTo(catalog);
+            await NavigateTo(typeof(ProductCatalog));
             return;
         }
 
         if (SmartTradeService.Instance.Logged.IsSeller)
         {
-            SellerCatalog sellerCatalog = new SellerCatalog();
-            await NavigateTo(sellerCatalog);
+            await NavigateTo(typeof(SellerCatalog));
             return;
         }
 
         if (SmartTradeService.Instance.Logged.IsAdmin)
         {
-            AdminCatalog adminCatalog = new AdminCatalog();
-            await NavigateTo(adminCatalog);
+            await NavigateTo(typeof(AdminCatalog));
             return;
         }
 
-        ProductCatalog productCatalog = new ProductCatalog();
-        await NavigateTo(productCatalog);
+        await NavigateTo(typeof(ProductCatalog));
 
-        async Task NavigateTo(UserControl catalog)
+        async Task NavigateTo(Type catalogType)
         {
-            if (SmartTradeNavigationManager.Instance.NavigateWithButton(catalog, _selectedButton, 0))
+            if (SmartTradeNavigationManager.Instance.NavigateWithButton(catalogType, _selectedButton, 0, out var catalog))
             {
-                SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(new LoadingScreen());
+                int loadingScreen = StartLoading();
                 await ((CatalogModel)catalog.DataContext).LoadProductsAsync();
                 if (_selectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
+                StopLoading(loadingScreen);
             }
         }
-    }
-
-    private void OnProfileButtonOnClick(object? sender, RoutedEventArgs e)
-    {
-        if(SmartTradeService.Instance.Logged == null) 
-            SmartTradeNavigationManager.Instance.NavigateWithButton(new Login(), _selectedButton, 2);
-        else SmartTradeNavigationManager.Instance.NavigateWithButton(new Profile(), _selectedButton, 2);
     }
 
     private void SelectButton(int i)
@@ -119,9 +146,20 @@ public partial class MainView : UserControl
         else if (i == 2) UserImage.Source = _userImageSelected;
     }
 
+
+    #endregion
+
+    #region Navigation
+
     private void HandleNavigation(Type type)
     {
         if (type == typeof(RegisterPost))
+        {
+            SearchBar.IsVisible = false;
+            return;
+        }
+
+        if (_selectedButton == 2)
         {
             SearchBar.IsVisible = false;
             return;
@@ -135,12 +173,58 @@ public partial class MainView : UserControl
         BottomBar.IsVisible = true;
     }
 
+    private int StartLoading()
+    {
+        ShowLoadingScreen();
+
+        if (_selectedButton == 0)  
+            _isLoadingHome = true;
+        else if(_selectedButton == 1)
+            _isLoadingCart = true;
+        else if(_selectedButton == 2)
+            _isLoadingUser = true;
+
+        return _selectedButton;
+    }
+
+    private void ShowLoadingScreen()
+    {
+        Loading.IsVisible = true;
+        ViewContent.IsVisible = false;
+    }
+
+    private void HideLoadingScreen()
+    {
+        Loading.IsVisible = false;
+        ViewContent.IsVisible = true;
+    }
+
+    private void StopLoading(int i)
+    {
+        if (i == 0)
+            _isLoadingHome = false;
+        else if (i == 1)
+            _isLoadingCart = false;
+        else if (i == 2)
+            _isLoadingUser = false;
+
+        HideLoadingScreen();
+    }
+
+    #endregion
+
+    #region SearchBar
+
     private async void AutoCompleteBox_KeyDown(object? sender, KeyEventArgs e)
     {
 
         if (e.Key.Equals(Key.Enter))
         {
-            SmartTradeNavigationManager.Instance.NavigateToOverriding(new SearchResult(await _model.LoadProductsAsync()));
+            int loadingScreen = StartLoading();
+            SearchResult searchResult = new SearchResult(await _model.LoadProductsAsync());
+            if(_selectedButton ==  loadingScreen) SmartTradeNavigationManager.Instance.NavigateToOverriding(searchResult);
+            else SmartTradeNavigationManager.Instance.AddToStack(searchResult, loadingScreen);
+            StopLoading(loadingScreen);
         }
     }
 
@@ -148,4 +232,6 @@ public partial class MainView : UserControl
     {
         _model.SearchText = AutoCompleteBox.Text;
     }
+
+    #endregion
 }

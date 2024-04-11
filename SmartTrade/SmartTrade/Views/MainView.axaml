@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
              mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="800"
              x:DataType="vm:MainViewModel"
              x:Class="SmartTrade.Views.MainView">
@@ -20,9 +21,15 @@
                         <Rectangle Margin="1 3 1 3" HorizontalAlignment="Left" Height="4" Width="33" Fill="White" Grid.Row="2" Grid.Column="0"></Rectangle>
                     </Grid>
                 </Button>
-                <AutoCompleteBox Name="AutoCompleteBox" Margin="0 0 20 0" Grid.Column="1" VerticalAlignment="Center" Watermark="Search something..."></AutoCompleteBox>
+                <AutoCompleteBox Name="AutoCompleteBox" Margin="0 0 20 0"  Grid.Column="1" VerticalAlignment="Center" Watermark="Search something..."></AutoCompleteBox>
             </Grid>
         </Border>
+
+        <!--Loading Screen-->
+		<StackPanel Grid.Row="1"  VerticalAlignment="Center" IsVisible="False" Name="Loading">
+            <TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">Loading...</TextBlock>
+            <controls:ProgressRing IsIndeterminate="True" BorderThickness="10" Width="100" Height="100" />
+        </StackPanel>
 
 		<!--Content-->
 		<ContentControl Grid.Row="1" Name="ViewContent"></ContentControl>

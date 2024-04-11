@@ -20,10 +20,10 @@ public class SmartTradeNavigationManager : NavigationManager
     public override void Initialize(ContentControl mainView, ContentControl targetView)
     {
         Navigator = new ViewNavigator(mainView);
-        NavigateWithButton(targetView, 0, 0);
+        NavigateWithButton(targetView.GetType(), 0, 0,out _);
     }
 
-    public bool NavigateWithButton(ContentControl targetView, int previousButton, int targetButton)
+    public bool NavigateWithButton(Type? targetViewType, int previousButton, int targetButton, out ContentControl view)
     {
         if (Navigator == null)
             throw new InvalidOperationException("Navigator not initialized");
@@ -44,18 +44,26 @@ public class SmartTradeNavigationManager : NavigationManager
             OnChangeNavigationStack?.Invoke(1);
         }
 
+        if (targetViewType == null)
+        {
+            view = Navigator.CurrentView;
+            return false;
+        }
+
         if (previousButton == targetButton) Commands.Clear();
 
         if(Commands.TryPeek(out var top)) top.Execute();
         else
         {
-            ICommand command = new NavigateToCommand(Navigator, targetView);
-            if (previousButton != targetButton) command = new NavigateToCommand(Navigator, targetView.GetType());
+            ICommand command = new NavigateToCommand(Navigator, (ContentControl) Activator.CreateInstance(targetViewType));
+            if (previousButton != targetButton) command = new NavigateToCommand(Navigator, targetViewType);
 
             command.Execute();
         }
 
-        InvokeOnNavigate(targetView.GetType());
+        view = Navigator.CurrentView;
+
+        InvokeOnNavigate(targetViewType);
         return previousButton == targetButton;
     }
 
@@ -81,5 +89,12 @@ public class SmartTradeNavigationManager : NavigationManager
         command.Execute();
 
         InvokeOnNavigate(targetView.GetType());
+    }
+
+    public void AddToStack(ContentControl view, int stack)
+    {
+        if (stack == 0) HomeCommands.Push(new NavigateToCommand(Navigator, view));
+        else if (stack == 1) CartCommands.Push(new NavigateToCommand(Navigator, view));
+        else UserCommands.Push(new NavigateToCommand(Navigator, view));
     }
 }
