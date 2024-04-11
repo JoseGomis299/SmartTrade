@@ -14,7 +14,7 @@ using SmartTrade.Entities;
 
 namespace SmartTrade.ViewModels
 {
-    public class ProductCatalogModel : ViewModelBase
+    public class ProductCatalogModel : CatalogModel
     {
         public ObservableCollection<ProductModel> OtherProducts { get; set; }
         public ObservableCollection<ProductModel> RecommendedProducts { get; set; }
@@ -27,7 +27,7 @@ namespace SmartTrade.ViewModels
             RelatedProducts = new ObservableCollection<ProductModel>();
         }
 
-        public async Task LoadProductsAsync()
+        public override async Task LoadProductsAsync()
         {
             List<PostDTO> posts = JsonConvert.DeserializeObject<List<PostDTO>>(await SmartTradeService.Instance.GetPostsAsync());
 

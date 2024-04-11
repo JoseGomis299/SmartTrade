@@ -49,6 +49,17 @@ public class NavigationManager
         OnNavigate?.Invoke(targetView.GetType());
     }
 
+    public virtual void NavigateToWithoutSaving(ContentControl targetView)
+    {
+        if (Navigator == null)
+            throw new InvalidOperationException("Navigator not initialized");
+
+        ICommand command = new NavigateToCommand(Navigator, targetView);
+        command.Execute();
+
+        OnNavigate?.Invoke(targetView.GetType());
+    }
+
     public virtual void NavigateToOverriding(ContentControl targetView)
     {
         if (Navigator == null)

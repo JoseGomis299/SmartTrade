@@ -8,7 +8,7 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
 
-public class SellerCatalogModel : ViewModelBase
+public class SellerCatalogModel : CatalogModel
 {
     public ObservableCollection<ProductModel> MyProducts { get; set; }
 
@@ -17,7 +17,7 @@ public class SellerCatalogModel : ViewModelBase
         MyProducts = new ObservableCollection<ProductModel>();
     }
 
-    public async Task LoadProductsAsync()
+    public override async Task LoadProductsAsync()
     {
         List<PostDTO> posts = JsonConvert.DeserializeObject<List<PostDTO>>( await SmartTradeService.Instance.GetPostsAsync());
 

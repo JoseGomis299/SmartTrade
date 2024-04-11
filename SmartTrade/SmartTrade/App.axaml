@@ -1,10 +1,12 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
              x:Class="SmartTrade.App"
              RequestedThemeVariant="Default">
 
     <Application.Styles>
-        <FluentTheme>
+        <styling:FluentAvaloniaTheme />
+        <StyleInclude Source="avares://FluentAvalonia.ProgressRing/Styling/Controls/ProgressRing.axaml" />        <FluentTheme>
             <FluentTheme.Palettes>
                 <ColorPaletteResources x:Key="Light" Accent="#ff32c378" AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="#ff32c378" BaseLow="White" BaseMedium="#0A413E" BaseMediumHigh="#0A413E" BaseMediumLow="#0A413E" ChromeAltLow="#0A413E" ChromeBlackHigh="#ff32c378" ChromeBlackLow="White" ChromeBlackMedium="#0A413E" ChromeBlackMediumLow="#0A413E" ChromeDisabledHigh="White" ChromeDisabledLow="#ffb1b1b1" ChromeGray="#0A413E" ChromeHigh="White" ChromeLow="White" ChromeMedium="White" ChromeMediumLow="White" ChromeWhite="White" ListLow="White" ListMedium="White" RegionColor="White" />
                 <ColorPaletteResources x:Key="Dark" Accent="#ff32c378" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff333333" BaseMedium="#ff9a9a9a" BaseMediumHigh="#ffb4b4b4" BaseMediumLow="#ff676767" ChromeAltLow="#ffb4b4b4" ChromeBlackHigh="Black" ChromeBlackLow="#ffb4b4b4" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff333333" ChromeDisabledLow="#ff9a9a9a" ChromeGray="Gray" ChromeHigh="Gray" ChromeLow="#ff151515" ChromeMedium="#ff1d1d1d" ChromeMediumLow="#ff2c2c2c" ChromeWhite="White" ListLow="#ff1d1d1d" ListMedium="#ff333333" RegionColor="Black" />

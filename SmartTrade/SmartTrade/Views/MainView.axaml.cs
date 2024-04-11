@@ -7,6 +7,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Views;
@@ -61,37 +62,44 @@ public partial class MainView : UserControl
 
     private async void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
     {
+        await ShowCatalog();
+    }
+
+    public async Task ShowCatalog()
+    {
         if (SmartTradeService.Instance.Logged == null)
         {
-            ProductCatalog productCatalog = new ProductCatalog();
-
-            if(SmartTradeNavigationManager.Instance.NavigateWithButton(productCatalog, _selectedButton, 0))
-                await ((ProductCatalogModel)productCatalog.DataContext).LoadProductsAsync();
+            ProductCatalog catalog = new ProductCatalog();
+            await NavigateTo(catalog);
             return;
         }
 
         if (SmartTradeService.Instance.Logged.IsSeller)
         {
             SellerCatalog sellerCatalog = new SellerCatalog();
-
-            if(SmartTradeNavigationManager.Instance.NavigateWithButton(sellerCatalog, _selectedButton, 0))
-              await ((SellerCatalogModel)sellerCatalog.DataContext).LoadProductsAsync();
+            await NavigateTo(sellerCatalog);
             return;
         }
 
         if (SmartTradeService.Instance.Logged.IsAdmin)
         {
             AdminCatalog adminCatalog = new AdminCatalog();
-
-            if(SmartTradeNavigationManager.Instance.NavigateWithButton(adminCatalog, _selectedButton, 0))
-                await ((AdminCatalogModel)adminCatalog.DataContext).LoadProductsAsync();
+            await NavigateTo(adminCatalog);
             return;
         }
 
-        ProductCatalog productCatalogg = new ProductCatalog();
+        ProductCatalog productCatalog = new ProductCatalog();
+        await NavigateTo(productCatalog);
 
-        if(SmartTradeNavigationManager.Instance.NavigateWithButton(productCatalogg, _selectedButton, 0))
-         await ((ProductCatalogModel)productCatalogg.DataContext).LoadProductsAsync();
+        async Task NavigateTo(UserControl catalog)
+        {
+            if (SmartTradeNavigationManager.Instance.NavigateWithButton(catalog, _selectedButton, 0))
+            {
+                SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(new LoadingScreen());
+                await ((CatalogModel)catalog.DataContext).LoadProductsAsync();
+                if (_selectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
+            }
+        }
     }
 
     private void OnProfileButtonOnClick(object? sender, RoutedEventArgs e)

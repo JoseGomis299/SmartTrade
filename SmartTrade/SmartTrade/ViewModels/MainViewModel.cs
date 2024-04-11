@@ -19,9 +19,10 @@ public class MainViewModel : ViewModelBase
         SearchAutoComplete = new ObservableCollection<string>();
     }
 
-    public async Task InitializeAsync()
+    public async Task InitializeAsync(MainView mainView)
     {
-        await ((ProductCatalogModel) (SmartTradeNavigationManager.Instance.Navigator.CurrentView as ProductCatalog).DataContext).LoadProductsAsync();
+        
+        await mainView.HomeButtonClicked();
 
         foreach (var name in JsonConvert.DeserializeObject<List<string>>(await SmartTradeService.Instance.GetPostsNamesAsync())!)
         {

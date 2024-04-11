@@ -30,7 +30,7 @@ public partial class App : Application
                 DataContext = new MainViewModel()
             };
 
-            await ((MainViewModel) singleViewPlatform.MainView.DataContext).InitializeAsync();
+            await ((MainViewModel) singleViewPlatform.MainView.DataContext).InitializeAsync((MainView) singleViewPlatform.MainView);
         }
 
         base.OnFrameworkInitializationCompleted();
