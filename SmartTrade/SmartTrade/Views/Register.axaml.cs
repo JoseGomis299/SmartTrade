@@ -51,7 +51,12 @@ namespace SmartTrade.Views
             {
                 Address consumerAddress = new Address(province, street, municipality, postalCode, number, door);
                 DateTime dateBirth = _model.ConvertDate(dateBirthString);
+                _model.ValidarDni(dni);
+                _model.ValidarEmail(email);
+                _model.ValidarTelefono(number);
                 await _model.RegisterConsumer(email, password, name, lastnames, dni, dateBirth, consumerAddress, consumerAddress);
+                SmartTradeNavigationManager.Instance.NavigateTo(new ProductCatalog());
+
 
             }
             catch (Exception ex)
