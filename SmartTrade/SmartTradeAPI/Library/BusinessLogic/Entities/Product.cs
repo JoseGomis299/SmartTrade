@@ -39,6 +39,7 @@ namespace SmartTrade.Entities;
         public abstract string GetInfo();
         public abstract ICollection<Category> GetCategories();
         public abstract string GetDifferences(Product product);
+        public abstract string GetDifferentiations();
 
         public override bool Equals(object? obj)
         {

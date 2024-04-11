@@ -50,6 +50,11 @@ public partial class Nutrition : Product
         return differences;
     }
 
+    public override string GetDifferentiations()
+    {
+        return $"{Weight}g";
+    }
+
     public override bool Equals(object? obj)
     {
         return base.Equals(obj) && obj is Nutrition nutrition 

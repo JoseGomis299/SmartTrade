@@ -42,6 +42,11 @@ public partial class Toy : Product
         return differences;
     }
 
+    public override string GetDifferentiations()
+    {
+        return Material;
+    }
+
     public override bool Equals(object? obj)
     {
         return base.Equals(obj) && obj is Toy toy && Brand.ToCommonSyntax() == toy.Brand.ToCommonSyntax() && Material.ToCommonSyntax() == toy.Material.ToCommonSyntax();

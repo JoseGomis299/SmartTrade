@@ -51,6 +51,11 @@ public partial class Book : Product
         return differences;
     }
 
+    public override string GetDifferentiations()
+    {
+        return Language;
+    }
+
     public override bool Equals(object? obj)
     {
         return base.Equals(obj) && obj is Book book 
