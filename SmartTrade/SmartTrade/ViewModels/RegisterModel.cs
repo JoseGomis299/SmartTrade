@@ -28,7 +28,7 @@ namespace SmartTrade.ViewModels
             }
         }
 
-        public static void ValidarDni(string dni)
+        public void ValidarDni(string dni)
         {
             string pattern = @"^\d{8}[A-Za-z]$";
             if (!Regex.IsMatch(dni, pattern))
@@ -37,7 +37,7 @@ namespace SmartTrade.ViewModels
             }
         }
 
-        public static void ValidarEmail(string email)
+        public void ValidarEmail(string email)
             {
                 string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
                 if (!Regex.IsMatch(email, pattern))
@@ -45,7 +45,7 @@ namespace SmartTrade.ViewModels
                     throw new ArgumentException("Email incorrecto. Por favor, introduce un email válido.");
                 }
         }
-        public static void ValidarTelefono(string telefono)
+        public void ValidarTelefono(string telefono)
         {
             string pattern = @"^\d+$";
             if (!Regex.IsMatch(telefono, pattern))
