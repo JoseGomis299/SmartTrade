@@ -51,7 +51,7 @@ namespace SmartTrade.Views
             {
                 Address consumerAddress = new Address(province, street, municipality, postalCode, number, door);
                 DateTime dateBirth = _model.ConvertDate(dateBirthString);
-                await _model.RegisterConsumer(email,password,name,lastnames,dni,dateBirth,consumerAddress,consumerAddress);
+                await _model.RegisterConsumer(email, password, name, lastnames, dni, dateBirth, consumerAddress, consumerAddress);
 
             }
             catch (Exception ex)
@@ -65,6 +65,21 @@ namespace SmartTrade.Views
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();
                     TextBoxEmail.ErrorMessage.Text = ex.Message;
+                }
+                if (ex.Message.Contains("DNI incorrecto. Debe tener 8 dígitos seguidos de una letra."))
+                {
+                    TextBoxDNI.ErrorMessage.BringIntoView();
+                    TextBoxDNI.ErrorMessage.Text = ex.Message;
+                }
+                if (ex.Message.Contains("Email incorrecto. Por favor, introduce un email válido."))
+                {
+                    TextBoxEmail.ErrorMessage.BringIntoView();
+                    TextBoxEmail.ErrorMessage.Text = ex.Message;
+                }
+                if (ex.Message.Contains("Número de teléfono incorrecto. Solo se permiten dígitos."))
+                {
+                    TextBoxNumber.ErrorMessage.BringIntoView();
+                    TextBoxNumber.ErrorMessage.Text = ex.Message;
                 }
             }
         }
