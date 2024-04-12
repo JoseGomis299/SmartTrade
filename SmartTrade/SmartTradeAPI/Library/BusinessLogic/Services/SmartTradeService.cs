@@ -172,7 +172,7 @@ public class SmartTradeService : ISmartTradeService
     {
         if (_dal.GetWhere<Consumer>(x => x.Email == registerData.Email).Any() || _dal.GetWhere<Consumer>(x => x.DNI == registerData.DNI).Any())
         {
-            throw new Exception("Usuario existente");
+            throw new Exception("Existing user");
         }
 
         Consumer consumer = new Consumer(registerData.Email, registerData.Password, registerData.Password, registerData.Password, registerData.DNI, registerData.BirthDate, registerData.BillingAddress, registerData.Address);
@@ -186,7 +186,7 @@ public class SmartTradeService : ISmartTradeService
     {
         if (_dal.GetWhere<Seller>(x => x.Email == registerData.Email).Any() || _dal.GetWhere<Seller>(x => x.DNI == registerData.DNI).Any())
         {
-            throw new Exception("Usuario existente");
+            throw new Exception("Existing user");
         }
 
         Seller seller = new Seller(registerData.Email, registerData.Password, registerData.Name, registerData.LastNames, registerData.DNI, registerData.CompanyName, registerData.IBAN);
@@ -198,10 +198,10 @@ public class SmartTradeService : ISmartTradeService
 
     public UserDTO LogIn(string email, string password)
     {
-        if (!_dal.GetWhere<User>(x => x.Email == email).Any()) throw new Exception("Usuario no registrado");
+        if (!_dal.GetWhere<User>(x => x.Email == email).Any()) throw new Exception("Unregistered user");
             
         User user = _dal.GetById<User>(email);
-        if (user.Password != password) throw new Exception("Contraseña incorrecta");
+        if (user.Password != password) throw new Exception("Incorrect password");
 
         return new UserDTO(user);
     }

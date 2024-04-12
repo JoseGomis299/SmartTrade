@@ -24,7 +24,7 @@ namespace SmartTrade.ViewModels
             }
             catch (FormatException)
             {
-                throw new Exception("formato incorrecto");
+                throw new Exception("Incorrect format");
             }
         }
 
@@ -33,7 +33,7 @@ namespace SmartTrade.ViewModels
             string pattern = @"^\d{8}[A-Za-z]$";
             if (!Regex.IsMatch(dni, pattern))
             {
-                throw new ArgumentException("DNI incorrecto. Debe tener 8 dígitos seguidos de una letra.");
+                throw new ArgumentException("Incorrect DNI. Must be 8 digits followed by a letter");
             }
         }
 
@@ -42,7 +42,7 @@ namespace SmartTrade.ViewModels
                 string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
                 if (!Regex.IsMatch(email, pattern))
                 {
-                    throw new ArgumentException("Email incorrecto. Por favor, introduce un email válido.");
+                    throw new ArgumentException("Wrong email. Please enter a valid email");
                 }
         }
         public void ValidarTelefono(string telefono)
@@ -50,11 +50,13 @@ namespace SmartTrade.ViewModels
             string pattern = @"^\d+$";
             if (!Regex.IsMatch(telefono, pattern))
             {
-                throw new ArgumentException("Número de teléfono incorrecto. Solo se permiten dígitos.");
+                throw new ArgumentException("Wrong phone number. Only digits are allowed");
             }
         }
 
-        public async Task RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
+  
+    
+    public async Task RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
         {
            await SmartTradeService.Instance.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
         }
