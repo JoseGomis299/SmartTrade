@@ -55,13 +55,13 @@ namespace SmartTrade.Views
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Contraseña incorrecta"))
+                if (ex.Message.Contains("Incorrect password"))
                 {
                     TextBoxPassword.ErrorMessage.BringIntoView();
                     TextBoxPassword.ErrorMessage.Text = ex.Message;
                 }
 
-                if (ex.Message.Contains("Usuario no registrado"))
+                if (ex.Message.Contains("Unregistered user"))
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();
                     TextBoxEmail.ErrorMessage.Text = ex.Message;

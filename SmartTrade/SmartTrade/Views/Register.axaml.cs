@@ -82,27 +82,27 @@ namespace SmartTrade.Views
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Formato Incorrecto"))
+                if (ex.Message.Contains("Incorrect format"))
                 {
                     TextBoxDateBirth.ErrorMessage.BringIntoView();
                     TextBoxDateBirth.ErrorMessage.Text = ex.Message;
                 }
-                if (ex.Message.Contains("Usuario existente"))
+                if (ex.Message.Contains("Existing user"))
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();
                     TextBoxEmail.ErrorMessage.Text = ex.Message;
                 }
-                if (ex.Message.Contains("DNI incorrecto. Debe tener 8 dígitos seguidos de una letra."))
+                if (ex.Message.Contains("Incorrect DNI. Must be 8 digits followed by a letter"))
                 {
                     TextBoxDNI.ErrorMessage.BringIntoView();
                     TextBoxDNI.ErrorMessage.Text = ex.Message;
                 }
-                if (ex.Message.Contains("Email incorrecto. Por favor, introduce un email válido."))
+                if (ex.Message.Contains("Wrong email. Please enter a valid email"))
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();
                     TextBoxEmail.ErrorMessage.Text = ex.Message;
                 }
-                if (ex.Message.Contains("Número de teléfono incorrecto. Solo se permiten dígitos."))
+                if (ex.Message.Contains("Wrong phone number. Only digits are allowed"))
                 {
                     TextBoxNumber.ErrorMessage.BringIntoView();
                     TextBoxNumber.ErrorMessage.Text = ex.Message;

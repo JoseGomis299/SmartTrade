@@ -47,16 +47,23 @@ namespace SmartTrade.Views
 
             try
             {
+                _model.ValidarDniCif(cif);
                 Address SellerAddress = new Address(province, street, municipality, postalCode, number, door);
-                SmartTradeNavigationManager.Instance.NavigateTo(new SellerCatalog());
                 await _model.RegisterSeller(email,password,name,lastnames,cif,company,iban);
+                SmartTradeNavigationManager.Instance.NavigateTo(new SellerCatalog());
             }
             catch(Exception ex) 
             {
-                if (ex.Message.Contains("Usuario existente"))
+                if (ex.Message.Contains("Existing user"))
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();
                     TextBoxEmail.ErrorMessage.Text = ex.Message;
+                }
+
+                if (ex.Message.Contains("Incorrect CIF/DNI. Please enter a valid CIF/DNI"))
+                {
+                    TextBoxCIF.ErrorMessage.BringIntoView();
+                    TextBoxCIF.ErrorMessage.Text = ex.Message;
                 }
             }
             
