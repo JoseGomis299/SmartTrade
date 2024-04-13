@@ -19,6 +19,7 @@ public partial class MainView : UserControl
     private Bitmap? _cartImageSelected;
     private Bitmap? _userImageSelected;
     private Bitmap? _homeImageSelected;
+    private Bitmap? _addToCart;
 
     int _selectedButton = 0;
 
@@ -50,10 +51,13 @@ public partial class MainView : UserControl
         _cartImageSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/CartSelected.png")));
         _userImageSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/UserSelected.png")));
         _homeImageSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/HomeSelected.png")));
+        _addToCart = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AddToCart.png")));
 
         HomeImage.Source = _homeImageSelected;
         UserImage.Source = _userImage;
         CartImage.Source = _cartImage;
+        CartImage2.Source = _cartImage;
+        AddToCartImage.Source = _addToCart;
     }
 
     #region Buttons
@@ -163,6 +167,18 @@ public partial class MainView : UserControl
         {
             SearchBar.IsVisible = false;
             return;
+        }
+
+        if (type == typeof(ProductView))
+        {
+            BottomBar.IsVisible = false;
+            ShoppingCart.IsVisible = true;
+            return;
+        }
+
+        if (type != typeof(ProductView))
+        {
+            ShoppingCart.IsVisible = false;
         }
 
         ResetVisibility();

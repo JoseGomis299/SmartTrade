@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Newtonsoft.Json;
 using SmartTrade.Views;
 using SmartTradeDTOs;
+using ReactiveUI;
 
 namespace SmartTrade.ViewModels;
 
@@ -13,6 +14,9 @@ public class MainViewModel : ViewModelBase
 {
     public string? SearchText { get; set; }
     public ObservableCollection<string> SearchAutoComplete { get; set; }
+
+    private bool _cartVisible;
+    private bool _buttonsVisible;
 
     public MainViewModel()
     {
@@ -67,4 +71,15 @@ public class MainViewModel : ViewModelBase
     //    return productCatalogg;
     //}
 
+    public bool CartVisible
+    {
+        get => _cartVisible;
+        set => this.RaiseAndSetIfChanged(ref _cartVisible, value);
+    }
+
+    public bool ButtonVisible
+    {
+        get => _buttonsVisible;
+        set => this.RaiseAndSetIfChanged(ref _buttonsVisible, value);
+    }
 }
