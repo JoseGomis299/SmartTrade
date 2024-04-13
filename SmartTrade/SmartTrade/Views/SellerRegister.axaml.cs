@@ -14,6 +14,7 @@ namespace SmartTrade.Views
         public SellerRegister()
         {
             InitializeComponent();
+            DataContext = new SellerRegisterModel();
             SignInButton.Click += SignInButton_click;
             RegisterConsumerButton.Click += RegisterConsumerButton_click;
             LogInButton.Click += LoginButton_click;
