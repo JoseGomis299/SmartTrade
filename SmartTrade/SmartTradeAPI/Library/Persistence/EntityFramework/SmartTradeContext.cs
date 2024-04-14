@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -32,6 +33,7 @@ public class SmartTradeContext : BaseDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
+        options.LogTo(message => Debug.WriteLine(message));
         options.UseLazyLoadingProxies();
         options.UseSqlServer("Server=tcp:furgoneta.database.windows.net,1433;Initial Catalog=SmartTradeDB;Persist Security Info=False;User ID=CloudSAf9df27ed;Password=123456789Aa;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
     }

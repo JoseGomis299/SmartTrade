@@ -17,7 +17,7 @@ public class AdminCatalogModel : CatalogModel
 
     public override async Task LoadProductsAsync()
     {
-        List<PostDTO>? posts = await SmartTradeService.Instance.GetPostsAsync();
+        List<SimplePostDTO>? posts = await SmartTradeService.Instance.GetPostsAsync();
 
         posts.ForEach(post =>
         {

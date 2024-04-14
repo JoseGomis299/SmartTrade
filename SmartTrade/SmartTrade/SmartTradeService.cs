@@ -60,9 +60,14 @@ public class SmartTradeService
         await PerformApiInstructionAsync("User/PublishPost", ApiInstruction.Post, content);
     }
 
-    public async Task<List<PostDTO>?> GetPostsAsync()
+    public async Task<List<SimplePostDTO>?> GetPostsAsync()
     {
-        return  JsonConvert.DeserializeObject<List<PostDTO>>(await PerformApiInstructionAsync("Post/GetAll", ApiInstruction.Get));
+        return  JsonConvert.DeserializeObject<List<SimplePostDTO>>(await PerformApiInstructionAsync("Post/GetAll", ApiInstruction.Get));
+    }
+
+    public async Task<PostDTO?> GetPostAsync(int postId)
+    {
+       return JsonConvert.DeserializeObject<PostDTO>(await PerformApiInstructionAsync($"User/GetById/{postId}", ApiInstruction.Put));
     }
 
     public async Task<List<string>?> GetPostsNamesAsync()
@@ -70,9 +75,9 @@ public class SmartTradeService
         return JsonConvert.DeserializeObject<List<string>>(await PerformApiInstructionAsync("Post/GetAllNames", ApiInstruction.Get));
     }
 
-    public async Task<List<PostDTO>?> GetPostsFuzzyContainAsync(string? searchText)
+    public async Task<List<SimplePostDTO>?> GetPostsFuzzyContainAsync(string? searchText)
     {
-        return JsonConvert.DeserializeObject<List<PostDTO>>(await PerformApiInstructionAsync("Post/GetContaining?content=" + Uri.EscapeDataString(searchText), ApiInstruction.Get));
+        return JsonConvert.DeserializeObject<List<SimplePostDTO>>(await PerformApiInstructionAsync("Post/GetContaining?content=" + Uri.EscapeDataString(searchText), ApiInstruction.Get));
     }
 
     public async Task EditPostAsync(int postId, string postInfoJson)

@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartTrade.Persistence
 {
@@ -21,7 +22,7 @@ namespace SmartTrade.Persistence
             dbContext.Set<T>().Remove(entity);
         }
 
-        public IEnumerable<T> GetAll<T>() where T : class
+        public DbSet<T> GetAll<T>() where T : class
         {
             return dbContext.Set<T>();
         }
