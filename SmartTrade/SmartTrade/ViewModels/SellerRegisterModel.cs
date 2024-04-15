@@ -53,7 +53,6 @@ namespace SmartTrade.ViewModels
             get => _iban;
             set => this.RaiseAndSetIfChanged(ref _iban, value);
         }
-        public bool AllFieldsFilled => !string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(password) && !string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(lastNames) && !string.IsNullOrWhiteSpace(iban) && !string.IsNullOrWhiteSpace(cif) && !string.IsNullOrWhiteSpace(company);
         public async Task RegisterSeller(string email, string password, string name, string lastnames, string cif, string company, string iban)
         {
             await SmartTradeService.Instance.RegisterSellerAsync(email,password,name,lastnames,cif, company,iban);
