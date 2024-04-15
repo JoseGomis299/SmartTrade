@@ -13,6 +13,20 @@ namespace SmartTrade.ViewModels
 {
     public class RegisterModel : ViewModelBase
     {
+        public string? Name { get; set; }
+        public string? LastNames { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public string? DNI { get; set; }
+        public string? DateBirth { get; set; }
+        public string? Number { get; set; }
+        public string? Province { get; set; }
+        public string? Municipality { get; set; }
+        public string? PostalCode { get; set; }
+        public string? Street { get; set; }
+        public string? Door { get; set; }
+
+
         public UserDTO Logged => SmartTradeService.Instance.Logged;
         public DateTime ConvertDate(string dateString)
         {

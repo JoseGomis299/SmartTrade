@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 using System;
 
@@ -21,11 +22,33 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.NavigateTo(new ChooseProfile());
 
         }
-        
+
+        private void ClearErrors()
+        {
+            TextBoxEmail.ErrorText = "";
+            TextBoxPassword.ErrorText = "";
+        }
         private async void SignUpButton_click(object? sender, RoutedEventArgs e)
         {
             string email = TextBoxEmail.Text;
             string password = TextBoxPassword.Text;
+            ClearErrors();
+            bool hasErrors = false;
+
+            if (_model.Email.IsNullOrEmpty())
+            {
+                TextBoxEmail.BringIntoView();
+                TextBoxEmail.Focus();
+                TextBoxEmail.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.Password.IsNullOrEmpty())
+            {
+                TextBoxPassword.BringIntoView();
+                TextBoxPassword.Focus();
+                TextBoxPassword.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
 
             try
             {
