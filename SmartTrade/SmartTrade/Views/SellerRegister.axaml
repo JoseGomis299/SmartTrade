@@ -13,13 +13,13 @@
 	<Grid RowDefinitions="Auto Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
 		<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="10 0 0 0">
 			<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">REGISTER AS A SELLER</TextBlock>
-			<controls:ST_TextBox LabelText="Name" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxName"/>
-			<controls:ST_TextBox LabelText="Username" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxLastNames"/>
-			<controls:ST_TextBox LabelText="CIF/DNI/NIE" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCIF"/>
-			<controls:ST_TextBox LabelText="Email" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
-			<controls:ST_TextBox LabelText="Password" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
-			<controls:ST_TextBox LabelText="Company" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCompany"/>
-			<controls:ST_TextBox LabelText="IBAN" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxIBAN"/>
+			<controls:ST_TextBox LabelText="Name" Text="{Binding TextBoxName, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxName"/>
+			<controls:ST_TextBox LabelText="Last Names" Text="{Binding TextBoxLastNames, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxLastNames"/>
+			<controls:ST_TextBox LabelText="CIF/DNI/NIE" Text="{Binding TextBoxCIF, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCIF"/>
+			<controls:ST_TextBox LabelText="Email" Text="{Binding TextBoxEmail, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
+			<controls:ST_TextBox LabelText="Password" Text="{Binding TextBoxPassword, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
+			<controls:ST_TextBox LabelText="Company" Text="{Binding TextBoxCompany, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCompany"/>
+			<controls:ST_TextBox LabelText="IBAN" Text="{Binding TextBoxIBAN, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxIBAN"/>
 		</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Stretch" >
 			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378">
@@ -27,12 +27,12 @@
 			</Border>
 		</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="10" Margin="10 85 0 0">
-			<controls:ST_TextBox LabelText="Province" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxProvince"/>
-			<controls:ST_TextBox LabelText="Municipality" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxMunicipality"/>
-			<controls:ST_TextBox LabelText="Postal Code" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPostalCode"/>
-			<controls:ST_TextBox LabelText="Street" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxStreet"/>
-			<controls:ST_TextBox LabelText="Number" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxNumber"/>
-			<controls:ST_TextBox LabelText="Door" Text="{Binding Title, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDoor"/>
+			<controls:ST_TextBox LabelText="Province" Text="{Binding TextBoxProvince, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxProvince"/>
+			<controls:ST_TextBox LabelText="Municipality" Text="{Binding TextBoxMunicipality, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxMunicipality"/>
+			<controls:ST_TextBox LabelText="Postal Code" Text="{Binding TextBoxPostalCode, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPostalCode"/>
+			<controls:ST_TextBox LabelText="Street" Text="{Binding TextBoxStreet, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxStreet"/>
+			<controls:ST_TextBox LabelText="Number" Text="{Binding TextBoxNumber, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxNumber"/>
+			<controls:ST_TextBox LabelText="Door" Text="{Binding TextBoxDoor, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDoor"/>
 			<Button Name="SignInButton" HorizontalAlignment="Center" Height="40" Width="200" Margin="0 30 0 0" Classes="Black">SIGN IN!</Button>
 
 		</StackPanel>

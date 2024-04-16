@@ -9,7 +9,7 @@ namespace SmartTradeAPI.Controllers
     public class PostController : ControllerBase
     {
         [HttpGet("GetAll", Name = "GetAll")]
-        public IEnumerable<PostDTO> Get()
+        public IEnumerable<SimplePostDTO> Get()
         {
             ISmartTradeService service = new SmartTradeService();
             string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
@@ -18,7 +18,7 @@ namespace SmartTradeAPI.Controllers
         }
 
         [HttpGet("GetContaining",Name = "GetContaining")]
-        public IEnumerable<PostDTO> GetOnesThatContain(string content)
+        public IEnumerable<SimplePostDTO> GetOnesThatContain(string content)
         {
             ISmartTradeService service = new SmartTradeService();
 
@@ -30,7 +30,7 @@ namespace SmartTradeAPI.Controllers
         {
             ISmartTradeService service = new SmartTradeService();
 
-            return service.GetPostsNamesStartWith("", Int32.MaxValue);
+            return service.GetPostNames();
         }
 
         [HttpGet("GetById")]

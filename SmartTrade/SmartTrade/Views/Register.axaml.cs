@@ -7,6 +7,7 @@ using Avalonia.Input;
 using System.Linq;
 using SmartTrade.ViewModels;
 using Splat;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SmartTrade.Views
 {
@@ -17,6 +18,7 @@ namespace SmartTrade.Views
         public Register()
         {
             InitializeComponent();
+            DataContext = new RegisterModel(); 
             SignInButton.Click += SignInButton_click;
             RegisterSellerButton.Click += RegisterSellerButton_click;
             LoginButton.Click += LoginButton_click;
@@ -33,8 +35,25 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.NavigateTo(new SellerRegister());
         }
 
+        private void ClearErrors()
+        {
+            TextBoxName.ErrorText = "";
+            TextBoxEmail.ErrorText = "";
+            TextBoxLastNames.ErrorText = "";
+            TextBoxPassword.ErrorText = "";
+            TextBoxDNI.ErrorText = "";
+            TextBoxDateBirth.ErrorText = "";
+            TextBoxNumber.ErrorText = "";
+            TextBoxProvince.ErrorText = "";
+            TextBoxPostalCode.ErrorText = "";
+            TextBoxMunicipality.ErrorText = "";
+            TextBoxStreet.ErrorText = "";
+            TextBoxDoor.ErrorText = "";
+
+        }
         private async void SignInButton_click(object? sender, RoutedEventArgs e)
         {
+            ClearErrors();
             string name = TextBoxName.Text;
             string lastnames = TextBoxLastNames.Text;
             string email = TextBoxEmail.Text;
@@ -47,38 +66,104 @@ namespace SmartTrade.Views
             string number = TextBoxNumber.Text;
             string door = TextBoxDoor.Text;
             string dateBirthString = TextBoxDateBirth.Text;
+            bool hasErrors = false;
+            if (_model.Name.IsNullOrEmpty())
+            {
+                TextBoxName.BringIntoView();
+                TextBoxName.Focus();
+                TextBoxName.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.Email.IsNullOrEmpty())
+            {
+                TextBoxEmail.BringIntoView();
+                TextBoxEmail.Focus();
+                TextBoxEmail.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.Password.IsNullOrEmpty())
+            {
+                TextBoxPassword.BringIntoView();
+                TextBoxPassword.Focus();
+                TextBoxPassword.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.DNI.IsNullOrEmpty())
+            {
+                TextBoxDNI.BringIntoView();
+                TextBoxDNI.Focus();
+                TextBoxDNI.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.DateBirth.IsNullOrEmpty())
+            {
+                TextBoxDateBirth.BringIntoView();
+                TextBoxDateBirth.Focus();
+                TextBoxDateBirth.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.LastNames.IsNullOrEmpty())
+            {
+                TextBoxLastNames.BringIntoView();
+                TextBoxLastNames.Focus();
+                TextBoxLastNames.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.Province.IsNullOrEmpty())
+            {
+                TextBoxProvince.BringIntoView();
+                TextBoxProvince.Focus();
+                TextBoxProvince.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.PostalCode.IsNullOrEmpty())
+            {
+                TextBoxPostalCode.BringIntoView();
+                TextBoxPostalCode.Focus();
+                TextBoxPostalCode.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.Municipality.IsNullOrEmpty())
+            {
+                TextBoxMunicipality.BringIntoView();
+                TextBoxMunicipality.Focus();
+                TextBoxMunicipality.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.Street.IsNullOrEmpty())
+            {
+                TextBoxStreet.BringIntoView();
+                TextBoxStreet.Focus();
+                TextBoxStreet.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.Number.IsNullOrEmpty())
+            {
+                TextBoxNumber.BringIntoView();
+                TextBoxNumber.Focus();
+                TextBoxNumber.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
+            if (_model.Door.IsNullOrEmpty())
+            {
+                TextBoxDoor.BringIntoView();
+                TextBoxDoor.Focus();
+                TextBoxDoor.ErrorText = "Title cannot be empty";
+                hasErrors = true;
+            }
             try
             {
+                if (hasErrors) return;
                 Address consumerAddress = new Address(province, street, municipality, postalCode, number, door);
                 DateTime dateBirth = _model.ConvertDate(dateBirthString);
                 _model.ValidarDni(dni);
                 _model.ValidarEmail(email);
                 _model.ValidarTelefono(number);
                 await _model.RegisterConsumer(email, password, name, lastnames, dni, dateBirth, consumerAddress, consumerAddress);
-                SmartTradeNavigationManager.Instance.NavigateTo(new ProductCatalog());
+                ProductCatalog productCatalog = new ProductCatalog();
 
-
-                if (_model.Logged.IsSeller)
-                {
-                    SellerCatalog sellerCatalog = new SellerCatalog();
-
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(sellerCatalog);
-                    await ((SellerCatalogModel)sellerCatalog.DataContext).LoadProductsAsync();
-                }
-                if (_model.Logged.IsConsumer)
-                {
-                    ProductCatalog productCatalog = new ProductCatalog();
-
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(productCatalog);
-                    await ((ProductCatalogModel)productCatalog.DataContext).LoadProductsAsync();
-                }
-                if (_model.Logged.IsAdmin)
-                {
-                    AdminCatalog adminCatalog = new AdminCatalog();
-
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(adminCatalog);
-                    await ((AdminCatalogModel)adminCatalog.DataContext).LoadProductsAsync();
-                }
+                SmartTradeNavigationManager.Instance.ReInitializeNavigation(productCatalog);
+                await ((ProductCatalogModel)productCatalog.DataContext).LoadProductsAsync();
             }
             catch (Exception ex)
             {

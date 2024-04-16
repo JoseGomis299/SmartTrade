@@ -20,7 +20,7 @@ namespace SmartTrade.Views
             PriceDescendingButton.Click += PriceDescendingButton_Click;
         }
 
-        public SearchResult(List<PostDTO>? posts)
+        public SearchResult(List<SimplePostDTO>? posts)
         {
             DataContext = _model = new SearchResultModel();
             foreach (var post in posts)

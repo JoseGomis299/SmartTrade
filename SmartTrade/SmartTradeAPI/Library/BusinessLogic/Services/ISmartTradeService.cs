@@ -24,9 +24,10 @@ namespace SmartTrade.BusinessLogic
 
         public void DeletePost(int postID);
 
-        public List<PostDTO> GetPosts(string? loggedID);
+        public List<SimplePostDTO> GetPosts(string? loggedID);
         public PostDTO GetPost(int postId);
-        public List<PostDTO> GetPostsFuzzyContain(string searchFor);
+        public List<SimplePostDTO> GetPostsFuzzyContain(string searchFor);
         public List<String> GetPostsNamesStartWith(string startWith, int numPosts);
+        public List<string> GetPostNames();
     }
 }

@@ -3,6 +3,7 @@ using SmartTradeDTOs;
 using Newtonsoft.Json;
 using SmartTrade.Entities;
 using SmartTrade.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartTrade.BusinessLogic;
 
@@ -106,20 +107,43 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public List<PostDTO> GetPosts(string? loggedID)
+    public List<SimplePostDTO> GetPosts(string? loggedID)
     { 
         User? logged = _dal.GetById<User>(loggedID);
-        List<Post> posts = new();
-        List<PostDTO> postDtos = new();
 
-        if(logged is Admin) posts = _dal.GetWhere<Post>(x => !x.Validated).ToList();
-        else if (logged is Seller seller) posts = seller.Posts.Where(x => x.Validated).ToList();
-        else posts = _dal.GetWhere<Post>(x => x.Validated).ToList();
+        var postDtos = _dal.GetAll<Post>().AsNoTracking()
+            .Select(p => new
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Category = p.Offers.Select(o => o.Product.GetCategories().First()).FirstOrDefault(),
+                MinimumAge = p.Offers.Select(o => o.Product.MinimumAge).FirstOrDefault(),
+                EcologicPrint = p.Offers.Select(o => o.Product.EcologicPrint).FirstOrDefault(),
+                Validated = p.Validated,
+                SellerEmail = p.Seller.Email,
+                Price = p.Offers.Select(o => o.Price).FirstOrDefault(),
+                ImageSource = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
+                ProductName = p.Offers.Select(o => o.Product.Name).FirstOrDefault()
+            })
+            .ToList()
+            .Select(anon => new SimplePostDTO
+            {
+                Id = anon.Id,
+                Title = anon.Title,
+                Category = anon.Category,
+                MinimumAge = anon.MinimumAge,
+                EcologicPrint = anon.EcologicPrint,
+                Validated = anon.Validated,
+                SellerID = anon.SellerEmail,
+                Price = anon.Price,
+                Image = anon.ImageSource,
+                ProductName = anon.ProductName
+            })
+            .ToList();
 
-        foreach (var post in posts)
-        {
-            postDtos.Add(new PostDTO(post));   
-        }
+        if (logged is Admin) postDtos = postDtos.Where(x => !x.Validated).ToList();
+        else if (logged is Seller seller) postDtos = postDtos.Where(x => x.Validated).ToList();
+        else postDtos = postDtos.Where(x => x.Validated).ToList();
 
         return postDtos;
     }
@@ -129,18 +153,48 @@ public class SmartTradeService : ISmartTradeService
         return new PostDTO(_dal.GetById<Post>(postId));
     }
 
-    public List<PostDTO> GetPostsFuzzyContain(string searchFor)
+    public List<SimplePostDTO> GetPostsFuzzyContain(string searchFor)
     {
-        List<Post> posts = _dal.GetAll<Post>().Where(x => Fuzz.PartialTokenSortRatio(searchFor,x.Title) > 60)
-            .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title)).ToList();
-
-        return posts.Select(x => new PostDTO(x)).ToList();
+        return _dal.GetAll<Post>().AsNoTracking()
+            .Select(p => new
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Category = p.Offers.Select(o => o.Product.GetCategories().First()).FirstOrDefault(),
+                MinimumAge = p.Offers.Select(o => o.Product.MinimumAge).FirstOrDefault(),
+                EcologicPrint = p.Offers.Select(o => o.Product.EcologicPrint).FirstOrDefault(),
+                Validated = p.Validated,
+                SellerEmail = p.Seller.Email,
+                Price = p.Offers.Select(o => o.Price).FirstOrDefault(),
+                ImageSource = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
+                ProductName = p.Offers.Select(o => o.Product.Name).FirstOrDefault()
+            }).ToList()
+            .Select(anon => new SimplePostDTO
+            {
+                Id = anon.Id,
+                Title = anon.Title,
+                Category = anon.Category,
+                MinimumAge = anon.MinimumAge,
+                EcologicPrint = anon.EcologicPrint,
+                Validated = anon.Validated,
+                SellerID = anon.SellerEmail,
+                Price = anon.Price,
+                Image = anon.ImageSource,
+                ProductName = anon.ProductName
+            }).Where(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title) > 60)
+            .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title))
+            .ToList();
     }
 
     public List<string> GetPostsNamesStartWith(string startWith, int numPosts)
     {
         var res = _dal.GetWhere<Post>(x => x.Title.StartsWith(startWith)).Select(y => new string(y.Title)).ToList();
         return res.Take(Math.Min(numPosts, res.Count)).ToList();
+    }
+
+    public List<string> GetPostNames()
+    {
+        return _dal.GetAll<Post>().Select(x => x.Title).ToList();
     }
 
     public void DeletePost(int postID)

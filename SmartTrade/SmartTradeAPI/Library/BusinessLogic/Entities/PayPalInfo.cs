@@ -2,7 +2,6 @@
 
 public partial class PayPalInfo : IPayMethod
 {
-    public PayPalInfo() { }
     public PayPalInfo(string email, string password)
     {
         Email = email;

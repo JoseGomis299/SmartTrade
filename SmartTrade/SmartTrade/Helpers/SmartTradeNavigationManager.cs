@@ -63,7 +63,7 @@ public class SmartTradeNavigationManager : NavigationManager
 
         view = Navigator.CurrentView;
 
-        InvokeOnNavigate(targetViewType);
+        InvokeOnNavigate(view.GetType());
         return previousButton == targetButton;
     }
 

@@ -10,6 +10,12 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
+  
+  <ItemGroup>
+    <None Remove="Assets\addToCart.png" />
+    <None Remove="Assets\paypal.png" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.10" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
@@ -19,10 +25,14 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
     <PackageReference Include="FluentAvalonia.ProgressRing" Version="1.69.2" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.35.0" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Paypal.axaml.cs">
+      <DependentUpon>Paypal.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ProductView.axaml.cs">
       <DependentUpon>ProductView.axaml</DependentUpon>
     </Compile>
