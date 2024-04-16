@@ -79,7 +79,9 @@ namespace SmartTrade.ViewModels
 
         private async Task OpenProduct()
         {
-            SmartTradeNavigationManager.Instance.NavigateTo(new ProductView(await SmartTradeService.Instance.GetPostAsync((int) Post.Id)));
+            var view = new ProductView(await SmartTradeService.Instance.GetPostAsync((int)Post.Id));
+            ((ProductViewModel)view.DataContext).LoadProducts();
+            SmartTradeNavigationManager.Instance.NavigateTo(view);
         }
 
         private async Task EditProduct()

@@ -14,6 +14,8 @@ public class SmartTradeService
     private static SmartTradeService? _instance;
     public static SmartTradeService Instance => _instance ??= new SmartTradeService();
 
+    private List<SimplePostDTO>? _posts;
+    public IEnumerable<SimplePostDTO>? Posts => _posts;
     public UserDTO? Logged { get; private set; }
 
     public async Task LogInAsync(string email, string password)
@@ -62,12 +64,13 @@ public class SmartTradeService
 
     public async Task<List<SimplePostDTO>?> GetPostsAsync()
     {
-        return  JsonConvert.DeserializeObject<List<SimplePostDTO>>(await PerformApiInstructionAsync("Post/GetAll", ApiInstruction.Get));
+        _posts = JsonConvert.DeserializeObject<List<SimplePostDTO>>(await PerformApiInstructionAsync("Post/GetAll", ApiInstruction.Get));
+        return _posts;
     }
 
     public async Task<PostDTO?> GetPostAsync(int postId)
     {
-       return JsonConvert.DeserializeObject<PostDTO>(await PerformApiInstructionAsync($"User/GetById/{postId}", ApiInstruction.Put));
+       return JsonConvert.DeserializeObject<PostDTO>(await PerformApiInstructionAsync($"User/GetById?id={postId}", ApiInstruction.Put));
     }
 
     public async Task<List<string>?> GetPostsNamesAsync()

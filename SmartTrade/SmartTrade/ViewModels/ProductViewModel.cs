@@ -11,23 +11,59 @@ using ReactiveUI;
 using SmartTrade.Views;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
+using System.Threading.Tasks;
+using SkiaSharp;
 
 namespace SmartTrade.ViewModels
 {
 	public class ProductViewModel : ReactiveObject
 	{
-        private MainViewModel _mainViewModel;
-        public PostDTO post;
+        public PostDTO postView;
+        public ObservableCollection<ProductModel> OtherSellers { get; set; }
+        public ObservableCollection<ProductModel> SameSellerProducts { get; set; }
+        public ObservableCollection<ProductModel> RelatedProducts { get; set; }
 
         public ProductViewModel(PostDTO post)
         {
-            this.post = post;
+            this.postView = post;
+
+            OtherSellers = new ObservableCollection<ProductModel>();
+            SameSellerProducts = new ObservableCollection<ProductModel>();
+            RelatedProducts = new ObservableCollection<ProductModel>();
         }
 
-        private void ShowShoppingCart()
+        public void LoadProducts()
         {
-            _mainViewModel.CartVisible = true;
-            _mainViewModel.ButtonVisible = false;
+            IEnumerable<SimplePostDTO>? posts = SmartTradeService.Instance.Posts;
+
+            foreach(var post in posts)
+            {
+                if (OtherSellersSameProduct(post))
+                {
+                    OtherSellers.Add(new ProductModel(post));
+                }
+                else if (SameSeller(post))
+                {
+                    SameSellerProducts.Add(new ProductModel(post));
+                }
+                else if (IsRelated(post))
+                {
+                    RelatedProducts.Add(new ProductModel(post));
+                }
+            }
+        }
+
+        private bool SameSeller(SimplePostDTO post)
+        {
+            return post.SellerID == postView.SellerID;
+        }
+        private bool OtherSellersSameProduct(SimplePostDTO post)
+        {
+            return post.ProductName == postView.ProductName && post.SellerID != postView.SellerID;
+        }
+        public bool IsRelated(SimplePostDTO post)
+        {
+            return Random.Shared.Next(0, 2) == 1;
         }
     }
 }

@@ -13,4 +13,5 @@ public class SimplePostDTO
     public string? SellerID { get; set; }
     public float Price { get; set; }
     public byte[]? Image { get; set; }
+    public string ProductName { get; set; }
 }

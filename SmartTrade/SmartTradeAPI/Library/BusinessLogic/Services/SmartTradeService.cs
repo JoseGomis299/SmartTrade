@@ -122,7 +122,8 @@ public class SmartTradeService : ISmartTradeService
                 Validated = p.Validated,
                 SellerEmail = p.Seller.Email,
                 Price = p.Offers.Select(o => o.Price).FirstOrDefault(),
-                ImageSource = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault()
+                ImageSource = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
+                ProductName = p.Offers.Select(o => o.Product.Name).FirstOrDefault()
             })
             .ToList()
             .Select(anon => new SimplePostDTO
@@ -135,7 +136,8 @@ public class SmartTradeService : ISmartTradeService
                 Validated = anon.Validated,
                 SellerID = anon.SellerEmail,
                 Price = anon.Price,
-                Image = anon.ImageSource
+                Image = anon.ImageSource,
+                ProductName = anon.ProductName
             })
             .ToList();
 
@@ -164,7 +166,8 @@ public class SmartTradeService : ISmartTradeService
                 Validated = p.Validated,
                 SellerEmail = p.Seller.Email,
                 Price = p.Offers.Select(o => o.Price).FirstOrDefault(),
-                ImageSource = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault()
+                ImageSource = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
+                ProductName = p.Offers.Select(o => o.Product.Name).FirstOrDefault()
             }).ToList()
             .Select(anon => new SimplePostDTO
             {
@@ -176,7 +179,8 @@ public class SmartTradeService : ISmartTradeService
                 Validated = anon.Validated,
                 SellerID = anon.SellerEmail,
                 Price = anon.Price,
-                Image = anon.ImageSource
+                Image = anon.ImageSource,
+                ProductName = anon.ProductName
             }).Where(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title) > 60)
             .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title))
             .ToList();
