@@ -13,6 +13,7 @@
   
   <ItemGroup>
     <None Remove="Assets\addToCart.png" />
+    <None Remove="Assets\paypal.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Paypal.axaml.cs">
+      <DependentUpon>Paypal.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ProductView.axaml.cs">
       <DependentUpon>ProductView.axaml</DependentUpon>
     </Compile>
