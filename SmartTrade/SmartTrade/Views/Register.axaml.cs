@@ -160,30 +160,10 @@ namespace SmartTrade.Views
                 _model.ValidarEmail(email);
                 _model.ValidarTelefono(number);
                 await _model.RegisterConsumer(email, password, name, lastnames, dni, dateBirth, consumerAddress, consumerAddress);
-                SmartTradeNavigationManager.Instance.NavigateTo(new ProductCatalog());
+                ProductCatalog productCatalog = new ProductCatalog();
 
-
-                if (_model.Logged.IsSeller)
-                {
-                    SellerCatalog sellerCatalog = new SellerCatalog();
-
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(sellerCatalog);
-                    await ((SellerCatalogModel)sellerCatalog.DataContext).LoadProductsAsync();
-                }
-                if (_model.Logged.IsConsumer)
-                {
-                    ProductCatalog productCatalog = new ProductCatalog();
-
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(productCatalog);
-                    await ((ProductCatalogModel)productCatalog.DataContext).LoadProductsAsync();
-                }
-                if (_model.Logged.IsAdmin)
-                {
-                    AdminCatalog adminCatalog = new AdminCatalog();
-
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(adminCatalog);
-                    await ((AdminCatalogModel)adminCatalog.DataContext).LoadProductsAsync();
-                }
+                SmartTradeNavigationManager.Instance.ReInitializeNavigation(productCatalog);
+                await ((ProductCatalogModel)productCatalog.DataContext).LoadProductsAsync();
             }
             catch (Exception ex)
             {
