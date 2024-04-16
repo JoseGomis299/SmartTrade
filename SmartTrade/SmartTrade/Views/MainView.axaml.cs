@@ -43,7 +43,9 @@ public partial class MainView : UserControl
 
         ProfileButton.Click += OnProfileButtonOnClick;
         HomeButton.Click += OnHomeButtonOnClick;
+        HomeButton2.Click += OnHomeButtonOnClick;
         ShoppingCartButton.Click += OnShoppingCartButtonOnClick;
+        ShoppingCartButton2.Click += OnShoppingCartButtonOnClick;
 
         _homeImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Home.png")));
         _userImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/User.png")));
@@ -58,6 +60,7 @@ public partial class MainView : UserControl
         CartImage.Source = _cartImage;
         CartImage2.Source = _cartImage;
         AddToCartImage.Source = _addToCart;
+        HomeImage2.Source = _homeImage;
     }
 
     #region Buttons
@@ -148,6 +151,9 @@ public partial class MainView : UserControl
         if (i == 0) HomeImage.Source = _homeImageSelected;
         else if (i == 1) CartImage.Source = _cartImageSelected;
         else if (i == 2) UserImage.Source = _userImageSelected;
+
+        HomeImage2.Source = HomeImage.Source;
+        CartImage2.Source = CartImage.Source;
     }
 
 
@@ -176,17 +182,14 @@ public partial class MainView : UserControl
             return;
         }
 
-        if (type != typeof(ProductView))
-        {
-            ShoppingCart.IsVisible = false;
-        }
-
         ResetVisibility();
     }
     private void ResetVisibility()
     {
         SearchBar.IsVisible = true;
         BottomBar.IsVisible = true;
+        ShoppingCart.IsVisible = false;
+
     }
 
     private int StartLoading()

@@ -1,28 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
-using Newtonsoft.Json;
 using ReactiveUI;
-using SmartTrade.Views;
 using SmartTradeDTOs;
-using SmartTrade.Entities;
-using System.Threading.Tasks;
-using SkiaSharp;
 
 namespace SmartTrade.ViewModels
 {
-	public class ProductViewModel : ReactiveObject
+    public class ProductViewModel : ReactiveObject
 	{
         public PostDTO postView;
         public ObservableCollection<ProductModel> OtherSellers { get; set; }
         public ObservableCollection<ProductModel> SameSellerProducts { get; set; }
         public ObservableCollection<ProductModel> RelatedProducts { get; set; }
         public ObservableCollection<Bitmap> Images { get; set; }
+        public ObservableCollection<AttributeModel> Attributes { get; set; }
         public string? Price {  get; set; }
         public string? Title {  get; set; }
         public string? Seller {  get; set; }
@@ -37,15 +30,18 @@ namespace SmartTrade.ViewModels
             SameSellerProducts = new ObservableCollection<ProductModel>();
             RelatedProducts = new ObservableCollection<ProductModel>();
             Images = new ObservableCollection<Bitmap>();
+            Attributes = new ObservableCollection<AttributeModel>();
 
-            foreach(var image in post.Offers[0].Product.Images)
-            {
-                Images.Add(image.ToBitmap());
-            }
-
-            Price = post.Offers[0].Price + "€";
             Title = post.Title;
-            Seller = "Vendido por: " + post.;
+            Seller = "Vendido por: " + post.SellerCompanyName;
+            Description = post.Description;
+
+            LoadData(post.Offers[0]);
+
+            foreach(var offer in post.Offers)
+            {
+                Attributes.Add(new AttributeModel(offer.Product.Differentiators, offer, this));
+            }
         }
 
         public void LoadProducts()
@@ -80,6 +76,29 @@ namespace SmartTrade.ViewModels
         public bool IsRelated(SimplePostDTO post)
         {
             return Random.Shared.Next(0, 2) == 1;
+        }
+
+        public void LoadData(OfferDTO offer)
+        {
+            foreach (var image in offer.Product.Images)
+            {
+                Images.Add(image.ToBitmap());
+            }
+
+            Price = offer.Price + "€";
+            Details = offer.Product.Info;
+        }
+    }
+
+    public class AttributeModel : ReactiveObject
+    {
+        public string? Text { get; set; }
+        public ICommand ChangeOfferCommand { get; set; }
+
+        public AttributeModel(string? text, OfferDTO offer, ProductViewModel model)
+        {
+            Text = text;
+            ChangeOfferCommand = ReactiveCommand.Create(() => model.LoadData(offer));
         }
     }
 }

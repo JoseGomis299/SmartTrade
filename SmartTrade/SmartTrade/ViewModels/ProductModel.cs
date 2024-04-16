@@ -31,8 +31,8 @@ public class ProductModel : ViewModelBase
     private async Task OpenProduct()
     {
         var view = new ProductView(await SmartTradeService.Instance.GetPostAsync((int)Post.Id));
-        ((ProductViewModel)view.DataContext).LoadProducts();
         SmartTradeNavigationManager.Instance.NavigateTo(view);
+        ((ProductViewModel)view.DataContext).LoadProducts();
     }
 
     private async Task EditProduct()
