@@ -90,7 +90,9 @@ public partial class MainView : UserControl
 
     private void ListBoxDepartments_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        CurrentCategory = ListBoxDepartments.SelectedIndex;        
+        CurrentCategory = ListBoxDepartments.SelectedIndex;
+        //SideBar.IsVisible = false;
+
         if (ListBoxDepartments.SelectedIndex == -1)
         {
             CurrentCategory = null;

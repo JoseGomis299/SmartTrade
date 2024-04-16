@@ -15,10 +15,10 @@
 			<!--SideBar-->
 			<StackPanel Background="#32C378">
 				<ListBox Name="ListBoxDepartments" SelectionMode="Toggle" HorizontalAlignment="Center" Margin="0 50 0 0" Background="Transparent">
-					<ListBoxItem Name="ToysButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Toys</ListBoxItem>
-					<ListBoxItem Name="NutritionButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Nutrition</ListBoxItem>
-					<ListBoxItem Name="ClothingButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Clothing</ListBoxItem>
-					<ListBoxItem Name="BooksButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Books</ListBoxItem>
+					<ListBoxItem Name="ToysButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Juguetes</ListBoxItem>
+					<ListBoxItem Name="NutritionButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Nutricion</ListBoxItem>
+					<ListBoxItem Name="ClothingButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Ropa</ListBoxItem>
+					<ListBoxItem Name="BooksButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Libros</ListBoxItem>
 				</ListBox>
 			</StackPanel>
 		</SplitView.Pane>
