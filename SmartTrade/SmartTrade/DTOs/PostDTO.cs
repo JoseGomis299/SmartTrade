@@ -18,5 +18,6 @@ public class PostDTO
     public bool Validated { get; set; }
     public string? SellerID { get; set; }
     public List<OfferDTO> Offers { get; set; }
+    public string? SellerCompanyName { get; set; }
 
 }

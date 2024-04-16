@@ -12,7 +12,7 @@
 	</Design.DataContext>
 	<ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
 		<Grid RowDefinitions="auto auto *" Margin="0 10 0 0">
-			<Carousel ItemsSource="{Binding Images, Mode=OneWay}" Width="400" Grid.Row="0">
+			<Carousel ItemsSource="{Binding Images, Mode=OneWay}" Height="300" Grid.Row="0">
 				<Carousel.PageTransition >
 					<CompositePageTransition>
 						<PageSlide Duration="0:00:00.200" Orientation="Horizontal" />
@@ -24,6 +24,14 @@
 						</DataTemplate>
                     </Carousel.ItemTemplate>
 			</Carousel>
+			<StackPanel Grid.Row="1" Margin="10">
+				<TextBlock FontSize="32" FontFamily="Inter" FontWeight="Bold" Foreground="#ff32c378" Text="{Binding Price, Mode=OneWay}"/>
+				<TextBlock Classes="h1" FontSize="28" Text="{Binding Title, Mode=OneWay}"/>
+				<TextBlock Classes="h1" Foreground="#a5dfb7" Text="{Binding Seller, Mode=OneWay}"/>
+				<TextBlock Classes="h1" FontSize="18" Text="{Binding Description, Mode=OneWay}"/>
+				<TextBlock Classes="h1" Text="Product Details"/>
+				<TextBlock Classes="h1" FontSize="22" Text="{Binding Details, Mode=OneWay}"/>
+			</StackPanel>
 			<StackPanel Grid.Row="2">
 				<controls:ST_Carousel Title="Other Sellers" DataSource="{Binding OtherSellers, Mode=OneWay}"></controls:ST_Carousel>
 				<controls:ST_Carousel Title="Same seller products" DataSource="{Binding SameSellerProducts, Mode=OneWay}"></controls:ST_Carousel>

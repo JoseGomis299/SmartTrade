@@ -23,6 +23,11 @@ namespace SmartTrade.ViewModels
         public ObservableCollection<ProductModel> SameSellerProducts { get; set; }
         public ObservableCollection<ProductModel> RelatedProducts { get; set; }
         public ObservableCollection<Bitmap> Images { get; set; }
+        public string? Price {  get; set; }
+        public string? Title {  get; set; }
+        public string? Seller {  get; set; }
+        public string? Description {  get; set; }
+        public string? Details {  get; set; }
 
         public ProductViewModel(PostDTO post)
         {
@@ -37,6 +42,10 @@ namespace SmartTrade.ViewModels
             {
                 Images.Add(image.ToBitmap());
             }
+
+            Price = post.Offers[0].Price + "€";
+            Title = post.Title;
+            Seller = "Vendido por: " + post.;
         }
 
         public void LoadProducts()

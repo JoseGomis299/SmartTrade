@@ -17,6 +17,8 @@ public class PostDTO
     public bool Validated { get; set; }
     public string? SellerID { get; set; }
     public List<OfferDTO> Offers { get; set; }
+    public string? SellerCompanyName { get; set; }
+
 
     public PostDTO(Post post)
     {
@@ -35,5 +37,6 @@ public class PostDTO
         Validated = post.Validated;
         SellerID = post.Seller.Email;
         Offers = post.Offers.Select(offer => new OfferDTO(offer)).ToList();
+        SellerCompanyName = post.Seller.CompanyName;
     }
 }
