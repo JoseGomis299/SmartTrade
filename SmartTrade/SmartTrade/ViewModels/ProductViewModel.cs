@@ -17,6 +17,7 @@ namespace SmartTrade.ViewModels
         public ObservableCollection<Bitmap> Images { get; set; }
         public ObservableCollection<AttributeModel> Attributes { get; set; }
         public string? Price {  get; set; }
+        public string? ShippingCost {  get; set; }
         public string? Title {  get; set; }
         public string? Seller {  get; set; }
         public string? Description {  get; set; }
@@ -86,6 +87,7 @@ namespace SmartTrade.ViewModels
             }
 
             Price = offer.Price + "€";
+            ShippingCost = "Shipping Cost: " + offer.ShippingCost + "€";
             Details = offer.Product.Info;
         }
     }
