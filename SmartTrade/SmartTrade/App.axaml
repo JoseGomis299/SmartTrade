@@ -98,7 +98,15 @@
 			<Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="Transparent" />
             </Style>
-			
+			<Style Selector="Button.DarkHover">
+			</Style>
+			<Style Selector="Button.DarkHover:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+				<Setter Property="Background" Value="#0A413E"/>
+				<Setter Property="Foreground" Value="White"/>
+				<Setter Property="BorderBrush" Value="{Binding $parent[Button].BorderBrush} "/>
+			</Style>
+
+
 			<Style Selector="ToggleButton">
 				<Setter Property="FontSize" Value="18"/>
 				<Setter Property="FontFamily" Value="Inter"/>
@@ -111,9 +119,9 @@
 				<Setter Property="Foreground" Value="#0A413E"/>
 				<Setter Property="Background" Value="White"/>
 			</Style>
-			<Style Selector="ToggleButton:checked">
+		    <Style Selector="ToggleButton:checked">
 				<Setter Property="Background" Value="#0A413E"/>
-				<Setter Property="Foreground" Value="White"/>
+				<Setter Property="Foreground" Value="Red"/>
 			</Style>
 			<Style Selector="ToggleButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
 				<Setter Property="Background" Value="#0A413E"/>
@@ -124,7 +132,18 @@
 				<Setter Property="Background" Value="#0A413E"/>
 				<Setter Property="Foreground" Value="White"/>
 			</Style>
-			
+
+			<Style Selector="ListBoxItem">
+			    <Setter Property="FontSize" Value="18"/>
+			    <Setter Property="FontFamily" Value="Inter"/>
+			    <Setter Property="FontWeight" Value="Bold"></Setter>
+			    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+			    <Setter Property="VerticalContentAlignment" Value="Center"/>
+			</Style>
+			<Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+				<Setter Property="Background" Value="#0A413E"/>
+				<Setter Property="Foreground" Value="White"/>
+			</Style>
 		</Styles>
 
     </Application.Styles>
