@@ -116,7 +116,10 @@ namespace SmartTrade.Views
                 _model.ValidarDniCif(cif);
                 Address SellerAddress = new Address(province, street, municipality, postalCode, number, door);
                 await _model.RegisterSeller(email,password,name,lastnames,cif,company,iban);
-                SmartTradeNavigationManager.Instance.NavigateTo(new SellerCatalog());
+                SellerCatalog sellerCatalog = new SellerCatalog();
+
+                SmartTradeNavigationManager.Instance.ReInitializeNavigation(sellerCatalog);
+                await ((SellerCatalogModel)sellerCatalog.DataContext).LoadProductsAsync();
             }
             catch(Exception ex) 
             {
