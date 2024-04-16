@@ -4,9 +4,9 @@ using Avalonia.VisualTree;
 
 namespace SmartTrade.Views
 {
-    public partial class ChooseProfile : UserControl
+    public partial class Paypal : UserControl
     {
-        public ChooseProfile()
+        public Paypal()
         {
             InitializeComponent();
             PurchaseButton.Click += PurchaseButton_Click;

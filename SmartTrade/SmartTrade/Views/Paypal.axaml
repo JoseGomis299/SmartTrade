@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1385"
-             x:Class="SmartTrade.Views.ChooseProfile">
+             x:Class="SmartTrade.Views.Paypal">
   <StackPanel HorizontalAlignment="Center" Spacing="10">
 	  <Image Source="avares://SmartTrade/Assets/paypal.png" />
 	  <Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 70 0 30" Classes="White" Name="PurchaseButton">Purchase</Button>
