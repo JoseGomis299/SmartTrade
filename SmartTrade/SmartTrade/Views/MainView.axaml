@@ -26,9 +26,9 @@
 		<SplitView.Content>
 			<Border Name="DarkenBorder" Background="Transparent">
 		
-	        <Grid RowDefinitions="Auto * Auto" ColumnDefinitions="Auto *">
+	        <Grid RowDefinitions="Auto * Auto">
 		        <!--SearchBar-->
-                <Border Name="SearchBar" Grid.Column="1" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
+                <Border Name="SearchBar" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
                     <Grid Height="70" ColumnDefinitions="Auto *" VerticalAlignment="Center">
                         <Button Name="SideBarButton" Classes="DarkHover" CornerRadius="15" Grid.Column="0" Margin="10" Background="#32c378" Width="50" Height="50">
                             <Grid Margin="-3 1 1 1" ColumnDefinitions="Auto * *" RowDefinitions="Auto * *" HorizontalAlignment="Stretch">
@@ -42,16 +42,16 @@
                 </Border>
 
                 <!--Loading Screen-->
-		        <StackPanel Grid.Column="1" Grid.Row="1"  VerticalAlignment="Center" IsVisible="False" Name="Loading">
+		        <StackPanel Grid.Row="1"  VerticalAlignment="Center" IsVisible="False" Name="Loading">
                     <TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">Loading...</TextBlock>
                     <controls:ProgressRing IsIndeterminate="True" BorderThickness="10" Width="100" Height="100" />
                 </StackPanel>
 
 		        <!--Content-->
-		        <ContentControl Grid.Column="1" Grid.Row="1" Name="ViewContent"></ContentControl>
+		        <ContentControl Grid.Row="1" Name="ViewContent"></ContentControl>
 
 		        <!--Buttons-->
-		        <Border Name="BottomBar" Grid.Column="1" Grid.Row="2" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
+		        <Border Name="BottomBar" Grid.Row="2" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
 			        <Grid Height="70" ColumnDefinitions="* * *" VerticalAlignment="Center">
 				        <Button Grid.Column="0" Background="Transparent" HorizontalAlignment="Left" Margin=" 25 0" Width="60" Height="60" Name="HomeButton">
                             <Image Stretch="Uniform" Width="80" Name="HomeImage"></Image>
