@@ -70,7 +70,7 @@ public class SmartTradeService
 
     public async Task<PostDTO?> GetPostAsync(int postId)
     {
-       return JsonConvert.DeserializeObject<PostDTO>(await PerformApiInstructionAsync($"User/GetById?id={postId}", ApiInstruction.Put));
+       return JsonConvert.DeserializeObject<PostDTO>(await PerformApiInstructionAsync($"Post/GetById?id={postId}", ApiInstruction.Get));
     }
 
     public async Task<List<string>?> GetPostsNamesAsync()
