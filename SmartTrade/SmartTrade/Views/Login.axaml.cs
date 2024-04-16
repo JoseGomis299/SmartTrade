@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Microsoft.IdentityModel.Tokens;
+using SmartTrade.Entities;
 using SmartTrade.ViewModels;
 using System;
 
@@ -17,7 +18,8 @@ namespace SmartTrade.Views
             RegisterButton.Click += RegisterButton_click;
         }
 
-        private void RegisterButton_click(object? sender, RoutedEventArgs e)
+       
+            private void RegisterButton_click(object? sender, RoutedEventArgs e)
         {
             SmartTradeNavigationManager.Instance.NavigateTo(new ChooseProfile());
 

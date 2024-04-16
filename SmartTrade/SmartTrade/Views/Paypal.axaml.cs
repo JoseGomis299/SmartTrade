@@ -56,7 +56,6 @@ namespace SmartTrade.Views
                 email = TextBoxEmail.Text;
                 password = TextBoxPassword.Text;
                 var datos = new string[] { email,password};
-                PasarDatos(datos);
             }
             catch (Exception ex)
             {
@@ -75,9 +74,6 @@ namespace SmartTrade.Views
         }
         private void CancelButton_Click(object? sender, RoutedEventArgs e) => _ventana.Close();
 
-        private void PasarDatos(string[] datos)
-        {
-            DatosPasados?.Invoke(datos);
-        }
+        
     }
 }
