@@ -10,6 +10,7 @@
 	<Design.DataContext>
 		<vm:RegisterModel/>
 	</Design.DataContext>
+<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
 	<Grid RowDefinitions="Auto Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
 		<StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Spacing="10" Margin="10 0 0 0">
 			<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">REGISTER AS A SELLER</TextBlock>
@@ -37,5 +38,6 @@
 			<Button Name="RegisterConsumerButton" HorizontalAlignment="Center" Height="40" Width="300" Margin="0 5 0 0" Classes="Transparent">Register as a Consumer</Button>
 		</StackPanel>
 	</Grid>
+</ScrollViewer>
 </UserControl>
 

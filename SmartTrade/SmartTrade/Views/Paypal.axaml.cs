@@ -56,9 +56,7 @@ namespace SmartTrade.Views
             try 
             {
                 if (hasErrors)return;
-                email = TextBoxEmail.Text;
-                password = TextBoxPassword.Text;
-                var datos = new string[] { email,password};
+                _ventana.Close();
             }
             catch (Exception ex)
             {

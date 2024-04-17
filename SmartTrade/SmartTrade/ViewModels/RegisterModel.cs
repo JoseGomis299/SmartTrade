@@ -36,8 +36,8 @@ namespace SmartTrade.ViewModels
             }
         }
 
-        public static string _Paypalemail;
-        public static string _Paypalpassword;
+        public string _Paypalemail;
+        public string _Paypalpassword;
 
         public string PaypalPassword
         {
@@ -53,6 +53,11 @@ namespace SmartTrade.ViewModels
             ValidarDni();
             ValidarEmail();
         }
+        public string CreditCardNumber { get;set; }
+        public string CreditCardName { get; set; }
+        public string CreditCardExpiryDate { get; set; }
+        public string CreditCardCVV { get; set; } 
+        public string BizumNumber { get; set; } 
 
 
         public DateTime ConvertDate()
@@ -66,6 +71,20 @@ namespace SmartTrade.ViewModels
             catch (FormatException)
             {
                 throw new Exception("Incorrect format");
+            }
+        }
+        public void ConvertExpiryDate()
+        {
+            DateTime resultado;
+            string formato = "MM/yy";
+
+            if (DateTime.TryParseExact(fecha, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out resultado))
+            {
+                return;
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect format");
             }
         }
 
@@ -98,6 +117,47 @@ namespace SmartTrade.ViewModels
             {
                 PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
             }
+            string pattern = @"^\d+$";
+            if (!Regex.IsMatch(telefono, pattern))
+            {
+                throw new ArgumentException("Wrong phone number. Only digits are allowed");
+            }
+
+            if (_Paypalemail != null && _Paypalpassword != null)
+            {
+                PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
+                await SmartTradeService.Instance.AddPaypalAsync(paypalData, email);
+            }
+            if(CreditCardCVV != null && CreditCardName !=null && CreditCardNumber !=null && CreditCardExpiryDate != null)
+            {
+                ConvertExpiryDate(CreditCardExpiryDate);
+                CreditCardInfo creditCard = new CreditCardInfo(CreditCardNumber,CreditCardExpiryDate,CreditCardCVV,CreditCardName);
+                await SmartTradeService.Instance.AddCreditCardAsync(creditCard,email);
+            }
+            if (BizumNumber != null)
+            {
+                BizumInfo bizum = new BizumInfo(BizumNumber);
+                await SmartTradeService.Instance.AddBizumAsync(bizum, email);
+            }
         }
+
+        public void ValidarNumeroTarjeta()
+        {
+            string pattern = @"^\d+$";
+            if (!Regex.IsMatch(numeroTarjeta, pattern))
+            {
+                throw new ArgumentException("Wrong number card. Only digits are allowed");
+            }
+        }
+
+        public void ValidarCVV()
+        {
+            string pattern = @"^\d+$";
+            if (!Regex.IsMatch(cvv, pattern))
+            {
+                throw new ArgumentException("Wrong cvv. Only digits are allowed");
+            }
+        }
+
     }        
 }

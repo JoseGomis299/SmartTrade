@@ -37,4 +37,18 @@ public class UserController : ControllerBase
         ISmartTradeService service = new SmartTradeService();
         service.AddPaypal(info,id);
     }
+
+    [HttpPost("AddCreditCard")]
+    public void AddCreditCard(string id, [FromBody] CreditCardInfo info)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        service.AddCreditCard(info, id);
+    }
+
+    [HttpPost("AddBizum")]
+    public void Add(string id, [FromBody] BizumInfo info)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        service.AddBizum(info, id);
+    }
 }
