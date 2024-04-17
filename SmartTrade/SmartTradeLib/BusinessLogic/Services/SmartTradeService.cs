@@ -128,7 +128,7 @@ public class SmartTradeService : ISmartTradeService
 
     public string GetPostsFuzzyContain(string searchFor)
     {
-        List<Post> posts = _dal.GetAll<Post>().Where(x => Fuzz.PartialTokenSortRatio(searchFor,x.Title) > 60)
+        List<Post> posts = _dal.GetAll<Post>().Where(x => Fuzz.PartialTokenSortRatio(searchFor,x.Title) > 40)
             .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title)).ToList();
 
         List<PostDTO> postDtos = posts.Select(x => new PostDTO(x)).ToList();

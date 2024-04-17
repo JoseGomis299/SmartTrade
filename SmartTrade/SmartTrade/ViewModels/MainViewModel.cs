@@ -39,6 +39,7 @@ public class MainViewModel : ViewModelBase
         return await SmartTradeService.Instance.GetPostsFuzzyContainAsync(SearchText);
     }
 
+
     //public async Task<UserControl> GetCatalogAsync()
     //{
     //    if (SmartTradeService.Instance.Logged == null)

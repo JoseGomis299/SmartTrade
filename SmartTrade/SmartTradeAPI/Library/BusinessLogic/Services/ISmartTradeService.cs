@@ -11,7 +11,7 @@ namespace SmartTrade.BusinessLogic
         public void AddAdmin(Admin admin);
         public void AddCostumer(Consumer costumer);
         public void AddSeller(Seller seller);
-
+        public void AddPaypal(PayPalInfo paypalInfo, string loggedId);
         public void AddPost(PostDTO postInfo, string loggedID);
 
         public void EditPost(int postID, PostDTO postInfo, string loggedID);

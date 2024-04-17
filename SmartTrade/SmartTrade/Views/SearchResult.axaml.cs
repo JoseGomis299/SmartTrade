@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using SmartTrade.ViewModels;
 using System.Collections.Generic;
 using SmartTradeDTOs;
+using SmartTrade.Entities;
 
 namespace SmartTrade.Views
 {
@@ -98,6 +99,6 @@ namespace SmartTrade.Views
         //        _model.SearchAutoComplete.Add(Name);
         //    });
         //}
-        
+
     }
 }

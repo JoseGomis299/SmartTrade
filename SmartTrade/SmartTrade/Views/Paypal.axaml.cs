@@ -9,17 +9,13 @@ namespace SmartTrade.Views
 {
     public partial class Paypal : UserControl
     {
-        public event Action<string[]> DatosPasados;
-        private Window _ventana;
-        private PaypalModel? _model;
-
-        public Paypal(Window ventana)
+        private RegisterModel? _model;
+        public Paypal()
         {
             InitializeComponent();
-            DataContext = _model = new PaypalModel();
+            DataContext = _model = new RegisterModel();
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
-            _ventana = ventana;
         }
 
         private void ClearErrors()
@@ -29,8 +25,10 @@ namespace SmartTrade.Views
         }
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
-            string email = TextBoxEmail.Text;
-            string password = TextBoxPassword.Text;
+            string  paypalEmail = TextBoxEmail.Text;
+            string paypalPassword = TextBoxPassword.Text;
+            
+
             ClearErrors();
             bool hasErrors = false;
 
@@ -51,19 +49,12 @@ namespace SmartTrade.Views
             try 
             {
                 if (hasErrors)return;
-                email = TextBoxEmail.Text;
-                password = TextBoxPassword.Text;
-                var datos = new string[] { email,password};
+                _model.PaypalEmail = paypalEmail;
+                _model.PaypalPassword = paypalPassword;
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Incorrect password"))
-                {
-                    TextBoxPassword.ErrorMessage.BringIntoView();
-                    TextBoxPassword.ErrorMessage.Text = ex.Message;
-                }
-
-                if (ex.Message.Contains("Unregistered user"))
+                if (ex.Message.Contains("Wrong email. Please enter a valid email"))
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();
                     TextBoxEmail.ErrorMessage.Text = ex.Message;

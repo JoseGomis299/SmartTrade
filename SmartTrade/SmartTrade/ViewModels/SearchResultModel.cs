@@ -31,7 +31,7 @@ namespace SmartTrade.ViewModels
 
         public void ApplyFilters() 
         {
-            UpdateSearchedProducts(OriginalSearchedProducts);
+            UpdateProducts(OriginalSearchedProducts);
 
             if (Sustainable) { sortSustainable(); }
 
@@ -43,13 +43,13 @@ namespace SmartTrade.ViewModels
         public void sortPriceAscend()
         {
           var sortedList = SearchedProducts.OrderBy(x => float.Parse(x.Price.Substring(0, x.Price.Length-1))).ToList();
-          UpdateSearchedProducts(sortedList);
+          UpdateProducts(sortedList);
         }
 
         public void sortPriceDescend()
         {
             var sortedList = SearchedProducts.OrderByDescending(x => float.Parse(x.Price.Substring(0, x.Price.Length - 1))).ToList();
-            UpdateSearchedProducts(sortedList);
+            UpdateProducts(sortedList);
         }
 
         public void sortSustainable()
@@ -62,16 +62,67 @@ namespace SmartTrade.ViewModels
                     sortedList.Add(product);
                 }
             }
-            UpdateSearchedProducts(sortedList);
+            UpdateProducts(sortedList);
         }
 
-        private void UpdateSearchedProducts(IEnumerable<ProductModel> list)
+        private void UpdateProducts(IEnumerable<ProductModel> list)
         {
             SearchedProducts.Clear();
             foreach (var product in list)
             {
                 SearchedProducts.Add(product);
             }
+        }
+
+        public void SortByCategory(int? category)
+        {
+            SearchedProducts.Clear();
+            if (category == null)
+            {
+                foreach (var product in OriginalSearchedProducts)
+                {
+                    SearchedProducts.Add(product);
+                    ApplyFilters();
+                }
+            }
+            else
+            {
+                switch (category)
+                {
+
+                    case 0:
+                        this.Filtering(Category.Toy); break;
+
+
+                    case 1:
+                        this.Filtering(Category.Nutrition); break;
+
+
+                    case 2:
+                        this.Filtering(Category.Clothing); break;
+
+
+                    case 3:
+                        this.Filtering(Category.Book); break;
+
+                }
+            }
+        }
+
+        public void Filtering(Category category)
+        {
+            foreach (var product in OriginalSearchedProducts)
+            {
+                if (product.Post.Category == category)
+                {
+                    SearchedProducts.Add(product);
+                }
+            }
+
+            if (Sustainable) { sortSustainable(); }
+
+            if (PriceAscend) { sortPriceAscend(); }
+            else if (PriceDescend) { sortPriceDescend(); }
         }
     }
 }

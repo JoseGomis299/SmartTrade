@@ -26,8 +26,30 @@ namespace SmartTrade.ViewModels
         public string? Street { get; set; }
         public string? Door { get; set; }
 
+        public string PaypalEmail
+        {
+            get => _Paypalemail;
+            set
+            {
+                _Paypalemail = value;
+            }
+        }
 
-        public UserDTO Logged => SmartTradeService.Instance.Logged;
+        public static string _Paypalemail;
+        public static string _Paypalpassword;
+
+        public string PaypalPassword
+        {
+            get => _Paypalpassword;
+            set
+            {
+                _Paypalpassword = value;
+            }
+        }
+
+
+
+
         public DateTime ConvertDate(string dateString)
         {
             DateTime date;
@@ -52,12 +74,12 @@ namespace SmartTrade.ViewModels
         }
 
         public void ValidarEmail(string email)
+        {
+            string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
+            if (!Regex.IsMatch(email, pattern))
             {
-                string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
-                if (!Regex.IsMatch(email, pattern))
-                {
-                    throw new ArgumentException("Wrong email. Please enter a valid email");
-                }
+                throw new ArgumentException("Wrong email. Please enter a valid email");
+            }
         }
         public void ValidarTelefono(string telefono)
         {
@@ -68,11 +90,16 @@ namespace SmartTrade.ViewModels
             }
         }
 
-  
-    
-    public async Task RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
+
+
+        public async Task RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
         {
-           await SmartTradeService.Instance.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
+            await SmartTradeService.Instance.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
+            UserDTO Logged = SmartTradeService.Instance.Logged;
+            if (_Paypalemail != null && _Paypalpassword != null)
+            {
+            PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
+            }
         }
     }        
 }

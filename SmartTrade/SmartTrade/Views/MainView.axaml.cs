@@ -6,6 +6,11 @@ using SmartTrade.ViewModels;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System.Threading.Tasks;
+using Avalonia;
+using ReactiveUI;
+using Avalonia.Media;
+using System.Drawing;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace SmartTrade.Views;
 
@@ -26,6 +31,9 @@ public partial class MainView : UserControl
     bool _isLoadingHome = false;
     bool _isLoadingCart = false;
     bool _isLoadingUser = false;
+    
+    private int? CurrentCategory;
+    public event Action<int?> OnCategorySelected;
 
     public MainView()
     {
@@ -40,6 +48,10 @@ public partial class MainView : UserControl
         AutoCompleteBox.KeyDown += AutoCompleteBox_KeyDown;
 
         AutoCompleteBox.ItemsSource = _model.SearchAutoComplete;
+
+        SideBarButton.Click += SideBarButton_Click;
+        SideBar.PaneClosing += SideBar_PaneClosing;
+        ListBoxDepartments.SelectionChanged += ListBoxDepartments_SelectionChanged;
 
         ProfileButton.Click += OnProfileButtonOnClick;
         HomeButton.Click += OnHomeButtonOnClick;
@@ -60,6 +72,32 @@ public partial class MainView : UserControl
         CartImage2.Source = _cartImage;
         HomeImage2.Source = _homeImage;
     }
+
+    #region SideBar
+    private void SideBarButton_Click(object? sender, RoutedEventArgs e)
+    {
+        SideBar.IsPaneOpen = true;
+        DarkenBorder.Background = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromRgb(183,183,183));
+    }
+    private void SideBar_PaneClosing(object? sender, CancelRoutedEventArgs e)
+    {
+        DarkenBorder.Background = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.FromArgb(0,0,0,0));
+    }
+
+    private void ListBoxDepartments_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        CurrentCategory = ListBoxDepartments.SelectedIndex;
+        SideBar.IsPaneOpen = false;
+
+        if (ListBoxDepartments.SelectedIndex == -1)
+        {
+            CurrentCategory = null;
+        }
+
+        OnCategorySelected?.Invoke(CurrentCategory);
+    }
+
+    #endregion
 
     #region Buttons
 
@@ -131,7 +169,14 @@ public partial class MainView : UserControl
             if (SmartTradeNavigationManager.Instance.NavigateWithButton(catalogType, _selectedButton, 0, out var catalog))
             {
                 int loadingScreen = StartLoading();
-                await ((CatalogModel)catalog.DataContext).LoadProductsAsync();
+                var model = (CatalogModel)catalog.DataContext;
+                await model.LoadProductsAsync();
+
+                OnCategorySelected -= model.SortByCategory;
+                OnCategorySelected += model.SortByCategory;
+                OnCategorySelected?.Invoke(CurrentCategory);
+ 
+
                 if (_selectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
                 StopLoading(loadingScreen);
             }
@@ -241,6 +286,12 @@ public partial class MainView : UserControl
             SearchResult searchResult = new SearchResult(await _model.LoadProductsAsync());
             if(_selectedButton ==  loadingScreen) SmartTradeNavigationManager.Instance.NavigateToOverriding(searchResult);
             else SmartTradeNavigationManager.Instance.AddToStack(searchResult, loadingScreen);
+
+            var search = (SearchResultModel)searchResult.DataContext;
+            OnCategorySelected -= search.SortByCategory;
+            OnCategorySelected += search.SortByCategory;
+            OnCategorySelected?.Invoke(CurrentCategory);
+
             StopLoading(loadingScreen);
         }
     }
