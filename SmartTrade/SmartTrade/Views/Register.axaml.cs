@@ -13,6 +13,7 @@ namespace SmartTrade.Views
 {
     public partial class Register : UserControl
     {
+      
         private RegisterModel _model;
         private Paypal paypalMessageBox;
         private AddCreditCart creditCardMessageBox;
@@ -27,6 +28,7 @@ namespace SmartTrade.Views
             CreditCardButton.Click += CreditCardButton_click;
             BizumButton.Click += BizumButton_click;
             PaypalButton.Click += PaypalButton_click;
+        
 
         }
 
@@ -62,7 +64,7 @@ namespace SmartTrade.Views
             TextBoxLastNames.ErrorText = "";
             TextBoxPassword.ErrorText = "";
             TextBoxDNI.ErrorText = "";
-            TextBoxDateBirth.ErrorText = "";
+            //TextBoxDateBirth.ErrorText = "";
             TextBoxNumber.ErrorText = "";
             TextBoxProvince.ErrorText = "";
             TextBoxPostalCode.ErrorText = "";
@@ -107,7 +109,7 @@ namespace SmartTrade.Views
             {
                 TextBoxDateBirth.BringIntoView();
                 TextBoxDateBirth.Focus();
-                TextBoxDateBirth.ErrorText = "Title cannot be empty";
+                //TextBoxDateBirth.ErrorText = "Title cannot be empty";
                 hasErrors = true;
             }
             if (_model.LastNames.IsNullOrEmpty())
@@ -170,8 +172,8 @@ namespace SmartTrade.Views
             {
                 if (ex.Message.Contains("Incorrect format"))
                 {
-                    TextBoxDateBirth.ErrorMessage.BringIntoView();
-                    TextBoxDateBirth.ErrorMessage.Text = ex.Message;
+                    //TextBoxDateBirth.ErrorMessage.BringIntoView();
+                    //TextBoxDateBirth.ErrorMessage.Text = ex.Message;
                 }
                 if (ex.Message.Contains("Existing user"))
                 {
