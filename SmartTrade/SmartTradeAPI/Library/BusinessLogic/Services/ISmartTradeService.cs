@@ -21,6 +21,7 @@ namespace SmartTrade.BusinessLogic
         public SellerDTO RegisterSeller(SellerRegisterData registerData);
 
         public ConsumerDTO RegisterConsumer(ConsumerRegisterData registerData);
+        public List<NotificationDTO> GetNotifications(string loggedId);
 
         public void DeletePost(int postID);
 

@@ -104,7 +104,21 @@ public class SmartTradeService : ISmartTradeService
         DeletePost(postID);
         AddPost(postInfo, loggedID);
 
+        //TODO: Si el postInfo está validado creamos la notificación pertinente si toca crear
+       if(postInfo.Validated) CreateNotifications(postInfo);
+
         _dal.Commit();
+    }
+
+    private void CreateNotifications(PostDTO postInfo)
+    {
+        var alerts = _dal.GetWhere<Alert>(a => a.Product.Name == postInfo.ProductName);
+        var post = _dal.GetWhere<Post>(p => p.Title == postInfo.Title && p.Seller.Email == postInfo.SellerID && p.Description == postInfo.Description && p.Offers.First().Product.Name == postInfo.ProductName).FirstOrDefault();
+        foreach (var alert in alerts)
+        {
+            var notification = new Notification(false, (Consumer)alert.User, post);
+            _dal.Insert(notification);
+        }
     }
 
     public List<SimplePostDTO> GetPosts(string? loggedID)
@@ -264,5 +278,35 @@ public class SmartTradeService : ISmartTradeService
         if (user.Password != password) throw new Exception("Incorrect password");
 
         return new UserDTO(user);
+    }
+
+    public List<NotificationDTO> GetNotifications(string loggedId)
+    {
+       return _dal.GetAll<Notification>().AsNoTracking().Where(n => n.TargetUser.Email == loggedId)
+           .Select(n => new
+           {
+               Id = n.Id,
+               Visited = n.Visited,
+               ConsumerId = n.TargetUser.Email,
+               Post = new SimplePostDTO()
+               {
+                   Id = n.TargetPost.Id,
+                   Title = n.TargetPost.Title,
+                   Category = n.TargetPost.Offers.Select(o => o.Product.GetCategories().First()).FirstOrDefault(),
+                   MinimumAge = n.TargetPost.Offers.Select(o => o.Product.MinimumAge).FirstOrDefault(),
+                   EcologicPrint = n.TargetPost.Offers.Select(o => o.Product.EcologicPrint).FirstOrDefault(),
+                   Validated = n.TargetPost.Validated,
+                   SellerID = n.TargetPost.Seller.Email,
+                   Price = n.TargetPost.Offers.Select(o => o.Price).FirstOrDefault(),
+                   Image = n.TargetPost.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
+                   ProductName = n.TargetPost.Offers.Select(o => o.Product.Name).FirstOrDefault()
+               }
+           }).ToList()
+           .Select(anon => new NotificationDTO
+           {
+               Id = anon.Id,
+               ConsumerId = anon.ConsumerId,
+               Post = anon.Post
+           }).ToList();
     }
 }

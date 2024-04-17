@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTrade.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTrade.Persistence;
 namespace SmartTrade.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240417100416_notificationss")]
+    partial class notificationss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,6 +161,33 @@ namespace SmartTrade.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Image");
+                });
+
+            modelBuilder.Entity("SmartTrade.Entities.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("TargetPostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TargetUserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Visited")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TargetPostId");
+
+                    b.HasIndex("TargetUserEmail");
+
+                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Offer", b =>
@@ -535,6 +565,25 @@ namespace SmartTrade.Migrations
                     b.HasOne("SmartTrade.Entities.Product", null)
                         .WithMany("Images")
                         .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("SmartTrade.Entities.Notification", b =>
+                {
+                    b.HasOne("SmartTrade.Entities.Post", "TargetPost")
+                        .WithMany()
+                        .HasForeignKey("TargetPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartTrade.Entities.Consumer", "TargetUser")
+                        .WithMany()
+                        .HasForeignKey("TargetUserEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TargetPost");
+
+                    b.Navigation("TargetUser");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Offer", b =>

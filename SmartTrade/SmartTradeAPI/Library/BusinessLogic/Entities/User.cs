@@ -1,4 +1,6 @@
-﻿namespace SmartTrade.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SmartTrade.Entities;
 
 public abstract partial class User
 {

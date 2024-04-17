@@ -160,6 +160,33 @@ namespace SmartTrade.Migrations
                     b.ToTable("Image");
                 });
 
+            modelBuilder.Entity("SmartTrade.Entities.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("TargetPostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TargetUserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Visited")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TargetPostId");
+
+                    b.HasIndex("TargetUserEmail");
+
+                    b.ToTable("Notification");
+                });
+
             modelBuilder.Entity("SmartTrade.Entities.Offer", b =>
                 {
                     b.Property<int>("Id")
@@ -535,6 +562,25 @@ namespace SmartTrade.Migrations
                     b.HasOne("SmartTrade.Entities.Product", null)
                         .WithMany("Images")
                         .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("SmartTrade.Entities.Notification", b =>
+                {
+                    b.HasOne("SmartTrade.Entities.Post", "TargetPost")
+                        .WithMany()
+                        .HasForeignKey("TargetPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartTrade.Entities.Consumer", "TargetUser")
+                        .WithMany()
+                        .HasForeignKey("TargetUserEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TargetPost");
+
+                    b.Navigation("TargetUser");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Offer", b =>

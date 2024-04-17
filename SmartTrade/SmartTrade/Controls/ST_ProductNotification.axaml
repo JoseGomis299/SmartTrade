@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:Class="SmartTrade.Controls.ST_ProductNotification">
+	<Grid Width="150" MinHeight="225" ColumnDefinitions="Auto *">
+		<Button Grid.Column="0" Height="150" Width="150" Classes="White" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Command}">
+			<Border CornerRadius="25" ClipToBounds="True">
+				<Image Stretch="UniformToFill" Name="ProductImage" Source="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Image, Mode=OneWay}"></Image>
+			</Border>
+		</Button>
+		<StackPanel Margin="10 0 0 0" Grid.Column="1">
+			<TextBlock Name="PriceTextBlock" Classes="h1" Foreground="#ff32c378" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Price, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
+			<TextBlock Name="ProductNameTextBlock" Classes="h2" Foreground="#A5DFB7" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ProductName, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
+		</StackPanel>
+	</Grid>
+
+</UserControl>

@@ -25,6 +25,7 @@ public partial class MainView : UserControl
     private Bitmap? _userImageSelected;
     private Bitmap? _homeImageSelected;
     private Bitmap? _addToCart;
+    private Bitmap? _alertImage;
 
     int _selectedButton = 0;
 
@@ -65,12 +66,14 @@ public partial class MainView : UserControl
         _cartImageSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/CartSelected.png")));
         _userImageSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/UserSelected.png")));
         _homeImageSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/HomeSelected.png")));
+        _alertImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
 
         HomeImage.Source = _homeImageSelected;
         UserImage.Source = _userImage;
         CartImage.Source = _cartImage;
         CartImage2.Source = _cartImage;
         HomeImage2.Source = _homeImage;
+        AlertImage.Source = _alertImage;
     }
 
     #region SideBar
@@ -199,6 +202,10 @@ public partial class MainView : UserControl
         CartImage2.Source = CartImage.Source;
     }
 
+    public async void OnAlertButtonOnClick(object? sender, RoutedEventArgs e)
+    {
+        
+    }
 
     #endregion
 

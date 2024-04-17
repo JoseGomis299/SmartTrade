@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTrade.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTrade.Persistence;
 namespace SmartTrade.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240405161148_reduceprint")]
+    partial class reduceprint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +28,7 @@ namespace SmartTrade.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SmartTrade.Entities.Address", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +70,7 @@ namespace SmartTrade.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Alert", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Alert", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,7 +99,7 @@ namespace SmartTrade.Migrations
                     b.ToTable("Alerts");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.BizumInfo", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.BizumInfo", b =>
                 {
                     b.Property<string>("TelephonNumber")
                         .HasColumnType("nvarchar(450)");
@@ -111,7 +114,7 @@ namespace SmartTrade.Migrations
                     b.ToTable("Bizums");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.CreditCardInfo", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.CreditCardInfo", b =>
                 {
                     b.Property<string>("CardNumber")
                         .HasColumnType("nvarchar(450)");
@@ -138,7 +141,7 @@ namespace SmartTrade.Migrations
                     b.ToTable("CreditCards");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Image", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Image", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,7 +163,7 @@ namespace SmartTrade.Migrations
                     b.ToTable("Image");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Offer", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Offer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,7 +195,7 @@ namespace SmartTrade.Migrations
                     b.ToTable("Offers");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.PayPalInfo", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.PayPalInfo", b =>
                 {
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(450)");
@@ -211,7 +214,7 @@ namespace SmartTrade.Migrations
                     b.ToTable("PayPals");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Post", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -251,7 +254,7 @@ namespace SmartTrade.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Product", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -298,7 +301,7 @@ namespace SmartTrade.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.User", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.User", b =>
                 {
                     b.Property<string>("Email")
                         .ValueGeneratedOnAdd()
@@ -330,9 +333,9 @@ namespace SmartTrade.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Book", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Book", b =>
                 {
-                    b.HasBaseType("SmartTrade.Entities.Product");
+                    b.HasBaseType("SmartTradeLib.Entities.Product");
 
                     b.Property<string>("Author")
                         .IsRequired()
@@ -357,9 +360,9 @@ namespace SmartTrade.Migrations
                     b.HasDiscriminator().HasValue("Book");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Clothing", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Clothing", b =>
                 {
-                    b.HasBaseType("SmartTrade.Entities.Product");
+                    b.HasBaseType("SmartTradeLib.Entities.Product");
 
                     b.Property<string>("Brand")
                         .IsRequired()
@@ -380,9 +383,9 @@ namespace SmartTrade.Migrations
                     b.HasDiscriminator().HasValue("Clothing");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Nutrition", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Nutrition", b =>
                 {
-                    b.HasBaseType("SmartTrade.Entities.Product");
+                    b.HasBaseType("SmartTradeLib.Entities.Product");
 
                     b.Property<string>("Allergens")
                         .IsRequired()
@@ -411,9 +414,9 @@ namespace SmartTrade.Migrations
                     b.HasDiscriminator().HasValue("Nutrition");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Toy", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Toy", b =>
                 {
-                    b.HasBaseType("SmartTrade.Entities.Product");
+                    b.HasBaseType("SmartTradeLib.Entities.Product");
 
                     b.Property<string>("Brand")
                         .IsRequired()
@@ -435,16 +438,16 @@ namespace SmartTrade.Migrations
                     b.HasDiscriminator().HasValue("Toy");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Admin", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Admin", b =>
                 {
-                    b.HasBaseType("SmartTrade.Entities.User");
+                    b.HasBaseType("SmartTradeLib.Entities.User");
 
                     b.HasDiscriminator().HasValue("Admin");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Consumer", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Consumer", b =>
                 {
-                    b.HasBaseType("SmartTrade.Entities.User");
+                    b.HasBaseType("SmartTradeLib.Entities.User");
 
                     b.Property<int>("BillingAddressId")
                         .HasColumnType("int");
@@ -467,9 +470,9 @@ namespace SmartTrade.Migrations
                     b.HasDiscriminator().HasValue("Consumer");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Seller", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Seller", b =>
                 {
-                    b.HasBaseType("SmartTrade.Entities.User");
+                    b.HasBaseType("SmartTradeLib.Entities.User");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -486,26 +489,26 @@ namespace SmartTrade.Migrations
                     b.HasDiscriminator().HasValue("Seller");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Address", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Address", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Consumer", null)
+                    b.HasOne("SmartTradeLib.Entities.Consumer", null)
                         .WithMany("Addresses")
                         .HasForeignKey("ConsumerEmail");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Alert", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Alert", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Consumer", null)
+                    b.HasOne("SmartTradeLib.Entities.Consumer", null)
                         .WithMany("Alerts")
                         .HasForeignKey("ConsumerEmail");
 
-                    b.HasOne("SmartTrade.Entities.Product", "Product")
+                    b.HasOne("SmartTradeLib.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartTrade.Entities.User", "User")
+                    b.HasOne("SmartTradeLib.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserEmail")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -516,36 +519,36 @@ namespace SmartTrade.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.BizumInfo", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.BizumInfo", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Consumer", null)
+                    b.HasOne("SmartTradeLib.Entities.Consumer", null)
                         .WithMany("BizumAccounts")
                         .HasForeignKey("ConsumerEmail");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.CreditCardInfo", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.CreditCardInfo", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Consumer", null)
+                    b.HasOne("SmartTradeLib.Entities.Consumer", null)
                         .WithMany("CreditCards")
                         .HasForeignKey("ConsumerEmail");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Image", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Image", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Product", null)
+                    b.HasOne("SmartTradeLib.Entities.Product", null)
                         .WithMany("Images")
                         .HasForeignKey("ProductId");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Offer", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Offer", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Post", "Post")
+                    b.HasOne("SmartTradeLib.Entities.Post", "Post")
                         .WithMany("Offers")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartTrade.Entities.Product", "Product")
+                    b.HasOne("SmartTradeLib.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -556,24 +559,24 @@ namespace SmartTrade.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.PayPalInfo", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.PayPalInfo", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Consumer", null)
+                    b.HasOne("SmartTradeLib.Entities.Consumer", null)
                         .WithMany("PayPalAccounts")
                         .HasForeignKey("ConsumerEmail");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Post", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Post", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Admin", null)
+                    b.HasOne("SmartTradeLib.Entities.Admin", null)
                         .WithMany("ValidatedPosts")
                         .HasForeignKey("AdminEmail");
 
-                    b.HasOne("SmartTrade.Entities.Product", null)
+                    b.HasOne("SmartTradeLib.Entities.Product", null)
                         .WithMany("Posts")
                         .HasForeignKey("ProductId");
 
-                    b.HasOne("SmartTrade.Entities.Seller", "Seller")
+                    b.HasOne("SmartTradeLib.Entities.Seller", "Seller")
                         .WithMany("Posts")
                         .HasForeignKey("SellerEmail")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -582,16 +585,16 @@ namespace SmartTrade.Migrations
                     b.Navigation("Seller");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Product", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Product", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Admin", null)
+                    b.HasOne("SmartTradeLib.Entities.Admin", null)
                         .WithMany("ValidatedProducts")
                         .HasForeignKey("AdminEmail");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Consumer", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Consumer", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Address", "BillingAddress")
+                    b.HasOne("SmartTradeLib.Entities.Address", "BillingAddress")
                         .WithMany()
                         .HasForeignKey("BillingAddressId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -600,26 +603,26 @@ namespace SmartTrade.Migrations
                     b.Navigation("BillingAddress");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Post", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Post", b =>
                 {
                     b.Navigation("Offers");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Product", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Product", b =>
                 {
                     b.Navigation("Images");
 
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Admin", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Admin", b =>
                 {
                     b.Navigation("ValidatedPosts");
 
                     b.Navigation("ValidatedProducts");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Consumer", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Consumer", b =>
                 {
                     b.Navigation("Addresses");
 
@@ -632,7 +635,7 @@ namespace SmartTrade.Migrations
                     b.Navigation("PayPalAccounts");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Seller", b =>
+            modelBuilder.Entity("SmartTradeLib.Entities.Seller", b =>
                 {
                     b.Navigation("Posts");
                 });

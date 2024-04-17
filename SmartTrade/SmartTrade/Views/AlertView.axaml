@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1500"
+             x:Class="SmartTrade.Views.AlertView"
+			 xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+			 xmlns:controls="clr-namespace:SmartTrade.Controls">
+	<Design.DataContext>
+		<vm:ProductCatalogModel/>
+	</Design.DataContext>
+		<ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+			<StackPanel Margin="10">
+				<TextBlock Classes="h1" HorizontalAlignment="Center" Text="¡New products available!"/>
+				<ItemsControl ItemsSource="{Binding Products}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="450"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<controls:ST_ProductNotification Margin="10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</StackPanel>	
+		</ScrollViewer>
+</UserControl>
