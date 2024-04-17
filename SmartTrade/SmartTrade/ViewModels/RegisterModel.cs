@@ -66,14 +66,14 @@ namespace SmartTrade.ViewModels
                 throw new Exception("Incorrect format");
             }
         }
-        public DateTime ConvertExpiryDate(string fecha)
+        public void ConvertExpiryDate(string fecha)
         {
             DateTime resultado;
             string formato = "MM/yy";
 
             if (DateTime.TryParseExact(fecha, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out resultado))
             {
-                return resultado;
+                return;
             }
             else
             {
@@ -127,7 +127,6 @@ namespace SmartTrade.ViewModels
         public async Task RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
         {
             await SmartTradeService.Instance.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
-            UserDTO Logged = SmartTradeService.Instance.Logged;
             if (_Paypalemail != null && _Paypalpassword != null)
             {
             PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
@@ -135,8 +134,9 @@ namespace SmartTrade.ViewModels
             }
             if(CreditCardCVV != null && CreditCardName !=null && CreditCardNumber !=null && CreditCardExpiryDate != null)
             {
+                ConvertExpiryDate(CreditCardExpiryDate);
                 CreditCardInfo creditCard = new CreditCardInfo(CreditCardNumber,CreditCardExpiryDate,CreditCardCVV,CreditCardName);
-                await SmartTradeService.Instance.AddCreditCardAsync(creditCard);
+                await SmartTradeService.Instance.AddCreditCardAsync(creditCard,email);
 
             }
         }
