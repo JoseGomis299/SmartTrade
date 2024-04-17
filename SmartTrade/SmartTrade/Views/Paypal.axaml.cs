@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using GalaSoft.MvvmLight.Views;
 using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 using System;
@@ -13,7 +12,6 @@ namespace SmartTrade.Views
         public event Action<string[]> DatosPasados;
         private Window _ventana;
         private PaypalModel? _model;
-        private INavigationService _navigationService;
 
         public Paypal(Window ventana)
         {
