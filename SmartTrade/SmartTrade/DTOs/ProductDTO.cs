@@ -9,4 +9,5 @@ public class ProductDTO
     public List<string> Attributes { get; set; }
     public string? Differentiators { get; set; }
     public string? Info { get; set; }
+    public List<string> UsersWithAlertsInThisProduct { get; set; }
 }

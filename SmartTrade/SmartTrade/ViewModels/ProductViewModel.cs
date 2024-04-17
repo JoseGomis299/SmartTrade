@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using ReactiveUI;
 using SmartTradeDTOs;
 
@@ -22,6 +23,9 @@ namespace SmartTrade.ViewModels
         public string? Seller {  get; set; }
         public string? Description {  get; set; }
         public string? Details {  get; set; }
+        public Bitmap? AlertImage { get; set; }
+        private Bitmap? _alertActivated {  get; set; }
+        private Bitmap? _alertDeactivated {  get; set; }
 
         public ProductViewModel(PostDTO post)
         {
@@ -43,6 +47,16 @@ namespace SmartTrade.ViewModels
             {
                 Attributes.Add(new AttributeModel(offer.Product.Differentiators, offer, this));
             }
+
+            _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
+            _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
+
+            //SetAlertImage();
+        }
+
+        private void SetAlertImage(PostDTO post)
+        {
+            //if (post.)
         }
 
         public void LoadProducts()

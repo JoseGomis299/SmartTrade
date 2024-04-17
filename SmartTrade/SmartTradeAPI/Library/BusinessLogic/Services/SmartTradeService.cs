@@ -43,6 +43,7 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
+
     public void AddPost(PostDTO postInfo, string loggedID)
     {
         //LogIn("ChiclesPepito@gmail.com", "123");
@@ -337,5 +338,15 @@ public class SmartTradeService : ISmartTradeService
                ConsumerId = anon.ConsumerId,
                Post = anon.Post
            }).ToList();
+    }
+
+    public int CreateAlert(string userId, int productId)
+    {
+        var product =_dal.GetById<Product>(productId);
+        var user = _dal.GetById<User>(userId);
+        var alert = new Alert(user, product);
+        product.AddAlert(alert);
+        _dal.Commit();
+        return alert.Id;
     }
 }

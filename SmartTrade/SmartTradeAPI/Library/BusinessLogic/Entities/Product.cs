@@ -13,6 +13,7 @@ namespace SmartTrade.Entities;
         {
             Images = new List<Image>();
             Posts = new List<Post>();
+            Alerts = new List<Alert>();
         }
 
         protected Product(string name, string certification, string ecologicPrint, int minimumAge, string howToUse, string howToReducePrint) : this()
@@ -34,6 +35,12 @@ namespace SmartTrade.Entities;
         {
             Posts.Add(post);
         }
+
+        public void AddAlert(Alert alert)
+        {
+            Alerts.Add(alert);
+        }
+
 
         public abstract string[] GetAttributes();
         public abstract string GetInfo();

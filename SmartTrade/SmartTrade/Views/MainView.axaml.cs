@@ -53,6 +53,8 @@ public partial class MainView : UserControl
         SideBarButton.Click += SideBarButton_Click;
         SideBar.PaneClosing += SideBar_PaneClosing;
         ListBoxDepartments.SelectionChanged += ListBoxDepartments_SelectionChanged;
+       
+        AlertButton.Click += OnAlertButtonOnClick;
 
         ProfileButton.Click += OnProfileButtonOnClick;
         HomeButton.Click += OnHomeButtonOnClick;
@@ -229,7 +231,7 @@ public partial class MainView : UserControl
 
     public async void OnAlertButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        
+        SmartTradeNavigationManager.Instance.NavigateTo(new AlertView());
     }
 
     #endregion

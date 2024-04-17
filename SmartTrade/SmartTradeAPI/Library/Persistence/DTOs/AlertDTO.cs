@@ -6,6 +6,13 @@ namespace SmartTrade.Entities;
 public class AlertDTO
 {
     public int Id { get; set; }
-    public virtual User User { get; set; }
-    public virtual Product Product { get; set; }
+    public string UserId { get; set; }
+    public string ProductName { get; set; }
+
+    public AlertDTO(Alert alert)
+    {
+        Id = alert.Id;
+        UserId = alert.User.Email;
+        ProductName = alert.Product.Name;
+    }
 }

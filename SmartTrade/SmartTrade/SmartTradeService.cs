@@ -18,11 +18,14 @@ public class SmartTradeService
     private List<SimplePostDTO>? _posts;
     public IEnumerable<SimplePostDTO>? Posts => _posts;
     public UserDTO? Logged { get; private set; }
+    public List<NotificationDTO> Notifications { get; private set; }
 
-    private void SetLogged(string json)
+    private async Task SetLogged(string json)
     {
         Logged = JsonConvert.DeserializeObject<UserDTO>(json);
-        
+
+        if (Logged == null) return;
+
         if (Logged.IsConsumer)
         {
             Logged = JsonConvert.DeserializeObject<ConsumerDTO>(json);
@@ -31,6 +34,8 @@ public class SmartTradeService
         {
             Logged = JsonConvert.DeserializeObject<SellerDTO>(json);
         }
+
+        Notifications = await GetNotificationsAsync();
     }
     public void LogOut()
     {
@@ -42,7 +47,7 @@ public class SmartTradeService
         string json = JsonConvert.SerializeObject(new { Email = email, Password = password });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        SetLogged(await PerformApiInstructionAsync("User/Login", ApiInstruction.Post, content));
+        await SetLogged(await PerformApiInstructionAsync("User/Login", ApiInstruction.Post, content));
     }
 
     public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -56,7 +61,7 @@ public class SmartTradeService
         });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        SetLogged(await PerformApiInstructionAsync("User/RegisterConsumer", ApiInstruction.Post, content));
+        await SetLogged(await PerformApiInstructionAsync("User/RegisterConsumer", ApiInstruction.Post, content));
     }
 
     public async Task RegisterSellerAsync(string email, string password, string name, string lastnames, string dni, string companyName, string iban)
@@ -70,7 +75,7 @@ public class SmartTradeService
         });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        SetLogged(await PerformApiInstructionAsync("User/RegisterSeller", ApiInstruction.Post, content));
+        await SetLogged(await PerformApiInstructionAsync("User/RegisterSeller", ApiInstruction.Post, content));
     }
 
     public async Task AddPostAsync(PostDTO post)
