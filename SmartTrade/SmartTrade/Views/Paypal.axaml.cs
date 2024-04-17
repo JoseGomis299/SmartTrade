@@ -10,21 +10,21 @@ namespace SmartTrade.Views
     public partial class Paypal : UserControl
     {
         public event Action<string[]> DatosPasados;
-        private Window _ventana;
         private RegisterModel? _model;
 
         public Paypal() 
         {
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
-            CancelButton.Click += CancelButton_Click;
+           
+            //CancelButton.Click += CancelButton_Click;
         }
         public Paypal(RegisterModel model)
         {
             InitializeComponent();
             DataContext = _model = model;
             AcceptButton.Click += AcceptButton_Click;
-            CancelButton.Click += CancelButton_Click;
+           // CancelButton.Click += CancelButton_Click;
         }
 
         private void ClearErrors()
@@ -56,7 +56,6 @@ namespace SmartTrade.Views
             try 
             {
                 if (hasErrors)return;
-                _ventana.Close();
             }
             catch (Exception ex)
             {
@@ -73,7 +72,7 @@ namespace SmartTrade.Views
                 }
             }
         }
-        private void CancelButton_Click(object? sender, RoutedEventArgs e) => _ventana.Close();
+       // private void CancelButton_Click(object? sender, RoutedEventArgs e) => _ventana.Close();
 
         
     }

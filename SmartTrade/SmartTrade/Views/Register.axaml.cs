@@ -37,7 +37,7 @@ namespace SmartTrade.Views
 
         private void BizumButton_click(object? sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var bizum = new Bizum();
         }
 
         private void CreditCardButton_click(object? sender, RoutedEventArgs e)
