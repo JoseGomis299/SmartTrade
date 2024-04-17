@@ -50,16 +50,18 @@ namespace SmartTrade.ViewModels
         public string CreditCardNumber { get;set; }
         public string CreditCardName { get; set; }
         public string CreditCardExpiryDate { get; set; }
-        public string CreditCardCVV { get; set; }
+        public string CreditCardCVV { get; set; } 
+        public string BizumNumber { get; set; } 
 
 
 
-        public void ConvertDate(string dateString)
+        public DateTime ConvertDate(string dateString)
         {
             DateTime date;
             try
             {
                 date = DateTime.ParseExact(dateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                return date;
             }
             catch (FormatException)
             {
