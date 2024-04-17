@@ -145,18 +145,18 @@ public class SmartTradeService
         }
     }
 
-    public async Task AddCreditCardAsync(CreditCardInfo creditCard, string loggedID)
+    public async Task AddCreditCardAsync(CreditCardInfo creditCard)
     {
         string json = JsonConvert.SerializeObject(creditCard);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddCreditCard?id={loggedID}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"Consumer/AddCreditCard?id={Logged.Email}", ApiInstruction.Put, content);
     }
 
-    public async Task AddBizumAsync(BizumInfo bizum, string loggedID)
+    public async Task AddBizumAsync(BizumInfo bizum)
     {
         string json = JsonConvert.SerializeObject(bizum);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddBizum?id={loggedID}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"Consumer/AddBizum?id={Logged.Email}", ApiInstruction.Put, content);
     }
 }
 
