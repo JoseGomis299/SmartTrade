@@ -77,4 +77,7 @@
 			</Grid>
 		</Border>
 	</Grid>
+</Border>
+</SplitView.Content>
+</SplitView>
 </UserControl>

@@ -9,11 +9,14 @@ namespace SmartTrade.Views
 {
     public partial class Paypal : UserControl
     {
+        public event Action<string[]> DatosPasados;
+        private Window _ventana;
         private RegisterModel? _model;
-        public Paypal()
+
+        public Paypal(RegisterModel model)
         {
             InitializeComponent();
-            DataContext = _model = new RegisterModel();
+            DataContext = _model = model;
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
         }
@@ -25,10 +28,8 @@ namespace SmartTrade.Views
         }
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
-            string  paypalEmail = TextBoxEmail.Text;
-            string paypalPassword = TextBoxPassword.Text;
-            
-
+            string email = TextBoxEmail.Text;
+            string password = TextBoxPassword.Text;
             ClearErrors();
             bool hasErrors = false;
 
@@ -49,12 +50,19 @@ namespace SmartTrade.Views
             try 
             {
                 if (hasErrors)return;
-                _model.PaypalEmail = paypalEmail;
-                _model.PaypalPassword = paypalPassword;
+                email = TextBoxEmail.Text;
+                password = TextBoxPassword.Text;
+                var datos = new string[] { email,password};
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Wrong email. Please enter a valid email"))
+                if (ex.Message.Contains("Incorrect password"))
+                {
+                    TextBoxPassword.ErrorMessage.BringIntoView();
+                    TextBoxPassword.ErrorMessage.Text = ex.Message;
+                }
+
+                if (ex.Message.Contains("Unregistered user"))
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();
                     TextBoxEmail.ErrorMessage.Text = ex.Message;
