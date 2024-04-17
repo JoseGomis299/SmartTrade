@@ -46,7 +46,7 @@
 			</StackPanel>
 			<StackPanel Grid.Row="2" HorizontalAlignment="Center" Spacing="10" Margin="10 105 0 0">
 				<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 5 0 0" Classes="White" Name="PaypalButton">Paypal</Button>
-				<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White" Name="CreditCartButton">Credit Cart</Button>
+				<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White" Name="CreditCardButton">Credit Card</Button>
 				<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White" Name="BizumButton">Bizum</Button>
 				<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 0" Classes="Black" Name="SignInButton">SIGN IN!</Button>
 				<StackPanel Grid.Row="4" HorizontalAlignment="Stretch" >
