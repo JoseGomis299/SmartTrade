@@ -54,18 +54,6 @@ namespace SmartTrade.Views
         private async void SignInButton_click(object? sender, RoutedEventArgs e)
         {
             ClearErrors();
-            string name = TextBoxName.Text;
-            string lastnames = TextBoxLastNames.Text;
-            string email = TextBoxEmail.Text;
-            string password = TextBoxPassword.Text;
-            string dni = TextBoxDNI.Text;
-            string province = TextBoxProvince.Text;
-            string municipality = TextBoxMunicipality.Text;
-            string postalCode = TextBoxPostalCode.Text;
-            string street = TextBoxStreet.Text;
-            string number = TextBoxNumber.Text;
-            string door = TextBoxDoor.Text;
-            string dateBirthString = TextBoxDateBirth.Text;
             bool hasErrors = false;
             if (_model.Name.IsNullOrEmpty())
             {
@@ -154,16 +142,9 @@ namespace SmartTrade.Views
             try
             {
                 if (hasErrors) return;
-                Address consumerAddress = new Address(province, street, municipality, postalCode, number, door);
-                DateTime dateBirth = _model.ConvertDate(dateBirthString);
-                _model.ValidarDni(dni);
-                _model.ValidarEmail(email);
-                _model.ValidarTelefono(number);
-                await _model.RegisterConsumer(email, password, name, lastnames, dni, dateBirth, consumerAddress, consumerAddress);
-                ProductCatalog productCatalog = new ProductCatalog();
+                await _model.RegisterConsumer();
 
-                SmartTradeNavigationManager.Instance.ReInitializeNavigation(productCatalog);
-                await ((ProductCatalogModel)productCatalog.DataContext).LoadProductsAsync();
+                await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
             }
             catch (Exception ex)
             {

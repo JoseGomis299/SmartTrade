@@ -11,41 +11,28 @@
 		<vm:RegisterModel/>
 	</Design.DataContext>
 	<Grid RowDefinitions="Auto Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
-		<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="10 0 0 0">
+		<StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Spacing="10" Margin="10 0 0 0">
 			<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">REGISTER AS A SELLER</TextBlock>
-			<controls:ST_TextBox LabelText="Name" Text="{Binding TextBoxName, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxName"/>
-			<controls:ST_TextBox LabelText="Last Names" Text="{Binding TextBoxLastNames, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxLastNames"/>
-			<controls:ST_TextBox LabelText="CIF/DNI/NIE" Text="{Binding TextBoxCIF, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCIF"/>
-			<controls:ST_TextBox LabelText="Email" Text="{Binding TextBoxEmail, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
-			<controls:ST_TextBox LabelText="Password" Text="{Binding TextBoxPassword, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
-			<controls:ST_TextBox LabelText="Company" Text="{Binding TextBoxCompany, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCompany"/>
-			<controls:ST_TextBox LabelText="IBAN" Text="{Binding TextBoxIBAN, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxIBAN"/>
+			<controls:ST_TextBox LabelText="Name" Text="{Binding Name, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxName"/>
+			<controls:ST_TextBox LabelText="Last Names" Text="{Binding LastNames, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxLastNames"/>
+			<controls:ST_TextBox LabelText="CIF/DNI/NIE" Text="{Binding CIF, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCIF"/>
+			<controls:ST_TextBox LabelText="Email" Text="{Binding Email, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
+			<controls:ST_TextBox LabelText="Password" PasswordText="*" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
+			<controls:ST_TextBox LabelText="Company" Text="{Binding Company, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCompany"/>
+			<controls:ST_TextBox LabelText="IBAN" Text="{Binding IBAN, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxIBAN"/>
+            <Button Name="SignInButton" HorizontalAlignment="Center" Height="40" Width="200" Margin="0 30 0 0" Classes="Black">SIGN IN!</Button>
 		</StackPanel>
-		<StackPanel Grid.Row="1" HorizontalAlignment="Stretch" >
-			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378">
-				<TextBlock Margin="50 30 0 0" HorizontalAlignment="Left" Background="Transparent" Foreground="#32C378" FontSize="20" FontWeight="Bold" FontFamily="Inter">+Add Address</TextBlock>
-			</Border>
-		</StackPanel>
-		<StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="10" Margin="10 85 0 0">
-			<controls:ST_TextBox LabelText="Province" Text="{Binding TextBoxProvince, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxProvince"/>
-			<controls:ST_TextBox LabelText="Municipality" Text="{Binding TextBoxMunicipality, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxMunicipality"/>
-			<controls:ST_TextBox LabelText="Postal Code" Text="{Binding TextBoxPostalCode, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPostalCode"/>
-			<controls:ST_TextBox LabelText="Street" Text="{Binding TextBoxStreet, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxStreet"/>
-			<controls:ST_TextBox LabelText="Number" Text="{Binding TextBoxNumber, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxNumber"/>
-			<controls:ST_TextBox LabelText="Door" Text="{Binding TextBoxDoor, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDoor"/>
-			<Button Name="SignInButton" HorizontalAlignment="Center" Height="40" Width="200" Margin="0 30 0 0" Classes="Black">SIGN IN!</Button>
-
-		</StackPanel>
-		<Rectangle Grid.Row="0" Width="400" Height="300" Fill="#32C378" HorizontalAlignment="Right"  Margin="0 320 -250 -210" ZIndex="-1" ClipToBounds="True" >
+		
+		<Rectangle Grid.Row="0" Width="400" Height="300" Fill="#32C378" HorizontalAlignment="Right"  Margin="0 20 -250 -210" ZIndex="-1" ClipToBounds="True" >
 			<Rectangle.RenderTransform>
 				<RotateTransform Angle="126" />
 			</Rectangle.RenderTransform>
 		</Rectangle>
-		<StackPanel Grid.Row="4" HorizontalAlignment="Stretch" >
-			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin="20"></Border>
+		<StackPanel Grid.Row="1" HorizontalAlignment="Stretch" >
+			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin="20" ></Border>
 		<TextBlock Margin="0 30 0 0" HorizontalAlignment="Center" Background="Transparent" Foreground="#32C378" FontSize="20" FontFamily="Inter">do you already have an account?</TextBlock>
 			<Button Name="LogInButton" HorizontalAlignment="Center" Height="40" Width="200" Margin="0 5 0 0" Classes="Transparent">Log In!</Button>
-			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin="20"></Border>
+			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378" Margin=" 20"></Border>
 			<TextBlock Margin="0 2 0 0" HorizontalAlignment="Center" Background="Transparent" Foreground="#32C378" FontSize="20" FontFamily="Inter">do you want to buy products?</TextBlock>
 			<Button Name="RegisterConsumerButton" HorizontalAlignment="Center" Height="40" Width="300" Margin="0 5 0 0" Classes="Transparent">Register as a Consumer</Button>
 		</StackPanel>

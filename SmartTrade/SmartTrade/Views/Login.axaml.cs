@@ -32,8 +32,6 @@ namespace SmartTrade.Views
         }
         private async void SignUpButton_click(object? sender, RoutedEventArgs e)
         {
-            string email = TextBoxEmail.Text;
-            string password = TextBoxPassword.Text;
             ClearErrors();
             bool hasErrors = false;
 
@@ -41,42 +39,21 @@ namespace SmartTrade.Views
             {
                 TextBoxEmail.BringIntoView();
                 TextBoxEmail.Focus();
-                TextBoxEmail.ErrorText = "Title cannot be empty";
+                TextBoxEmail.ErrorText = "Email cannot be empty";
                 hasErrors = true;
             }
             if (_model.Password.IsNullOrEmpty())
             {
                 TextBoxPassword.BringIntoView();
                 TextBoxPassword.Focus();
-                TextBoxPassword.ErrorText = "Title cannot be empty";
+                TextBoxPassword.ErrorText = "Password cannot be empty";
                 hasErrors = true;
             }
 
             try
             {
-                await _model.Login(email, password);
-
-                if (_model.Logged.IsSeller)
-                {
-                    SellerCatalog sellerCatalog = new SellerCatalog();
-
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(sellerCatalog);
-                    await ((SellerCatalogModel) sellerCatalog.DataContext).LoadProductsAsync();
-                }
-                if(_model.Logged.IsConsumer)
-                {
-                    ProductCatalog productCatalog = new ProductCatalog();
-
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(productCatalog);
-                    await ((ProductCatalogModel) productCatalog.DataContext).LoadProductsAsync();
-                }
-                if (_model.Logged.IsAdmin)
-                {
-                    AdminCatalog adminCatalog = new AdminCatalog();
-
-                    SmartTradeNavigationManager.Instance.ReInitializeNavigation(adminCatalog);
-                    await ((AdminCatalogModel) adminCatalog.DataContext).LoadProductsAsync();
-                }
+                await _model.Login(_model.Email, _model.Password);
+                await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
             }
             catch (Exception ex)
             {

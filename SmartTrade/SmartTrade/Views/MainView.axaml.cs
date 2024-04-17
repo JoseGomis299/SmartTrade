@@ -71,6 +71,26 @@ public partial class MainView : UserControl
         CartImage.Source = _cartImage;
         CartImage2.Source = _cartImage;
         HomeImage2.Source = _homeImage;
+
+        SetButtonVisibility();
+
+        SmartTradeNavigationManager.Instance.MainView = this;
+    }
+
+    private void SetButtonVisibility()
+    {
+        if (SmartTradeService.Instance.Logged != null && (SmartTradeService.Instance.Logged.IsAdmin || SmartTradeService.Instance.Logged.IsSeller))
+        {
+            ShoppingCartButton.IsVisible = false;
+            ShoppingCartButton2.IsVisible = false;
+            AddToCartButton.IsVisible = false;
+        }
+        else
+        {
+            ShoppingCartButton.IsVisible = true;
+            ShoppingCartButton2.IsVisible = true;
+            AddToCartButton.IsVisible = true;
+        }
     }
 
     #region SideBar
@@ -183,6 +203,8 @@ public partial class MainView : UserControl
         }
     }
 
+    
+
     private void SelectButton(int i)
     {
         HomeImage.Source = _homeImage;
@@ -271,6 +293,53 @@ public partial class MainView : UserControl
             _isLoadingUser = false;
 
         HideLoadingScreen();
+    }
+
+    public async Task ShowCatalogReinitializingAsync()
+    {
+        if (SmartTradeService.Instance.Logged == null) return;
+
+        if (_isLoadingHome)
+        {
+            SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 0, out _);
+            ShowLoadingScreen();
+            return;
+        }
+
+        SetButtonVisibility();
+        HideLoadingScreen();
+        if (SmartTradeService.Instance.Logged.IsConsumer)
+        {
+            await NavigateTo(new ProductCatalog());
+            return;
+        }
+
+        if (SmartTradeService.Instance.Logged.IsSeller)
+        {
+            await NavigateTo(new SellerCatalog());
+            return;
+        }
+
+        if (SmartTradeService.Instance.Logged.IsAdmin)
+        {
+            await NavigateTo(new AdminCatalog());
+            return;
+        }
+
+        async Task NavigateTo(UserControl catalog)
+        {
+            SmartTradeNavigationManager.Instance.ReInitializeNavigation(catalog);
+            int loadingScreen = StartLoading();
+            var model = (CatalogModel)catalog.DataContext;
+            await model.LoadProductsAsync();
+
+            OnCategorySelected -= model.SortByCategory;
+            OnCategorySelected += model.SortByCategory;
+            OnCategorySelected?.Invoke(CurrentCategory);
+
+            if (_selectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
+            StopLoading(loadingScreen);
+        }
     }
 
     #endregion

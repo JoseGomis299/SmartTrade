@@ -113,6 +113,18 @@ namespace SmartTrade.Controls
             set => MyTextBox.AcceptsReturn = value;
         }
 
+        public bool RevealPassword
+        {
+            get => MyTextBox.RevealPassword;
+            set => MyTextBox.RevealPassword = value;
+        }
+
+        public string? PasswordText
+        {
+            get => GetValue(PasswordTextProperty);
+            set => SetValue(PasswordTextProperty, value);
+        }
+
         public string? ErrorText
         {
             get => ErrorMessage.Text;
@@ -179,5 +191,7 @@ namespace SmartTrade.Controls
         public static readonly StyledProperty<bool> IsReadOnlyProperty =
             AvaloniaProperty.Register<ST_TextBox, bool>(nameof(IsReadOnly), defaultValue: false);
 
+        public static readonly StyledProperty<string?> PasswordTextProperty =
+            AvaloniaProperty.Register<ST_TextBox, string?>(nameof(PasswordText), defaultValue: "");
     }
 }

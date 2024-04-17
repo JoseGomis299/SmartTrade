@@ -70,10 +70,10 @@
 				<Button Grid.Column="0" HorizontalAlignment="Left" Margin="25 0 0 0" Width="60" Height="60" Name="HomeButton2">
 					<Image Stretch="Uniform" Width="60" Name="HomeImage2"></Image>
 				</Button>
-				<Button Grid.Column="1" HorizontalAlignment="Left" Margin="10 0 0 0" Width="60" Height="60" Name="ShoppingCartButton2">
+				<Button Grid.Column="1" HorizontalAlignment="Left" Margin="0 0 0 0" Width="60" Height="60" Name="ShoppingCartButton2">
 					<Image Stretch="Uniform" Width="60" Name="CartImage2"></Image>
 				</Button>
-				<Button Grid.Column="2" HorizontalAlignment="Left" Margin="0 0 25 0" Classes="Green" Width="100" Height="60" Content="Add to Cart"/>
+				<Button Grid.Column="2" HorizontalAlignment="Left" Margin="0 0 25 0" Classes="Green" Width="150" Height="60" Content="Add to Cart" Name="AddToCartButton"/>
 			</Grid>
 		</Border>
 	</Grid>

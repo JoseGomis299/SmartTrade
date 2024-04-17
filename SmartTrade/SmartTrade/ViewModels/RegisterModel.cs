@@ -25,6 +25,7 @@ namespace SmartTrade.ViewModels
         public string? PostalCode { get; set; }
         public string? Street { get; set; }
         public string? Door { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public string PaypalEmail
         {
@@ -47,15 +48,19 @@ namespace SmartTrade.ViewModels
             }
         }
 
+        public void Validar()
+        {
+            ValidarDni();
+            ValidarEmail();
+        }
 
 
-
-        public DateTime ConvertDate(string dateString)
+        public DateTime ConvertDate()
         {
             DateTime date;
             try
             {
-                date = DateTime.ParseExact(dateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                date = DateTime.ParseExact(DateBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 return date;
             }
             catch (FormatException)
@@ -64,41 +69,34 @@ namespace SmartTrade.ViewModels
             }
         }
 
-        public void ValidarDni(string dni)
+        public void ValidarDni()
         {
             string pattern = @"^\d{8}[A-Za-z]$";
-            if (!Regex.IsMatch(dni, pattern))
+            if (!Regex.IsMatch(DNI, pattern))
             {
                 throw new ArgumentException("Incorrect DNI. Must be 8 digits followed by a letter");
             }
         }
 
-        public void ValidarEmail(string email)
+        public void ValidarEmail()
         {
             string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
-            if (!Regex.IsMatch(email, pattern))
+            if (!Regex.IsMatch(Email, pattern))
             {
                 throw new ArgumentException("Wrong email. Please enter a valid email");
             }
         }
-        public void ValidarTelefono(string telefono)
+
+        public async Task RegisterConsumer()
         {
-            string pattern = @"^\d+$";
-            if (!Regex.IsMatch(telefono, pattern))
-            {
-                throw new ArgumentException("Wrong phone number. Only digits are allowed");
-            }
-        }
+            Validar();
+            Address consumerAddress = new Address(Province, Street, Municipality, PostalCode, Number, Door);
 
-
-
-        public async Task RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
-        {
-            await SmartTradeService.Instance.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
+            await SmartTradeService.Instance.RegisterConsumerAsync(Email, Password, Name, LastNames, DNI, ConvertDate(), consumerAddress, consumerAddress);
             UserDTO Logged = SmartTradeService.Instance.Logged;
             if (_Paypalemail != null && _Paypalpassword != null)
             {
-            PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
+                PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
             }
         }
     }        
