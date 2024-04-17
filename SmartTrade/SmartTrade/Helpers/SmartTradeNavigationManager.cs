@@ -16,6 +16,7 @@ public class SmartTradeNavigationManager : NavigationManager
 
     protected static SmartTradeNavigationManager? _instance;
     public static SmartTradeNavigationManager Instance => _instance ??= new SmartTradeNavigationManager();
+    public MainView MainView { get; set; }
 
     public override void Initialize(ContentControl mainView, ContentControl targetView)
     {

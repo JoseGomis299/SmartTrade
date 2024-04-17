@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
 
@@ -69,7 +66,7 @@ namespace SmartTrade.ViewModels
                     RecommendedProducts.Add(product);
                 }
                 else if (IsRelated(post))
-                {
+                { 
                     RelatedProducts.Add(product);
                 }
                 else OtherProducts.Add(product);
@@ -78,7 +75,6 @@ namespace SmartTrade.ViewModels
 
         public override void SortByCategory(int? category)
         {
-            OriginalProducts.Clear();
             if (category == null)
             {
                 UpdateProducts(OriginalProducts);

@@ -39,26 +39,12 @@ namespace SmartTrade.Views
             TextBoxLastNames.ErrorText = "";
             TextBoxPassword.ErrorText = "";
             TextBoxCIF.ErrorText = "";
-            TextBoxNumber.ErrorText = "";
             TextBoxIBAN.ErrorText = "";
             TextBoxCompany.ErrorText = "";
         }
         private async void SignInButton_click(object? sender, RoutedEventArgs e)
         {
             ClearErrors();
-            string name = TextBoxName.Text;
-            string lastnames = TextBoxLastNames.Text;
-            string email = TextBoxEmail.Text;
-            string password = TextBoxPassword.Text;
-            string cif = TextBoxCIF.Text;
-            string company = TextBoxCompany.Text;
-            string province = TextBoxProvince.Text;
-            string municipality = TextBoxMunicipality.Text;
-            string postalCode = TextBoxPostalCode.Text;
-            string street = TextBoxStreet.Text;
-            string number = TextBoxNumber.Text;
-            string door = TextBoxDoor.Text;
-            string iban = TextBoxIBAN.Text;
             bool hasErrors = false;
 
             if (_model.Name.IsNullOrEmpty())
@@ -113,15 +99,11 @@ namespace SmartTrade.Views
             try
             {
                 if (hasErrors) return;
-                _model.ValidarDniCif(cif);
-                Address SellerAddress = new Address(province, street, municipality, postalCode, number, door);
-                await _model.RegisterSeller(email,password,name,lastnames,cif,company,iban);
-                SellerCatalog sellerCatalog = new SellerCatalog();
+                await _model.RegisterSeller();
 
-                SmartTradeNavigationManager.Instance.ReInitializeNavigation(sellerCatalog);
-                await ((SellerCatalogModel)sellerCatalog.DataContext).LoadProductsAsync();
+                await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
             }
-            catch(Exception ex) 
+            catch (Exception ex) 
             {
                 if (ex.Message.Contains("Existing user"))
                 {

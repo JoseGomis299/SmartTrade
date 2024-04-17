@@ -36,7 +36,8 @@ public class MainViewModel : ViewModelBase
 
     public async Task<List<SimplePostDTO>?> LoadProductsAsync()
     {
-        return await SmartTradeService.Instance.GetPostsFuzzyContainAsync(SearchText);
+        if (SearchText == "") { return new List<SimplePostDTO>(); }
+        else { return await SmartTradeService.Instance.GetPostsFuzzyContainAsync(SearchText); }
     }
 
 

@@ -5,13 +5,12 @@ namespace SmartTrade.Entities;
 
 public class PayPalInfo 
 {
-    private string paypalemail;
-    private string paypalpassword;
+    
 
     public PayPalInfo(string paypalemail, string paypalpassword)
     {
-        this.paypalemail = paypalemail;
-        this.paypalpassword = paypalpassword;
+        Email = paypalemail;
+        Password = paypalpassword;
     }
 
     public string Email { get; set; }

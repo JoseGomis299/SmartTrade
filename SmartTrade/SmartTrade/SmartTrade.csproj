@@ -13,7 +13,7 @@
   
   <ItemGroup>
     <None Remove="Assets\addToCart.png" />
-    <None Remove="Assets\Alert.png" />
+    <None Remove="Assets\bizum.png" />
     <None Remove="Assets\paypal.png" />
   </ItemGroup>
 

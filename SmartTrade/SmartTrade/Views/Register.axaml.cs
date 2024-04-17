@@ -14,6 +14,8 @@ namespace SmartTrade.Views
     public partial class Register : UserControl
     {
         private RegisterModel _model;
+        private Paypal paypalMessageBox;
+        private AddCreditCart creditCardMessageBox;
 
         public Register()
         {
@@ -22,7 +24,25 @@ namespace SmartTrade.Views
             SignInButton.Click += SignInButton_click;
             RegisterSellerButton.Click += RegisterSellerButton_click;
             LoginButton.Click += LoginButton_click;
+            CreditCardButton.Click += CreditCardButton_click;
+            BizumButton.Click += BizumButton_click;
+            PaypalButton.Click += PaypalButton_click;
 
+        }
+
+        private void PaypalButton_click(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BizumButton_click(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CreditCardButton_click(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void LoginButton_click(object? sender, RoutedEventArgs e)
@@ -54,18 +74,6 @@ namespace SmartTrade.Views
         private async void SignInButton_click(object? sender, RoutedEventArgs e)
         {
             ClearErrors();
-            string name = TextBoxName.Text;
-            string lastnames = TextBoxLastNames.Text;
-            string email = TextBoxEmail.Text;
-            string password = TextBoxPassword.Text;
-            string dni = TextBoxDNI.Text;
-            string province = TextBoxProvince.Text;
-            string municipality = TextBoxMunicipality.Text;
-            string postalCode = TextBoxPostalCode.Text;
-            string street = TextBoxStreet.Text;
-            string number = TextBoxNumber.Text;
-            string door = TextBoxDoor.Text;
-            string dateBirthString = TextBoxDateBirth.Text;
             bool hasErrors = false;
             if (_model.Name.IsNullOrEmpty())
             {
@@ -154,16 +162,9 @@ namespace SmartTrade.Views
             try
             {
                 if (hasErrors) return;
-                Address consumerAddress = new Address(province, street, municipality, postalCode, number, door);
-                DateTime dateBirth = _model.ConvertDate(dateBirthString);
-                _model.ValidarDni(dni);
-                _model.ValidarEmail(email);
-                _model.ValidarTelefono(number);
-                await _model.RegisterConsumer(email, password, name, lastnames, dni, dateBirth, consumerAddress, consumerAddress);
-                ProductCatalog productCatalog = new ProductCatalog();
+                await _model.RegisterConsumer();
 
-                SmartTradeNavigationManager.Instance.ReInitializeNavigation(productCatalog);
-                await ((ProductCatalogModel)productCatalog.DataContext).LoadProductsAsync();
+                await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
             }
             catch (Exception ex)
             {

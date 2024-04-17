@@ -35,8 +35,8 @@ namespace SmartTrade.ViewModels
             }
         }
 
-        public static string _Paypalemail;
-        public static string _Paypalpassword;
+        public string _Paypalemail;
+        public string _Paypalpassword;
 
         public string PaypalPassword
         {
@@ -47,15 +47,24 @@ namespace SmartTrade.ViewModels
             }
         }
 
+        public void Validar()
+        {
+            ValidarDni();
+            ValidarEmail();
+        }
+        public string CreditCardNumber { get;set; }
+        public string CreditCardName { get; set; }
+        public string CreditCardExpiryDate { get; set; }
+        public string CreditCardCVV { get; set; } 
+        public string BizumNumber { get; set; } 
 
 
-
-        public DateTime ConvertDate(string dateString)
+        public DateTime ConvertDate()
         {
             DateTime date;
             try
             {
-                date = DateTime.ParseExact(dateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                date = DateTime.ParseExact(DateBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 return date;
             }
             catch (FormatException)
@@ -63,43 +72,99 @@ namespace SmartTrade.ViewModels
                 throw new Exception("Incorrect format");
             }
         }
+        public DateTime ConvertExpiryDate()
+        {
+            DateTime resultado;
+            string formato = "MM/yy";
 
-        public void ValidarDni(string dni)
+            if (DateTime.TryParseExact(CreditCardExpiryDate, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out resultado))
+            {
+                return resultado;
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect format");
+            }
+        }
+
+        public void ValidarDni()
         {
             string pattern = @"^\d{8}[A-Za-z]$";
-            if (!Regex.IsMatch(dni, pattern))
+            if (!Regex.IsMatch(DNI, pattern))
             {
                 throw new ArgumentException("Incorrect DNI. Must be 8 digits followed by a letter");
             }
         }
 
-        public void ValidarEmail(string email)
+        public void ValidarEmail()
         {
             string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
-            if (!Regex.IsMatch(email, pattern))
+            if (!Regex.IsMatch(Email, pattern))
             {
                 throw new ArgumentException("Wrong email. Please enter a valid email");
             }
         }
-        public void ValidarTelefono(string telefono)
+
+        public async Task RegisterConsumer()
         {
-            string pattern = @"^\d+$";
-            if (!Regex.IsMatch(telefono, pattern))
-            {
-                throw new ArgumentException("Wrong phone number. Only digits are allowed");
-            }
-        }
+            Validar();
+            Address consumerAddress = new Address(Province, Street, Municipality, PostalCode, Number, Door);
 
-
-
-        public async Task RegisterConsumer(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
-        {
-            await SmartTradeService.Instance.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
+            await SmartTradeService.Instance.RegisterConsumerAsync(Email, Password, Name, LastNames, DNI, ConvertDate(), consumerAddress, consumerAddress);
             UserDTO Logged = SmartTradeService.Instance.Logged;
             if (_Paypalemail != null && _Paypalpassword != null)
             {
-            PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
+                PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
             }
+            string pattern = @"^\d+$";
+            if (!Regex.IsMatch(BizumNumber, pattern))
+            {
+                throw new ArgumentException("Wrong phone number. Only digits are allowed");
+            }
+
+            if (_Paypalemail != null && _Paypalpassword != null)
+            {
+                PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
+                await SmartTradeService.Instance.AddPaypalAsync(paypalData, PaypalEmail);
+            }
+            if(CreditCardCVV != null && CreditCardName !=null && CreditCardNumber !=null && CreditCardExpiryDate != null)
+            {
+                CreditCardInfo creditCard = new CreditCardInfo(CreditCardNumber,ConvertExpiryDate(),CreditCardCVV,CreditCardName);
+                await SmartTradeService.Instance.AddCreditCardAsync(creditCard);
+            }
+            if (BizumNumber != null)
+            {
+                BizumInfo bizum = new BizumInfo(BizumNumber);
+                await SmartTradeService.Instance.AddBizumAsync(bizum);
+            }
+        }
+
+        public void ValidarNumeroTarjeta()
+        {
+            string pattern = @"^\d+$";
+            if (!Regex.IsMatch(CreditCardNumber, pattern))
+            {
+                throw new ArgumentException("Wrong number card. Only digits are allowed");
+            }
+        }
+
+        public void ValidarCVV()
+        {
+            string pattern = @"^\d+$";
+            if (!Regex.IsMatch(CreditCardCVV, pattern))
+            {
+                throw new ArgumentException("Wrong cvv. Only digits are allowed");
+            }
+        }
+
+        public void ValidarTelefono()
+        {
+            string phonePattern = @"^\+?(\d{1,3})?[\s-]?(\(\d{2,4}\))?[\s-]?[\d\s-]{5,10}$";
+            if (!Regex.IsMatch(BizumNumber, phonePattern))
+            {
+                throw new ArgumentException("Número de teléfono inválido. Por favor, introduce un número válido.");
+            }
+
         }
     }        
 }
