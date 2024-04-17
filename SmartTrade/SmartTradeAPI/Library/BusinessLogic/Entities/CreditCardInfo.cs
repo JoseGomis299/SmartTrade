@@ -3,7 +3,7 @@
 public partial class CreditCardInfo : IPayMethod
 {
     public CreditCardInfo() { }
-    public CreditCardInfo(string cardNumber, string expirationDate, string cvv, string cardHolder)
+    public CreditCardInfo(string cardNumber, DateTime expirationDate, string cvv, string cardHolder)
     {
         CardNumber = cardNumber;
         ExpirationDate = expirationDate;

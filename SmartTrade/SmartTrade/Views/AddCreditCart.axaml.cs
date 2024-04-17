@@ -77,6 +77,8 @@ namespace SmartTrade.Views
             try
             {
                 if (hasErrors) return;
+                _model.ValidarCVV();
+                _model.ValidarNumeroTarjeta();
                 _ventana.Close();
 
             }

@@ -25,7 +25,6 @@ namespace SmartTrade.ViewModels
         public string? PostalCode { get; set; }
         public string? Street { get; set; }
         public string? Door { get; set; }
-        public string? PhoneNumber { get; set; }
 
         public string PaypalEmail
         {
@@ -118,7 +117,7 @@ namespace SmartTrade.ViewModels
                 PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
             }
             string pattern = @"^\d+$";
-            if (!Regex.IsMatch(PhoneNumber, pattern))
+            if (!Regex.IsMatch(BizumNumber, pattern))
             {
                 throw new ArgumentException("Wrong phone number. Only digits are allowed");
             }
@@ -158,5 +157,14 @@ namespace SmartTrade.ViewModels
             }
         }
 
+        public void ValidarTelefono()
+        {
+            string phonePattern = @"^\+?(\d{1,3})?[\s-]?(\(\d{2,4}\))?[\s-]?[\d\s-]{5,10}$";
+            if (!Regex.IsMatch(BizumNumber, phonePattern))
+            {
+                throw new ArgumentException("Número de teléfono inválido. Por favor, introduce un número válido.");
+            }
+
+        }
     }        
 }

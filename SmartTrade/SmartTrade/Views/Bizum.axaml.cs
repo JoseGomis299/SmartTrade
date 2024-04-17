@@ -8,8 +8,6 @@ namespace SmartTrade.Views
 {
     public partial class Bizum : UserControl
     {
-
-
             private Window _ventana;
             private RegisterModel? _model;
 
@@ -46,8 +44,8 @@ namespace SmartTrade.Views
                 }
                 try
                 {
-                    if (hasErrors) return;
-                _model.ValidarTelefono(number);
+                    if (hasErrors) return; 
+                    _model.ValidarTelefono();
                     _ventana.Close();
                 }
                 catch (Exception ex)
