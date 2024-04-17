@@ -46,28 +46,28 @@ namespace SmartTrade.Views
             ClearErrors();
             bool hasErrors = false;
 
-            if (_model.CreditCartName.IsNullOrEmpty())
+            if (_model.CreditCardName.IsNullOrEmpty())
             {
                 TextBoxName.BringIntoView();
                 TextBoxName.Focus();
                 TextBoxName.ErrorText = "Title cannot be empty";
                 hasErrors = true;
             }
-            if (_model.CreditCartNumber.IsNullOrEmpty())
+            if (_model.CreditCardNumber.IsNullOrEmpty())
             {
                 TextBoxNumber.BringIntoView();
                 TextBoxNumber.Focus();
                 TextBoxNumber.ErrorText = "Title cannot be empty";
                 hasErrors = true;
             }
-            if (_model.CreditCartExpiryDate.IsNullOrEmpty())
+            if (_model.CreditCardExpiryDate.IsNullOrEmpty())
             {
                 TextBoxNumber.BringIntoView();
                 TextBoxNumber.Focus();
                 TextBoxNumber.ErrorText = "Title cannot be empty";
                 hasErrors = true;
             }
-            if (_model.CreditCartCVV.IsNullOrEmpty())
+            if (_model.CreditCardCVV.IsNullOrEmpty())
             {
                 TextBoxNumber.BringIntoView();
                 TextBoxNumber.Focus();
