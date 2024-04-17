@@ -5,7 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="325"
              x:Class="SmartTrade.Views.Paypal"
 			 xmlns:vm="clr-namespace:SmartTrade.ViewModels"
-             x:DataType="vm:PaypalModel"
+             x:DataType="vm:RegisterModel"
              xmlns:controls="clr-namespace:SmartTrade.Controls">
 	<Design.DataContext>
 		<vm:RegisterModel/>
