@@ -17,19 +17,21 @@ namespace SmartTrade.Views
         {
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
-            //CancelButton.Click += CancelButton_Click;
+            CancelButton.Click += CancelButton_Click;
             _popup = new Popup
             {
                 Child = this,
                 IsLightDismissEnabled = true
             };
         }
+
         public Bizum(RegisterModel model)
         {
-            InitializeComponent();
             DataContext = _model = model;
+
+            InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
-            //CancelButton.Click += CancelButton_Click;
+            CancelButton.Click += CancelButton_Click;
             _popup = new Popup
             {
                 Child = this,
@@ -41,6 +43,12 @@ namespace SmartTrade.Views
         {
             TextBoxNumber.ErrorText = "";
         }
+
+        private void CancelButton_Click(object? sender, RoutedEventArgs e)
+        {
+            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
+        }
+
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
             string number = TextBoxNumber.Text;
@@ -51,22 +59,18 @@ namespace SmartTrade.Views
             {
                 TextBoxNumber.BringIntoView();
                 TextBoxNumber.Focus();
-                TextBoxNumber.ErrorText = "Title cannot be empty";
+                TextBoxNumber.ErrorText = "Telephone cannot be empty";
                 hasErrors = true;
             }
             try
             {
                 if (hasErrors) return;
                 _model.ValidarTelefono();
+                SmartTradeNavigationManager.Instance.MainView.HidePopUp();
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Wrong phone number. Only digits are allowed"))
-                {
-                    TextBoxNumber.ErrorMessage.BringIntoView();
-                    TextBoxNumber.ErrorMessage.Text = ex.Message;
-                }
-
+                TextBoxNumber.ErrorText = ex.Message;
             }
         }
         //private void CancelButton_Click(object? sender, RoutedEventArgs e)

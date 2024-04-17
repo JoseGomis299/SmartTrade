@@ -120,12 +120,27 @@ public class TextBoxRestrictorBuilder
         return this;
     }
 
-    public TextBoxRestrictorBuilder WithoutSymbolRestriction()
+    public TextBoxRestrictorBuilder WithoutSymbolRestrictiona()
     {
         _textBoxRestrictor.AddRestriction(() =>
         {
             string pattern = "[!\"·${}%&/(<)\\ºª=¿¡?'_:;,|@#€*+-`^´´¨. ]";
 
+            if (_textBoxRestrictor.Text.Length > 0 && pattern.Contains(_textBoxRestrictor.Text[^1]))
+            {
+                return false;
+            }
+
+            return true;
+        });
+
+        return this;
+    }
+
+    public TextBoxRestrictorBuilder WithoutPatterRestriction(string pattern)
+    {
+        _textBoxRestrictor.AddRestriction(() =>
+        {
             if (_textBoxRestrictor.Text.Length > 0 && pattern.Contains(_textBoxRestrictor.Text[^1]))
             {
                 return false;

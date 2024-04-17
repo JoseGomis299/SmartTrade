@@ -11,10 +11,10 @@
 		<vm:RegisterModel/>
 	</Design.DataContext>
 	<StackPanel HorizontalAlignment="Center" Spacing="10">
-		<controls:ST_TextBox LabelText="Titular Name" Text="{Binding CreditCardName , Mode=OneWayToSource}" TextHeight="40" Margin="0 22 50 10" Name="TextBoxName"/>
-		<controls:ST_TextBox LabelText="Number" Text="{Binding CreditCardNumber, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 10" Name="TextBoxNumber"/>
-		<controls:ST_TextBox LabelText="Expiry date" TextWidth="10" Text="{Binding CreditCardExpiryDate, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 10" WaterMark="03/25" Name="TextBoxExpiryDate"/>
-		<controls:ST_TextBox LabelText="CVV" TextWidth="10" Text="{Binding CreditCardCVV, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 20" Name="TextBoxCVV" WaterMark=" 123"/>
+		<controls:ST_TextBox OnlyLetters="True" LabelText="Titular Name" Text="{Binding CreditCardName , Mode=OneWayToSource}" TextHeight="40" Margin="0 22 50 10" Name="TextBoxName"/>
+		<controls:ST_TextBox PatternRestriction="0123456789" LabelText="Number" Text="{Binding CreditCardNumber, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 10" Name="TextBoxNumber"/>
+		<controls:ST_TextBox PatternRestriction="0123456789/" LabelText="Expiry date" TextWidth="10" Text="{Binding CreditCardExpiryDate, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 10" WaterMark="03/25" Name="TextBoxExpiryDate"/>
+		<controls:ST_TextBox PatternRestriction="0123456789" LabelText="CVV" TextWidth="10" Text="{Binding CreditCardCVV, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 20" Name="TextBoxCVV" WaterMark=" 123"/>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 			<Button HorizontalAlignment="Center" Height="40" Width="100" Margin="10 0 15 0" Classes="White" Name="CancelButton">Cancel</Button>
 			<Button HorizontalAlignment="Center" Height="40" Width="100" Margin="0 0 0 0" Classes="White" Name="AcceptButton">Accept</Button>

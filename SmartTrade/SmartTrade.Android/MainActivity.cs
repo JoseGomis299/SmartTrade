@@ -23,6 +23,12 @@ public class MainActivity : AvaloniaMainActivity<App>
 
     public override void OnBackPressed()
     {
+        if (SmartTradeNavigationManager.Instance.MainView.ShowingPopUp)
+        {
+            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
+            return;
+        }
+
         if (!SmartTradeNavigationManager.Instance.NavigateBack())
         {
             base.OnBackPressed();

@@ -17,14 +17,20 @@ namespace SmartTrade.Views
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
            
-            //CancelButton.Click += CancelButton_Click;
+            CancelButton.Click += CancelButton_Click;
         }
         public Paypal(RegisterModel model)
         {
-            InitializeComponent();
             DataContext = _model = model;
+
+            InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
-           // CancelButton.Click += CancelButton_Click;
+            CancelButton.Click += CancelButton_Click;
+        }
+
+        private void CancelButton_Click(object? sender, RoutedEventArgs e)
+        {
+            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
 
         private void ClearErrors()
@@ -39,36 +45,35 @@ namespace SmartTrade.Views
             ClearErrors();
             bool hasErrors = false;
 
-            if (_model.Email.IsNullOrEmpty())
+            if (_model.PaypalEmail.IsNullOrEmpty())
             {
                 TextBoxEmail.BringIntoView();
                 TextBoxEmail.Focus();
-                TextBoxEmail.ErrorText = "Title cannot be empty";
+                TextBoxEmail.ErrorText = "Email cannot be empty";
                 hasErrors = true;
             }
-            if (_model.Password.IsNullOrEmpty())
+            if (_model.PaypalPassword.IsNullOrEmpty())
             {
                 TextBoxPassword.BringIntoView();
                 TextBoxPassword.Focus();
-                TextBoxPassword.ErrorText = "Title cannot be empty";
+                TextBoxPassword.ErrorText = "Password cannot be empty";
                 hasErrors = true;
             }
             try 
             {
-                if (hasErrors)return;
+                if (hasErrors) return;
+                SmartTradeNavigationManager.Instance.MainView.HidePopUp();
             }
             catch (Exception ex)
             {
                 if (ex.Message.Contains("Incorrect password"))
                 {
-                    TextBoxPassword.ErrorMessage.BringIntoView();
-                    TextBoxPassword.ErrorMessage.Text = ex.Message;
+                    TextBoxPassword.ErrorText = ex.Message;
                 }
 
                 if (ex.Message.Contains("Unregistered user"))
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();
-                    TextBoxEmail.ErrorMessage.Text = ex.Message;
                 }
             }
         }

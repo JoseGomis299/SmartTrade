@@ -148,10 +148,22 @@ namespace SmartTrade.Controls
             set => SetValue(OnlyPositiveIntProperty, value);
         }
 
+        public bool OnlyLetters
+        {
+            get => GetValue(OnlyLettersProperty);
+            set => SetValue(OnlyLettersProperty, value);
+        }
+
         public bool OnlyPositiveDouble
         {
             get => GetValue(OnlyPositiveDoubleProperty);
             set => SetValue(OnlyPositiveDoubleProperty, value);
+        }
+
+        public string PatternRestriction
+        {
+            get => GetValue(PatternRestrictionProperty);
+            set => SetValue(PatternRestrictionProperty, value);
         }
 
         private void SetRestrictors()
@@ -167,11 +179,18 @@ namespace SmartTrade.Controls
             {
                 Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutDoubleRestriction().WithPositiveRestriction().Build();
             }
+            else if (OnlyLetters)
+            {
+                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutLetterRestriction().Build();
+            }else if (!string.IsNullOrEmpty(PatternRestriction))
+            {
+                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutPatterRestriction(PatternRestriction).Build();
+            }
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
-            if (change.Property == OnlyPositiveDoubleProperty || change.Property == OnlyPositiveIntProperty)
+            if (change.Property == OnlyPositiveDoubleProperty || change.Property == OnlyPositiveIntProperty || change.Property == PatternRestrictionProperty || change.Property == OnlyLettersProperty)
                 SetRestrictors();
             base.OnPropertyChanged(change);
         }
@@ -181,6 +200,12 @@ namespace SmartTrade.Controls
 
         public static readonly StyledProperty<bool> OnlyPositiveDoubleProperty =
             AvaloniaProperty.Register<ST_TextBox, bool>(nameof(OnlyPositiveDouble), defaultValue: false);
+
+        public static readonly StyledProperty<string> PatternRestrictionProperty =
+            AvaloniaProperty.Register<ST_TextBox, string>(nameof(PatternRestriction), defaultValue: "");
+
+        public static readonly StyledProperty<bool> OnlyLettersProperty =
+            AvaloniaProperty.Register<ST_TextBox, bool>(nameof(OnlyLetters), defaultValue: false);
 
         public static readonly StyledProperty<string?> TextProperty =
             AvaloniaProperty.Register<ST_TextBox, string?>(nameof(Text), defaultValue: "");
