@@ -14,6 +14,8 @@ namespace SmartTrade.Views
     public partial class Register : UserControl
     {
         private RegisterModel _model;
+        private Paypal paypalMessageBox;
+        private AddCreditCart creditCardMessageBox;
 
         public Register()
         {
@@ -22,7 +24,25 @@ namespace SmartTrade.Views
             SignInButton.Click += SignInButton_click;
             RegisterSellerButton.Click += RegisterSellerButton_click;
             LoginButton.Click += LoginButton_click;
+            CreditCardButton.Click += CreditCardButton_click;
+            BizumButton.Click += BizumButton_click;
+            PaypalButton.Click += PaypalButton_click;
 
+        }
+
+        private void PaypalButton_click(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BizumButton_click(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CreditCardButton_click(object? sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void LoginButton_click(object? sender, RoutedEventArgs e)
