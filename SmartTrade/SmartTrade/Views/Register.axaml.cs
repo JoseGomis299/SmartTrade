@@ -28,7 +28,7 @@ namespace SmartTrade.Views
             CreditCardButton.Click += CreditCardButton_click;
             BizumButton.Click += BizumButton_click;
             PaypalButton.Click += PaypalButton_click;
-        
+            BirthDateError.IsVisible = false;
 
         }
 
@@ -64,13 +64,13 @@ namespace SmartTrade.Views
             TextBoxLastNames.ErrorText = "";
             TextBoxPassword.ErrorText = "";
             TextBoxDNI.ErrorText = "";
-            //TextBoxDateBirth.ErrorText = "";
             TextBoxNumber.ErrorText = "";
             TextBoxProvince.ErrorText = "";
             TextBoxPostalCode.ErrorText = "";
             TextBoxMunicipality.ErrorText = "";
             TextBoxStreet.ErrorText = "";
             TextBoxDoor.ErrorText = "";
+            BirthDateError.IsVisible = false;
 
         }
         private async void SignInButton_click(object? sender, RoutedEventArgs e)
@@ -105,11 +105,9 @@ namespace SmartTrade.Views
                 TextBoxDNI.ErrorText = "Title cannot be empty";
                 hasErrors = true;
             }
-            if (_model.DateBirth.IsNullOrEmpty())
+            if (_model.DateBirth == null)
             {
-                TextBoxDateBirth.BringIntoView();
-                TextBoxDateBirth.Focus();
-                //TextBoxDateBirth.ErrorText = "Title cannot be empty";
+                BirthDateError.IsVisible = true;
                 hasErrors = true;
             }
             if (_model.LastNames.IsNullOrEmpty())
@@ -170,11 +168,7 @@ namespace SmartTrade.Views
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Incorrect format"))
-                {
-                    //TextBoxDateBirth.ErrorMessage.BringIntoView();
-                    //TextBoxDateBirth.ErrorMessage.Text = ex.Message;
-                }
+               
                 if (ex.Message.Contains("Existing user"))
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();
@@ -197,27 +191,6 @@ namespace SmartTrade.Views
                 }
             }
         }
-        private void DateTextBox_TextInput(object sender, TextInputEventArgs e)
-        {
-            var textBox = (TextBox)sender;
-            var text = textBox.Text;
-            var caretIndex = textBox.CaretIndex;
-            if (!char.IsDigit(e.Text[0]))
-            {
-                e.Handled = true;
-            }
-            text = new string(text.Where(c => char.IsDigit(c)).ToArray()).PadRight(8, '0');
-            if (text.Length >= 2)
-            {
-                text = text.Insert(2, "/");
-            }
-            if (text.Length >= 5)
-            {
-                text = text.Insert(5, "/");
-            }
-            textBox.Text = text;
-            textBox.CaretIndex = Math.Min(caretIndex + 1, text.Length);
-            e.Handled = true;
-        }
+       
     }
 }

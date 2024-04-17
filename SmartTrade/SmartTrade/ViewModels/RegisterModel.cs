@@ -18,7 +18,7 @@ namespace SmartTrade.ViewModels
         public string? Email { get; set; }
         public string? Password { get; set; }
         public string? DNI { get; set; }
-        public string? DateBirth { get; set; }
+        public DateTime DateBirth { get; set; }
         public string? Number { get; set; }
         public string? Province { get; set; }
         public string? Municipality { get; set; }
@@ -59,19 +59,7 @@ namespace SmartTrade.ViewModels
         public string BizumNumber { get; set; } 
 
 
-        public DateTime ConvertDate()
-        {
-            DateTime date;
-            try
-            {
-                date = DateTime.ParseExact(DateBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                return date;
-            }
-            catch (FormatException)
-            {
-                throw new Exception("Incorrect format");
-            }
-        }
+        
         public DateTime ConvertExpiryDate()
         {
             DateTime resultado;
@@ -110,7 +98,7 @@ namespace SmartTrade.ViewModels
             Validar();
             Address consumerAddress = new Address(Province, Street, Municipality, PostalCode, Number, Door);
 
-            await SmartTradeService.Instance.RegisterConsumerAsync(Email, Password, Name, LastNames, DNI, ConvertDate(), consumerAddress, consumerAddress);
+            await SmartTradeService.Instance.RegisterConsumerAsync(Email, Password, Name, LastNames, DNI, DateBirth, consumerAddress, consumerAddress);
             UserDTO Logged = SmartTradeService.Instance.Logged;
             if (_Paypalemail != null && _Paypalpassword != null)
             {
