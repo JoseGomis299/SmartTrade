@@ -13,6 +13,12 @@ namespace SmartTrade.Views
         private Window _ventana;
         private RegisterModel? _model;
 
+        public Paypal() 
+        {
+            InitializeComponent();
+            AcceptButton.Click += AcceptButton_Click;
+            CancelButton.Click += CancelButton_Click;
+        }
         public Paypal(RegisterModel model)
         {
             InitializeComponent();
