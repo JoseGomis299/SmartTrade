@@ -1,18 +1,15 @@
 using Avalonia.Controls;
 using SmartTradeDTOs;
 using SmartTrade.ViewModels;
+using System.Collections.Generic;
 
 namespace SmartTrade.Views
 {
     public partial class AlertView : UserControl
     {
-        public AlertView() 
+        public AlertView()
         {
-            InitializeComponent();
-        }
-        public AlertView(ProductDTO products)
-        {
-            //DataContext = new AlertViewModel(products);
+            DataContext = new AlertViewModel();
             InitializeComponent();
         }
     }

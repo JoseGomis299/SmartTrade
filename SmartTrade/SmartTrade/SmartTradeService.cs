@@ -103,6 +103,25 @@ public class SmartTradeService
         await PerformApiInstructionAsync($"User/RemovePost/{postId}", ApiInstruction.Delete);
     }
 
+    public async Task AddCreditCardAsync(CreditCardInfo creditCard)
+    {
+        string json = JsonConvert.SerializeObject(creditCard);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await PerformApiInstructionAsync($"Consumer/AddCreditCard?id={Logged.Email}", ApiInstruction.Put, content);
+    }
+
+    public async Task AddBizumAsync(BizumInfo bizum)
+    {
+        string json = JsonConvert.SerializeObject(bizum);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await PerformApiInstructionAsync($"Consumer/AddBizum?id={Logged.Email}", ApiInstruction.Put, content);
+    }
+
+    public async Task<List<NotificationDTO>?> GetNotificationsAsync()
+    {
+        return JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"User/GetNotifications", ApiInstruction.Get));
+    }
+
     private async Task<string> PerformApiInstructionAsync(string function, ApiInstruction instruction, HttpContent content = null)
     {
         using var client = new HttpClient();
@@ -143,20 +162,6 @@ public class SmartTradeService
             Console.WriteLine($"Error al conectar a la API: {e.Message}");
             return string.Empty;
         }
-    }
-
-    public async Task AddCreditCardAsync(CreditCardInfo creditCard)
-    {
-        string json = JsonConvert.SerializeObject(creditCard);
-        using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddCreditCard?id={Logged.Email}", ApiInstruction.Put, content);
-    }
-
-    public async Task AddBizumAsync(BizumInfo bizum)
-    {
-        string json = JsonConvert.SerializeObject(bizum);
-        using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddBizum?id={Logged.Email}", ApiInstruction.Put, content);
     }
 }
 

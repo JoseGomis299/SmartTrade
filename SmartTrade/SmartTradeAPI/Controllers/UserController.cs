@@ -51,4 +51,12 @@ public class UserController : ControllerBase
         ISmartTradeService service = new SmartTradeService();
         service.AddBizum(info, id);
     }
+
+    [HttpGet("GetNotifications")]
+    public List<NotificationDTO> GetNotifications()
+    {
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+        ISmartTradeService service = new SmartTradeService();
+        return service.GetNotifications(loggedId);
+    }
 }
