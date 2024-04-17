@@ -151,6 +151,13 @@ public class SmartTradeService
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
         await PerformApiInstructionAsync($"Consumer/AddCreditCard?id={loggedID}", ApiInstruction.Put, content);
     }
+
+    public async Task AddBizumAsync(BizumInfo bizum, string loggedID)
+    {
+        string json = JsonConvert.SerializeObject(bizum);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await PerformApiInstructionAsync($"Consumer/AddBizum?id={loggedID}", ApiInstruction.Put, content);
+    }
 }
 
 public enum ApiInstruction

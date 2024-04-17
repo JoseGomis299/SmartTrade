@@ -2,10 +2,10 @@
 
 public class CreditCardInfo
 {
-    private string creditCardNumber;
-    private string creditCardExpiryDate;
-    private string creditCardCVV;
-    private string creditCardName;
+    private string creditCardNumber { get; set; }
+    private string creditCardExpiryDate { get; set; }
+    private string creditCardCVV { get; set; }
+    private string creditCardName { get; set; }
 
     public CreditCardInfo(string creditCardNumber, string creditCardExpiryDate, string creditCardCVV, string creditCardName)
     {
@@ -15,8 +15,5 @@ public class CreditCardInfo
         this.creditCardName = creditCardName;
     }
 
-    public string CardNumber { get; set; }
-    public string ExpirationDate { get; set; }
-    public string CVV { get; set; }
-    public string CardHolder { get; set; }
+    
 }

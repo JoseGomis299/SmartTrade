@@ -141,6 +141,12 @@ namespace SmartTrade.ViewModels
                 await SmartTradeService.Instance.AddCreditCardAsync(creditCard,email);
 
             }
+            if (BizumNumber != null)
+            {
+                BizumInfo bizum = new BizumInfo(BizumNumber);
+                await SmartTradeService.Instance.AddBizumAsync(bizum, email);
+
+            }
         }
     }        
 }

@@ -263,6 +263,14 @@ public class SmartTradeService : ISmartTradeService
         loggedConsumer.AddPaymentMethod(creditCardInfo);
         _dal.Commit();
     }
+
+    public void AddBizum(BizumInfo bizum, string loggedID)
+    {
+        Consumer? loggedConsumer = _dal.GetById<Consumer>(loggedID);
+        loggedConsumer.AddPaymentMethod(bizum);
+        _dal.Commit();
+    }
+
     public UserDTO LogIn(string email, string password)
     {
         if (!_dal.GetWhere<User>(x => x.Email == email).Any()) throw new Exception("Unregistered user");
