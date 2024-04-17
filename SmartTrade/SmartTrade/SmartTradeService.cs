@@ -87,7 +87,15 @@ public class SmartTradeService
     {
         using var content = new StringContent(postInfoJson, Encoding.UTF8, "application/json");
 
-        await PerformApiInstructionAsync($"User/EditPost/{postId}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"Post/EditPost?id={postId}", ApiInstruction.Put, content);
+    }
+
+    public async Task AddPaypalAsync(PayPalInfo paypalinfo, String loggedID)
+    {
+        string json = JsonConvert.SerializeObject(paypalinfo);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await PerformApiInstructionAsync($"Consumer/AddPaypal?id={loggedID}", ApiInstruction.Put, content);
+
     }
 
     public async Task DeletePostAsync(int postId)
@@ -135,6 +143,13 @@ public class SmartTradeService
             Console.WriteLine($"Error al conectar a la API: {e.Message}");
             return string.Empty;
         }
+    }
+
+    public async Task AddCreditCardAsync(CreditCardInfo creditCard, string loggedID)
+    {
+        string json = JsonConvert.SerializeObject(creditCard);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await PerformApiInstructionAsync($"Consumer/AddCreditCard?id={loggedID}", ApiInstruction.Put, content);
     }
 }
 

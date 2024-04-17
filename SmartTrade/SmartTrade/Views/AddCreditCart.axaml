@@ -2,7 +2,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SmartTrade.Views.AddCreditCart">
-  Please add a credit card.
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="350"
+             x:Class="SmartTrade.Views.AddCreditCart"
+			 xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+			 x:DataType="vm:RegisterModel"
+			 xmlns:controls="clr-namespace:SmartTrade.Controls">
+	<Design.DataContext>
+		<vm:RegisterModel/>
+	</Design.DataContext>
+	<StackPanel HorizontalAlignment="Center" Spacing="10">
+		<controls:ST_TextBox LabelText="Titular Name" Text="{Binding CreditCardName , Mode=OneWayToSource}" TextHeight="40" Margin="0 22 50 10" Name="TextBoxName"/>
+		<controls:ST_TextBox LabelText="Number" Text="{Binding CreditCardNumber, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 10" Name="TextBoxNumber"/>
+		<controls:ST_TextBox LabelText="Expiry date" Text="{Binding CreditCardExpiryDate, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 10" Name="TextBoxExpiryDate"/>
+		<controls:ST_TextBox LabelText="CVV" Text="{Binding CreditCardCVV, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 20" Name="TextBoxCVV"/>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<Button HorizontalAlignment="Center" Height="40" Width="100" Margin="10 0 15 0" Classes="White" Name="CancelButton">Cancel</Button>
+			<Button HorizontalAlignment="Center" Height="40" Width="100" Margin="0 0 0 0" Classes="White" Name="AcceptButton">Accept</Button>
+		</StackPanel>
+	</StackPanel>
 </UserControl>
