@@ -24,7 +24,7 @@ public class SmartTradeNavigationManager : NavigationManager
         NavigateWithButton(targetView.GetType(), 0, 0,out _);
     }
 
-    public bool NavigateWithButton(Type? targetViewType, int previousButton, int targetButton, out ContentControl view)
+    public bool NavigateWithButton(Type? targetViewType, int previousButton, int targetButton, out ContentControl view, bool reinitilizeView = false)
     {
         if (Navigator == null)
             throw new InvalidOperationException("Navigator not initialized");
@@ -56,9 +56,8 @@ public class SmartTradeNavigationManager : NavigationManager
         if(Commands.TryPeek(out var top)) top.Execute();
         else
         {
-            ICommand command = new NavigateToCommand(Navigator, (ContentControl) Activator.CreateInstance(targetViewType));
-            if (previousButton != targetButton) command = new NavigateToCommand(Navigator, targetViewType);
-
+            var command = new NavigateToCommand(Navigator, targetViewType);
+            if(reinitilizeView) command = new NavigateToCommand(Navigator,(ContentControl) Activator.CreateInstance(targetViewType));
             command.Execute();
         }
 
@@ -77,15 +76,15 @@ public class SmartTradeNavigationManager : NavigationManager
         {
             HomeCommands.Clear();
             UserCommands.Clear();
-            CartCommands.Clear();
 
             Commands = HomeCommands;
             OnChangeNavigationStack?.Invoke(0);
         }
         else {
-            throw new InvalidOperationException("You can only go to a Catalog when reinitializing");
+            throw new InvalidOperationException("You can only go to a Catalog or Login when reinitializing");
         }
 
+        Navigator.Reinitialize();
         ICommand command = new NavigateToCommand(Navigator, targetView);
         command.Execute();
 
@@ -97,5 +96,12 @@ public class SmartTradeNavigationManager : NavigationManager
         if (stack == 0) HomeCommands.Push(new NavigateToCommand(Navigator, view));
         else if (stack == 1) CartCommands.Push(new NavigateToCommand(Navigator, view));
         else UserCommands.Push(new NavigateToCommand(Navigator, view));
+    }
+
+    public void ClearStack(int stack)
+    {
+        if (stack == 0) HomeCommands.Clear();
+        else if (stack == 1) CartCommands.Clear();
+        else UserCommands.Clear();
     }
 }

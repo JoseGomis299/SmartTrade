@@ -292,7 +292,21 @@ public class SmartTradeService : ISmartTradeService
         User user = _dal.GetById<User>(email);
         if (user.Password != password) throw new Exception("Incorrect password");
 
-        return new UserDTO(user);
+        UserDTO userDto;
+        if (user is Consumer consumer)
+        {
+            userDto = new ConsumerDTO(consumer);
+        }
+        else if (user is Seller seller)
+        {
+            userDto = new SellerDTO(seller);
+        }
+        else
+        {
+            userDto = new UserDTO(user);
+        }
+
+        return userDto;
     }
 
     public List<NotificationDTO> GetNotifications(string loggedId)

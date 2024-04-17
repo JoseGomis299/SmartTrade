@@ -34,5 +34,10 @@ namespace SmartTrade.Navigation
             MainView.Content = view;
             _views.AddOrUpdate(view.GetType(), (UserControl) view);
         }
+
+        public override void Reinitialize()
+        {
+            _views.Clear();
+        }
     }
 }

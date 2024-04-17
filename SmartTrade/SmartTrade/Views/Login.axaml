@@ -14,7 +14,7 @@
 		<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="0 0 0 0">
 			<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">LOGIN</TextBlock>
 			<controls:ST_TextBox LabelText="Email" Text="{Binding Email, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
-			<controls:ST_TextBox LabelText="Password" PasswordText="*" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
+			<controls:ST_TextBox LabelText="Password" PasswordText="•" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
 			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 0" Classes="White" Name="SignUpButton">SIGN UP!</Button>
 		</StackPanel>
         <StackPanel Grid.Row="1" HorizontalAlignment="Stretch">

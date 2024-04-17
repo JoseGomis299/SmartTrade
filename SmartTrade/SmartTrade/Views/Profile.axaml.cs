@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using SmartTrade.ViewModels;
 
 namespace SmartTrade.Views
 {
@@ -6,7 +7,16 @@ namespace SmartTrade.Views
     {
         public Profile()
         {
+            DataContext = new ProfileModel();
             InitializeComponent();
+
+            LogoutButton.Click += LogOut;
+        }
+
+        private async void LogOut(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            SmartTradeService.Instance.LogOut();
+            await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
         }
     }
 }

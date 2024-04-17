@@ -19,7 +19,7 @@
 		<controls:ST_TextBox LabelText="DNI" Text="{Binding DNI, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDNI"/>
 		<controls:ST_TextBox LabelText="Date Birth" Text="{Binding DateBirth, Mode=OneWayToSource}" TextHeight="40" WaterMark="DD/MM/YYYY" TextInput="DateTextBox_TextInput" Name="TextBoxDateBirth"/>
 		<controls:ST_TextBox LabelText="Email" Text="{Binding Email, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
-		<controls:ST_TextBox LabelText="Password" PasswordText="*" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
+		<controls:ST_TextBox LabelText="Password" PasswordText="•" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
 	</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Stretch" >
 			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378">

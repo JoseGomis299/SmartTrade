@@ -188,7 +188,13 @@ public partial class MainView : UserControl
 
         async Task NavigateTo(Type catalogType)
         {
-            if (SmartTradeNavigationManager.Instance.NavigateWithButton(catalogType, _selectedButton, 0, out var catalog))
+            if (_selectedButton != 0 || (_selectedButton == 0 && SmartTradeNavigationManager.Instance.Navigator.CurrentView.GetType() != catalogType))
+            {
+                SmartTradeNavigationManager.Instance.NavigateWithButton(catalogType, _selectedButton, 0, out _);
+                return;
+            }
+
+            if (SmartTradeNavigationManager.Instance.NavigateWithButton(catalogType, _selectedButton, 0, out var catalog, true))
             {
                 int loadingScreen = StartLoading();
                 var model = (CatalogModel)catalog.DataContext;
@@ -204,8 +210,6 @@ public partial class MainView : UserControl
             }
         }
     }
-
-    
 
     private void SelectButton(int i)
     {
@@ -303,8 +307,6 @@ public partial class MainView : UserControl
 
     public async Task ShowCatalogReinitializingAsync()
     {
-        if (SmartTradeService.Instance.Logged == null) return;
-
         if (_isLoadingHome)
         {
             SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 0, out _);
@@ -314,7 +316,7 @@ public partial class MainView : UserControl
 
         SetButtonVisibility();
         HideLoadingScreen();
-        if (SmartTradeService.Instance.Logged.IsConsumer)
+        if (SmartTradeService.Instance.Logged == null || SmartTradeService.Instance.Logged.IsConsumer)
         {
             await NavigateTo(new ProductCatalog());
             return;
