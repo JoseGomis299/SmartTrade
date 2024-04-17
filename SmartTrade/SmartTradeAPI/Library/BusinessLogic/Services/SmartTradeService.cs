@@ -250,6 +250,12 @@ public class SmartTradeService : ISmartTradeService
         return new SellerDTO(seller);
     }
 
+    public void AddPaypal(PayPalInfo paypalInfo, string loggedID) 
+    {
+        Consumer? loggedConsumer = _dal.GetById<Consumer>(loggedID);
+        loggedConsumer.AddPaymentMethod(paypalInfo);
+        _dal.Commit();
+    }
     public UserDTO LogIn(string email, string password)
     {
         if (!_dal.GetWhere<User>(x => x.Email == email).Any()) throw new Exception("Unregistered user");
