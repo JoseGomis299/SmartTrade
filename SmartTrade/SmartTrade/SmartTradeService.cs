@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -18,12 +19,30 @@ public class SmartTradeService
     public IEnumerable<SimplePostDTO>? Posts => _posts;
     public UserDTO? Logged { get; private set; }
 
+    private void SetLogged(string json)
+    {
+        Logged = JsonConvert.DeserializeObject<UserDTO>(json);
+        
+        if (Logged.IsConsumer)
+        {
+            Logged = JsonConvert.DeserializeObject<ConsumerDTO>(json);
+        }
+        else if (Logged.IsSeller)
+        {
+            Logged = JsonConvert.DeserializeObject<SellerDTO>(json);
+        }
+    }
+    public void LogOut()
+    {
+        Logged = null;
+    }
+
     public async Task LogInAsync(string email, string password)
     {
         string json = JsonConvert.SerializeObject(new { Email = email, Password = password });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        Logged = JsonConvert.DeserializeObject<UserDTO>(await PerformApiInstructionAsync("User/Login", ApiInstruction.Post, content));
+        SetLogged(await PerformApiInstructionAsync("User/Login", ApiInstruction.Post, content));
     }
 
     public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -37,7 +56,7 @@ public class SmartTradeService
         });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        Logged = JsonConvert.DeserializeObject<ConsumerDTO>(await PerformApiInstructionAsync("User/RegisterConsumer", ApiInstruction.Post, content));
+        SetLogged(await PerformApiInstructionAsync("User/RegisterConsumer", ApiInstruction.Post, content));
     }
 
     public async Task RegisterSellerAsync(string email, string password, string name, string lastnames, string dni, string companyName, string iban)
@@ -51,7 +70,7 @@ public class SmartTradeService
         });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        Logged = JsonConvert.DeserializeObject<SellerDTO>(await PerformApiInstructionAsync("User/RegisterSeller", ApiInstruction.Post, content));
+        SetLogged(await PerformApiInstructionAsync("User/RegisterSeller", ApiInstruction.Post, content));
     }
 
     public async Task AddPostAsync(PostDTO post)

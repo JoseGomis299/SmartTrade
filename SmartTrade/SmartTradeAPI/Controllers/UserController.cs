@@ -10,7 +10,7 @@ namespace SmartTradeAPI.Controllers;
 public class UserController : ControllerBase
 {
     [HttpPost("Login")]
-    public UserDTO Login([FromBody] LoginData login)
+    public dynamic Login([FromBody] LoginData login)
     {
         ISmartTradeService service = new SmartTradeService();
         return service.LogIn(login.Email, login.Password);
