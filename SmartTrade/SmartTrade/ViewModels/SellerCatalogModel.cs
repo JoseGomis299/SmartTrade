@@ -21,7 +21,7 @@ public class SellerCatalogModel : CatalogModel
     public override async Task LoadProductsAsync()
     {
         List<SimplePostDTO>? posts = await SmartTradeService.Instance.GetPostsAsync();
-
+        
         posts.ForEach(post =>
         {
             MyProducts.Add(new ProductModel(post));

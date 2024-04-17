@@ -118,7 +118,11 @@ namespace SmartTrade.ViewModels
                     SearchedProducts.Add(product);
                 }
             }
-            ApplyFilters();
+
+            if (Sustainable) { sortSustainable(); }
+
+            if (PriceAscend) { sortPriceAscend(); }
+            else if (PriceDescend) { sortPriceDescend(); }
         }
     }
 }

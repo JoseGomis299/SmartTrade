@@ -75,8 +75,6 @@ public partial class MainView : UserControl
         HomeImage2.Source = _homeImage;
     }
 
-
-
     #region SideBar
     private void SideBarButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -91,7 +89,7 @@ public partial class MainView : UserControl
     private void ListBoxDepartments_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         CurrentCategory = ListBoxDepartments.SelectedIndex;
-        //SideBar.IsVisible = false;
+        SideBar.IsPaneOpen = false;
 
         if (ListBoxDepartments.SelectedIndex == -1)
         {
@@ -290,6 +288,12 @@ public partial class MainView : UserControl
             SearchResult searchResult = new SearchResult(await _model.LoadProductsAsync());
             if(_selectedButton ==  loadingScreen) SmartTradeNavigationManager.Instance.NavigateToOverriding(searchResult);
             else SmartTradeNavigationManager.Instance.AddToStack(searchResult, loadingScreen);
+
+            var search = (SearchResultModel)searchResult.DataContext;
+            OnCategorySelected -= search.SortByCategory;
+            OnCategorySelected += search.SortByCategory;
+            OnCategorySelected?.Invoke(CurrentCategory);
+
             StopLoading(loadingScreen);
         }
     }
