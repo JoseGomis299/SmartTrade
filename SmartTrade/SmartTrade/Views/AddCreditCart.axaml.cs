@@ -16,15 +16,20 @@ namespace SmartTrade.Views
         {
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
-            //CancelButton.Click += CancelButton_Click;
+            CancelButton.Click += CancelButton_Click;
         }
         public AddCreditCart(RegisterModel model)
         {
-            InitializeComponent();
             DataContext = _model = model;
+
+            InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
             
-            //CancelButton.Click += CancelButton_Click;
+            CancelButton.Click += CancelButton_Click;
+        }
+        private void CancelButton_Click(object? sender, RoutedEventArgs e)
+        {
+            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
 
         private void ClearErrors()
@@ -50,28 +55,28 @@ namespace SmartTrade.Views
             {
                 TextBoxName.BringIntoView();
                 TextBoxName.Focus();
-                TextBoxName.ErrorText = "Title cannot be empty";
+                TextBoxName.ErrorText = "Name cannot be empty";
                 hasErrors = true;
             }
             if (_model.CreditCardNumber.IsNullOrEmpty())
             {
                 TextBoxNumber.BringIntoView();
                 TextBoxNumber.Focus();
-                TextBoxNumber.ErrorText = "Title cannot be empty";
+                TextBoxNumber.ErrorText = "Number cannot be empty";
                 hasErrors = true;
             }
             if (_model.CreditCardExpiryDate.IsNullOrEmpty())
             {
-                TextBoxNumber.BringIntoView();
-                TextBoxNumber.Focus();
-                TextBoxNumber.ErrorText = "Title cannot be empty";
+                TextBoxExpiryDate.BringIntoView();
+                TextBoxExpiryDate.Focus();
+                TextBoxExpiryDate.ErrorText = "Expiry Date cannot be empty";
                 hasErrors = true;
             }
             if (_model.CreditCardCVV.IsNullOrEmpty())
             {
-                TextBoxNumber.BringIntoView();
-                TextBoxNumber.Focus();
-                TextBoxNumber.ErrorText = "Title cannot be empty";
+                TextBoxCVV.BringIntoView();
+                TextBoxCVV.Focus();
+                TextBoxCVV.ErrorText = "CVV cannot be empty";
                 hasErrors = true;
             }
             try
@@ -79,25 +84,22 @@ namespace SmartTrade.Views
                 if (hasErrors) return;
                 _model.ValidarCVV();
                 _model.ValidarNumeroTarjeta();
-
+                SmartTradeNavigationManager.Instance.MainView.HidePopUp();
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Wrong number card. Only digits are allowed\""))
+                if (ex.Message.Contains("Wrong number card. Only digits are allowed"))
                 {
-                    TextBoxNumber.ErrorMessage.BringIntoView();
-                    TextBoxNumber.ErrorMessage.Text = ex.Message;
+                    TextBoxNumber.ErrorText = ex.Message;
                 }
 
                 if (ex.Message.Contains("Wrong cvv. Only digits are allowed"))
                 {
-                    TextBoxCVV.ErrorMessage.BringIntoView();
-                    TextBoxCVV.ErrorMessage.Text = ex.Message;
+                    TextBoxCVV.ErrorText = ex.Message;
                 }
                 if (ex.Message.Contains("Incorrect format"))
                 {
-                    TextBoxExpiryDate.ErrorMessage.BringIntoView();
-                    TextBoxExpiryDate.ErrorMessage.Text = ex.Message;
+                    TextBoxExpiryDate.ErrorText = ex.Message;
                 }
             }
         }

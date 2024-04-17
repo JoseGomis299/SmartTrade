@@ -36,6 +36,8 @@ public partial class MainView : UserControl
     private int? CurrentCategory;
     public event Action<int?> OnCategorySelected;
 
+    public bool ShowingPopUp { get; set; }
+
     public MainView()
     {
         DataContext = _model = new MainViewModel();
@@ -350,6 +352,19 @@ public partial class MainView : UserControl
         }
     }
 
+    public void ShowPopUp(ContentControl popUp)
+    {
+        Overlay.IsVisible = true;
+
+        PopUp.Content = popUp;
+        ShowingPopUp = true;
+    }
+
+    public void HidePopUp()
+    {
+        Overlay.IsVisible = false;
+        ShowingPopUp = false;
+    }
     #endregion
 
     #region SearchBar

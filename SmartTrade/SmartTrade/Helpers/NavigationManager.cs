@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
 using SmartTrade.Navigation;
+using SmartTrade.Views;
 
 namespace SmartTrade;
 

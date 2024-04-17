@@ -14,13 +14,12 @@ namespace SmartTrade.Views
     public partial class Register : UserControl
     {
         private RegisterModel _model;
-        private Paypal paypalMessageBox;
-        private AddCreditCart creditCardMessageBox;
 
         public Register()
         {
+            DataContext = _model = new RegisterModel();
+
             InitializeComponent();
-            DataContext = new RegisterModel(); 
             SignInButton.Click += SignInButton_click;
             RegisterSellerButton.Click += RegisterSellerButton_click;
             LoginButton.Click += LoginButton_click;
@@ -32,17 +31,17 @@ namespace SmartTrade.Views
 
         private void PaypalButton_click(object? sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new Paypal(_model));
         }
 
         private void BizumButton_click(object? sender, RoutedEventArgs e)
         {
-            var bizum = new Bizum();
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new Bizum(_model));
         }
 
         private void CreditCardButton_click(object? sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new AddCreditCart(_model));
         }
 
         private void LoginButton_click(object? sender, RoutedEventArgs e)
