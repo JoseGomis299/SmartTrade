@@ -64,20 +64,20 @@
 						</Grid>
 					</Border>
 
-					<!--Shopping Cart-->
-					<Border x:Name="ShoppingCart" Grid.Row="2" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
-						<Grid Height="70" ColumnDefinitions="* * auto" VerticalAlignment="Center">
-							<Button Grid.Column="0" HorizontalAlignment="Left" Background="Transparent" Margin="25 0 0 0" Width="60" Height="60" Name="HomeButton2">
-								<Image Stretch="Uniform" Width="60" Name="HomeImage2"></Image>
-							</Button>
-							<Button Grid.Column="1" HorizontalAlignment="Left" Background="Transparent" Margin="10 0 0 0" Width="60" Height="60" Name="ShoppingCartButton2">
-								<Image Stretch="Uniform" Width="60" Name="CartImage2"></Image>
-							</Button>
-							<Button Grid.Column="2" HorizontalAlignment="Left" Background="Transparent" Margin="0 0 25 0" Classes="Green" Width="100" Height="60" Content="Add to Cart"/>
-						</Grid>
-					</Border>
-				</Grid>
-			</Border>
-		</SplitView.Content>
-	</SplitView>
+		<!--Shopping Cart-->
+		<Border x:Name="ShoppingCart" Grid.Row="2" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
+			<Grid Height="70" ColumnDefinitions="* * auto" VerticalAlignment="Center">
+				<Button Grid.Column="0" HorizontalAlignment="Left" Margin="25 0 0 0" Width="60" Height="60" Name="HomeButton2">
+					<Image Stretch="Uniform" Width="60" Name="HomeImage2"></Image>
+				</Button>
+				<Button Grid.Column="1" HorizontalAlignment="Left" Margin="10 0 0 0" Width="60" Height="60" Name="ShoppingCartButton2">
+					<Image Stretch="Uniform" Width="60" Name="CartImage2"></Image>
+				</Button>
+				<Button Grid.Column="2" HorizontalAlignment="Left" Margin="0 0 25 0" Classes="Green" Width="100" Height="60" Content="Add to Cart"/>
+			</Grid>
+		</Border>
+	</Grid>
+</Border>
+</SplitView.Content>
+</SplitView>
 </UserControl>
