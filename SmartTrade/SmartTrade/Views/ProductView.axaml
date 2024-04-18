@@ -8,7 +8,7 @@
              x:DataType="vm:ProductViewModel"
              xmlns:controls="clr-namespace:SmartTrade.Controls">
 	<Design.DataContext>
-		<vm:ProductCatalogModel/>
+		<vm:ProductViewModel/>
 	</Design.DataContext>
 	<ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
 		<Grid RowDefinitions="auto auto *" Margin="0 10 0 0">
@@ -19,24 +19,27 @@
 							<Image Name="AlertImage" Stretch="Uniform"/>
 						</Panel>
 					</ToggleButton>
-					<Carousel ItemsSource="{Binding Images, Mode=OneWay}" Height="300">
+					<Carousel ItemsSource="{Binding Images, Mode=OneWay}" Name="ImageCarousel"  Height="300">
 						<Carousel.PageTransition >
-							<CompositePageTransition>
-								<PageSlide Duration="0:00:00.200" Orientation="Horizontal" />
+                            <CompositePageTransition>
+								<PageSlide Duration="0:00:00.200" Orientation="Horizontal"/>
 							</CompositePageTransition>
 						</Carousel.PageTransition>
+
 						<Carousel.ItemTemplate>
 							<DataTemplate>
-								<Image Source="{Binding}" Stretch="Uniform"/>
+                                <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="{Binding}" Stretch="Uniform"/>
 							</DataTemplate>
 						</Carousel.ItemTemplate>
 					</Carousel>
+                    <Button Margin="10 0" Classes="White" Name="PreviousImageButton">&lt;</Button>
+                    <Button Margin="10 0" Classes="White" Name="NextImageButton" HorizontalAlignment="Right">&gt;</Button>
 				</Grid>
 				<Border BorderBrush="#0A413E" BorderThickness="0 1">
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Classes="h1" Text="Attributes: " VerticalAlignment="Center"/>
 						<ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"  HorizontalAlignment="Stretch" Name="Carousel" Margin="0 0 0 0">
-							<ItemsControl ItemsSource="{Binding Attributes, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left">
+							<ItemsControl ItemsSource="{Binding Attributes, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Name="Attributes">
 
 								<ItemsControl.ItemsPanel>
 									<ItemsPanelTemplate>
@@ -46,7 +49,7 @@
 
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
-										<Button Classes="White" Content="{Binding Text}" Command="{Binding ChangeOfferCommand} "/>
+										<ToggleButton Margin="5 0 0 0" Content="{Binding Text}" CommandParameter="{Binding Path=#Attributes.Items, Mode=OneWay}" Command="{Binding ChangeOfferCommand}" IsChecked="{Binding IsChecked, Mode=OneWay}"/>
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>

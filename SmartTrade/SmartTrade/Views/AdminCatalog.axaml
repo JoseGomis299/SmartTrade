@@ -21,7 +21,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <controls:ST_Product Margin=" 10 0 10 -20" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Name}"/>
+                        <controls:ST_Product Margin=" 10 0 10 -20" Command="{Binding EditProductCommand}" Image="{Binding Image}" Price="{Binding Name}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

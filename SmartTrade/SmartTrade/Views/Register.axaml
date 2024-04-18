@@ -19,7 +19,7 @@
 		<controls:ST_TextBox LabelText="DNI" Text="{Binding DNI, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDNI"/>
 		<controls:ST_TextBox LabelText="Email" Text="{Binding Email, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
 			<TextBlock Classes="h2" HorizontalAlignment="Center" Margin="0 0 100 0">Birth Date</TextBlock>
-			<CalendarDatePicker HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding DateBirth, Mode=OneWayToSource}" SelectedDate="2024-04-17" Width="200" Name="TextBoxDateBirth"/>
+			<CalendarDatePicker HorizontalAlignment="Center" VerticalAlignment="Center" SelectedDate="{Binding DateBirth, Mode=OneWayToSource}" Width="200" Name="TextBoxDateBirth"/>
 			<TextBlock Classes="Error" HorizontalAlignment="Center" Name="BirthDateError">Select a  correct date</TextBlock>
 			<controls:ST_TextBox LabelText="Password" PasswordText="*" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
 	</StackPanel>

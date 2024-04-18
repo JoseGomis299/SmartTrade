@@ -6,11 +6,6 @@ using SmartTrade.ViewModels;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System.Threading.Tasks;
-using Avalonia;
-using ReactiveUI;
-using Avalonia.Media;
-using System.Drawing;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace SmartTrade.Views;
 

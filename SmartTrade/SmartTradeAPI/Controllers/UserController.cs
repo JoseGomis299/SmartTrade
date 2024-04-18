@@ -17,17 +17,17 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("RegisterSeller")]
-    public void RegosterSeller([FromBody] SellerRegisterData seller)
+    public SellerDTO RegisterSeller([FromBody] SellerRegisterData seller)
     {
         ISmartTradeService service = new SmartTradeService();
-        service.RegisterSeller(seller);
+        return service.RegisterSeller(seller);
     }
 
     [HttpPost("RegisterConsumer")]
-    public void RegosterConsumer([FromBody] ConsumerRegisterData consumer)
+    public ConsumerDTO RegisterConsumer([FromBody] ConsumerRegisterData consumer)
     {
         ISmartTradeService service = new SmartTradeService();
-        service.RegisterConsumer(consumer);
+        return service.RegisterConsumer(consumer);
     }
 
 

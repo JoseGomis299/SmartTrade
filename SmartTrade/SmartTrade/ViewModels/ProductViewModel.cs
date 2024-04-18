@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Reactive;
 using System.Windows.Input;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -13,6 +16,8 @@ namespace SmartTrade.ViewModels
 {
     public class ProductViewModel : ReactiveObject
 	{
+        public event Action OnOfferChanged;
+
         public PostDTO postView;
         public ObservableCollection<ProductModel> OtherSellers { get; set; }
         public ObservableCollection<ProductModel> SameSellerProducts { get; set; }
@@ -30,6 +35,22 @@ namespace SmartTrade.ViewModels
         private Bitmap? _alertDeactivated {  get; set; }
         public Bitmap? AlertToggle {  get; set; }
         private ToggleButton? _alertToggle;
+
+        public ProductViewModel()
+        {
+            OtherSellers = new ObservableCollection<ProductModel>();
+            SameSellerProducts = new ObservableCollection<ProductModel>();
+            RelatedProducts = new ObservableCollection<ProductModel>();
+            Images = new ObservableCollection<Bitmap>();
+            Attributes = new ObservableCollection<AttributeModel>();
+
+            _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
+            _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
+
+            Title = "Título";
+            Seller = "Vendido por: " + "Vendedor";
+            Description = "Descripción";
+        }
 
         public ProductViewModel(PostDTO post)
         {
@@ -51,6 +72,8 @@ namespace SmartTrade.ViewModels
             {
                 Attributes.Add(new AttributeModel(offer.Product.Differentiators, offer, this));
             }
+
+            Attributes[0].SetChecked(true);
 
             _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
@@ -106,6 +129,8 @@ namespace SmartTrade.ViewModels
 
         public void LoadData(OfferDTO offer)
         {
+            Images.Clear();
+
             foreach (var image in offer.Product.Images)
             {
                 Images.Add(image.ToBitmap());
@@ -114,6 +139,12 @@ namespace SmartTrade.ViewModels
             Price = offer.Price + "€";
             ShippingCost = "Shipping Cost: " + offer.ShippingCost + "€";
             Details = offer.Product.Info;
+
+            this.RaisePropertyChanged(nameof(Price));
+            this.RaisePropertyChanged(nameof(ShippingCost));
+            this.RaisePropertyChanged(nameof(Details));
+
+            OnOfferChanged?.Invoke();
         }
 
         public void UpdateAlerts()
@@ -125,12 +156,29 @@ namespace SmartTrade.ViewModels
     public class AttributeModel : ReactiveObject
     {
         public string? Text { get; set; }
-        public ICommand ChangeOfferCommand { get; set; }
+        public bool IsChecked { get; set; }
+        public ReactiveCommand<ItemCollection, Unit> ChangeOfferCommand { get; set; }
 
         public AttributeModel(string? text, OfferDTO offer, ProductViewModel model)
         {
             Text = text;
-            ChangeOfferCommand = ReactiveCommand.Create(() => model.LoadData(offer));
+            ChangeOfferCommand = ReactiveCommand.Create<ItemCollection>(collection =>
+            {
+                foreach (var item in collection)
+                {
+                    (item as AttributeModel).SetChecked(false);
+                }
+             
+                SetChecked(true);
+                model.LoadData(offer);
+            });
         }
+
+        public void SetChecked(bool value)
+        {
+            IsChecked = value;
+            this.RaisePropertyChanged(nameof(IsChecked));
+        }
+
     }
 }

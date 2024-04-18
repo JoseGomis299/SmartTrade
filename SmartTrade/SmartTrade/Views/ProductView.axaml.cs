@@ -29,7 +29,47 @@ namespace SmartTrade.Views
             _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
             
+            NextImageButton.Click += NextImage;
+            PreviousImageButton.Click += PreviousImage;
+            ((ProductViewModel)DataContext).OnOfferChanged += SetImageNavigationButtonsVisibility;
+
             SetAlertImage();
+            SetImageNavigationButtonsVisibility();
+        }
+
+        private void NextImage(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            ImageCarousel.Next();
+            SetImageNavigationButtonsVisibility();
+        }
+
+        private void PreviousImage(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            ImageCarousel.Previous();
+            SetImageNavigationButtonsVisibility();
+        }
+
+        private void SetImageNavigationButtonsVisibility()
+        {
+            if (ImageCarousel.Items.Count > 1)
+            {
+                NextImageButton.IsVisible = true;
+                PreviousImageButton.IsVisible = true;
+            }
+            else
+            {
+                NextImageButton.IsVisible = false;
+                PreviousImageButton.IsVisible = false;
+            }
+
+            if (ImageCarousel.SelectedIndex == 0)
+            {
+                PreviousImageButton.IsVisible = false;
+            }
+            else if (ImageCarousel.SelectedIndex == ImageCarousel.Items.Count - 1)
+            {
+                NextImageButton.IsVisible = false;
+            }
         }
 
         private void SetAlertImage()

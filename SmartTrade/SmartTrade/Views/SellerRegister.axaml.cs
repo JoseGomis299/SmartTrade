@@ -51,49 +51,49 @@ namespace SmartTrade.Views
             {
                 TextBoxName.BringIntoView();
                 TextBoxName.Focus();
-                TextBoxName.ErrorText = "Title cannot be empty";
+                TextBoxName.ErrorText = "Name cannot be empty";
                 hasErrors = true;
             }
             if (_model.Email.IsNullOrEmpty())
             {
                 TextBoxEmail.BringIntoView();
                 TextBoxEmail.Focus();
-                TextBoxEmail.ErrorText = "Title cannot be empty";
+                TextBoxEmail.ErrorText = "Email cannot be empty";
                 hasErrors = true;
             }
             if (_model.Password.IsNullOrEmpty())
             {
                 TextBoxPassword.BringIntoView();
                 TextBoxPassword.Focus();
-                TextBoxPassword.ErrorText = "Title cannot be empty";
+                TextBoxPassword.ErrorText = "Password cannot be empty";
                 hasErrors = true;
             }
             if (_model.CIF.IsNullOrEmpty())
             {
                 TextBoxCIF.BringIntoView();
                 TextBoxCIF.Focus();
-                TextBoxCIF.ErrorText = "Title cannot be empty";
+                TextBoxCIF.ErrorText = "CIF cannot be empty";
                 hasErrors = true;
             }
             if (_model.Company.IsNullOrEmpty())
             {
                 TextBoxCompany.BringIntoView();
                 TextBoxCompany.Focus();
-                TextBoxCompany.ErrorText = "Title cannot be empty";
+                TextBoxCompany.ErrorText = "Company cannot be empty";
                 hasErrors = true;
             }
             if (_model.IBAN.IsNullOrEmpty())
             {
                 TextBoxIBAN.BringIntoView();
                 TextBoxIBAN.Focus();
-                TextBoxIBAN.ErrorText = "Title cannot be empty";
+                TextBoxIBAN.ErrorText = "IBAN cannot be empty";
                 hasErrors = true;
             }
             if (_model.LastNames.IsNullOrEmpty())
             {
                 TextBoxLastNames.BringIntoView();
                 TextBoxLastNames.Focus();
-                TextBoxLastNames.ErrorText = "Title cannot be empty";
+                TextBoxLastNames.ErrorText = "Last Names cannot be empty";
                 hasErrors = true;
             }
             try
