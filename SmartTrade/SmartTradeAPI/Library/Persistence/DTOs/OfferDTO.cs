@@ -9,7 +9,7 @@ public class OfferDTO
     public float ShippingCost { get; set; }
     public ProductDTO Product { get; set; }
 
-
+    public OfferDTO() { }
     public OfferDTO(Offer offer)
     {
         Stock = offer.Stock;

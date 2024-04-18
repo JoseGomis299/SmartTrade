@@ -27,9 +27,17 @@ public partial class Nutrition : Product
 
     }
 
-    public override string[] GetAttributes()
+    public override Dictionary<string, string> GetAttributes()
     {
-        return new[] { Weight, Calories, Proteins, Carbohydrates, Fats, Allergens };
+        return new Dictionary<string, string>
+        {
+            { nameof(Weight), Weight },
+            { nameof(Calories), Calories },
+            { nameof(Proteins), Proteins },
+            { nameof(Carbohydrates), Carbohydrates },
+            { nameof(Fats), Fats },
+            { nameof(Allergens), Allergens }
+        };
     }
 
     public override ICollection<Category> GetCategories()

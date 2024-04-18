@@ -22,9 +22,15 @@ public partial class Clothing : Product
                $"\n- Material: {Material}";
     }
 
-    public override string[] GetAttributes()
+    public override Dictionary<string, string> GetAttributes()
     {
-        return new[] { Brand, Size, Color, Material };
+        return new Dictionary<string, string>
+        {
+            { nameof(Brand), Brand },
+            { nameof(Size), Size },
+            { nameof(Color), Color },
+            { nameof(Material), Material }
+        };
     }
 
     public override ICollection<Category> GetCategories()

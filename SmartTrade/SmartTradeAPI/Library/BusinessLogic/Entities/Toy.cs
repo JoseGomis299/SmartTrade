@@ -17,9 +17,13 @@ public partial class Toy : Product
                $"\n- Material: {Material}";
     }
 
-    public override string[] GetAttributes()
+    public override Dictionary<string, string> GetAttributes()
     {
-        return new[] { Brand, Material };
+        return new Dictionary<string, string>
+        {
+            { nameof(Brand), Brand },
+            { nameof(Material), Material }
+        };
     }
 
     public override ICollection<Category> GetCategories()

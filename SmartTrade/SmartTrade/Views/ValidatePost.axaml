@@ -79,7 +79,7 @@
 										<ItemsControl.ItemTemplate>
 											<DataTemplate>
 												<StackPanel Margin="0 5" Orientation="Horizontal" HorizontalAlignment="Center">
-													<controls:ST_TextBox IsEnabled="{Binding IsEnabled, Mode=OneWay}" LabelText="{Binding Name, Mode=OneTime}" Text="{Binding Value, Mode=TwoWay}" LabelWidth="125"  TextWidth="125" OnlyPositiveDouble="{Binding OnlyFloat, Mode=OneWay}" OnlyPositiveInt="{Binding OnlyInt, Mode=OneWay}"/>
+													<controls:ST_TextBox IsEnabled="{Binding IsEnabled, Mode=OneWay}" LabelText="{Binding Label, Mode=OneTime}" Text="{Binding Value, Mode=TwoWay}" LabelWidth="125"  TextWidth="125" OnlyPositiveDouble="{Binding OnlyFloat, Mode=OneWay}" OnlyPositiveInt="{Binding OnlyInt, Mode=OneWay}"/>
 												</StackPanel>
 											</DataTemplate>
 										</ItemsControl.ItemTemplate>
