@@ -234,7 +234,11 @@ public partial class MainView : UserControl
 
     public async void OnAlertButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        SmartTradeNavigationManager.Instance.NavigateTo(new AlertView());
+        AlertView view = new AlertView();
+        AlertViewModel model = (AlertViewModel)view.DataContext;
+        await model.LoadNotificationsAsync();
+
+        SmartTradeNavigationManager.Instance.NavigateTo(view);
     }
 
     #endregion
