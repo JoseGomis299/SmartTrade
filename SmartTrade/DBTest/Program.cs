@@ -34,29 +34,29 @@ void AddPost(SellerRegisterData seller)
     post.Validated = true;
 
     var offers = new List<OfferDTO>();
-    for (int i = 0; i < Random.Shared.Next(1, 4); i++)
+    for (int i = 0; i < Random.Shared.Next(1, 3); i++)
     {
-       offers.Add(GetOffer(post.Category));
+       offers.Add(GetOffer(post.Category, offers));
     }
 
     post.Offers = offers;
     service.AddPost(post, seller.Email);
 }
 
-OfferDTO GetOffer(Category category)
+OfferDTO GetOffer(Category category, List<OfferDTO> alreadyInPost)
 {
     OfferDTO offer = new OfferDTO()
     {
         Price = Random.Shared.Next(1, 100),
         ShippingCost = Random.Shared.Next(1, 10),
         Stock = Random.Shared.Next(1, 100),
-        Product = GetProduct(category)
+        Product = GetProduct(category, alreadyInPost.Select(x => x.Product).ToList())
     };
 
     return offer;
 }
 
-ProductDTO GetProduct(Category category)
+ProductDTO GetProduct(Category category, List<ProductDTO> alreadyInOffer)
 {
     ProductDTO product = new ProductDTO()
     {
@@ -64,36 +64,40 @@ ProductDTO GetProduct(Category category)
         Images = new List<byte[]>()
     };
 
-    switch (category)
+    do
     {
-        case Category.Clothing:
-            product.Attributes.Add("Color", data.GetColor());
-            product.Attributes.Add("Material","Tela");
-            product.Attributes.Add("Size", data.GetTalla());
-            product.Attributes.Add("Brand", "Inditex");
-            break;
-        case Category.Nutrition:
-            product.Attributes.Add("Weight", Random.Shared.Next(1000).ToString());
-            product.Attributes.Add("Calories", "100");
-            product.Attributes.Add("Proteins","20");
-            product.Attributes.Add("Carbohydrates","5");
-            product.Attributes.Add("Fats", "7");
-            product.Attributes.Add("Allergens", "");
-            break;
-        case Category.Toy:
-            product.Attributes.Add("Brand", "Mattel");
-            product.Attributes.Add("Material", data.GetMaterialJuguete());
-            break;
-        case Category.Book:
-            product.Attributes.Add("Author", "Juan");
-            product.Attributes.Add("Publisher", "De Dios");
-            product.Attributes.Add("Pages", "200");
-            product.Attributes.Add("Language", data.GetIdioma());
-            product.Attributes.Add("ISBN", "123456789");
-            break;
-    }
+        product.Attributes.Clear();
+        switch (category)
+        {
+            case Category.Clothing:
+                product.Attributes.Add("Color", data.GetColor());
+                product.Attributes.Add("Material", "Tela");
+                product.Attributes.Add("Size", data.GetTalla());
+                product.Attributes.Add("Brand", "Inditex");
+                break;
+            case Category.Nutrition:
+                product.Attributes.Add("Weight", Random.Shared.Next(1000).ToString());
+                product.Attributes.Add("Calories", "100");
+                product.Attributes.Add("Proteins", "20");
+                product.Attributes.Add("Carbohydrates", "5");
+                product.Attributes.Add("Fats", "7");
+                product.Attributes.Add("Allergens", "");
+                break;
+            case Category.Toy:
+                product.Attributes.Add("Brand", "Mattel");
+                product.Attributes.Add("Material", data.GetMaterialJuguete());
+                break;
+            case Category.Book:
+                product.Attributes.Add("Author", "Juan");
+                product.Attributes.Add("Publisher", "De Dios");
+                product.Attributes.Add("Pages", "200");
+                product.Attributes.Add("Language", data.GetIdioma());
+                product.Attributes.Add("ISBN", "123456789");
+                break;
+        }
+    }while(alreadyInOffer.Any(x => x.Attributes.SequenceEqual(product.Attributes)));
 
-    for (int i = 0; i < Random.Shared.Next(4); i++)
+    for (int i = 0; i < Random.Shared.Next(1, 3); i++)
     {
         product.Images.Add(data.GetRandomImage(category));
     }

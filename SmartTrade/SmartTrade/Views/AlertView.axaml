@@ -5,9 +5,10 @@
              mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1500"
              x:Class="SmartTrade.Views.AlertView"
 			 xmlns:vm="clr-namespace:SmartTrade.ViewModels"
-			 xmlns:controls="clr-namespace:SmartTrade.Controls">
+			 xmlns:controls="clr-namespace:SmartTrade.Controls"
+             x:DataType="vm:AlertViewModel">
 	<Design.DataContext>
-		<vm:ProductCatalogModel/>
+		<vm:AlertViewModel/>
 	</Design.DataContext>
 		<ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
 			<StackPanel Margin="10">

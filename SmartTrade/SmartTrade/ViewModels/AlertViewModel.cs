@@ -14,21 +14,22 @@ namespace SmartTrade.ViewModels
 		public AlertViewModel() 
 		{
             ProductsNotifications = new ObservableCollection<ProductModel>();
-			foreach (var notification in SmartTradeService.Instance.Notifications)
-			{
-                ProductsNotifications.Add(new ProductModel(notification.Post));
-			}
 		}
 
-		public async Task LoadNotificationsAsync()
-		{
-            SmartTradeService service = new SmartTradeService();
-            List<NotificationDTO> notifications = await service.GetNotificationsAsync(service.Logged.Email);
+        public async Task LoadNotificationsAsync()
+        {
+			if(SmartTradeService.Instance.Notifications == null)
+				await SmartTradeService.Instance.GetNotificationsAsync();
 
-			foreach (var post in notifications)
-			{
-				ProductsNotifications.Add(new ProductModel(post.Post));
-			}
+            foreach (var notification in SmartTradeService.Instance.Notifications)
+            {
+                ProductsNotifications.Add(new ProductModel(notification.Post));
+            }
         }
+
+		//public AlertDTO GetAlert()
+		//{
+			
+		//}
 	}
 }
