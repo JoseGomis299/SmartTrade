@@ -349,6 +349,7 @@ public class SmartTradeService : ISmartTradeService
         var user = _dal.GetById<User>(userId);
         var alert = new Alert(user, product);
         product.AddAlert(alert);
+        user.AddAlert(alert);
         _dal.Commit();
         return alert.Id;
     }

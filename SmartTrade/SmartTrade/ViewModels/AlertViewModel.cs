@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using ReactiveUI;
 using SmartTrade.Entities;
 using SmartTradeDTOs;
@@ -19,9 +20,15 @@ namespace SmartTrade.ViewModels
 			}
 		}
 
-		//public AlertDTO GetAlert()
-		//{
-			
-		//}
+		public async Task LoadNotificationsAsync()
+		{
+            SmartTradeService service = new SmartTradeService();
+            List<NotificationDTO> notifications = await service.GetNotificationsAsync(service.Logged.Email);
+
+			foreach (var post in notifications)
+			{
+				ProductsNotifications.Add(new ProductModel(post.Post));
+			}
+        }
 	}
 }

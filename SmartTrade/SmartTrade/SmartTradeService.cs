@@ -35,7 +35,7 @@ public class SmartTradeService
             Logged = JsonConvert.DeserializeObject<SellerDTO>(json);
         }
 
-        Notifications = await GetNotificationsAsync();
+        Notifications = await GetNotificationsAsync(Logged.Email);
     }
     public void LogOut()
     {
@@ -46,6 +46,8 @@ public class SmartTradeService
     {
         string json = JsonConvert.SerializeObject(new { Email = email, Password = password });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        List<NotificationDTO> notifications = await GetNotificationsAsync(email);
 
         await SetLogged(await PerformApiInstructionAsync("User/Login", ApiInstruction.Post, content));
     }
@@ -141,9 +143,9 @@ public class SmartTradeService
         await PerformApiInstructionAsync($"Consumer/AddBizum?id={Logged.Email}", ApiInstruction.Put, content);
     }
 
-    public async Task<List<NotificationDTO>?> GetNotificationsAsync()
+    public async Task<List<NotificationDTO>?> GetNotificationsAsync(string loggedId)
     {
-        return JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"User/GetNotifications", ApiInstruction.Get));
+        return JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"User/GetNotifications/{loggedId}", ApiInstruction.Get));
     }
 
     public async Task<int> CreateAlertAsync(string userId, int productId)

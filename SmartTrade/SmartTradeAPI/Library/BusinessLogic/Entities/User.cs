@@ -15,4 +15,9 @@ public abstract partial class User
         Name = name;
         LastNames = lastNames;
     }
+
+    public void AddAlert(Alert alert)
+    {
+        Alerts.Add(alert);
+    }
 }
