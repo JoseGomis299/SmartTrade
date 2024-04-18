@@ -12,7 +12,7 @@
 	</Design.DataContext>
 		<ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
 			<StackPanel Margin="10">
-				<TextBlock Classes="h1" HorizontalAlignment="Center" Text="¡New products available!"/>
+				<TextBlock Classes="h1" HorizontalAlignment="Center" Text="NOTIFICATIONS"/>
 				<ItemsControl ItemsSource="{Binding ProductsNotifications}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>

@@ -84,7 +84,7 @@ public class SmartTradeService
         string json = JsonConvert.SerializeObject(post);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        await PerformApiInstructionAsync("User/PublishPost", ApiInstruction.Post, content);
+        await PerformApiInstructionAsync("Post/PublishPost", ApiInstruction.Post, content);
     }
 
     public async Task<List<SimplePostDTO>?> GetPostsAsync()
@@ -119,27 +119,27 @@ public class SmartTradeService
     {
         string json = JsonConvert.SerializeObject(paypalinfo);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddPaypal?id={loggedID}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"User/AddPaypal?id={loggedID}", ApiInstruction.Put, content);
 
     }
 
     public async Task DeletePostAsync(int postId)
     {
-        await PerformApiInstructionAsync($"User/RemovePost/{postId}", ApiInstruction.Delete);
+        await PerformApiInstructionAsync($"Post/RemovePost?id={postId}", ApiInstruction.Delete);
     }
 
     public async Task AddCreditCardAsync(CreditCardInfo creditCard)
     {
         string json = JsonConvert.SerializeObject(creditCard);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddCreditCard?id={Logged.Email}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"User/AddCreditCard?id={Logged.Email}", ApiInstruction.Put, content);
     }
 
     public async Task AddBizumAsync(BizumInfo bizum)
     {
         string json = JsonConvert.SerializeObject(bizum);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddBizum?id={Logged.Email}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"User/AddBizum?id={Logged.Email}", ApiInstruction.Put, content);
     }
 
     public async Task<List<NotificationDTO>?> GetNotificationsAsync()
@@ -163,7 +163,7 @@ public class SmartTradeService
 
     public async Task<AlertDTO> GetAlertsAsync(string productName)
     {
-        return JsonConvert.DeserializeObject<AlertDTO>(await PerformApiInstructionAsync($"Alert/GetAlert/{productName}", ApiInstruction.Get));
+        return JsonConvert.DeserializeObject<AlertDTO>(await PerformApiInstructionAsync($"Alert/GetAlert?productName={productName}", ApiInstruction.Get));
     }
 
     public async Task DeleteNotificationAsync(int notificationId)
