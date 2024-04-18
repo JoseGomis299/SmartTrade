@@ -115,6 +115,11 @@ namespace SmartTrade.ViewModels
             ShippingCost = "Shipping Cost: " + offer.ShippingCost + "€";
             Details = offer.Product.Info;
         }
+
+        public void UpdateAlerts()
+        {
+
+        }
     }
 
     public class AttributeModel : ReactiveObject
