@@ -56,12 +56,18 @@ namespace SmartTrade.ViewModels
         public string CreditCardName { get; set; }
         public string CreditCardExpiryDate { get; set; }
         public string CreditCardCVV { get; set; } 
-        public string BizumNumber { get; set; } 
+        public string BizumNumber { get; set; }
 
-
-        
-        public DateTime ConvertExpiryDate()
+        public void ValidarFecha()
         {
+            var hoy = DateTime.Today;
+            if (DateBirth > hoy)
+            {
+                throw new ArgumentException("You cannot select future dates");
+            }
+        }
+            public DateTime ConvertExpiryDate()
+            {
             DateTime resultado;
             string formato = "MM/yy";
 
@@ -83,6 +89,7 @@ namespace SmartTrade.ViewModels
                 throw new ArgumentException("Incorrect DNI. Must be 8 digits followed by a letter");
             }
         }
+
 
         public void ValidarEmail()
         {

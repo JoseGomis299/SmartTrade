@@ -47,6 +47,7 @@ namespace SmartTrade.Views
         private void CancelButton_Click(object? sender, RoutedEventArgs e)
         {
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
+            _model.BizumNumber = "";
         }
 
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
