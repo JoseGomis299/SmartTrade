@@ -18,7 +18,7 @@ public class SmartTradeService
     private List<SimplePostDTO>? _posts;
     public IEnumerable<SimplePostDTO>? Posts => _posts;
     public UserDTO? Logged { get; private set; }
-    public List<NotificationDTO> Notifications { get; private set; }
+    public List<NotificationDTO>? Notifications { get; private set; }
 
     private async Task SetLogged(string json)
     {
@@ -143,7 +143,8 @@ public class SmartTradeService
 
     public async Task<List<NotificationDTO>?> GetNotificationsAsync()
     {
-        return JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"User/GetNotifications", ApiInstruction.Get));
+        Notifications = JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"User/GetNotifications", ApiInstruction.Get));
+        return Notifications;
     }
 
     public async Task<int> CreateAlertAsync(string userId, int productId)
