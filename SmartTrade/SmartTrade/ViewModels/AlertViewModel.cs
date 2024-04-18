@@ -18,5 +18,10 @@ namespace SmartTrade.ViewModels
                 ProductsNotifications.Add(new ProductModel(notification.Post));
 			}
 		}
+
+		//public AlertDTO GetAlert()
+		//{
+			
+		//}
 	}
 }

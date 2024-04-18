@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Utilities;
 using ReactiveUI;
 using SmartTradeDTOs;
 
@@ -26,6 +28,8 @@ namespace SmartTrade.ViewModels
         public Bitmap? AlertImage { get; set; }
         private Bitmap? _alertActivated {  get; set; }
         private Bitmap? _alertDeactivated {  get; set; }
+        public Bitmap? AlertToggle {  get; set; }
+        private ToggleButton? _alertToggle;
 
         public ProductViewModel(PostDTO post)
         {
@@ -51,20 +55,20 @@ namespace SmartTrade.ViewModels
             _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
 
-            SetAlertImage();
+            //SetAlertImage();
         }
 
-        private void SetAlertImage()
-        {
-            if (SmartTradeService.Instance.Logged == null /*|| postView.Offers[0].Product.UsersWithAlertsInThisProduct[0] != SmartTradeService.Instance.Logged.Name*/)
-            {
-                AlertImage = _alertDeactivated;
-            }
-            else
-            {
-                AlertImage = _alertActivated;
-            }
-        }
+        //private void SetAlertImage()
+        //{
+        //    if (SmartTradeService.Instance.Logged == null /*|| postView.Offers[0].Product.UsersWithAlertsInThisProduct[0] != SmartTradeService.Instance.Logged.Name*/)
+        //    {
+        //        AlertImage = _alertDeactivated;
+        //    }
+        //    else
+        //    {
+        //        AlertImage = _alertActivated;
+        //    }
+        //}
 
         public void LoadProducts()
         {

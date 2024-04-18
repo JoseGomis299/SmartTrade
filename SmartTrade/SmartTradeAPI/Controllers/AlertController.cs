@@ -23,4 +23,11 @@ public class AlertController : ControllerBase
         SmartTradeService service = new();
         service.DeleteAlert(id);
     }
+
+    [HttpGet("GetAlertByProductName")]
+    public AlertDTO GetAlertByProductName(string productName)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        return service.GetAlert(productName);
+    }
 }

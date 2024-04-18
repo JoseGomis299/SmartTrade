@@ -364,8 +364,8 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public Alert GetAlert(string productName)
+    public AlertDTO GetAlert(string productName)
     {
-        return _dal.GetWhere<Alert>(n => n.Product.Name == productName).FirstOrDefault();
+        return _dal.GetWhere<AlertDTO>(n => n.ProductName == productName).FirstOrDefault();
     }
 }
