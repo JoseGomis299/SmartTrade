@@ -95,6 +95,13 @@ public partial class MainView : UserControl
             AddToCartButton.IsVisible = true;
             AlertButton.IsVisible = true;
         }
+        else
+        {
+            ShoppingCartButton.IsVisible = true;
+            ShoppingCartButton2.IsVisible = true;
+            AddToCartButton.IsVisible = true;
+            AlertButton.IsVisible = false;
+        }
     }
 
     #region SideBar

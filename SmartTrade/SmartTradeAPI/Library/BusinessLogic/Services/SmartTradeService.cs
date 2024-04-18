@@ -156,7 +156,7 @@ public class SmartTradeService : ISmartTradeService
             .ToList();
 
         if (logged is Admin) postDtos = postDtos.Where(x => !x.Validated).ToList();
-        else if (logged is Seller seller) postDtos = postDtos.Where(x => x.Validated).ToList();
+        else if (logged is Seller seller) postDtos = postDtos.Where(x => x.SellerID == seller.Email).ToList();
         else postDtos = postDtos.Where(x => x.Validated).ToList();
 
         return postDtos;
