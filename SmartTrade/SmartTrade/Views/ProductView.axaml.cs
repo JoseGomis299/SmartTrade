@@ -26,6 +26,7 @@ namespace SmartTrade.Views
 
         public ProductView(PostDTO post)
         {
+            _post = post;
             DataContext = new ProductViewModel(post);
             InitializeComponent();
 

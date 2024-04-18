@@ -149,17 +149,20 @@ public class SmartTradeService
 
     public async Task<int> CreateAlertAsync(int productId)
     {
-        return JsonConvert.DeserializeObject<int>(await PerformApiInstructionAsync($"User/CreateAlert?id={productId}", ApiInstruction.Post));
+        string json = JsonConvert.SerializeObject(productId);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        return int.Parse(await PerformApiInstructionAsync($"Alert/CreateAlert?id={productId}", ApiInstruction.Post, content));
     }
 
     public async Task DeleteAlertAsync(int alertId)
     {
-        await PerformApiInstructionAsync($"User/Delete?id={alertId}", ApiInstruction.Delete);
+        await PerformApiInstructionAsync($"Alert/Delete?id={alertId}", ApiInstruction.Delete);
     }
 
     public async Task<AlertDTO> GetAlertsAsync(string productName)
     {
-        return JsonConvert.DeserializeObject<AlertDTO>(await PerformApiInstructionAsync($"User/GetAlert/{productName}", ApiInstruction.Get));
+        return JsonConvert.DeserializeObject<AlertDTO>(await PerformApiInstructionAsync($"Alert/GetAlert/{productName}", ApiInstruction.Get));
     }
 
     private async Task<string> PerformApiInstructionAsync(string function, ApiInstruction instruction, HttpContent content = null)
