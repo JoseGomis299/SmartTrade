@@ -86,16 +86,14 @@ public partial class MainView : UserControl
             ShoppingCartButton.IsVisible = false;
             ShoppingCartButton2.IsVisible = false;
             AddToCartButton.IsVisible = false;
+            AlertButton.IsVisible = false;
         }
         else if (SmartTradeService.Instance.Logged != null)
         {
             ShoppingCartButton.IsVisible = true;
             ShoppingCartButton2.IsVisible = true;
             AddToCartButton.IsVisible = true;
-        }
-        else
-        {
-            AlertButton.IsVisible = false;
+            AlertButton.IsVisible = true;
         }
     }
 

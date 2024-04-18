@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Text;
@@ -143,7 +144,7 @@ public class SmartTradeService
 
     public async Task<List<NotificationDTO>?> GetNotificationsAsync()
     {
-        Notifications = JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"User/GetNotifications", ApiInstruction.Get));
+        Notifications = JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"Notification/GetNotifications", ApiInstruction.Get));
         return Notifications;
     }
 
@@ -163,6 +164,18 @@ public class SmartTradeService
     public async Task<AlertDTO> GetAlertsAsync(string productName)
     {
         return JsonConvert.DeserializeObject<AlertDTO>(await PerformApiInstructionAsync($"Alert/GetAlert/{productName}", ApiInstruction.Get));
+    }
+
+    public async Task DeleteNotificationAsync(int notificationId)
+    {
+        Notifications.Remove(Notifications.First(n => n.Id == notificationId));
+        await PerformApiInstructionAsync($"Notification/DeleteNotification?id={notificationId}", ApiInstruction.Delete);
+    }
+
+    public async Task SetNotificationAsVisited(int notificationId)
+    {
+        Notifications.First(n => n.Id == notificationId).Visited = true;
+        await PerformApiInstructionAsync($"Notification/SetAsVisited?id={notificationId}", ApiInstruction.Put);
     }
 
     private async Task<string> PerformApiInstructionAsync(string function, ApiInstruction instruction, HttpContent content = null)
@@ -206,6 +219,7 @@ public class SmartTradeService
             return string.Empty;
         }
     }
+
 }
 
 public enum ApiInstruction
