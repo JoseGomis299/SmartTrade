@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 x:Class="SmartTrade.Controls.ST_ProductNotification">
-	<Grid Width="150" MinHeight="225" ColumnDefinitions="Auto *">
+	<Grid Width="150" MinHeight="225" ColumnDefinitions="Auto * Auto">
 		<Button Grid.Column="0" Height="150" Width="150" Classes="White" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Command}">
 			<Border CornerRadius="25" ClipToBounds="True">
 				<Image Stretch="UniformToFill" Name="ProductImage" Source="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Image, Mode=OneWay}"></Image>
@@ -14,6 +14,7 @@
 			<TextBlock Name="PriceTextBlock" Classes="h1" Foreground="#ff32c378" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Price, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 			<TextBlock Name="ProductNameTextBlock" Classes="h2" Foreground="#A5DFB7" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ProductName, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 		</StackPanel>
+		<Button Grid.Column="2" VerticalAlignment="Center" Margin="200 0 0 0" Content="X" FontSize="50" Height="100" Width="80" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DeleteNotification}"/>
 	</Grid>
 
 </UserControl>
