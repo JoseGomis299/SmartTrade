@@ -14,9 +14,11 @@
 		<Grid RowDefinitions="auto auto *" Margin="0 10 0 0">
 			<StackPanel Grid.Row="0">
 				<Grid>
-					<Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 0" Width="50">
-						<Image Name="AlertImage" Stretch="Uniform"/>
-					</Button>
+					<ToggleButton  ZIndex="1" Name="AlertToggle" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 0" Width="50">
+						<Panel>
+							<Image Name="AlertImage" Stretch="Uniform"/>
+						</Panel>
+					</ToggleButton>
 					<Carousel ItemsSource="{Binding Images, Mode=OneWay}" Height="300">
 						<Carousel.PageTransition >
 							<CompositePageTransition>

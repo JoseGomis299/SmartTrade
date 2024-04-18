@@ -43,7 +43,7 @@ namespace SmartTrade.ViewModels
 
         public bool IsEcologic(SimplePostDTO post)
         {
-            return int.TryParse(post.EcologicPrint, out int ecologicPrint) && ecologicPrint < 100;
+            return int.TryParse(post.EcologicPrint, out int ecologicPrint) && ecologicPrint < 10;
         }
 
         public bool IsRelated(SimplePostDTO post)

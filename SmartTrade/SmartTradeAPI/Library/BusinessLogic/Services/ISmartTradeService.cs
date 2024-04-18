@@ -36,6 +36,6 @@ namespace SmartTrade.BusinessLogic
         public List<SimplePostDTO> GetPostsFuzzyContain(string searchFor);
         public List<String> GetPostsNamesStartWith(string startWith, int numPosts);
         public List<string> GetPostNames();
-        public Alert GetAlert(string productName);
+        public AlertDTO GetAlert(string productName);
     }
 }

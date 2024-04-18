@@ -12,7 +12,9 @@ namespace SmartTrade.Views
 {
     public partial class ProductView : UserControl
     {
-        private Bitmap? _alertImage;
+        private Bitmap? _alertActivated;
+        private Bitmap? _alertDeactivated;
+        private PostDTO _post;
 
         public ProductView() 
         {
@@ -24,8 +26,26 @@ namespace SmartTrade.Views
             DataContext = new ProductViewModel(post);
             InitializeComponent();
 
-            _alertImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
-            AlertImage.Source = _alertImage;
+            _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
+            _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
+            
+            SetAlertImage();
         }
+
+        private void SetAlertImage()
+        {
+            if (SmartTradeService.Instance.Logged == null /*|| _post.Offers[0].Product.UsersWithAlertsInThisProduct[0] != SmartTradeService.Instance.Logged.Name*/)
+            {
+                AlertToggle.IsChecked = false;
+                AlertImage.Source = _alertDeactivated;
+            }
+            else
+            {
+                AlertToggle.IsChecked = true;
+                AlertImage.Source = _alertActivated;
+            }
+        }
+
+
     }
 }
