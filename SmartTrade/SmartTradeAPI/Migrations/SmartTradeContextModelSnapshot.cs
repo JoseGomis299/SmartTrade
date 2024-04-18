@@ -8,7 +8,7 @@ using SmartTrade.Persistence;
 
 #nullable disable
 
-namespace SmartTrade.Migrations
+namespace SmartTradeAPI.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
     partial class SmartTradeContextModelSnapshot : ModelSnapshot
@@ -75,9 +75,6 @@ namespace SmartTrade.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ConsumerEmail")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -86,8 +83,6 @@ namespace SmartTrade.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConsumerEmail");
 
                     b.HasIndex("ProductId");
 
@@ -127,9 +122,8 @@ namespace SmartTrade.Migrations
                     b.Property<string>("ConsumerEmail")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ExpirationDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("CardNumber");
 
@@ -522,18 +516,14 @@ namespace SmartTrade.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Alert", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Consumer", null)
-                        .WithMany("Alerts")
-                        .HasForeignKey("ConsumerEmail");
-
                     b.HasOne("SmartTrade.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Alerts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SmartTrade.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Alerts")
                         .HasForeignKey("UserEmail")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -653,9 +643,16 @@ namespace SmartTrade.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Product", b =>
                 {
+                    b.Navigation("Alerts");
+
                     b.Navigation("Images");
 
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("SmartTrade.Entities.User", b =>
+                {
+                    b.Navigation("Alerts");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Admin", b =>
@@ -668,8 +665,6 @@ namespace SmartTrade.Migrations
             modelBuilder.Entity("SmartTrade.Entities.Consumer", b =>
                 {
                     b.Navigation("Addresses");
-
-                    b.Navigation("Alerts");
 
                     b.Navigation("BizumAccounts");
 

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SmartTrade.Migrations
+namespace SmartTradeAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class newImp : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,12 +21,13 @@ namespace SmartTrade.Migrations
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Door = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CostumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ConsumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Adresses", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,7 +39,7 @@ namespace SmartTrade.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastNames = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    Costumer_DNI = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Consumer_DNI = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     BillingAddressId = table.Column<int>(type: "int", nullable: true),
                     DNI = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -49,7 +50,7 @@ namespace SmartTrade.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.Email);
                     table.ForeignKey(
-                        name: "FK_User_Adresses_BillingAddressId",
+                        name: "FK_User_Addresses_BillingAddressId",
                         column: x => x.BillingAddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
@@ -61,14 +62,14 @@ namespace SmartTrade.Migrations
                 columns: table => new
                 {
                     TelephonNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CostumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ConsumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bizums", x => x.TelephonNumber);
                     table.ForeignKey(
-                        name: "FK_Bizums_User_CostumerEmail",
-                        column: x => x.CostumerEmail,
+                        name: "FK_Bizums_User_ConsumerEmail",
+                        column: x => x.ConsumerEmail,
                         principalTable: "User",
                         principalColumn: "Email");
                 });
@@ -78,17 +79,17 @@ namespace SmartTrade.Migrations
                 columns: table => new
                 {
                     CardNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ExpirationDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CVV = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CardHolder = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CostumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ConsumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CreditCards", x => x.CardNumber);
                     table.ForeignKey(
-                        name: "FK_CreditCards_User_CostumerEmail",
-                        column: x => x.CostumerEmail,
+                        name: "FK_CreditCards_User_ConsumerEmail",
+                        column: x => x.ConsumerEmail,
                         principalTable: "User",
                         principalColumn: "Email");
                 });
@@ -99,14 +100,14 @@ namespace SmartTrade.Migrations
                 {
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CostumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ConsumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PayPals", x => x.Email);
                     table.ForeignKey(
-                        name: "FK_PayPals_User_CostumerEmail",
-                        column: x => x.CostumerEmail,
+                        name: "FK_PayPals_User_ConsumerEmail",
+                        column: x => x.ConsumerEmail,
                         principalTable: "User",
                         principalColumn: "Email");
                 });
@@ -118,14 +119,13 @@ namespace SmartTrade.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Certification = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EcologicPrint = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Certification = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EcologicPrint = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HowToReducePrint = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MinimumAge = table.Column<int>(type: "int", nullable: false),
-                    Validated = table.Column<bool>(type: "bit", nullable: false),
-                    Images = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HowToUse = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AdminEmail = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Publisher = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Pages = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -142,17 +142,11 @@ namespace SmartTrade.Migrations
                     Allergens = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Weight = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Toy_Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Toy_Material = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Age = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Toy_Material = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Products_User_AdminEmail",
                         column: x => x.AdminEmail,
@@ -167,8 +161,7 @@ namespace SmartTrade.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    CostumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,16 +173,30 @@ namespace SmartTrade.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Alerts_User_CostumerEmail",
-                        column: x => x.CostumerEmail,
-                        principalTable: "User",
-                        principalColumn: "Email");
-                    table.ForeignKey(
                         name: "FK_Alerts_User_UserEmail",
                         column: x => x.UserEmail,
                         principalTable: "User",
                         principalColumn: "Email",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageSource = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Image_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -200,7 +207,6 @@ namespace SmartTrade.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false),
                     Validated = table.Column<bool>(type: "bit", nullable: false),
                     SellerEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AdminEmail = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -228,12 +234,40 @@ namespace SmartTrade.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Visited = table.Column<bool>(type: "bit", nullable: false),
+                    TargetUserEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TargetPostId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notification_Posts_TargetPostId",
+                        column: x => x.TargetPostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Notification_User_TargetUserEmail",
+                        column: x => x.TargetUserEmail,
+                        principalTable: "User",
+                        principalColumn: "Email",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Offers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PostId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     ShippingCost = table.Column<float>(type: "real", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false)
@@ -247,17 +281,18 @@ namespace SmartTrade.Migrations
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Offers_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Adresses_CostumerEmail",
+                name: "IX_Addresses_ConsumerEmail",
                 table: "Addresses",
-                column: "CostumerEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Alerts_CostumerEmail",
-                table: "Alerts",
-                column: "CostumerEmail");
+                column: "ConsumerEmail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Alerts_ProductId",
@@ -270,14 +305,29 @@ namespace SmartTrade.Migrations
                 column: "UserEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bizums_CostumerEmail",
+                name: "IX_Bizums_ConsumerEmail",
                 table: "Bizums",
-                column: "CostumerEmail");
+                column: "ConsumerEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CreditCards_CostumerEmail",
+                name: "IX_CreditCards_ConsumerEmail",
                 table: "CreditCards",
-                column: "CostumerEmail");
+                column: "ConsumerEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Image_ProductId",
+                table: "Image",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_TargetPostId",
+                table: "Notification",
+                column: "TargetPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_TargetUserEmail",
+                table: "Notification",
+                column: "TargetUserEmail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Offers_PostId",
@@ -285,9 +335,14 @@ namespace SmartTrade.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PayPals_CostumerEmail",
+                name: "IX_Offers_ProductId",
+                table: "Offers",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PayPals_ConsumerEmail",
                 table: "PayPals",
-                column: "CostumerEmail");
+                column: "ConsumerEmail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_AdminEmail",
@@ -310,19 +365,14 @@ namespace SmartTrade.Migrations
                 column: "AdminEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductId",
-                table: "Products",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_BillingAddressId",
                 table: "User",
                 column: "BillingAddressId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Adresses_User_CostumerEmail",
+                name: "FK_Addresses_User_ConsumerEmail",
                 table: "Addresses",
-                column: "CostumerEmail",
+                column: "ConsumerEmail",
                 principalTable: "User",
                 principalColumn: "Email");
         }
@@ -331,7 +381,7 @@ namespace SmartTrade.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Adresses_User_CostumerEmail",
+                name: "FK_Addresses_User_ConsumerEmail",
                 table: "Addresses");
 
             migrationBuilder.DropTable(
@@ -342,6 +392,12 @@ namespace SmartTrade.Migrations
 
             migrationBuilder.DropTable(
                 name: "CreditCards");
+
+            migrationBuilder.DropTable(
+                name: "Image");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
 
             migrationBuilder.DropTable(
                 name: "Offers");

@@ -164,7 +164,7 @@ public class SmartTradeService
     private async Task<string> PerformApiInstructionAsync(string function, ApiInstruction instruction, HttpContent content = null)
     {
         using var client = new HttpClient();
-        client.BaseAddress = new Uri("https://smarttradeapi00.azurewebsites.net/");
+        client.BaseAddress = new Uri("https://localhost:7185/");
         client.DefaultRequestHeaders.Add("Logged", Logged?.Email);
 
         try
