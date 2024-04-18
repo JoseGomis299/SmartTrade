@@ -35,7 +35,7 @@ public class SmartTradeService
             Logged = JsonConvert.DeserializeObject<SellerDTO>(json);
         }
 
-        Notifications = await GetNotificationsAsync();
+        await GetNotificationsAsync();
     }
     public void LogOut()
     {

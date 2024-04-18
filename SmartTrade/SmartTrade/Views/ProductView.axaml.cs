@@ -28,7 +28,8 @@ namespace SmartTrade.Views
 
             _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
-            
+
+            SetToggleVisibility();
             SetAlertImage();
         }
 
@@ -46,6 +47,12 @@ namespace SmartTrade.Views
             }
         }
 
-
+        private void SetToggleVisibility()
+        {
+            if (SmartTradeService.Instance.Logged == null || (SmartTradeService.Instance.Logged.IsAdmin || SmartTradeService.Instance.Logged.IsSeller))
+            {
+                AlertToggle.IsVisible = false;
+            }
+        }
     }
 }
