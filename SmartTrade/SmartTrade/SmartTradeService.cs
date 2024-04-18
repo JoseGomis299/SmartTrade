@@ -147,14 +147,14 @@ public class SmartTradeService
         return Notifications;
     }
 
-    public async Task<int> CreateAlertAsync(string userId, int productId)
+    public async Task<int> CreateAlertAsync(int productId)
     {
-        return JsonConvert.DeserializeObject<int>(await PerformApiInstructionAsync($"User/CreateAlert/{userId}{productId}", ApiInstruction.Post));
+        return JsonConvert.DeserializeObject<int>(await PerformApiInstructionAsync($"User/CreateAlert?id={productId}", ApiInstruction.Post));
     }
 
     public async Task DeleteAlertAsync(int alertId)
     {
-        await PerformApiInstructionAsync($"User/Delete/{alertId}", ApiInstruction.Delete);
+        await PerformApiInstructionAsync($"User/Delete?id={alertId}", ApiInstruction.Delete);
     }
 
     public async Task<AlertDTO> GetAlertsAsync(string productName)

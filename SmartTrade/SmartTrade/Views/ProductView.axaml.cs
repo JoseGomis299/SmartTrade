@@ -6,6 +6,7 @@ using SmartTrade.ViewModels;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
+using System.Threading.Tasks;
 
 
 namespace SmartTrade.Views
@@ -15,6 +16,8 @@ namespace SmartTrade.Views
         private Bitmap? _alertActivated;
         private Bitmap? _alertDeactivated;
         private PostDTO _post;
+
+        private bool _isAlertActivated;
 
         public ProductView() 
         {
@@ -28,15 +31,19 @@ namespace SmartTrade.Views
 
             _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
-            
+            AlertImage.Source = _alertDeactivated;
+
             NextImageButton.Click += NextImage;
             PreviousImageButton.Click += PreviousImage;
             ((ProductViewModel)DataContext).OnOfferChanged += SetImageNavigationButtonsVisibility;
+            AlertToggle.Click += ToggleAlert;
 
 
             SetToggleVisibility();
             SetAlertImage();
             SetImageNavigationButtonsVisibility();
+
+            SmartTradeNavigationManager.Instance.OnNavigate += OnNavigateAsync;
         }
 
         private void NextImage(object sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -76,15 +83,49 @@ namespace SmartTrade.Views
 
         private void SetAlertImage()
         {
-            if (SmartTradeService.Instance.Logged == null /*|| _post.Offers[0].Product.UsersWithAlertsInThisProduct[0] != SmartTradeService.Instance.Logged.Name*/)
+            if (SmartTradeService.Instance.Logged == null || !(_post.Offers[0].Product.UsersWithAlertsInThisProduct.Contains(SmartTradeService.Instance.Logged.Email)))
             {
                 AlertToggle.IsChecked = false;
-                AlertImage.Source = _alertDeactivated;
+              //  AlertImage.Source = _alertDeactivated;
             }
             else
             {
                 AlertToggle.IsChecked = true;
-                AlertImage.Source = _alertActivated;
+               // AlertImage.Source = _alertActivated;
+            }
+        }
+
+        private void ToggleAlert(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            if (SmartTradeService.Instance.Logged == null)
+            {
+                return;
+            }
+
+            if (AlertToggle.IsChecked == true)
+            {
+                _post.Offers[0].Product.UsersWithAlertsInThisProduct.Add(SmartTradeService.Instance.Logged.Email);
+                _isAlertActivated = true;
+                //AlertImage.Source = _alertActivated;
+            }
+            else
+            {
+                _post.Offers[0].Product.UsersWithAlertsInThisProduct.Remove(SmartTradeService.Instance.Logged.Email);
+                _isAlertActivated = false;
+                //AlertImage.Source = _alertDeactivated;
+            }
+        }
+
+        private async void OnNavigateAsync(Type type)
+        {
+            if (SmartTradeService.Instance.Logged == null)
+            {
+                return;
+            }
+
+            if (_isAlertActivated && type != typeof(ProductView) && SmartTradeNavigationManager.Instance.Navigator.PreviousView.GetType() == typeof(ProductView))
+            {
+                await SmartTradeService.Instance.CreateAlertAsync(_post.Offers[0].Product.Id);
             }
         }
 

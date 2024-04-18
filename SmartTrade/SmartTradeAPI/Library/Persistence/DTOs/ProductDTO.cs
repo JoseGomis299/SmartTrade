@@ -19,5 +19,6 @@ public class ProductDTO
         Attributes = product.GetAttributes();
         Differentiators = product.GetDifferentiations();
         Info = product.GetInfo();
+        UsersWithAlertsInThisProduct = product.Alerts.Select(a => a.User.Email).ToList();
     }
 }
