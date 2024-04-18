@@ -21,7 +21,7 @@
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<controls:ST_ProductNotification Margin="10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
+							<controls:ST_ProductNotification Margin="10 0" Command="{Binding OpenProductCommand}" DeleteNotification="{Binding Delete}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

@@ -53,6 +53,7 @@ namespace SmartTrade.Views
             try
             {
                 await _model.Login(_model.Email, _model.Password);
+                if (_model.Logged == null) { return; }
                 await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
             }
             catch (Exception ex)

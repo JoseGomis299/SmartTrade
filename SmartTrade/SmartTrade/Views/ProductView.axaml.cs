@@ -33,6 +33,8 @@ namespace SmartTrade.Views
             PreviousImageButton.Click += PreviousImage;
             ((ProductViewModel)DataContext).OnOfferChanged += SetImageNavigationButtonsVisibility;
 
+
+            SetToggleVisibility();
             SetAlertImage();
             SetImageNavigationButtonsVisibility();
         }
@@ -86,6 +88,12 @@ namespace SmartTrade.Views
             }
         }
 
-
+        private void SetToggleVisibility()
+        {
+            if (SmartTradeService.Instance.Logged == null || (SmartTradeService.Instance.Logged.IsAdmin || SmartTradeService.Instance.Logged.IsSeller))
+            {
+                AlertToggle.IsVisible = false;
+            }
+        }
     }
 }

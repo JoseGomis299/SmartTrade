@@ -35,7 +35,7 @@ public class SmartTradeService
             Logged = JsonConvert.DeserializeObject<SellerDTO>(json);
         }
 
-        Notifications = await GetNotificationsAsync();
+        await GetNotificationsAsync();
     }
     public void LogOut()
     {
@@ -152,7 +152,7 @@ public class SmartTradeService
         return JsonConvert.DeserializeObject<int>(await PerformApiInstructionAsync($"User/CreateAlert/{userId}{productId}", ApiInstruction.Post));
     }
 
-    public async Task DeleteAlert(int alertId)
+    public async Task DeleteAlertAsync(int alertId)
     {
         await PerformApiInstructionAsync($"User/Delete/{alertId}", ApiInstruction.Delete);
     }

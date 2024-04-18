@@ -146,11 +146,6 @@ namespace SmartTrade.ViewModels
 
             OnOfferChanged?.Invoke();
         }
-
-        public void UpdateAlerts()
-        {
-
-        }
     }
 
     public class AttributeModel : ReactiveObject
