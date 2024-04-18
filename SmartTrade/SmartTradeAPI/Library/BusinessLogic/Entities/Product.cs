@@ -42,7 +42,7 @@ namespace SmartTrade.Entities;
         }
 
 
-        public abstract string[] GetAttributes();
+        public abstract Dictionary<string, string> GetAttributes();
         public abstract string GetInfo();
         public abstract ICollection<Category> GetCategories();
         public abstract string GetDifferences(Product product);

@@ -13,6 +13,8 @@ public class UserDTO
     public string Name { get; set; }
     public string LastNames { get; set; }
 
+    public UserDTO() { }
+
     public UserDTO(User user)
     {
         IsSeller = user is Seller;

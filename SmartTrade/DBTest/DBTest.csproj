@@ -22,7 +22,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartTradeLib\SmartTradeLib.csproj" />
+    <ProjectReference Include="..\SmartTradeAPI\SmartTradeAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Imágenes\Comida\" />
+    <Folder Include="Imágenes\Libros\" />
+    <Folder Include="Imágenes\Juguetes\" />
+    <Folder Include="Imágenes\Ropa\" />
   </ItemGroup>
 
 </Project>

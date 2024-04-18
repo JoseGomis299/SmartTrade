@@ -26,9 +26,16 @@ public partial class Book : Product
             $"\n- ISBN: {ISBN}";
     }
 
-    public override string[] GetAttributes()
+    public override Dictionary<string, string> GetAttributes()
     {
-        return new[] { Author, Publisher, Pages, Language, ISBN };
+        return new Dictionary<string, string>
+        {
+            { nameof(Author), Author },
+            { nameof(Publisher), Publisher },
+            { nameof(Pages), Pages },
+            { nameof(Language), Language },
+            { nameof(ISBN), ISBN }
+        };
     }
 
     public override ICollection<Category> GetCategories()

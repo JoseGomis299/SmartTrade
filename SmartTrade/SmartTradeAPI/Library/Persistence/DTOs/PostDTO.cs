@@ -19,6 +19,10 @@ public class PostDTO
     public List<OfferDTO> Offers { get; set; }
     public string? SellerCompanyName { get; set; }
 
+    public PostDTO()
+    {
+        Offers = new List<OfferDTO>();
+    }
 
     public PostDTO(Post post)
     {

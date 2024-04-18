@@ -14,6 +14,19 @@ public class ConsumerDTO : UserDTO
     public List<CreditCardInfo> CreditCards { get; set; }
     public List<Alert> Alerts { get; set; }
 
+    public ConsumerDTO() : base()
+    {
+        DNI = "";
+        BirthDate = new DateTime();
+
+        BillingAddress = new Address();
+        Addresses = new List<Address>();
+        PayPalAccounts = new List<PayPalInfo>();
+        BizumAccounts = new List<BizumInfo>();
+        CreditCards = new List<CreditCardInfo>();
+        Alerts = new List<Alert>();
+    }
+
     public ConsumerDTO(Consumer consumer) : base(consumer)
     {
         DNI = consumer.DNI;

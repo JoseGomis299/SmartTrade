@@ -88,7 +88,7 @@ public class PostModificationModel : ViewModelBase
         List<float> shippingCosts = new();
 
         List<List<byte[]>> images = new();
-        List<List<string>> attributes = new();
+        List<Dictionary<string, string>> attributes = new();
 
         foreach (var stock in Stocks)
         {
@@ -98,7 +98,12 @@ public class PostModificationModel : ViewModelBase
             prices.Add(float.Parse(stock.Price));
             shippingCosts.Add(float.Parse(stock.ShippingCost));
 
-            attributes.Add(stock.CategoryAttributes.Select(attribute => attribute.Value).ToList());
+            var attributesDictionary = new Dictionary<string, string>();
+            foreach (var attribute in stock.CategoryAttributes)
+            {
+                attributesDictionary.Add(attribute.Name, attribute.Value);
+            }
+            attributes.Add(attributesDictionary);
         }
 
         PostDTO postDto = new()

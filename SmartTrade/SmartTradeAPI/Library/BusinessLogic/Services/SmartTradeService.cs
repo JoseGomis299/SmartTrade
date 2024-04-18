@@ -247,7 +247,7 @@ public class SmartTradeService : ISmartTradeService
         var address = new Address(registerData.Address.Street, registerData.Address.Number, registerData.Address.City, registerData.Address.PostalCode, registerData.Address.Number, registerData.Address.Door);
         var billingAddress = new Address(registerData.BillingAddress.Street, registerData.BillingAddress.Number, registerData.BillingAddress.City, registerData.BillingAddress.PostalCode, registerData.BillingAddress.Number, registerData.BillingAddress.Door);
 
-        Consumer consumer = new Consumer(registerData.Email, registerData.Password, registerData.Password, registerData.Password, registerData.DNI, registerData.BirthDate, billingAddress, address);
+        Consumer consumer = new Consumer(registerData.Email, registerData.Password, registerData.Name, registerData.LastNames, registerData.DNI, registerData.BirthDate, billingAddress, address);
         _dal.Insert<Consumer>(consumer);
         _dal.Commit();
 

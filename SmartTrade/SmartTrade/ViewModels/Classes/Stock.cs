@@ -48,10 +48,10 @@ public class Stock
             CategoryAttributes.Add(new CategoryAttribute(attribute));
         }
 
-        List<string> attributes = offer.Product.Attributes;
+        Dictionary<string, string> attributes = offer.Product.Attributes;
         for (var i = 0; i < CategoryAttributes.Count; i++)
         {
-            CategoryAttributes[i].Value = attributes[i];
+            CategoryAttributes[i].Value = attributes[CategoryAttributes[i].Name];
         }
 
         foreach (var attribute in CategoryAttributes)

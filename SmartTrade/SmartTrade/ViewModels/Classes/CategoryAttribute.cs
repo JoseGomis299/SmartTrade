@@ -10,6 +10,7 @@ public class CategoryAttribute : ReactiveObject
     private bool _isEnabled = true;
 
     public string? Name { get; set; }
+    public string? Label { get; set; }
     public string? Value
     {
         get => _value;
@@ -35,6 +36,16 @@ public class CategoryAttribute : ReactiveObject
         if (name[name.Length - 2] == '/')
             Name = name.Substring(0, name.Length - 2);
         else Name = name;
+
+        var splitName = Name.Split(' ');
+        Label = "";
+        for (var i = 0; i < splitName.Length; i++)
+        {
+            Label += splitName[i];
+            if (i != splitName.Length - 1) Label += " ";
+        }
+
+        Name = splitName[0];
     }
 
     public override bool Equals(object? obj)
