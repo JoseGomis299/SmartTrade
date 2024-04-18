@@ -28,9 +28,15 @@ namespace SmartTrade.Views
             CancelButton.Click += CancelButton_Click;
         }
 
+       
+
         private void CancelButton_Click(object? sender, RoutedEventArgs e)
         {
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
+            string email = "";
+            string password = "";
+            _model.PaypalEmail = email;
+            _model.PaypalPassword = password;
         }
 
         private void ClearErrors()
@@ -40,8 +46,7 @@ namespace SmartTrade.Views
         }
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
-            string email = TextBoxEmail.Text;
-            string password = TextBoxPassword.Text;
+
             ClearErrors();
             bool hasErrors = false;
 
@@ -77,7 +82,6 @@ namespace SmartTrade.Views
                 }
             }
         }
-       // private void CancelButton_Click(object? sender, RoutedEventArgs e) => _ventana.Close();
 
         
     }

@@ -28,9 +28,47 @@ namespace SmartTrade.Views
             BizumButton.Click += BizumButton_click;
             PaypalButton.Click += PaypalButton_click;
             BirthDateError.IsVisible = false;
+            PaypalButton.IsVisible = true;
+            CreditCardButton.IsVisible = true;
+            BizumButton.IsVisible = true;
+            PaypalAdded();
+            Paypaladd.IsVisible = false;
+            BizumAdded();
+            Bizumadd.IsVisible = false;
+            CreditCardadd.IsVisible = false;
+            CreditCardAdded();
 
         }
 
+        private void CreditCardAdded()
+        {
+            if (!_model.CreditCardName.IsNullOrEmpty() && !_model.CreditCardNumber.IsNullOrEmpty() && !_model.CreditCardCVV.IsNullOrEmpty() && !_model.CreditCardExpiryDate.IsNullOrEmpty())
+            {
+                CreditCardButton.IsVisible = false;
+                CreditCardadd.IsVisible = true;
+
+            }
+        }
+
+        private void BizumAdded()
+        {
+            if (!_model.BizumNumber.IsNullOrEmpty())
+            {
+                BizumButton.IsVisible = false;
+                Bizumadd.IsVisible = true;
+
+            }
+        }
+
+        private void PaypalAdded()
+        { 
+            if (!_model.PaypalEmail.IsNullOrEmpty() && !_model.PaypalPassword.IsNullOrEmpty())
+            {
+                PaypalButton.IsVisible = false;
+                Paypaladd.IsVisible = true;
+
+            }
+        }
         private void PaypalButton_click(object? sender, RoutedEventArgs e)
         {
             SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new Paypal(_model));
@@ -162,12 +200,16 @@ namespace SmartTrade.Views
             {
                 if (hasErrors) return;
                 await _model.RegisterConsumer();
-
                 await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
             }
             catch (Exception ex)
             {
-               
+                if (ex.Message.Contains("You cannot select future dates"))
+                {
+                    BirthDateError.IsVisible = true;
+                    hasErrors = true;
+
+                }
                 if (ex.Message.Contains("Existing user"))
                 {
                     TextBoxEmail.ErrorMessage.BringIntoView();

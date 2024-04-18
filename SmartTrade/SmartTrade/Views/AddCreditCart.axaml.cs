@@ -29,6 +29,10 @@ namespace SmartTrade.Views
         }
         private void CancelButton_Click(object? sender, RoutedEventArgs e)
         {
+            _model.CreditCardName = "";
+            _model.CreditCardNumber = "";
+            _model.CreditCardExpiryDate = "";
+            _model.CreditCardCVV = "";
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
 
@@ -42,10 +46,7 @@ namespace SmartTrade.Views
         }
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
-            string name = TextBoxName.Text;
-            string number = TextBoxNumber.Text;
-            string expiryDate = TextBoxExpiryDate.Text;
-            string cvv = TextBoxCVV.Text;
+            
 
 
             ClearErrors();
@@ -103,7 +104,6 @@ namespace SmartTrade.Views
                 }
             }
         }
-       // private void CancelButton_Click(object? sender, RoutedEventArgs e) => _ventana.Close();
         private void DateTextBox_TextInput(object sender, TextInputEventArgs e)
         {
             var textBox = (TextBox)sender;

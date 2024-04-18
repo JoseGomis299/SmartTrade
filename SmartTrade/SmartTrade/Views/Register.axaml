@@ -20,7 +20,7 @@
 		<controls:ST_TextBox LabelText="Email" Text="{Binding Email, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
 			<TextBlock Classes="h2" HorizontalAlignment="Center" Margin="0 0 100 0">Birth Date</TextBlock>
 			<CalendarDatePicker HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding DateBirth, Mode=OneWayToSource}" SelectedDate="2024-04-17" Width="200" Name="TextBoxDateBirth"/>
-			<TextBlock Classes="Error" HorizontalAlignment="Center" Name="BirthDateError">Select a date</TextBlock>
+			<TextBlock Classes="Error" HorizontalAlignment="Center" Name="BirthDateError">Select a  correct date</TextBlock>
 			<controls:ST_TextBox LabelText="Password" PasswordText="*" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
 	</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Stretch" >
@@ -48,8 +48,11 @@
 		</StackPanel>
 		<StackPanel Grid.Row="2" HorizontalAlignment="Center" Spacing="10" Margin="10 105 0 0">
 			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 5 0 0" Classes="White" Name="PaypalButton">Paypal</Button>
+			<TextBlock Classes="h2" HorizontalAlignment="Center" Name="Paypaladd" Margin="0 0 0 0">Paypal added!</TextBlock>
 			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White" Name="CreditCardButton">Credit Card</Button>
+			<TextBlock Classes="h2" HorizontalAlignment="Center" Name="CreditCardadd" Margin="0 0 0 0">Credit Card added!</TextBlock>
 			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 20 0 0" Classes="White" Name="BizumButton">Bizum</Button>
+			<TextBlock Classes="h2" HorizontalAlignment="Center" Name="Bizumadd" Margin="0 0 0 0">Bizum added!</TextBlock>
 			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 40 0 0" Classes="Black" Name="SignInButton">SIGN IN!</Button>
 		</StackPanel>
         <StackPanel Grid.Row="3" HorizontalAlignment="Stretch" >
