@@ -146,6 +146,21 @@ public class SmartTradeService
         return JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"User/GetNotifications", ApiInstruction.Get));
     }
 
+    public async Task<int> CreateAlertAsync(string userId, int productId)
+    {
+        return JsonConvert.DeserializeObject<int>(await PerformApiInstructionAsync($"User/CreateAlert/{userId}{productId}", ApiInstruction.Post));
+    }
+
+    public async Task DeleteAlert(int alertId)
+    {
+        await PerformApiInstructionAsync($"User/Delete/{alertId}", ApiInstruction.Delete);
+    }
+
+    public async Task<AlertDTO> GetAlertsAsync(string productName)
+    {
+        return JsonConvert.DeserializeObject<AlertDTO>(await PerformApiInstructionAsync($"User/GetAlert/{productName}", ApiInstruction.Get));
+    }
+
     private async Task<string> PerformApiInstructionAsync(string function, ApiInstruction instruction, HttpContent content = null)
     {
         using var client = new HttpClient();

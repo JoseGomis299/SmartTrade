@@ -349,4 +349,20 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
         return alert.Id;
     }
+
+    public void DeleteAlert(int alertId)
+    {
+        Alert alert = _dal.GetById<Alert>(alertId);
+        alert.Product.Alerts.Remove(alert);
+        alert.User.Alerts.Remove(alert);
+
+        _dal.Delete<Alert>(alert);
+
+        _dal.Commit();
+    }
+
+    public Alert GetAlert(string productName)
+    {
+        return _dal.GetWhere<Alert>(n => n.Product.Name == productName).FirstOrDefault();
+    }
 }

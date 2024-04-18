@@ -17,11 +17,10 @@ public class AlertController : ControllerBase
         return service.CreateAlert(loggedId, id);
     }
 
-    //[HttpDelete("DeletAlert")]
-    //public void createalert(int id)
-    //{
-    //    string? loggedid = request.headers.firstordefault(x => x.key == "logged").value;
-    //    ismarttradeservice service = new smarttradeservice();
-    //    service.createalert(loggedid, id);
-    //}
+    [HttpDelete("DeletAlert")]
+    public void DeleteAlert(int id)
+    {
+        SmartTradeService service = new();
+        service.DeleteAlert(id);
+    }
 }

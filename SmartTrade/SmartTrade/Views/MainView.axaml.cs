@@ -77,6 +77,7 @@ public partial class MainView : UserControl
         CartImage.Source = _cartImage;
         CartImage2.Source = _cartImage;
         HomeImage2.Source = _homeImage;
+        AlertImage.Source = _alertImage;
 
         SetButtonVisibility();
 

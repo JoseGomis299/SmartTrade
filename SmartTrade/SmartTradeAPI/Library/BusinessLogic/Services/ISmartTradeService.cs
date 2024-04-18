@@ -28,6 +28,7 @@ namespace SmartTrade.BusinessLogic
         public List<NotificationDTO> GetNotifications(string loggedId);
         public int CreateAlert(string userId, int productId);
 
+        public void DeleteAlert(int alertId);
         public void DeletePost(int postID);
 
         public List<SimplePostDTO> GetPosts(string? loggedID);
@@ -35,5 +36,6 @@ namespace SmartTrade.BusinessLogic
         public List<SimplePostDTO> GetPostsFuzzyContain(string searchFor);
         public List<String> GetPostsNamesStartWith(string startWith, int numPosts);
         public List<string> GetPostNames();
+        public Alert GetAlert(string productName);
     }
 }

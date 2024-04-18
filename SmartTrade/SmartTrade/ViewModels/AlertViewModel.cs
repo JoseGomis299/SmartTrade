@@ -9,13 +9,13 @@ namespace SmartTrade.ViewModels
 {
 	public class AlertViewModel : ReactiveObject
 	{
-		public ObservableCollection<ProductModel> Products { get; set; }
+		public ObservableCollection<ProductModel> ProductsNotifications { get; set; }
 		public AlertViewModel() 
 		{
-			Products = new ObservableCollection<ProductModel>();
+            ProductsNotifications = new ObservableCollection<ProductModel>();
 			foreach (var notification in SmartTradeService.Instance.Notifications)
 			{
-				Products.Add(new ProductModel(notification.Post));
+                ProductsNotifications.Add(new ProductModel(notification.Post));
 			}
 		}
 	}

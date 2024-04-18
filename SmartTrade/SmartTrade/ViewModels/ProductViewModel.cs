@@ -51,12 +51,19 @@ namespace SmartTrade.ViewModels
             _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
 
-            //SetAlertImage();
+            SetAlertImage();
         }
 
-        private void SetAlertImage(PostDTO post)
+        private void SetAlertImage()
         {
-            //if (post.)
+            if (SmartTradeService.Instance.Logged == null /*|| postView.Offers[0].Product.UsersWithAlertsInThisProduct[0] != SmartTradeService.Instance.Logged.Name*/)
+            {
+                AlertImage = _alertDeactivated;
+            }
+            else
+            {
+                AlertImage = _alertActivated;
+            }
         }
 
         public void LoadProducts()
