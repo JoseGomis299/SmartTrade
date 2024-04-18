@@ -244,7 +244,10 @@ public class SmartTradeService : ISmartTradeService
             throw new Exception("Existing user");
         }
 
-        Consumer consumer = new Consumer(registerData.Email, registerData.Password, registerData.Password, registerData.Password, registerData.DNI, registerData.BirthDate, registerData.BillingAddress, registerData.Address);
+        var address = new Address(registerData.Address.Street, registerData.Address.Number, registerData.Address.City, registerData.Address.PostalCode, registerData.Address.Number, registerData.Address.Door);
+        var billingAddress = new Address(registerData.BillingAddress.Street, registerData.BillingAddress.Number, registerData.BillingAddress.City, registerData.BillingAddress.PostalCode, registerData.BillingAddress.Number, registerData.BillingAddress.Door);
+
+        Consumer consumer = new Consumer(registerData.Email, registerData.Password, registerData.Password, registerData.Password, registerData.DNI, registerData.BirthDate, billingAddress, address);
         _dal.Insert<Consumer>(consumer);
         _dal.Commit();
 
