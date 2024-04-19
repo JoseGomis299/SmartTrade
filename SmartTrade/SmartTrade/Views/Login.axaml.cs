@@ -60,13 +60,13 @@ namespace SmartTrade.Views
             catch (Exception ex)
             {
 
-                if (ex.Message.Contains("Wrong email. Please enter a valid email"))
+                if (ex.Message.Contains("Invalid email. Please enter a valid email"))
                 {
                     TextBoxEmail.BringIntoView();
                     TextBoxEmail.ErrorText = ex.Message;
                 }
 
-                if (ex.Message.Contains("Email or Password are incorrects"))
+                if (ex.Message.Contains("Email or Password are incorrect"))
                 {
                     TextBoxEmail.BringIntoView();
                     TextBoxEmail.ErrorText = ex.Message;

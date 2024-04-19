@@ -19,7 +19,7 @@ namespace SmartTrade.ViewModels
             string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
             if (!Regex.IsMatch(Email, pattern))
             {
-                throw new ArgumentException("Wrong email. Please enter a valid email");
+                throw new ArgumentException("Invalid email. Please enter a valid email");
             }
         }
 
@@ -31,7 +31,7 @@ namespace SmartTrade.ViewModels
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new Exception("Email or Password are incorrect");
             }
         }
     }
