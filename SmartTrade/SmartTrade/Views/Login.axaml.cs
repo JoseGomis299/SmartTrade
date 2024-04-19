@@ -52,6 +52,7 @@ namespace SmartTrade.Views
 
             try
             {
+                _model.ValidarEmail();
                 await _model.Login(_model.Email, _model.Password);
                 if (_model.Logged == null) { return; }
                 await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
@@ -62,6 +63,12 @@ namespace SmartTrade.Views
                 {
                     TextBoxPassword.ErrorMessage.BringIntoView();
                     TextBoxPassword.ErrorMessage.Text = ex.Message;
+                }
+
+                if (ex.Message.Contains("Wrong email. Please enter a valid email"))
+                {
+                    TextBoxEmail.ErrorMessage.BringIntoView();
+                    TextBoxEmail.ErrorMessage.Text = ex.Message;
                 }
 
                 if (ex.Message.Contains("Unregistered user"))
