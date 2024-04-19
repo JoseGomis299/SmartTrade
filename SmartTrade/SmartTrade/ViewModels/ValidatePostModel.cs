@@ -36,13 +36,13 @@ public class ValidatePostModel : PostModificationModel
         PostDTO postDto = CreatePostInfo(Post.SellerID);
         postDto.Validated = true;
 
-        string postInfoJson = JsonConvert.SerializeObject(postDto);
-
-        await SmartTradeService.Instance.EditPostAsync((int) Post.Id, postInfoJson);
+        await SmartTradeService.Instance.EditPostAsync((int) Post.Id, postDto);
+        SmartTradeNavigationManager.Instance.NavigateBack();
     }
 
     public async Task RejectPostAsync()
     {
        await SmartTradeService.Instance.DeletePostAsync((int) Post.Id);
+       SmartTradeNavigationManager.Instance.NavigateBack();
     }
 }

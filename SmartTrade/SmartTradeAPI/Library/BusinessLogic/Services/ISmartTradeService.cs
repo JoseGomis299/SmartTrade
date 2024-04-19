@@ -25,6 +25,7 @@ namespace SmartTrade.BusinessLogic
         public SellerDTO RegisterSeller(SellerRegisterData registerData);
 
         public ConsumerDTO RegisterConsumer(ConsumerRegisterData registerData);
+        public void RegisterAdmin(AdminRegisterData registerData);
         public int CreateAlert(string userId, int productId);
 
         public void DeleteAlert(int alertId);

@@ -320,12 +320,12 @@ public partial class MainView : UserControl
 
     public async Task ShowCatalogReinitializingAsync()
     {
-        if (_isLoadingHome)
-        {
-            SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 0, out _);
-            ShowLoadingScreen();
-            return;
-        }
+        //if (_isLoadingHome)
+        //{
+        //    SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 0, out _);
+        //    ShowLoadingScreen();
+        //    return;
+        //}
 
         SetButtonVisibility();
         HideLoadingScreen();

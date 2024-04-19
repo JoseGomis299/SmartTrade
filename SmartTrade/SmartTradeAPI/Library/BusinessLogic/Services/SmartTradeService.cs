@@ -267,6 +267,18 @@ public class SmartTradeService : ISmartTradeService
         return new SellerDTO(seller);
     }
 
+    public void RegisterAdmin(AdminRegisterData registerData)
+    {
+        if (_dal.GetWhere<Admin>(x => x.Email == registerData.Email).Any())
+        {
+            throw new Exception("Existing user");
+        }
+
+        Admin admin = new Admin(registerData.Email, registerData.Password, registerData.Name, registerData.LastNames);
+        _dal.Insert<Admin>(admin);
+        _dal.Commit();
+    }
+
     public void AddPaypal(PayPalInfo paypalInfo, string loggedID) 
     {
         Consumer? loggedConsumer = _dal.GetById<Consumer>(loggedID);

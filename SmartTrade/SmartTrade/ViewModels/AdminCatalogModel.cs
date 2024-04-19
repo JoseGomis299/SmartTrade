@@ -25,6 +25,8 @@ public class AdminCatalogModel : CatalogModel
         {
             MyProducts.Add(new ProductModel(post));
         });
+
+        OriginalMyProducts = new List<ProductModel>(MyProducts);
     }
 
     public void UpdateProducts(IEnumerable<ProductModel> list)

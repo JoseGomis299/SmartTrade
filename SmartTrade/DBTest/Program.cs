@@ -9,29 +9,20 @@ Datos data = new Datos();
 
 //service.RemoveAll();
 
-SellerRegisterData seller = AddSeller(11);
 
-for (int i = 0; i < 10; i++)
+
+void AddAdmin(int i)
 {
-    for (int j = 0; j < Random.Shared.Next(1, 5); j++) AddPost(seller);
+    AdminRegisterData admin = new AdminRegisterData()
+    {
+        Email = $"a{i}@gmail.com",
+        LastNames = data.GetApellido(),
+        Name = data.GetNombre(),
+        Password = "123"
+    };
+    service.RegisterAdmin(admin);
 }
-
-seller = AddSeller(12);
-
-for (int i = 0; i < 10; i++)
-{
-    for (int j = 0; j < Random.Shared.Next(1, 5); j++) AddPost(seller);
-}
-
-seller = AddSeller(13);
-
-for (int i = 0; i < 10; i++)
-{
-    for (int j = 0; j < Random.Shared.Next(1, 5); j++) AddPost(seller);
-}
-
-
-void AddPost(SellerRegisterData seller)
+void AddPost(SellerRegisterData seller, bool validated)
 {
     PostDTO post = new PostDTO();
 
@@ -46,7 +37,7 @@ void AddPost(SellerRegisterData seller)
     post.EcologicPrint = $"{Random.Shared.Next(0, 100)}";
     post.HowToUse = "Cómo usar " + post.ProductName;
     post.HowToReducePrint = "Cómo reducir la huella ecológica de " + post.ProductName;
-    post.Validated = true;
+    post.Validated = validated;
 
     var offers = new List<OfferDTO>();
     for (int i = 0; i < Random.Shared.Next(1, 3); i++)

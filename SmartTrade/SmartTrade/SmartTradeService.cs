@@ -108,8 +108,9 @@ public class SmartTradeService
         return JsonConvert.DeserializeObject<List<SimplePostDTO>>(await PerformApiInstructionAsync("Post/GetContaining?content=" + Uri.EscapeDataString(searchText), ApiInstruction.Get));
     }
 
-    public async Task EditPostAsync(int postId, string postInfoJson)
+    public async Task EditPostAsync(int postId, PostDTO postInfo)
     {
+        string postInfoJson = JsonConvert.SerializeObject(postInfo);
         using var content = new StringContent(postInfoJson, Encoding.UTF8, "application/json");
 
         await PerformApiInstructionAsync($"Post/EditPost?id={postId}", ApiInstruction.Put, content);

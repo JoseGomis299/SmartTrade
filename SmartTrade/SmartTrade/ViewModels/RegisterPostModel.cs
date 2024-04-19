@@ -25,6 +25,7 @@ namespace SmartTrade.ViewModels
            PostDTO postDto = CreatePostInfo(null);
 
            await SmartTradeService.Instance.AddPostAsync(postDto);
+           SmartTradeNavigationManager.Instance.NavigateBack();
         }
     }
 }
