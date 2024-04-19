@@ -72,6 +72,7 @@ namespace SmartTrade.Views
             }
             catch (Exception ex)
             {
+                TextBoxNumber.BringIntoView();
                 TextBoxNumber.ErrorText = ex.Message;
             }
         }

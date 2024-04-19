@@ -74,12 +74,14 @@ namespace SmartTrade.Views
             {
                 if (ex.Message.Contains("Incorrect password"))
                 {
+                    TextBoxPassword.BringIntoView();
                     TextBoxPassword.ErrorText = ex.Message;
                 }
 
                 if (ex.Message.Contains("Unregistered user"))
                 {
-                    TextBoxEmail.ErrorMessage.BringIntoView();
+                    TextBoxPassword.BringIntoView();
+                    TextBoxEmail.ErrorText =ex.Message;
                 }
             }
         }

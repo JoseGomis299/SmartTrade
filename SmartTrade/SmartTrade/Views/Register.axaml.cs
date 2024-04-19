@@ -209,23 +209,23 @@ namespace SmartTrade.Views
                 }
                 if (ex.Message.Contains("Existing user"))
                 {
-                    TextBoxEmail.ErrorMessage.BringIntoView();
-                    TextBoxEmail.ErrorMessage.Text = ex.Message;
+                    TextBoxEmail.BringIntoView();
+                    TextBoxEmail.ErrorText = ex.Message;
                 }
                 if (ex.Message.Contains("Incorrect DNI. Must be 8 digits followed by a letter"))
                 {
-                    TextBoxDNI.ErrorMessage.BringIntoView();
-                    TextBoxDNI.ErrorMessage.Text = ex.Message;
+                    TextBoxDNI.BringIntoView();
+                    TextBoxDNI.ErrorText = ex.Message;
                 }
                 if (ex.Message.Contains("Wrong email. Please enter a valid email"))
                 {
-                    TextBoxEmail.ErrorMessage.BringIntoView();
-                    TextBoxEmail.ErrorMessage.Text = ex.Message;
+                    TextBoxEmail.BringIntoView();
+                    TextBoxEmail.ErrorText = ex.Message;
                 }
                 if (ex.Message.Contains("Wrong phone number. Only digits are allowed"))
                 {
-                    TextBoxNumber.ErrorMessage.BringIntoView();
-                    TextBoxNumber.ErrorMessage.Text = ex.Message;
+                    TextBoxNumber.BringIntoView();
+                    TextBoxNumber.ErrorText = ex.Message;
                 }
             }
         }

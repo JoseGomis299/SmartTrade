@@ -92,15 +92,18 @@ namespace SmartTrade.Views
             {
                 if (ex.Message.Contains("Wrong number card. Only digits are allowed"))
                 {
+                    TextBoxNumber.BringIntoView();
                     TextBoxNumber.ErrorText = ex.Message;
                 }
 
                 if (ex.Message.Contains("Wrong cvv. Only digits are allowed"))
                 {
+                    TextBoxCVV.BringIntoView();
                     TextBoxCVV.ErrorText = ex.Message;
                 }
                 if (ex.Message.Contains("Incorrect format"))
                 {
+                    TextBoxExpiryDate.BringIntoView();
                     TextBoxExpiryDate.ErrorText = ex.Message;
                 }
             }
