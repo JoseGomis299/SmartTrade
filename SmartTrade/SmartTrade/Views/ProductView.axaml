@@ -19,6 +19,7 @@
 							<Image Name="AlertImage" Stretch="Uniform"/>
 						</Panel>
 					</ToggleButton>
+					<Image ZIndex="1" Name="EcoImage" Stretch="Uniform" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10 0" Width="50"/>
 					<Carousel ItemsSource="{Binding Images, Mode=OneWay}" Name="ImageCarousel"  Height="300">
 						<Carousel.PageTransition >
                             <CompositePageTransition>
