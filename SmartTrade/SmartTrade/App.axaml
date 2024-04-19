@@ -133,6 +133,13 @@
 				<Setter Property="Foreground" Value="White"/>
 			</Style>
 
+			<Style Selector="ToggleButton.Transparent">
+				<Setter Property="BorderBrush" Value="#0A413E"/>
+				<Setter Property="BorderThickness" Value="0"/>
+				<Setter Property="Foreground" Value="#0A413E"/>
+				<Setter Property="Background" Value="Transparent"/>
+			</Style>
+
 			<Style Selector="ListBoxItem">
 			    <Setter Property="FontSize" Value="18"/>
 			    <Setter Property="FontFamily" Value="Inter"/>

@@ -17,6 +17,7 @@
     <None Remove="Assets\bizum.png" />
     <None Remove="Assets\paypal.png" />
     <None Remove="Assets\SmartTradeIcon.ico" />
+    <None Remove="Assets\visibilityON.png" />
   </ItemGroup>
 
   <ItemGroup>
