@@ -81,7 +81,7 @@ public class PostModificationModel : ViewModelBase
         }
     }
 
-    protected PostDTO CreatePostInfo(string? sellerId)
+    protected PostDTO CreatePostInfo(PostDTO? post)
     {
         List<int> stocks = new();
         List<float> prices = new();
@@ -118,8 +118,10 @@ public class PostModificationModel : ViewModelBase
             EcologicPrint = EcologicPrint,
             HowToReducePrint = ReducePrint,
             Validated = false,
-            SellerID = sellerId,
-            Offers = new List<OfferDTO>()
+            SellerID = post != null ? post.SellerID : "",
+            Offers = new List<OfferDTO>(),
+            SellerCompanyName = post != null? post.SellerCompanyName : "",
+            Id = post != null ? post.Id : 0
         };
 
         for (int i = 0; i < stocks.Count; i++)
@@ -132,7 +134,11 @@ public class PostModificationModel : ViewModelBase
                 Product = new ProductDTO
                 {
                     Images = images[i],
-                    Attributes = attributes[i]
+                    Attributes = attributes[i],
+                    Info = "",
+                    Id = 0,
+                    Differentiators = "",
+                    UsersWithAlertsInThisProduct = new List<string>()
                 }
             };
 

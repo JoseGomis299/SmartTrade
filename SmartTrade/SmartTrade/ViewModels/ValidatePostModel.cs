@@ -33,16 +33,16 @@ public class ValidatePostModel : PostModificationModel
 
     public async Task ValidatePostAsync()
     {
-        PostDTO postDto = CreatePostInfo(Post.SellerID);
+        PostDTO postDto = CreatePostInfo(Post);
         postDto.Validated = true;
 
         await SmartTradeService.Instance.EditPostAsync((int) Post.Id, postDto);
-        SmartTradeNavigationManager.Instance.NavigateBack();
+        SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
     }
 
     public async Task RejectPostAsync()
     {
        await SmartTradeService.Instance.DeletePostAsync((int) Post.Id);
-       SmartTradeNavigationManager.Instance.NavigateBack();
+       SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
     }
 }

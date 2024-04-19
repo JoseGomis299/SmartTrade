@@ -120,7 +120,7 @@ public class SmartTradeService
     {
         string json = JsonConvert.SerializeObject(paypalinfo);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"User/AddPaypal?id={loggedID}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"User/AddPaypal?id={loggedID}", ApiInstruction.Post, content);
 
     }
 
@@ -133,14 +133,14 @@ public class SmartTradeService
     {
         string json = JsonConvert.SerializeObject(creditCard);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"User/AddCreditCard?id={Logged.Email}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"User/AddCreditCard?id={Logged.Email}", ApiInstruction.Post, content);
     }
 
     public async Task AddBizumAsync(BizumInfo bizum)
     {
         string json = JsonConvert.SerializeObject(bizum);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"User/AddBizum?id={Logged.Email}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"User/AddBizum?id={Logged.Email}", ApiInstruction.Post, content);
     }
 
     public async Task<List<NotificationDTO>?> GetNotificationsAsync()
