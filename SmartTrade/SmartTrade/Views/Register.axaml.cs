@@ -31,16 +31,12 @@ namespace SmartTrade.Views
             PaypalButton.IsVisible = true;
             CreditCardButton.IsVisible = true;
             BizumButton.IsVisible = true;
-            PaypalAdded();
             Paypaladd.IsVisible = false;
-            BizumAdded();
             Bizumadd.IsVisible = false;
             CreditCardadd.IsVisible = false;
-            CreditCardAdded();
-
         }
 
-        private void CreditCardAdded()
+        public void CreditCardAdded()
         {
             if (!_model.CreditCardName.IsNullOrEmpty() && !_model.CreditCardNumber.IsNullOrEmpty() && !_model.CreditCardCVV.IsNullOrEmpty() && !_model.CreditCardExpiryDate.IsNullOrEmpty())
             {
@@ -50,7 +46,7 @@ namespace SmartTrade.Views
             }
         }
 
-        private void BizumAdded()
+        public void BizumAdded()
         {
             if (!_model.BizumNumber.IsNullOrEmpty())
             {
@@ -60,8 +56,8 @@ namespace SmartTrade.Views
             }
         }
 
-        private void PaypalAdded()
-        { 
+        public void PaypalAdded()
+        {
             if (!_model.PaypalEmail.IsNullOrEmpty() && !_model.PaypalPassword.IsNullOrEmpty())
             {
                 PaypalButton.IsVisible = false;
@@ -69,19 +65,20 @@ namespace SmartTrade.Views
 
             }
         }
+
         private void PaypalButton_click(object? sender, RoutedEventArgs e)
         {
-            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new Paypal(_model));
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new Paypal(_model, PaypalAdded));
         }
 
         private void BizumButton_click(object? sender, RoutedEventArgs e)
         {
-            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new Bizum(_model));
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new Bizum(_model, BizumAdded));
         }
 
         private void CreditCardButton_click(object? sender, RoutedEventArgs e)
         {
-            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new AddCreditCart(_model));
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new AddCreditCart(_model, CreditCardAdded));
         }
 
         private void LoginButton_click(object? sender, RoutedEventArgs e)
@@ -118,28 +115,28 @@ namespace SmartTrade.Views
             {
                 TextBoxName.BringIntoView();
                 TextBoxName.Focus();
-                TextBoxName.ErrorText = "Title cannot be empty";
+                TextBoxName.ErrorText = "Name cannot be empty";
                 hasErrors = true;
             }
             if (_model.Email.IsNullOrEmpty())
             {
                 TextBoxEmail.BringIntoView();
                 TextBoxEmail.Focus();
-                TextBoxEmail.ErrorText = "Title cannot be empty";
+                TextBoxEmail.ErrorText = "Email cannot be empty";
                 hasErrors = true;
             }
             if (_model.Password.IsNullOrEmpty())
             {
                 TextBoxPassword.BringIntoView();
                 TextBoxPassword.Focus();
-                TextBoxPassword.ErrorText = "Title cannot be empty";
+                TextBoxPassword.ErrorText = "Password cannot be empty";
                 hasErrors = true;
             }
             if (_model.DNI.IsNullOrEmpty())
             {
                 TextBoxDNI.BringIntoView();
                 TextBoxDNI.Focus();
-                TextBoxDNI.ErrorText = "Title cannot be empty";
+                TextBoxDNI.ErrorText = "DNI cannot be empty";
                 hasErrors = true;
             }
             if (_model.DateBirth == null)
@@ -151,49 +148,49 @@ namespace SmartTrade.Views
             {
                 TextBoxLastNames.BringIntoView();
                 TextBoxLastNames.Focus();
-                TextBoxLastNames.ErrorText = "Title cannot be empty";
+                TextBoxLastNames.ErrorText = "Last Names cannot be empty";
                 hasErrors = true;
             }
             if (_model.Province.IsNullOrEmpty())
             {
                 TextBoxProvince.BringIntoView();
                 TextBoxProvince.Focus();
-                TextBoxProvince.ErrorText = "Title cannot be empty";
+                TextBoxProvince.ErrorText = "Province cannot be empty";
                 hasErrors = true;
             }
             if (_model.PostalCode.IsNullOrEmpty())
             {
                 TextBoxPostalCode.BringIntoView();
                 TextBoxPostalCode.Focus();
-                TextBoxPostalCode.ErrorText = "Title cannot be empty";
+                TextBoxPostalCode.ErrorText = "Postal Code cannot be empty";
                 hasErrors = true;
             }
             if (_model.Municipality.IsNullOrEmpty())
             {
                 TextBoxMunicipality.BringIntoView();
                 TextBoxMunicipality.Focus();
-                TextBoxMunicipality.ErrorText = "Title cannot be empty";
+                TextBoxMunicipality.ErrorText = "Municipality cannot be empty";
                 hasErrors = true;
             }
             if (_model.Street.IsNullOrEmpty())
             {
                 TextBoxStreet.BringIntoView();
                 TextBoxStreet.Focus();
-                TextBoxStreet.ErrorText = "Title cannot be empty";
+                TextBoxStreet.ErrorText = "Street cannot be empty";
                 hasErrors = true;
             }
             if (_model.Number.IsNullOrEmpty())
             {
                 TextBoxNumber.BringIntoView();
                 TextBoxNumber.Focus();
-                TextBoxNumber.ErrorText = "Title cannot be empty";
+                TextBoxNumber.ErrorText = "Number cannot be empty";
                 hasErrors = true;
             }
             if (_model.Door.IsNullOrEmpty())
             {
                 TextBoxDoor.BringIntoView();
                 TextBoxDoor.Focus();
-                TextBoxDoor.ErrorText = "Title cannot be empty";
+                TextBoxDoor.ErrorText = "Door cannot be empty";
                 hasErrors = true;
             }
             try

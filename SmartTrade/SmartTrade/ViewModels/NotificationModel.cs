@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
@@ -7,7 +7,7 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
 
-public class ProductModel : ViewModelBase
+public class NotificationModel : ReactiveObject
 {
     public string? Name { get; set; }
     public string? Price { get; set; }
@@ -15,31 +15,34 @@ public class ProductModel : ViewModelBase
     public SimplePostDTO Post { get; set; }
 
     public ICommand OpenProductCommand { get; }
-    public ICommand EditProductCommand { get; }
+    public ICommand DeleteNotificationCommand { get; }
 
-    public ProductModel(SimplePostDTO post)
+    private NotificationDTO _notification;
+
+    public NotificationModel(SimplePostDTO post, AlertViewModel alertViewModel, NotificationDTO notification)
     {
+        _notification = notification;
+
         Post = post;
         OpenProductCommand = ReactiveCommand.CreateFromTask(OpenProduct);
-        EditProductCommand = ReactiveCommand.CreateFromTask(EditProduct);
+        DeleteNotificationCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await SmartTradeService.Instance.DeleteNotificationAsync(notification.Id);
+            alertViewModel.ProductsNotifications.Remove(this);
+        });
 
 
         Name = post.Title;
-        Price = post.Price + "€";
+        Price = post.Price + "�";
         Image = post.Image.ToBitmap();
     }
 
     private async Task OpenProduct()
     {
+        if(!_notification.Visited) await SmartTradeService.Instance.SetNotificationAsVisited(_notification.Id);
+
         var view = new ProductView(await SmartTradeService.Instance.GetPostAsync((int)Post.Id));
         SmartTradeNavigationManager.Instance.NavigateTo(view);
         ((ProductViewModel)view.DataContext).LoadProducts();
     }
-
-    private async Task EditProduct()
-    {
-        SmartTradeNavigationManager.Instance.NavigateTo(new ValidatePost(await SmartTradeService.Instance.GetPostAsync((int)Post.Id)));
-    }
-
-
 }

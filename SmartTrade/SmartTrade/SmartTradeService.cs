@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Text;
@@ -83,7 +84,7 @@ public class SmartTradeService
         string json = JsonConvert.SerializeObject(post);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        await PerformApiInstructionAsync("User/PublishPost", ApiInstruction.Post, content);
+        await PerformApiInstructionAsync("Post/PublishPost", ApiInstruction.Post, content);
     }
 
     public async Task<List<SimplePostDTO>?> GetPostsAsync()
@@ -118,48 +119,63 @@ public class SmartTradeService
     {
         string json = JsonConvert.SerializeObject(paypalinfo);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddPaypal?id={loggedID}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"User/AddPaypal?id={loggedID}", ApiInstruction.Put, content);
 
     }
 
     public async Task DeletePostAsync(int postId)
     {
-        await PerformApiInstructionAsync($"User/RemovePost/{postId}", ApiInstruction.Delete);
+        await PerformApiInstructionAsync($"Post/RemovePost?id={postId}", ApiInstruction.Delete);
     }
 
     public async Task AddCreditCardAsync(CreditCardInfo creditCard)
     {
         string json = JsonConvert.SerializeObject(creditCard);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddCreditCard?id={Logged.Email}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"User/AddCreditCard?id={Logged.Email}", ApiInstruction.Put, content);
     }
 
     public async Task AddBizumAsync(BizumInfo bizum)
     {
         string json = JsonConvert.SerializeObject(bizum);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"Consumer/AddBizum?id={Logged.Email}", ApiInstruction.Put, content);
+        await PerformApiInstructionAsync($"User/AddBizum?id={Logged.Email}", ApiInstruction.Put, content);
     }
 
     public async Task<List<NotificationDTO>?> GetNotificationsAsync()
     {
-        Notifications = JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"User/GetNotifications", ApiInstruction.Get));
+        Notifications = JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"Notification/GetNotifications", ApiInstruction.Get));
         return Notifications;
     }
 
-    public async Task<int> CreateAlertAsync(string userId, int productId)
+    public async Task<int> CreateAlertAsync(int productId)
     {
-        return JsonConvert.DeserializeObject<int>(await PerformApiInstructionAsync($"User/CreateAlert/{userId}{productId}", ApiInstruction.Post));
+        string json = JsonConvert.SerializeObject(productId);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        return int.Parse(await PerformApiInstructionAsync($"Alert/CreateAlert?id={productId}", ApiInstruction.Post, content));
     }
 
-    public async Task DeleteAlert(int alertId)
+    public async Task DeleteAlertAsync(int alertId)
     {
-        await PerformApiInstructionAsync($"User/Delete/{alertId}", ApiInstruction.Delete);
+        await PerformApiInstructionAsync($"Alert/Delete?id={alertId}", ApiInstruction.Delete);
     }
 
     public async Task<AlertDTO> GetAlertsAsync(string productName)
     {
-        return JsonConvert.DeserializeObject<AlertDTO>(await PerformApiInstructionAsync($"User/GetAlert/{productName}", ApiInstruction.Get));
+        return JsonConvert.DeserializeObject<AlertDTO>(await PerformApiInstructionAsync($"Alert/GetAlert?productName={productName}", ApiInstruction.Get));
+    }
+
+    public async Task DeleteNotificationAsync(int notificationId)
+    {
+        Notifications.Remove(Notifications.First(n => n.Id == notificationId));
+        await PerformApiInstructionAsync($"Notification/DeleteNotification?id={notificationId}", ApiInstruction.Delete);
+    }
+
+    public async Task SetNotificationAsVisited(int notificationId)
+    {
+        Notifications.First(n => n.Id == notificationId).Visited = true;
+        await PerformApiInstructionAsync($"Notification/SetAsVisited?id={notificationId}", ApiInstruction.Put);
     }
 
     private async Task<string> PerformApiInstructionAsync(string function, ApiInstruction instruction, HttpContent content = null)
@@ -203,6 +219,7 @@ public class SmartTradeService
             return string.Empty;
         }
     }
+
 }
 
 public enum ApiInstruction

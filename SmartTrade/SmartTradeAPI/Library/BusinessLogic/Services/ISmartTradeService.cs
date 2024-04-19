@@ -16,7 +16,7 @@ namespace SmartTrade.BusinessLogic
 
         public void AddCreditCard(CreditCardInfo creditcard, string loggedId);
 
-        public void AddPost(PostDTO postInfo, string loggedID);
+        public Post AddPost(PostDTO postInfo, string loggedID);
 
         public void EditPost(int postID, PostDTO postInfo, string loggedID);
 
@@ -37,5 +37,7 @@ namespace SmartTrade.BusinessLogic
         public List<string> GetPostNames();
         public List<NotificationDTO> GetNotifications(string loggedId);
         public AlertDTO GetAlert(string productName);
+        public void DeleteNotification(int notificationId);
+        public void SetVisited(int id);
     }
 }

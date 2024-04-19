@@ -11,6 +11,16 @@ namespace SmartTrade.Views
             InitializeComponent();
 
             LogoutButton.Click += LogOut;
+
+            if (SmartTradeService.Instance.Logged != null && SmartTradeService.Instance.Logged.IsSeller)
+            {
+                AddPostButton.IsVisible = true;
+                AddPostButton.Click += (sender, args) =>
+                {
+                    SmartTradeNavigationManager.Instance.NavigateTo(new RegisterPost());
+                };
+            }
+            else { AddPostButton.IsVisible = false; }
         }
 
         private async void LogOut(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

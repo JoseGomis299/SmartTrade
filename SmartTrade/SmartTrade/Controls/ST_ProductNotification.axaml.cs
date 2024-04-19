@@ -19,8 +19,17 @@ namespace SmartTrade.Controls
             set => SetValue(CommandProperty, value);
         }
 
+        public ICommand DeleteNotification
+        {
+            get => GetValue(DeleteNotificationProperty);
+            set => SetValue(DeleteNotificationProperty, value);
+        }
+
         public static readonly StyledProperty<ICommand> CommandProperty =
             AvaloniaProperty.Register<ST_Product, ICommand>(nameof(Command));
+
+        public static readonly StyledProperty<ICommand> DeleteNotificationProperty =
+           AvaloniaProperty.Register<ST_Product, ICommand>(nameof(DeleteNotification));
 
         public string? Price
         {

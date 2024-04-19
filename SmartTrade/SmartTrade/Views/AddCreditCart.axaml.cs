@@ -18,12 +18,13 @@ namespace SmartTrade.Views
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
         }
-        public AddCreditCart(RegisterModel model)
+        public AddCreditCart(RegisterModel model, Action onAccept)
         {
             DataContext = _model = model;
 
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
+            AcceptButton.Click += (sender, e) => onAccept();
             
             CancelButton.Click += CancelButton_Click;
         }

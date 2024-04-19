@@ -17,17 +17,17 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("RegisterSeller")]
-    public void RegosterSeller([FromBody] SellerRegisterData seller)
+    public SellerDTO RegisterSeller([FromBody] SellerRegisterData seller)
     {
         ISmartTradeService service = new SmartTradeService();
-        service.RegisterSeller(seller);
+        return service.RegisterSeller(seller);
     }
 
     [HttpPost("RegisterConsumer")]
-    public void RegosterConsumer([FromBody] ConsumerRegisterData consumer)
+    public ConsumerDTO RegisterConsumer([FromBody] ConsumerRegisterData consumer)
     {
         ISmartTradeService service = new SmartTradeService();
-        service.RegisterConsumer(consumer);
+        return service.RegisterConsumer(consumer);
     }
 
 
@@ -50,13 +50,5 @@ public class UserController : ControllerBase
     {
         ISmartTradeService service = new SmartTradeService();
         service.AddBizum(info, id);
-    }
-
-    [HttpGet("GetNotifications")]
-    public List<NotificationDTO> GetNotifications()
-    {
-        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
-        ISmartTradeService service = new SmartTradeService();
-        return service.GetNotifications(loggedId);
     }
 }

@@ -16,6 +16,8 @@ namespace SmartTrade.Navigation
         {
             UserControl? view = null;
 
+            PreviousView = CurrentView;
+
             if (_views.ContainsKey(viewType))
             {
                 view = _views[viewType];
@@ -31,6 +33,8 @@ namespace SmartTrade.Navigation
 
         public override void NavigateTo(ContentControl view)
         {
+            PreviousView = CurrentView;
+
             MainView.Content = view;
             _views.AddOrUpdate(view.GetType(), (UserControl) view);
         }

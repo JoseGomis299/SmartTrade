@@ -1,19 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reactive;
 using System.Threading.Tasks;
 using ReactiveUI;
 using SmartTrade.Entities;
-using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels
 {
 	public class AlertViewModel : ReactiveObject
 	{
-		public ObservableCollection<ProductModel> ProductsNotifications { get; set; }
-		public AlertViewModel() 
+		public ObservableCollection<NotificationModel> ProductsNotifications { get; set; }
+
+        public AlertViewModel() 
 		{
-            ProductsNotifications = new ObservableCollection<ProductModel>();
+            ProductsNotifications = new ObservableCollection<NotificationModel>();
 		}
 
         public async Task LoadNotificationsAsync()
@@ -23,13 +24,8 @@ namespace SmartTrade.ViewModels
 
             foreach (var notification in SmartTradeService.Instance.Notifications)
             {
-                ProductsNotifications.Add(new ProductModel(notification.Post));
+                ProductsNotifications.Add(new NotificationModel(notification.Post, this, notification));
             }
         }
-
-		//public AlertDTO GetAlert()
-		//{
-			
-		//}
 	}
 }

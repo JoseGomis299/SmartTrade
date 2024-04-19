@@ -19,13 +19,14 @@ namespace SmartTrade.Views
            
             CancelButton.Click += CancelButton_Click;
         }
-        public Paypal(RegisterModel model)
+        public Paypal(RegisterModel model, Action onAccept)
         {
             DataContext = _model = model;
 
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
+            AcceptButton.Click += (sender, e) => onAccept();
         }
 
        

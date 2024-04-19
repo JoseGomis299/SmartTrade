@@ -44,7 +44,7 @@ public class SmartTradeService : ISmartTradeService
     }
 
 
-    public void AddPost(PostDTO postInfo, string loggedID)
+    public Post AddPost(PostDTO postInfo, string loggedID)
     {
         //LogIn("ChiclesPepito@gmail.com", "123");
         User? logged = _dal.GetById<User>(loggedID);
@@ -98,24 +98,23 @@ public class SmartTradeService : ISmartTradeService
         }
 
         _dal.Commit();
+        return post;
     }
 
     public void EditPost(int postID, PostDTO postInfo, string loggedID)
     {
         DeletePost(postID);
-        AddPost(postInfo, loggedID);
+        Post post = AddPost(postInfo, loggedID);
 
         //TODO: Si el postInfo está validado creamos la notificación pertinente si toca crear
-       if(postInfo.Validated) CreateNotifications(postInfo);
+       if(postInfo.Validated) CreateNotifications(post);
 
         _dal.Commit();
     }
 
-    private void CreateNotifications(PostDTO postInfo)
+    private void CreateNotifications(Post post)
     {
-        var alerts = _dal.GetWhere<Alert>(a => a.Product.Name == postInfo.ProductName);
-        var post = _dal.GetWhere<Post>(p => p.Title == postInfo.Title && p.Seller.Email == postInfo.SellerID && p.Description == postInfo.Description && p.Offers.First().Product.Name == postInfo.ProductName).FirstOrDefault();
-        foreach (var alert in alerts)
+        foreach (var alert in post.Offers.First().Product.Alerts)
         {
             var notification = new Notification(false, (Consumer)alert.User, post);
             _dal.Insert(notification);
@@ -157,7 +156,7 @@ public class SmartTradeService : ISmartTradeService
             .ToList();
 
         if (logged is Admin) postDtos = postDtos.Where(x => !x.Validated).ToList();
-        else if (logged is Seller seller) postDtos = postDtos.Where(x => x.Validated).ToList();
+        else if (logged is Seller seller) postDtos = postDtos.Where(x => x.SellerID == seller.Email).ToList();
         else postDtos = postDtos.Where(x => x.Validated).ToList();
 
         return postDtos;
@@ -339,7 +338,8 @@ public class SmartTradeService : ISmartTradeService
            {
                Id = anon.Id,
                ConsumerId = anon.ConsumerId,
-               Post = anon.Post
+               Post = anon.Post,
+               Visited = anon.Visited
            }).ToList();
     }
 
@@ -368,5 +368,17 @@ public class SmartTradeService : ISmartTradeService
     public AlertDTO GetAlert(string productName)
     {
         return _dal.GetWhere<AlertDTO>(n => n.ProductName == productName).FirstOrDefault();
+    }
+
+    public void DeleteNotification(int id)
+    {
+        _dal.Delete<Notification>(_dal.GetById<Notification>(id));
+        _dal.Commit();
+    }
+
+    public void SetVisited(int id)
+    {
+        _dal.GetById<Notification>(id).Visited = true;
+        _dal.Commit();
     }
 }

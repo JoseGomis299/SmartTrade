@@ -25,12 +25,13 @@ namespace SmartTrade.Views
             };
         }
 
-        public Bizum(RegisterModel model)
+        public Bizum(RegisterModel model, Action onAccept)
         {
             DataContext = _model = model;
 
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
+            AcceptButton.Click += (sender, e) => onAccept();
             CancelButton.Click += CancelButton_Click;
             _popup = new Popup
             {

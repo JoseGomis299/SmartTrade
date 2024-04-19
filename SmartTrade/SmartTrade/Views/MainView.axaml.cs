@@ -6,11 +6,6 @@ using SmartTrade.ViewModels;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System.Threading.Tasks;
-using Avalonia;
-using ReactiveUI;
-using Avalonia.Media;
-using System.Drawing;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace SmartTrade.Views;
 
@@ -91,15 +86,20 @@ public partial class MainView : UserControl
             ShoppingCartButton.IsVisible = false;
             ShoppingCartButton2.IsVisible = false;
             AddToCartButton.IsVisible = false;
+            AlertButton.IsVisible = false;
         }
         else if (SmartTradeService.Instance.Logged != null)
         {
             ShoppingCartButton.IsVisible = true;
             ShoppingCartButton2.IsVisible = true;
             AddToCartButton.IsVisible = true;
+            AlertButton.IsVisible = true;
         }
         else
         {
+            ShoppingCartButton.IsVisible = true;
+            ShoppingCartButton2.IsVisible = true;
+            AddToCartButton.IsVisible = true;
             AlertButton.IsVisible = false;
         }
     }
