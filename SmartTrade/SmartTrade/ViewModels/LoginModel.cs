@@ -22,9 +22,17 @@ namespace SmartTrade.ViewModels
                 throw new ArgumentException("Wrong email. Please enter a valid email");
             }
         }
+
         public async Task Login(string email, string password)
         {
-            await SmartTradeService.Instance.LogInAsync(email, password);
+            try
+            {
+                await SmartTradeService.Instance.LogInAsync(email, password);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
         }
     }
 }

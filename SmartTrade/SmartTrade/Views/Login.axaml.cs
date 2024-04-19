@@ -59,22 +59,18 @@ namespace SmartTrade.Views
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Incorrect password"))
-                {
-                    TextBoxPassword.ErrorMessage.BringIntoView();
-                    TextBoxPassword.ErrorMessage.Text = ex.Message;
-                }
 
                 if (ex.Message.Contains("Wrong email. Please enter a valid email"))
                 {
-                    TextBoxEmail.ErrorMessage.BringIntoView();
-                    TextBoxEmail.ErrorMessage.Text = ex.Message;
+                    TextBoxEmail.BringIntoView();
+                    TextBoxEmail.ErrorText = ex.Message;
                 }
 
-                if (ex.Message.Contains("Unregistered user"))
+                if (ex.Message.Contains("Email or Password are incorrects"))
                 {
-                    TextBoxEmail.ErrorMessage.BringIntoView();
-                    TextBoxEmail.ErrorMessage.Text = ex.Message;
+                    TextBoxEmail.BringIntoView();
+                    TextBoxEmail.ErrorText = ex.Message;
+                    TextBoxPassword.ErrorText = ex.Message;     
                 }
             }
         }

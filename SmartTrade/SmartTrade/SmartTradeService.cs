@@ -25,7 +25,8 @@ public class SmartTradeService
     {
         Logged = JsonConvert.DeserializeObject<UserDTO>(json);
 
-        if (Logged == null) return;
+       if (Logged == null) { throw new Exception("Email or Password are incorrects"); }
+        
 
         if (Logged.IsConsumer)
         {
