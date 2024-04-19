@@ -16,6 +16,8 @@ namespace SmartTrade.Views
         private Bitmap? _alertActivated;
         private Bitmap? _alertDeactivated;
         private PostDTO _post;
+        private Bitmap? _isEco;
+        private Bitmap? _isNotEco;
 
         private bool _isAlertActivated;
 
@@ -32,7 +34,10 @@ namespace SmartTrade.Views
 
             _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
+            _isEco = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/IconoSostenible.png")));
+            _isNotEco = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/IconoNOSostenible.png")));
             AlertImage.Source = _alertDeactivated;
+            EcoImage.Source = _isNotEco;
 
             NextImageButton.Click += NextImage;
             PreviousImageButton.Click += PreviousImage;
@@ -42,6 +47,7 @@ namespace SmartTrade.Views
 
             SetToggleVisibility();
             SetAlertImage();
+            SetEcoImage();
             SetImageNavigationButtonsVisibility();
 
             SmartTradeNavigationManager.Instance.OnNavigate += OnNavigateAsync;
@@ -93,6 +99,18 @@ namespace SmartTrade.Views
             {
                 AlertToggle.IsChecked = true;
                // AlertImage.Source = _alertActivated;
+            }
+        }
+
+        private void SetEcoImage()
+        {
+            if (int.TryParse(_post.EcologicPrint, out int ecologicPrint) && ecologicPrint < 10)
+            {
+                EcoImage.Source = _isEco;
+            }
+            else
+            {
+                EcoImage.Source = _isNotEco;
             }
         }
 
