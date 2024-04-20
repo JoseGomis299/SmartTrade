@@ -39,7 +39,7 @@ public class NotificationModel : ReactiveObject
 
     private async Task OpenProduct()
     {
-        if(!_notification.Visited) await SmartTradeService.Instance.SetNotificationAsVisited(_notification.Id);
+        if(!_notification.Visited) await SmartTradeService.Instance.SetNotificationAsVisitedAsync(_notification.Id);
 
         var view = new ProductView(await SmartTradeService.Instance.GetPostAsync((int)Post.Id));
         SmartTradeNavigationManager.Instance.NavigateTo(view);

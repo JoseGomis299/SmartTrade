@@ -24,6 +24,22 @@ public class SmartTradeService
     public UserDTO? Logged { get; private set; }
     public List<NotificationDTO>? Notifications { get; private set; }
 
+    #region User Operations
+
+
+    //--------------------------------------------------------------------------------
+    //=========================== LOCAL OPERATIONS ===================================
+    //--------------------------------------------------------------------------------
+
+    public void LogOut()
+    {
+        Logged = null;
+    }
+
+    //--------------------------------------------------------------------------------
+    //=========================== API OPERATIONS ===================================
+    //--------------------------------------------------------------------------------
+
     private async Task SetLogged(string json)
     {
         Logged = JsonConvert.DeserializeObject<UserDTO>(json);
@@ -41,10 +57,6 @@ public class SmartTradeService
 
         await GetNotificationsAsync();
     }
-    public void LogOut()
-    {
-        Logged = null;
-    }
 
     public async Task LogInAsync(string email, string password)
     {
@@ -57,10 +69,15 @@ public class SmartTradeService
     public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
     {
         string json = JsonConvert.SerializeObject(new ConsumerRegisterData()
-        { 
-            Email = email, Password = password, 
-            Address = consumerAddress, BillingAddress = billingAddress, 
-            BirthDate = dateBirth, DNI = dni, LastNames = lastnames, Name = name
+        {
+            Email = email,
+            Password = password,
+            Address = consumerAddress,
+            BillingAddress = billingAddress,
+            BirthDate = dateBirth,
+            DNI = dni,
+            LastNames = lastnames,
+            Name = name
 
         });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -72,15 +89,61 @@ public class SmartTradeService
     {
         string json = JsonConvert.SerializeObject(new SellerRegisterData()
         {
-            Email = email, Password = password, 
-            CompanyName = companyName, IBAN = iban,
-             DNI = dni, LastNames = lastnames, Name = name
+            Email = email,
+            Password = password,
+            CompanyName = companyName,
+            IBAN = iban,
+            DNI = dni,
+            LastNames = lastnames,
+            Name = name
 
         });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         await SetLogged(await PerformApiInstructionAsync("User/RegisterSeller", ApiInstruction.Post, content));
     }
+
+    public async Task AddPaypalAsync(PayPalInfo paypalinfo, String loggedID)
+    {
+        string json = JsonConvert.SerializeObject(paypalinfo);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await PerformApiInstructionAsync($"User/AddPaypal?id={loggedID}", ApiInstruction.Post, content);
+
+    }
+
+    public async Task AddCreditCardAsync(CreditCardInfo creditCard)
+    {
+        string json = JsonConvert.SerializeObject(creditCard);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await PerformApiInstructionAsync($"User/AddCreditCard?id={Logged.Email}", ApiInstruction.Post, content);
+    }
+
+    public async Task AddBizumAsync(BizumInfo bizum)
+    {
+        string json = JsonConvert.SerializeObject(bizum);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        await PerformApiInstructionAsync($"User/AddBizum?id={Logged.Email}", ApiInstruction.Post, content);
+    }
+
+
+    #endregion
+
+    #region Post Operations
+
+    //--------------------------------------------------------------------------------
+    //=========================== LOCAL OPERATIONS ===================================
+    //--------------------------------------------------------------------------------
+
+    public List<SimplePostDTO>? GetPostsFuzzyContain(string? searchText)
+    {
+        return Posts.Where(x => Fuzz.PartialTokenSortRatio(searchText, x.Title) > 51)
+            .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchText, x.Title)).ToList();
+    }
+
+
+    //--------------------------------------------------------------------------------
+    //=========================== API OPERATIONS ===================================
+    //--------------------------------------------------------------------------------
 
     public async Task AddPostAsync(PostDTO post)
     {
@@ -99,18 +162,12 @@ public class SmartTradeService
 
     public async Task<PostDTO?> GetPostAsync(int postId)
     {
-       return JsonConvert.DeserializeObject<PostDTO>(await PerformApiInstructionAsync($"Post/GetById?id={postId}", ApiInstruction.Get));
+        return JsonConvert.DeserializeObject<PostDTO>(await PerformApiInstructionAsync($"Post/GetById?id={postId}", ApiInstruction.Get));
     }
 
     public async Task<List<string>?> GetPostsNamesAsync()
     {
         return JsonConvert.DeserializeObject<List<string>>(await PerformApiInstructionAsync("Post/GetAllNames", ApiInstruction.Get));
-    }
-
-    public List<SimplePostDTO>? GetPostsFuzzyContain(string? searchText)
-    {
-        return Posts.Where(x => Fuzz.PartialTokenSortRatio(searchText, x.Title) > 60)
-            .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchText, x.Title)).ToList();
     }
 
     public async Task EditPostAsync(int postId, PostDTO postInfo)
@@ -121,38 +178,56 @@ public class SmartTradeService
         await PerformApiInstructionAsync($"Post/EditPost?id={postId}", ApiInstruction.Put, content);
     }
 
-    public async Task AddPaypalAsync(PayPalInfo paypalinfo, String loggedID)
-    {
-        string json = JsonConvert.SerializeObject(paypalinfo);
-        using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"User/AddPaypal?id={loggedID}", ApiInstruction.Post, content);
-
-    }
-
     public async Task DeletePostAsync(int postId)
     {
         await PerformApiInstructionAsync($"Post/RemovePost?id={postId}", ApiInstruction.Delete);
     }
 
-    public async Task AddCreditCardAsync(CreditCardInfo creditCard)
-    {
-        string json = JsonConvert.SerializeObject(creditCard);
-        using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"User/AddCreditCard?id={Logged.Email}", ApiInstruction.Post, content);
-    }
+    #endregion
 
-    public async Task AddBizumAsync(BizumInfo bizum)
-    {
-        string json = JsonConvert.SerializeObject(bizum);
-        using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        await PerformApiInstructionAsync($"User/AddBizum?id={Logged.Email}", ApiInstruction.Post, content);
-    }
+    #region Notification Operations
+
+    //--------------------------------------------------------------------------------
+    //=========================== LOCAL OPERATIONS ===================================
+    //--------------------------------------------------------------------------------
+
+
+
+    //--------------------------------------------------------------------------------
+    //=========================== API OPERATIONS ===================================
+    //--------------------------------------------------------------------------------
 
     public async Task<List<NotificationDTO>?> GetNotificationsAsync()
     {
         Notifications = JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"Notification/GetNotifications", ApiInstruction.Get));
         return Notifications;
     }
+
+    public async Task DeleteNotificationAsync(int notificationId)
+    {
+        Notifications.Remove(Notifications.First(n => n.Id == notificationId));
+        await PerformApiInstructionAsync($"Notification/DeleteNotification?id={notificationId}", ApiInstruction.Delete);
+    }
+
+    public async Task SetNotificationAsVisitedAsync(int notificationId)
+    {
+        Notifications.First(n => n.Id == notificationId).Visited = true;
+        await PerformApiInstructionAsync($"Notification/SetAsVisited?id={notificationId}", ApiInstruction.Put);
+    }
+
+    #endregion
+
+    #region Aler Operations
+
+    //--------------------------------------------------------------------------------
+    //=========================== LOCAL OPERATIONS ===================================
+    //--------------------------------------------------------------------------------
+
+
+
+    //--------------------------------------------------------------------------------
+    //=========================== API OPERATIONS =====================================
+    //--------------------------------------------------------------------------------
 
     public async Task<int> CreateAlertAsync(int productId)
     {
@@ -172,17 +247,45 @@ public class SmartTradeService
         return JsonConvert.DeserializeObject<AlertDTO>(await PerformApiInstructionAsync($"Alert/GetAlert?productName={productName}", ApiInstruction.Get));
     }
 
-    public async Task DeleteNotificationAsync(int notificationId)
-    {
-        Notifications.Remove(Notifications.First(n => n.Id == notificationId));
-        await PerformApiInstructionAsync($"Notification/DeleteNotification?id={notificationId}", ApiInstruction.Delete);
-    }
+    #endregion
 
-    public async Task SetNotificationAsVisited(int notificationId)
-    {
-        Notifications.First(n => n.Id == notificationId).Visited = true;
-        await PerformApiInstructionAsync($"Notification/SetAsVisited?id={notificationId}", ApiInstruction.Put);
-    }
+
+    /// <summary>
+    /// Realiza una petición a la API
+    /// 
+    /// <para>
+    /// <paramref name="function"/>
+    /// Ruta de la función a la que se quiere acceder en la API.
+    ///<para>
+    ///<example>
+    /// Ejemplos: "User/GetUser", "Post/GetAll", "Post/GetById?id=1" (Si la función requiere un argumento llamado id)
+    ///</example>
+    /// </para>
+    /// </para>
+    /// 
+    /// <para>
+    /// <paramref name="instruction"/>
+    /// Tipo de instrucción a realizar en la API.
+    /// <para>
+    /// Puede ser Get (Recuperar), Post (Añadir), Put (Modificar) o Delete (Borrar).
+    /// </para>
+    /// </para>
+    /// 
+    /// <para>
+    /// <paramref name="content"/>
+    /// Contenido de la petición. Solo necesario en caso de que la instrucción sea Post o Put.
+    /// <para>
+    ///  El contenido son los argumentos de la API [FromBody].
+    /// </para>
+    /// <para>
+    /// Este contenido debe ser un objeto serializado en formato JSON.
+    /// </para>
+    /// </para>
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Devuelve el resultado de la petición a la API en formato JSON.
+    /// </returns>
 
     private async Task<string> PerformApiInstructionAsync(string function, ApiInstruction instruction, HttpContent content = null)
     {
