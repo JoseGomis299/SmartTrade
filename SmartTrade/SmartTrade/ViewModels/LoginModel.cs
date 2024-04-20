@@ -4,6 +4,7 @@ using SmartTradeDTOs;
 using SmartTrade.Entities;
 using System.Text.RegularExpressions;
 using System;
+using SmartTrade.Services;
 
 
 namespace SmartTrade.ViewModels
@@ -12,7 +13,7 @@ namespace SmartTrade.ViewModels
     {
         public string? Email { get; set; }
         public string? Password { get; set; }
-        public UserDTO Logged => SmartTradeService.Instance.Logged;
+        public UserDTO Logged => Service.Logged;
 
         public void ValidarEmail()
         {
@@ -27,7 +28,7 @@ namespace SmartTrade.ViewModels
         {
             try
             {
-                await SmartTradeService.Instance.LogInAsync(email, password);
+                await Service.LogInAsync(email, password);
             }
             catch (Exception ex)
             {

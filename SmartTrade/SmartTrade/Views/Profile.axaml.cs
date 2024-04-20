@@ -1,18 +1,21 @@
 using Avalonia.Controls;
+using SmartTrade.Services;
 using SmartTrade.ViewModels;
+using SmartTradeDTOs;
 
 namespace SmartTrade.Views
 {
     public partial class Profile : UserControl
     {
+        private ProfileModel _model;
         public Profile()
         {
-            DataContext = new ProfileModel();
+            DataContext = _model = new ProfileModel();
             InitializeComponent();
 
             LogoutButton.Click += LogOut;
 
-            if (SmartTradeService.Instance.Logged != null && SmartTradeService.Instance.Logged.IsSeller)
+            if (_model.LoggedType == UserType.Seller)
             {
                 AddPostButton.IsVisible = true;
                 AddPostButton.Click += (sender, args) =>
@@ -25,7 +28,7 @@ namespace SmartTrade.Views
 
         private async void LogOut(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            SmartTradeService.Instance.LogOut();
+            _model.LogOut();
             await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
         }
     }

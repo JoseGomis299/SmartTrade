@@ -10,19 +10,18 @@ using Newtonsoft.Json;
 using SmartTrade.Entities;
 using SmartTradeDTOs;
 
-namespace SmartTrade;
+namespace SmartTrade.Services;
 
 public class SmartTradeService
 {
-    public event Action OnPostsChanged;
-
-    private static SmartTradeService? _instance;
-    public static SmartTradeService Instance => _instance ??= new SmartTradeService();
-
-    private List<SimplePostDTO>? _posts;
-    public IEnumerable<SimplePostDTO>? Posts => _posts;
+    private SmartTradeProxy _proxy;
     public UserDTO? Logged { get; private set; }
-    public List<NotificationDTO>? Notifications { get; private set; }
+
+    public SmartTradeService(SmartTradeProxy proxy)
+    {
+        _proxy = proxy;
+    }
+
 
     #region User Operations
 
@@ -34,6 +33,12 @@ public class SmartTradeService
     public void LogOut()
     {
         Logged = null;
+    }
+
+    public UserType GetUserType()
+    {
+        if (Logged == null) return UserType.None;
+        return Logged.GetUserType();
     }
 
     //--------------------------------------------------------------------------------
@@ -103,7 +108,7 @@ public class SmartTradeService
         await SetLogged(await PerformApiInstructionAsync("User/RegisterSeller", ApiInstruction.Post, content));
     }
 
-    public async Task AddPaypalAsync(PayPalInfo paypalinfo, String loggedID)
+    public async Task AddPaypalAsync(PayPalInfo paypalinfo, string loggedID)
     {
         string json = JsonConvert.SerializeObject(paypalinfo);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -136,7 +141,7 @@ public class SmartTradeService
 
     public List<SimplePostDTO>? GetPostsFuzzyContain(string? searchText)
     {
-        return Posts.Where(x => Fuzz.PartialTokenSortRatio(searchText, x.Title) > 51)
+        return _proxy.Posts.Where(x => Fuzz.PartialTokenSortRatio(searchText, x.Title) > 51)
             .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchText, x.Title)).ToList();
     }
 
@@ -155,9 +160,7 @@ public class SmartTradeService
 
     public async Task<List<SimplePostDTO>?> GetPostsAsync()
     {
-        _posts = JsonConvert.DeserializeObject<List<SimplePostDTO>>(await PerformApiInstructionAsync("Post/GetAll", ApiInstruction.Get));
-        OnPostsChanged?.Invoke();
-        return _posts;
+        return JsonConvert.DeserializeObject<List<SimplePostDTO>>(await PerformApiInstructionAsync("Post/GetAll", ApiInstruction.Get)); ;
     }
 
     public async Task<PostDTO?> GetPostAsync(int postId)
@@ -199,19 +202,19 @@ public class SmartTradeService
 
     public async Task<List<NotificationDTO>?> GetNotificationsAsync()
     {
-        Notifications = JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"Notification/GetNotifications", ApiInstruction.Get));
-        return Notifications;
+        _proxy.Notifications = JsonConvert.DeserializeObject<List<NotificationDTO>>(await PerformApiInstructionAsync($"Notification/GetNotifications", ApiInstruction.Get));
+        return _proxy.Notifications;
     }
 
     public async Task DeleteNotificationAsync(int notificationId)
     {
-        Notifications.Remove(Notifications.First(n => n.Id == notificationId));
+        _proxy.Notifications.Remove(_proxy.Notifications.First(n => n.Id == notificationId));
         await PerformApiInstructionAsync($"Notification/DeleteNotification?id={notificationId}", ApiInstruction.Delete);
     }
 
     public async Task SetNotificationAsVisitedAsync(int notificationId)
     {
-        Notifications.First(n => n.Id == notificationId).Visited = true;
+        _proxy.Notifications.First(n => n.Id == notificationId).Visited = true;
         await PerformApiInstructionAsync($"Notification/SetAsVisited?id={notificationId}", ApiInstruction.Put);
     }
 
@@ -248,7 +251,6 @@ public class SmartTradeService
     }
 
     #endregion
-
 
     /// <summary>
     /// Realiza una petición a la API
@@ -338,3 +340,4 @@ public enum ApiInstruction
     Put,
     Delete
 }
+

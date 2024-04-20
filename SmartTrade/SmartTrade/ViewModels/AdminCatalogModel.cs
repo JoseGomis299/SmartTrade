@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SmartTrade.Entities;
+using SmartTrade.Services;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
@@ -19,9 +20,9 @@ public class AdminCatalogModel : CatalogModel
 
     public override async Task LoadProductsAsync()
     {
-        List<SimplePostDTO>? posts = await SmartTradeService.Instance.GetPostsAsync();
+        await Proxy.UpdatePostsAsync();
 
-        posts.ForEach(post =>
+        Proxy.Posts.ForEach(post =>
         {
             MyProducts.Add(new ProductModel(post));
         });

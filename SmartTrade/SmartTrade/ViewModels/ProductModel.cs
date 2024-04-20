@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
+using SmartTrade.Services;
 using SmartTrade.Views;
 using SmartTradeDTOs;
 
@@ -31,14 +32,14 @@ public class ProductModel : ViewModelBase
 
     private async Task OpenProduct()
     {
-        var view = new ProductView(await SmartTradeService.Instance.GetPostAsync((int)Post.Id));
+        var view = new ProductView(await Proxy.GetPostAsync((int)Post.Id));
         SmartTradeNavigationManager.Instance.NavigateTo(view);
         ((ProductViewModel)view.DataContext).LoadProducts();
     }
 
     private async Task EditProduct()
     {
-        SmartTradeNavigationManager.Instance.NavigateTo(new ValidatePost(await SmartTradeService.Instance.GetPostAsync((int)Post.Id)));
+        SmartTradeNavigationManager.Instance.NavigateTo(new ValidatePost(await Proxy.GetPostAsync((int)Post.Id)));
     }
 
 

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SmartTrade.Services;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels
@@ -24,7 +25,7 @@ namespace SmartTrade.ViewModels
         {
            PostDTO postDto = CreatePostInfo(null);
 
-           await SmartTradeService.Instance.AddPostAsync(postDto);
+           await Service.AddPostAsync(postDto);
            SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
         }
     }

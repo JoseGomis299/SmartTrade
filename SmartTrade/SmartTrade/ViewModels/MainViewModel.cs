@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using SmartTrade.Views;
 using SmartTradeDTOs;
 using ReactiveUI;
+using SmartTrade.Services;
 
 namespace SmartTrade.ViewModels;
 
@@ -19,6 +20,8 @@ public class MainViewModel : ViewModelBase
     private bool _cartVisible;
     private bool _buttonsVisible;
 
+    public UserType LoggedType => Service.GetUserType();
+
     public MainViewModel()
     {
         SearchAutoComplete = new ObservableCollection<string>();
@@ -29,15 +32,15 @@ public class MainViewModel : ViewModelBase
         
         await mainView.ShowCatalogAsync();
 
-        foreach (var name in SmartTradeService.Instance.Posts.Select(x => x.Title))
+        foreach (var name in Proxy.Posts.Select(x => x.Title))
         {
             SearchAutoComplete.Add(name);
         }
 
-        SmartTradeService.Instance.OnPostsChanged += () =>
+        Proxy.OnPostsChanged += () =>
         {
             SearchAutoComplete.Clear();
-            foreach (var name in SmartTradeService.Instance.Posts.Select(x => x.Title))
+            foreach (var name in Proxy.Posts.Select(x => x.Title))
             {
                 SearchAutoComplete.Add(name);
             }
@@ -46,7 +49,7 @@ public class MainViewModel : ViewModelBase
 
     public List<SimplePostDTO>? FindProducts()
     {
-        return  SmartTradeService.Instance.GetPostsFuzzyContain(SearchText); 
+        return  Service.GetPostsFuzzyContain(SearchText); 
     }
 
     public bool CartVisible

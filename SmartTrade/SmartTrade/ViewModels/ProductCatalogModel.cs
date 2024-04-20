@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
+using SmartTrade.Services;
 
 namespace SmartTrade.ViewModels
 {
@@ -24,7 +25,7 @@ namespace SmartTrade.ViewModels
 
         public override async Task LoadProductsAsync()
         {
-            List<SimplePostDTO>? posts = await SmartTradeService.Instance.GetPostsAsync();
+            List<SimplePostDTO>? posts = await Proxy.UpdatePostsAsync();
 
             posts.ForEach(post =>
             {

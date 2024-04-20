@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using SmartTrade;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
 using SmartTrade.ViewModels;
@@ -7,6 +6,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
 using System.Threading.Tasks;
+using SmartTrade.Services;
 
 
 namespace SmartTrade.Views
@@ -20,6 +20,8 @@ namespace SmartTrade.Views
         private Bitmap? _isNotEco;
 
         private bool _isAlertActivated;
+
+        public ProductViewModel _model => (ProductViewModel)DataContext;
 
         public ProductView() 
         {
@@ -90,7 +92,7 @@ namespace SmartTrade.Views
 
         private void SetAlertImage()
         {
-            if (SmartTradeService.Instance.Logged == null || !(_post.Offers[0].Product.UsersWithAlertsInThisProduct.Contains(SmartTradeService.Instance.Logged.Email)))
+            if (_model.Logged == null || !(_post.Offers[0].Product.UsersWithAlertsInThisProduct.Contains(_model.Logged.Email)))
             {
                 AlertToggle.IsChecked = false;
               //  AlertImage.Source = _alertDeactivated;
@@ -116,20 +118,20 @@ namespace SmartTrade.Views
 
         private void ToggleAlert(object sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            if (SmartTradeService.Instance.Logged == null)
+            if (_model.Logged == null)
             {
                 return;
             }
 
             if (AlertToggle.IsChecked == true)
             {
-                _post.Offers[0].Product.UsersWithAlertsInThisProduct.Add(SmartTradeService.Instance.Logged.Email);
+                _post.Offers[0].Product.UsersWithAlertsInThisProduct.Add(_model.Logged.Email);
                 _isAlertActivated = true;
                 //AlertImage.Source = _alertActivated;
             }
             else
             {
-                _post.Offers[0].Product.UsersWithAlertsInThisProduct.Remove(SmartTradeService.Instance.Logged.Email);
+                _post.Offers[0].Product.UsersWithAlertsInThisProduct.Remove(_model.Logged.Email);
                 _isAlertActivated = false;
                 //AlertImage.Source = _alertDeactivated;
             }
@@ -137,20 +139,20 @@ namespace SmartTrade.Views
 
         private async void OnNavigateAsync(Type type)
         {
-            if (SmartTradeService.Instance.Logged == null)
+            if (_model.Logged == null)
             {
                 return;
             }
 
             if (_isAlertActivated && type != typeof(ProductView) && SmartTradeNavigationManager.Instance.Navigator.PreviousView.GetType() == typeof(ProductView))
             {
-                await SmartTradeService.Instance.CreateAlertAsync(_post.Offers[0].Product.Id);
+                await _model.CreateAlertAsync(_post.Offers[0].Product.Id);
             }
         }
 
         private void SetToggleVisibility()
         {
-            if (SmartTradeService.Instance.Logged == null || (SmartTradeService.Instance.Logged.IsAdmin || SmartTradeService.Instance.Logged.IsSeller))
+            if (_model.Logged == null || _model.Logged.GetUserType() != UserType.Consumer)
             {
                 AlertToggle.IsVisible = false;
             }

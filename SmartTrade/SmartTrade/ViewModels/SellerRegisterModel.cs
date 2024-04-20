@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using SmartTrade.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace SmartTrade.ViewModels
         public async Task RegisterSeller()
         {
             ValidarDniCif();
-            await SmartTradeService.Instance.RegisterSellerAsync(Email, Password, Name, LastNames,CIF, Company, IBAN);
+            await Service.RegisterSellerAsync(Email, Password, Name, LastNames,CIF, Company, IBAN);
         }
         public void ValidarDniCif()
         {

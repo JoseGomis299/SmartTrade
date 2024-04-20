@@ -2,12 +2,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
+using SmartTrade.Services;
 using SmartTrade.Views;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
 
-public class NotificationModel : ReactiveObject
+public class NotificationModel : ViewModelBase
 {
     public string? Name { get; set; }
     public string? Price { get; set; }
@@ -27,7 +28,7 @@ public class NotificationModel : ReactiveObject
         OpenProductCommand = ReactiveCommand.CreateFromTask(OpenProduct);
         DeleteNotificationCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await SmartTradeService.Instance.DeleteNotificationAsync(notification.Id);
+            await Service.DeleteNotificationAsync(notification.Id);
             alertViewModel.ProductsNotifications.Remove(this);
         });
 
@@ -39,9 +40,9 @@ public class NotificationModel : ReactiveObject
 
     private async Task OpenProduct()
     {
-        if(!_notification.Visited) await SmartTradeService.Instance.SetNotificationAsVisitedAsync(_notification.Id);
+        if(!_notification.Visited) await Service.SetNotificationAsVisitedAsync(_notification.Id);
 
-        var view = new ProductView(await SmartTradeService.Instance.GetPostAsync((int)Post.Id));
+        var view = new ProductView(await Proxy.GetPostAsync((int)Post.Id));
         SmartTradeNavigationManager.Instance.NavigateTo(view);
         ((ProductViewModel)view.DataContext).LoadProducts();
     }

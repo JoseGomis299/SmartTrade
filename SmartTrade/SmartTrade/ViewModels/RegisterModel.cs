@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SmartTradeDTOs;
+using SmartTrade.Services;
 
 namespace SmartTrade.ViewModels
 {
@@ -104,8 +105,8 @@ namespace SmartTrade.ViewModels
             Validar();
             Address consumerAddress = new Address(Province, Street, Municipality, PostalCode, Number, Door);
 
-            await SmartTradeService.Instance.RegisterConsumerAsync(Email, Password, Name, LastNames, DNI, (DateTime)DateBirth, consumerAddress, consumerAddress);
-            UserDTO Logged = SmartTradeService.Instance.Logged;
+            await Service.RegisterConsumerAsync(Email, Password, Name, LastNames, DNI, (DateTime)DateBirth, consumerAddress, consumerAddress);
+            UserDTO Logged = Service.Logged;
             if (_Paypalemail != null && _Paypalpassword != null)
             {
                 PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
@@ -119,17 +120,17 @@ namespace SmartTrade.ViewModels
             if (_Paypalemail != null && _Paypalpassword != null)
             {
                 PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
-                await SmartTradeService.Instance.AddPaypalAsync(paypalData, PaypalEmail);
+                await Service.AddPaypalAsync(paypalData, PaypalEmail);
             }
             if(CreditCardCVV != null && CreditCardName !=null && CreditCardNumber !=null && CreditCardExpiryDate != null)
             {
                 CreditCardInfo creditCard = new CreditCardInfo(CreditCardNumber,ConvertExpiryDate(),CreditCardCVV,CreditCardName);
-                await SmartTradeService.Instance.AddCreditCardAsync(creditCard);
+                await Service.AddCreditCardAsync(creditCard);
             }
             if (BizumNumber != null)
             {
                 BizumInfo bizum = new BizumInfo(BizumNumber);
-                await SmartTradeService.Instance.AddBizumAsync(bizum);
+                await Service.AddBizumAsync(bizum);
             }
         }
 

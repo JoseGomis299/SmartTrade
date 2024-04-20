@@ -6,6 +6,8 @@ using SmartTrade.ViewModels;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System.Threading.Tasks;
+using SmartTrade.Services;
+using SmartTradeDTOs;
 
 namespace SmartTrade.Views;
 
@@ -19,7 +21,6 @@ public partial class MainView : UserControl
     private Bitmap? _cartImageSelected;
     private Bitmap? _userImageSelected;
     private Bitmap? _homeImageSelected;
-    private Bitmap? _addToCart;
     private Bitmap? _alertImage;
 
     int _selectedButton = 0;
@@ -81,14 +82,14 @@ public partial class MainView : UserControl
 
     private void SetButtonVisibility()
     {
-        if (SmartTradeService.Instance.Logged != null && (SmartTradeService.Instance.Logged.IsAdmin || SmartTradeService.Instance.Logged.IsSeller))
+        if (_model.LoggedType == UserType.Admin || _model.LoggedType == UserType.Seller)
         {
             ShoppingCartButton.IsVisible = false;
             ShoppingCartButton2.IsVisible = false;
             AddToCartButton.IsVisible = false;
             AlertButton.IsVisible = false;
         }
-        else if (SmartTradeService.Instance.Logged != null)
+        else if (_model.LoggedType == UserType.Consumer)
         {
             ShoppingCartButton.IsVisible = true;
             ShoppingCartButton2.IsVisible = true;
@@ -160,7 +161,7 @@ public partial class MainView : UserControl
         }
 
         HideLoadingScreen();
-        if (SmartTradeService.Instance.Logged == null)
+        if (_model.LoggedType == UserType.None)
             SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), _selectedButton, 2, out _);
         else SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Profile), _selectedButton, 2, out _);
     }
@@ -175,19 +176,19 @@ public partial class MainView : UserControl
         }
 
         HideLoadingScreen();
-        if (SmartTradeService.Instance.Logged == null)
+        if (_model.LoggedType == UserType.None)
         {
             await NavigateTo(typeof(ProductCatalog));
             return;
         }
 
-        if (SmartTradeService.Instance.Logged.IsSeller)
+        if (_model.LoggedType == UserType.Seller)
         {
             await NavigateTo(typeof(SellerCatalog));
             return;
         }
 
-        if (SmartTradeService.Instance.Logged.IsAdmin)
+        if (_model.LoggedType == UserType.Admin)
         {
             await NavigateTo(typeof(AdminCatalog));
             return;
@@ -240,7 +241,6 @@ public partial class MainView : UserControl
     {
         AlertView view = new AlertView();
         AlertViewModel model = (AlertViewModel)view.DataContext;
-        await model.LoadNotificationsAsync();
 
         SmartTradeNavigationManager.Instance.NavigateTo(view);
     }
@@ -320,32 +320,22 @@ public partial class MainView : UserControl
 
     public async Task ShowCatalogReinitializingAsync()
     {
-        //if (_isLoadingHome)
-        //{
-        //    SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 0, out _);
-        //    ShowLoadingScreen();
-        //    return;
-        //}
-
         SetButtonVisibility();
         HideLoadingScreen();
-        if (SmartTradeService.Instance.Logged == null || SmartTradeService.Instance.Logged.IsConsumer)
-        {
-            await NavigateTo(new ProductCatalog());
-            return;
-        }
 
-        if (SmartTradeService.Instance.Logged.IsSeller)
+        if (_model.LoggedType == UserType.Seller)
         {
             await NavigateTo(new SellerCatalog());
             return;
         }
 
-        if (SmartTradeService.Instance.Logged.IsAdmin)
+        if (_model.LoggedType == UserType.Admin)
         {
             await NavigateTo(new AdminCatalog());
             return;
         }
+
+        await NavigateTo(new ProductCatalog());
 
         async Task NavigateTo(UserControl catalog)
         {

@@ -1,17 +1,19 @@
 ﻿using System.Collections.ObjectModel;
 using ReactiveUI;
+using SmartTrade.Services;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
 
-public class ProfileModel : ReactiveObject
+public class ProfileModel : ViewModelBase
 {
     public ObservableCollection<string> ProfileData { get; set; }
+    public UserType LoggedType => Service.GetUserType();
 
     public ProfileModel()
     {
         ProfileData = new ObservableCollection<string>();
-        SetProfileData(SmartTradeService.Instance.Logged);
+        SetProfileData(Service.Logged);
     }
 
     public void SetProfileData(UserDTO? user)
@@ -45,5 +47,9 @@ public class ProfileModel : ReactiveObject
         {
             ProfileData.Add("User Type: Admin");
         }
+    }
+    public void LogOut()
+    {
+        Service.LogOut();
     }
 }

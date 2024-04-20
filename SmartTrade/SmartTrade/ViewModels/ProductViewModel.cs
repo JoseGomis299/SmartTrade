@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -10,11 +11,12 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Utilities;
 using ReactiveUI;
+using SmartTrade.Services;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels
 {
-    public class ProductViewModel : ReactiveObject
+    public class ProductViewModel : ViewModelBase
 	{
         public event Action OnOfferChanged;
 
@@ -35,6 +37,8 @@ namespace SmartTrade.ViewModels
         private Bitmap? _alertDeactivated {  get; set; }
         public Bitmap? AlertToggle {  get; set; }
         private ToggleButton? _alertToggle;
+
+        public UserDTO? Logged => Service.Logged;
 
         public ProductViewModel()
         {
@@ -95,7 +99,7 @@ namespace SmartTrade.ViewModels
 
         public void LoadProducts()
         {
-            IEnumerable<SimplePostDTO>? posts = SmartTradeService.Instance.Posts;
+            IEnumerable<SimplePostDTO>? posts = Proxy.Posts;
 
             foreach(var post in posts)
             {
@@ -145,6 +149,11 @@ namespace SmartTrade.ViewModels
             this.RaisePropertyChanged(nameof(Details));
 
             OnOfferChanged?.Invoke();
+        }
+
+        public async Task CreateAlertAsync(int productId)
+        {
+            await Service.CreateAlertAsync(productId);
         }
     }
 

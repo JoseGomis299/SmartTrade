@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartTradeDTOs;
+using SmartTrade.Services;
 
 namespace SmartTrade.ViewModels;
 
@@ -20,7 +21,7 @@ public class SellerCatalogModel : CatalogModel
 
     public override async Task LoadProductsAsync()
     {
-        List<SimplePostDTO>? posts = await SmartTradeService.Instance.GetPostsAsync();
+        List<SimplePostDTO>? posts = await Proxy.UpdatePostsAsync();
         
         posts.ForEach(post =>
         {
