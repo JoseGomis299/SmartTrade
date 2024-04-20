@@ -52,22 +52,25 @@ namespace SmartTrade.Views
 
             try
             {
+                _model.ValidarEmail();
                 await _model.Login(_model.Email, _model.Password);
                 if (_model.Logged == null) { return; }
                 await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Incorrect password"))
+
+                if (ex.Message.Contains("Invalid email. Please enter a valid email"))
                 {
-                    TextBoxPassword.ErrorMessage.BringIntoView();
-                    TextBoxPassword.ErrorMessage.Text = ex.Message;
+                    TextBoxEmail.BringIntoView();
+                    TextBoxEmail.ErrorText = ex.Message;
                 }
 
-                if (ex.Message.Contains("Unregistered user"))
+                if (ex.Message.Contains("Email or Password are incorrect"))
                 {
-                    TextBoxEmail.ErrorMessage.BringIntoView();
-                    TextBoxEmail.ErrorMessage.Text = ex.Message;
+                    TextBoxEmail.BringIntoView();
+                    TextBoxEmail.ErrorText = ex.Message;
+                    TextBoxPassword.ErrorText = ex.Message;     
                 }
             }
         }

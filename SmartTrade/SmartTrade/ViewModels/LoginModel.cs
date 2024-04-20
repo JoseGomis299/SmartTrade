@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
+using System.Text.RegularExpressions;
+using System;
 
 
 namespace SmartTrade.ViewModels
@@ -11,9 +13,26 @@ namespace SmartTrade.ViewModels
         public string? Email { get; set; }
         public string? Password { get; set; }
         public UserDTO Logged => SmartTradeService.Instance.Logged;
+
+        public void ValidarEmail()
+        {
+            string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
+            if (!Regex.IsMatch(Email, pattern))
+            {
+                throw new ArgumentException("Invalid email. Please enter a valid email");
+            }
+        }
+
         public async Task Login(string email, string password)
         {
-           await SmartTradeService.Instance.LogInAsync(email, password);
+            try
+            {
+                await SmartTradeService.Instance.LogInAsync(email, password);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Email or Password are incorrect");
+            }
         }
     }
 }

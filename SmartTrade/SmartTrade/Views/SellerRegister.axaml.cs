@@ -107,14 +107,14 @@ namespace SmartTrade.Views
             {
                 if (ex.Message.Contains("Existing user"))
                 {
-                    TextBoxEmail.ErrorMessage.BringIntoView();
-                    TextBoxEmail.ErrorMessage.Text = ex.Message;
+                    TextBoxEmail.BringIntoView();
+                    TextBoxEmail.ErrorText = ex.Message;
                 }
 
                 if (ex.Message.Contains("Incorrect CIF/DNI. Please enter a valid CIF/DNI"))
                 {
-                    TextBoxCIF.ErrorMessage.BringIntoView();
-                    TextBoxCIF.ErrorMessage.Text = ex.Message;
+                    TextBoxCIF.BringIntoView();
+                    TextBoxCIF.ErrorText = ex.Message;
                 }
             }
             

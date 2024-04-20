@@ -26,7 +26,8 @@ public class SmartTradeService
     {
         Logged = JsonConvert.DeserializeObject<UserDTO>(json);
 
-        if (Logged == null) return;
+       if (Logged == null) { throw new Exception("Email or Password are incorrects"); }
+        
 
         if (Logged.IsConsumer)
         {
@@ -49,7 +50,7 @@ public class SmartTradeService
         string json = JsonConvert.SerializeObject(new { Email = email, Password = password });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        await SetLogged(await PerformApiInstructionAsync("User/Login", ApiInstruction.Post, content));
+        await SetLogged(await PerformApiInstructionAsync("User/LogIn", ApiInstruction.Post, content));
     }
 
     public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
