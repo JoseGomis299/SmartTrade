@@ -64,17 +64,12 @@ namespace SmartTrade.Controls
         {
             if (change.Property == DataSourceProperty)
             {
+                DataSource.CollectionChanged -= ShowIfContent;
+                DataSource.CollectionChanged += ShowIfContent;
+
                 if (DataSource.Count == 0)
                 {
                     Hide();
-
-                    DataSource.CollectionChanged += (sender, args) =>
-                    {
-                        if (DataSource.Count > 0)
-                        {
-                            Show();
-                        }
-                    };
                 }
                 else
                 {
@@ -94,6 +89,19 @@ namespace SmartTrade.Controls
                 }
             }
             base.OnPropertyChanged(change);
+        }
+
+        private void ShowIfContent(object? sender, NotifyCollectionChangedEventArgs args)
+        {
+            if (DataSource.Count > 0)
+            {
+                Show();
+            }
+
+            if (DataSource.Count == 0)
+            {
+                Hide();
+            }
         }
     }
 }

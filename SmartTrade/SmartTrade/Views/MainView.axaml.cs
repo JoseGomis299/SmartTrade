@@ -386,7 +386,7 @@ public partial class MainView : UserControl
         if (e.Key.Equals(Key.Enter))
         {
             int loadingScreen = StartLoading();
-            SearchResult searchResult = new SearchResult(await _model.LoadProductsAsync());
+            SearchResult searchResult = new SearchResult(_model.FindProducts());
             if(_selectedButton ==  loadingScreen) SmartTradeNavigationManager.Instance.NavigateToOverriding(searchResult);
             else SmartTradeNavigationManager.Instance.AddToStack(searchResult, loadingScreen);
 

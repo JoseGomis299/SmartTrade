@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using FuzzySharp;
 using Newtonsoft.Json;
 using SmartTrade.Entities;
 using SmartTradeDTOs;
@@ -103,9 +104,10 @@ public class SmartTradeService
         return JsonConvert.DeserializeObject<List<string>>(await PerformApiInstructionAsync("Post/GetAllNames", ApiInstruction.Get));
     }
 
-    public async Task<List<SimplePostDTO>?> GetPostsFuzzyContainAsync(string? searchText)
+    public List<SimplePostDTO>? GetPostsFuzzyContain(string? searchText)
     {
-        return JsonConvert.DeserializeObject<List<SimplePostDTO>>(await PerformApiInstructionAsync("Post/GetContaining?content=" + Uri.EscapeDataString(searchText), ApiInstruction.Get));
+        return Posts.Where(x => Fuzz.PartialTokenSortRatio(searchText, x.Title) > 60)
+            .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchText, x.Title)).ToList();
     }
 
     public async Task EditPostAsync(int postId, PostDTO postInfo)

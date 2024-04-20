@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Newtonsoft.Json;
@@ -28,50 +29,25 @@ public class MainViewModel : ViewModelBase
         
         await mainView.ShowCatalogAsync();
 
-        foreach (var name in (await SmartTradeService.Instance.GetPostsNamesAsync())!)
+        foreach (var name in SmartTradeService.Instance.Posts.Select(x => x.Title))
         {
             SearchAutoComplete.Add(name);
         }
+
+        SmartTradeService.Instance.OnPostsChanged += () =>
+        {
+            SearchAutoComplete.Clear();
+            foreach (var name in SmartTradeService.Instance.Posts.Select(x => x.Title))
+            {
+                SearchAutoComplete.Add(name);
+            }
+        };
     }
 
-    public async Task<List<SimplePostDTO>?> LoadProductsAsync()
+    public List<SimplePostDTO>? FindProducts()
     {
-        if (SearchText == "") { return new List<SimplePostDTO>(); }
-        else { return await SmartTradeService.Instance.GetPostsFuzzyContainAsync(SearchText); }
+        return  SmartTradeService.Instance.GetPostsFuzzyContain(SearchText); 
     }
-
-
-    //public async Task<UserControl> GetCatalogAsync()
-    //{
-    //    if (SmartTradeService.Instance.Logged == null)
-    //    {
-    //        ProductCatalog productCatalog = new ProductCatalog();
-    //        await ((ProductCatalogModel)productCatalog.DataContext).LoadProductsAsync();
-
-    //        return productCatalog;
-    //    }
-
-    //    if (SmartTradeService.Instance.Logged.IsSeller)
-    //    {
-    //        SellerCatalog sellerCatalog = new SellerCatalog();
-    //        await ((SellerCatalogModel)sellerCatalog.DataContext).LoadProductsAsync();
-
-    //        return sellerCatalog;
-    //    }
-
-    //    if (SmartTradeService.Instance.Logged.IsAdmin)
-    //    {
-    //        AdminCatalog adminCatalog = new AdminCatalog();
-    //        await ((AdminCatalogModel)adminCatalog.DataContext).LoadProductsAsync();
-
-    //        return adminCatalog;
-    //    }
-
-    //    ProductCatalog productCatalogg = new ProductCatalog();
-    //    await ((ProductCatalogModel)productCatalogg.DataContext).LoadProductsAsync();
-
-    //    return productCatalogg;
-    //}
 
     public bool CartVisible
     {

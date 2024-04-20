@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SmartTrade.Entities;
+﻿using SmartTrade.Entities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
