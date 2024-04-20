@@ -14,6 +14,8 @@ namespace SmartTrade;
 
 public class SmartTradeService
 {
+    public event Action OnPostsChanged;
+
     private static SmartTradeService? _instance;
     public static SmartTradeService Instance => _instance ??= new SmartTradeService();
 
@@ -26,8 +28,7 @@ public class SmartTradeService
     {
         Logged = JsonConvert.DeserializeObject<UserDTO>(json);
 
-       if (Logged == null) { throw new Exception("Email or Password are incorrects"); }
-        
+        if (Logged == null) return;
 
         if (Logged.IsConsumer)
         {
@@ -50,7 +51,7 @@ public class SmartTradeService
         string json = JsonConvert.SerializeObject(new { Email = email, Password = password });
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        await SetLogged(await PerformApiInstructionAsync("User/LogIn", ApiInstruction.Post, content));
+        await SetLogged(await PerformApiInstructionAsync("User/Login", ApiInstruction.Post, content));
     }
 
     public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -92,6 +93,7 @@ public class SmartTradeService
     public async Task<List<SimplePostDTO>?> GetPostsAsync()
     {
         _posts = JsonConvert.DeserializeObject<List<SimplePostDTO>>(await PerformApiInstructionAsync("Post/GetAll", ApiInstruction.Get));
+        OnPostsChanged?.Invoke();
         return _posts;
     }
 
