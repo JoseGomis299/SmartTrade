@@ -78,9 +78,6 @@ public class SmartTradeBroker
     /// <para>
     ///  El contenido son los argumentos de la API [FromBody].
     /// </para>
-    /// <para>
-    /// Este contenido debe ser un objeto serializado en formato JSON.
-    /// </para>
     /// </para>
     /// </summary>
     /// 
