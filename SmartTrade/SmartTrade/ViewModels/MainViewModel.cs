@@ -20,7 +20,7 @@ public class MainViewModel : ViewModelBase
     private bool _cartVisible;
     private bool _buttonsVisible;
 
-    public UserType LoggedType => Service.GetUserType();
+    public UserType LoggedType => Service.LoggedType;
 
     public MainViewModel()
     {
@@ -32,15 +32,15 @@ public class MainViewModel : ViewModelBase
         
         await mainView.ShowCatalogAsync();
 
-        foreach (var name in Proxy.Posts.Select(x => x.Title))
+        foreach (var name in Service.Posts.Select(x => x.Title))
         {
             SearchAutoComplete.Add(name);
         }
 
-        Proxy.OnPostsChanged += () =>
+        Service.OnPostsChanged += () =>
         {
             SearchAutoComplete.Clear();
-            foreach (var name in Proxy.Posts.Select(x => x.Title))
+            foreach (var name in Service.Posts.Select(x => x.Title))
             {
                 SearchAutoComplete.Add(name);
             }

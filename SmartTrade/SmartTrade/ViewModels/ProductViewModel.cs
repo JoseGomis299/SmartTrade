@@ -87,7 +87,7 @@ namespace SmartTrade.ViewModels
 
         //private void SetAlertImage()
         //{
-        //    if (SmartTradeService.Instance.Logged == null /*|| postView.Offers[0].Product.UsersWithAlertsInThisProduct[0] != SmartTradeService.Instance.Logged.Name*/)
+        //    if (SmartTradeBroker.Instance.Logged == null /*|| postView.Offers[0].Product.UsersWithAlertsInThisProduct[0] != SmartTradeBroker.Instance.Logged.Name*/)
         //    {
         //        AlertImage = _alertDeactivated;
         //    }
@@ -99,7 +99,7 @@ namespace SmartTrade.ViewModels
 
         public void LoadProducts()
         {
-            IEnumerable<SimplePostDTO>? posts = Proxy.Posts;
+            IEnumerable<SimplePostDTO>? posts = Service.Posts;
 
             foreach(var post in posts)
             {

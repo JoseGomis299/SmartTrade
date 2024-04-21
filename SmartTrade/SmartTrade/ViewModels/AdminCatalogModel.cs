@@ -20,9 +20,9 @@ public class AdminCatalogModel : CatalogModel
 
     public override async Task LoadProductsAsync()
     {
-        await Proxy.UpdatePostsAsync();
+        await Service.RefreshPostsAsync();
 
-        Proxy.Posts.ForEach(post =>
+        Service.Posts.ForEach(post =>
         {
             MyProducts.Add(new ProductModel(post));
         });

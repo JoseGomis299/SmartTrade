@@ -42,7 +42,7 @@ public class NotificationModel : ViewModelBase
     {
         if(!_notification.Visited) await Service.SetNotificationAsVisitedAsync(_notification.Id);
 
-        var view = new ProductView(await Proxy.GetPostAsync((int)Post.Id));
+        var view = new ProductView(await Service.GetPostAsync((int)Post.Id));
         SmartTradeNavigationManager.Instance.NavigateTo(view);
         ((ProductViewModel)view.DataContext).LoadProducts();
     }

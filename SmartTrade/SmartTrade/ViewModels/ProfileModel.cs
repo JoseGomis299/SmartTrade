@@ -8,7 +8,7 @@ namespace SmartTrade.ViewModels;
 public class ProfileModel : ViewModelBase
 {
     public ObservableCollection<string> ProfileData { get; set; }
-    public UserType LoggedType => Service.GetUserType();
+    public UserType LoggedType => Service.LoggedType;
 
     public ProfileModel()
     {

@@ -16,91 +16,64 @@ namespace SmartTrade.Services
         public List<SimplePostDTO>? Posts => _simplePosts;
         public List<NotificationDTO>? Notifications { get; set; }
 
-        private bool _connectedToApi;
-        private bool _initialized;
-
-        private SmartTradeService _service;
-
         public void SetPosts(List<SimplePostDTO>? posts)
         {
             _simplePosts = posts;
             OnPostsChanged?.Invoke();
         }
 
-        private async Task InitializeProxyAsync()
+        public PostDTO? GetPost(int postId)
         {
-            ServiceFactory factory = new();
-            _service = factory.GetService();
-            Uri filePath = new Uri("avares://SmartTrade/Assets/SimplePostData.json");
-            _initialized = true;
-
-            try
-            {
-                SetPosts(await _service.GetPostsAsync());
-                if(Posts == null) throw new Exception("Could not get posts from API.");
-
-                //Save data to local file
-
-                //string jsonPosts = JsonConvert.SerializeObject(Posts);
-                //var assembly = AssetLoader.GetAssembly(new Uri("avares://SmartTrade/Assets"));
-                //using Stream stream = assembly.GetManifestResourceStream("SmartTrade.Assets.SimplePostData.json");
-                //using StreamWriter writer = new(filePath.LocalPath);
-                //await writer.WriteAsync(jsonPosts);
-                _connectedToApi = true;
-            }
-            catch(Exception _)
-            {
-                Console.WriteLine("Could not reach API. Getting local data...");
-
-                if (AssetLoader.Exists(filePath))
-                {
-                    Stream stream = AssetLoader.Open(filePath);
-                    StreamReader reader = new(stream);
-                    string jsonPosts = await reader.ReadToEndAsync();
-
-                    SetPosts(JsonConvert.DeserializeObject<List<SimplePostDTO>>(jsonPosts));
-                    _connectedToApi = false;
-                }
-                else
-                {
-                    Console.WriteLine("Local data not found. Exiting...");
-                    Environment.Exit(1);
-                }
-            }
+            PostDTO? post = _completePosts.Find(x => x.Id == postId);
+            return post;
         }
 
-        public async Task<PostDTO> GetPostAsync(int postId)
+        public void StorePost(PostDTO post)
         {
-            if (_connectedToApi)
-            {
-                PostDTO? post = _completePosts.Find(x => x.Id == postId);
-                if(post != null) return post;
-
-                post = await _service.GetPostAsync(postId);
-                _completePosts.Add(post);
-                return post;
-            }
-            else
-            {
-                throw new Exception("Cannot get post from local data.");
-            }
+            _completePosts.Add(post);
         }
 
-        public async Task<List<SimplePostDTO>?> UpdatePostsAsync()
+        public void RemovePost(int postId)
         {
-            if (!_initialized)
-            {
-                await InitializeProxyAsync();
-                return Posts;
-            }
+            SimplePostDTO? simplePost = GetSimplePost(postId);
+            PostDTO? post = GetCompletePost(postId);
 
-            if (_connectedToApi)
-            {
-                SetPosts(await _service.GetPostsAsync());
-                return Posts;
-            }
-            
-            return Posts;
+            if (simplePost != null)
+                Posts.Remove(simplePost);
+              
+            if(post != null)
+                _completePosts.Remove(post);
+        }
+
+        public void RemoveNotification(int notificationId)
+        {
+            NotificationDTO? notification = GetNotification(notificationId);
+         
+            if (notification != null) Notifications.Remove(notification);
+        }
+
+        public void MarkNotificationAsVisited(int notificationId)
+        {
+            NotificationDTO? notification = GetNotification(notificationId);
+            if (notification != null) notification.Visited = true;
+        }
+
+        private NotificationDTO? GetNotification(int notificationId)
+        {
+            NotificationDTO? notification = Notifications.Find(x => x.Id == notificationId);
+            return notification;
+        }
+
+        private SimplePostDTO? GetSimplePost(int postId)
+        {
+            SimplePostDTO? simplePost = Posts.Find(x => x.Id == postId);
+            return simplePost;
+        }
+
+        private PostDTO? GetCompletePost(int postId)
+        {
+            PostDTO? post = _completePosts.Find(x => x.Id == postId);
+            return post;
         }
     }
 }

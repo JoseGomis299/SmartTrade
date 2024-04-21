@@ -25,7 +25,7 @@ namespace SmartTrade.ViewModels
 
         public override async Task LoadProductsAsync()
         {
-            List<SimplePostDTO>? posts = await Proxy.UpdatePostsAsync();
+            List<SimplePostDTO>? posts = await Service.RefreshPostsAsync();
 
             posts.ForEach(post =>
             {

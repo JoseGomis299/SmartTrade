@@ -241,6 +241,7 @@ public partial class MainView : UserControl
     {
         AlertView view = new AlertView();
         AlertViewModel model = (AlertViewModel)view.DataContext;
+        await model.LoadNotificationsAsync();
 
         SmartTradeNavigationManager.Instance.NavigateTo(view);
     }

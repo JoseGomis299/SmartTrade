@@ -16,13 +16,11 @@ namespace SmartTrade.ViewModels
         public AlertViewModel() 
 		{
             ProductsNotifications = new ObservableCollection<NotificationModel>();
-
-            LoadNotifications();
         }
 
-        public void LoadNotifications()
+        public async Task LoadNotificationsAsync()
         {
-            foreach (var notification in Proxy.Notifications)
+            foreach (var notification in await Service.GetNotificationsAsync())
             {
                 ProductsNotifications.Add(new NotificationModel(notification.Post, this, notification));
             }
