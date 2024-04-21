@@ -5,16 +5,10 @@ namespace SmartTrade.ViewModels;
 
 public class ViewModelBase : ReactiveObject
 {
-    protected static SmartTradeService? Service;
+    protected SmartTradeService? Service => SmartTradeService.Instance;
 
     public ViewModelBase()
     {
-        if (Service == null)
-        {
-            var broker = new SmartTradeBroker();
-            var proxy = new SmartTradeProxy();
-
-            Service = new SmartTradeService(broker, proxy);
-        }
+     
     }
 }

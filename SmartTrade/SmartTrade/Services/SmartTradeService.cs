@@ -34,10 +34,13 @@ namespace SmartTrade.Services
         private SmartTradeBroker _broker;
         private SmartTradeProxy _proxy;
 
-        public SmartTradeService(SmartTradeBroker broker, SmartTradeProxy proxy)
+        private static SmartTradeService? _instance;
+        public static SmartTradeService Instance => _instance ??= new SmartTradeService();
+
+        private SmartTradeService()
         {
-            _broker = broker;
-            _proxy = proxy;
+            _broker = new SmartTradeBroker();
+            _proxy = new SmartTradeProxy();
         }
 
         #region User
@@ -49,32 +52,32 @@ namespace SmartTrade.Services
 
         public async Task LogInAsync(string email, string password)
         {
-           await _broker.LogInAsync(email, password);
+           await _broker.UserApiClient.LogInAsync(email, password);
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
         {
-            await _broker.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
+            await _broker.UserApiClient.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
         }
 
         public async Task RegisterSellerAsync(string email, string password, string name, string lastnames, string dni, string companyName, string iban)
         {
-            await _broker.RegisterSellerAsync(email, password, name, lastnames, dni, companyName, iban);
+            await _broker.UserApiClient.RegisterSellerAsync(email, password, name, lastnames, dni, companyName, iban);
         }
 
         public async Task AddPaypalAsync(PayPalInfo paypalinfo, string loggedID)
         {
-            await _broker.AddPaypalAsync(paypalinfo, loggedID);
+            await _broker.UserApiClient.AddPaypalAsync(paypalinfo, loggedID);
         }
 
         public async Task AddCreditCardAsync(CreditCardInfo creditCard)
         {
-            await _broker.AddCreditCardAsync(creditCard);
+            await _broker.UserApiClient.AddCreditCardAsync(creditCard);
         }
 
         public async Task AddBizumAsync(BizumInfo bizum)
         {
-           await _broker.AddBizumAsync(bizum);
+           await _broker.UserApiClient.AddBizumAsync(bizum);
         }
 
         #endregion
@@ -89,14 +92,14 @@ namespace SmartTrade.Services
 
         public async Task AddPostAsync(PostDTO post)
         {
-            await _broker.AddPostAsync(post);
-            _proxy.SetPosts(await _broker.GetPostsAsync());
+            await _broker.PostApiClient.AddPostAsync(post);
+            _proxy.SetPosts(await _broker.PostApiClient.GetPostsAsync());
             
         }
 
         public async Task<List<SimplePostDTO>?> RefreshPostsAsync()
         {
-            var posts = await _broker.GetPostsAsync();
+            var posts = await _broker.PostApiClient.GetPostsAsync();
             _proxy.SetPosts(posts);
             return posts;
         }
@@ -106,20 +109,20 @@ namespace SmartTrade.Services
             PostDTO? post = _proxy.GetPost(postId);
             if (post != null) return post;
 
-            post = await _broker.GetPostAsync(postId);
+            post = await _broker.PostApiClient.GetPostAsync(postId);
             _proxy.StorePost(post);
             return post;
         }
 
         public async Task EditPostAsync(int postId, PostDTO postInfo)
         {
-            await _broker.EditPostAsync(postId, postInfo);
+            await _broker.PostApiClient.EditPostAsync(postId, postInfo);
         }
 
         public async Task DeletePostAsync(int postId)
         {
             _proxy.RemovePost(postId);
-            await _broker.DeletePostAsync(postId);
+            await _broker.PostApiClient.DeletePostAsync(postId);
         }
 
         #endregion
@@ -130,20 +133,20 @@ namespace SmartTrade.Services
         {
             if(_proxy.Notifications != null) return _proxy.Notifications;
 
-            _proxy.Notifications = await _broker.GetNotificationsAsync();
+            _proxy.Notifications = await _broker.NotificationApiClient.GetNotificationsAsync();
             return _proxy.Notifications;
         }
 
         public async Task DeleteNotificationAsync(int notificationId)
         {
             _proxy.RemoveNotification(notificationId);
-            await _broker.DeleteNotificationAsync(notificationId);
+            await _broker.NotificationApiClient.DeleteNotificationAsync(notificationId);
         }
 
         public async Task SetNotificationAsVisitedAsync(int notificationId)
         {
            _proxy.MarkNotificationAsVisited(notificationId);
-           await _broker.SetNotificationAsVisitedAsync(notificationId);
+           await _broker.NotificationApiClient.SetNotificationAsVisitedAsync(notificationId);
         }
 
         #endregion
@@ -152,17 +155,17 @@ namespace SmartTrade.Services
 
         public async Task<int> CreateAlertAsync(int productId)
         {
-            return await _broker.CreateAlertAsync(productId);
+            return await _broker.AlertApiClient.CreateAlertAsync(productId);
         }
 
         public async Task DeleteAlertAsync(int alertId)
         {
-            await _broker.DeleteAlertAsync(alertId);
+            await _broker.AlertApiClient.DeleteAlertAsync(alertId);
         }
 
         public async Task<AlertDTO?> GetAlertsAsync(string productName)
         {
-            return await _broker.GetAlertsAsync(productName);
+            return await _broker.AlertApiClient.GetAlertsAsync(productName);
         }
 
         #endregion

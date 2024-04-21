@@ -12,19 +12,19 @@ namespace SmartTrade.Services;
 
 public class SmartTradeBroker
 {
-    private UserApiClient _userApiClient;
-    private PostApiClient _postApiClient;
-    private NotificationApiClient _notificationApiClient;
-    private AlertApiClient _alertApiClient;
+    public UserApiClient UserApiClient;
+    public PostApiClient PostApiClient;
+    public NotificationApiClient NotificationApiClient;
+    public AlertApiClient AlertApiClient;
 
     public UserDTO? Logged { get; set; }
 
     public SmartTradeBroker()
     {
-        _userApiClient = new UserApiClient(this);
-        _postApiClient = new PostApiClient(this);
-        _notificationApiClient = new NotificationApiClient(this);
-        _alertApiClient = new AlertApiClient(this);
+        UserApiClient = new UserApiClient(this);
+        PostApiClient = new PostApiClient(this);
+        NotificationApiClient = new NotificationApiClient(this);
+        AlertApiClient = new AlertApiClient(this);
     }
 
     public void LogOut()
@@ -47,109 +47,9 @@ public class SmartTradeBroker
             Logged = JsonConvert.DeserializeObject<SellerDTO>(json);
         }
 
-        await GetNotificationsAsync();
+        await NotificationApiClient.GetNotificationsAsync();
     }
 
-    #region User Operations
-
-    public async Task LogInAsync(string email, string password)
-    {
-       await _userApiClient.LogInAsync(email, password);
-    }
-
-    public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
-    {
-       await _userApiClient.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
-    }
-
-    public async Task RegisterSellerAsync(string email, string password, string name, string lastnames, string dni, string companyName, string iban)
-    {
-       await _userApiClient.RegisterSellerAsync(email, password, name, lastnames, dni, companyName, iban);
-    }
-
-    public async Task AddPaypalAsync(PayPalInfo paypalinfo, string loggedID)
-    {
-        await _userApiClient.AddPaypalAsync(paypalinfo, loggedID);
-    }
-
-    public async Task AddCreditCardAsync(CreditCardInfo creditCard)
-    {
-        await _userApiClient.AddCreditCardAsync(creditCard);
-    }
-
-    public async Task AddBizumAsync(BizumInfo bizum)
-    {
-        await _userApiClient.AddBizumAsync(bizum);
-    }
-
-    #endregion
-
-    #region Post Operations
-
-    public async Task AddPostAsync(PostDTO post)
-    {
-        await _postApiClient.AddPostAsync(post);
-    }
-
-    public async Task<List<SimplePostDTO>?> GetPostsAsync()
-    {
-        return await _postApiClient.GetPostsAsync();
-    }
-
-    public async Task<PostDTO?> GetPostAsync(int postId)
-    {
-        return await _postApiClient.GetPostAsync(postId);
-    }
-
-    public async Task EditPostAsync(int postId, PostDTO postInfo)
-    {
-        await _postApiClient.EditPostAsync(postId, postInfo);
-    }
-
-    public async Task DeletePostAsync(int postId)
-    {
-        await _postApiClient.DeletePostAsync(postId);
-    }
-
-    #endregion
-
-    #region Notification Operations
-
-    public async Task<List<NotificationDTO>?> GetNotificationsAsync()
-    {
-        return await _notificationApiClient.GetNotificationsAsync();
-    }
-
-    public async Task DeleteNotificationAsync(int notificationId)
-    {
-        await _notificationApiClient.DeleteNotificationAsync(notificationId);
-    }
-
-    public async Task SetNotificationAsVisitedAsync(int notificationId)
-    {
-        await _notificationApiClient.SetNotificationAsVisitedAsync(notificationId);
-    }
-
-    #endregion
-
-    #region Alert Operations
-
-    public async Task<int> CreateAlertAsync(int productId)
-    {
-        return await _alertApiClient.CreateAlertAsync(productId);
-    }
-
-    public async Task DeleteAlertAsync(int alertId)
-    {
-        await _alertApiClient.DeleteAlertAsync(alertId);
-    }
-
-    public async Task<AlertDTO?> GetAlertsAsync(string productName)
-    {
-        return await _alertApiClient.GetAlertsAsync(productName);
-    }
-
-    #endregion
 
     /// <summary>
     /// Realiza una petición a la API
