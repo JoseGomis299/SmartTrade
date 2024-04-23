@@ -12,19 +12,19 @@ namespace SmartTrade.Services;
 
 public class SmartTradeBroker
 {
-    public UserApiClient UserApiClient;
-    public PostApiClient PostApiClient;
-    public NotificationApiClient NotificationApiClient;
-    public AlertApiClient AlertApiClient;
+    public UserRepository UserRepository;
+    public PostRepository PostRepository;
+    public NotificationRepository NotificationRepository;
+    public AlertRepository AlertRepository;
 
     public UserDTO? Logged { get; set; }
 
     public SmartTradeBroker()
     {
-        UserApiClient = new UserApiClient(this);
-        PostApiClient = new PostApiClient(this);
-        NotificationApiClient = new NotificationApiClient(this);
-        AlertApiClient = new AlertApiClient(this);
+        UserRepository = new UserRepository(this);
+        PostRepository = new PostRepository(this);
+        NotificationRepository = new NotificationRepository(this);
+        AlertRepository = new AlertRepository(this);
     }
 
     public void LogOut()
@@ -47,7 +47,7 @@ public class SmartTradeBroker
             Logged = JsonConvert.DeserializeObject<SellerDTO>(json);
         }
 
-        await NotificationApiClient.GetNotificationsAsync();
+        await NotificationRepository.GetNotificationsAsync();
     }
 
 

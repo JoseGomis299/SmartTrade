@@ -8,11 +8,11 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.Services.ApiClients;
 
-public class UserApiClient : ApiClient
+public class UserRepository : ApiRepository
 {
     public UserDTO? Logged => Broker.Logged;
 
-    public UserApiClient(SmartTradeBroker broker) : base(broker, "User") { }
+    public UserRepository(SmartTradeBroker broker) : base(broker, "User") { }
 
 
     public async Task LogInAsync(string email, string password)

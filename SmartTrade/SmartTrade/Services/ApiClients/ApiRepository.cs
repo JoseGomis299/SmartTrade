@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace SmartTrade.Services.ApiClients;
 
-public abstract class ApiClient
+public abstract class ApiRepository
 {
     protected SmartTradeBroker Broker { get; }
     protected string BasePath { get; }
 
-    protected ApiClient(SmartTradeBroker broker, string basePath)
+    protected ApiRepository(SmartTradeBroker broker, string basePath)
     {
         Broker = broker;
         BasePath = basePath;
