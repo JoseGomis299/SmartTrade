@@ -6,9 +6,9 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.Services.ApiClients;
 
-public class AlertRepository : ApiRepository
+public class AlertClient : ApiClient
 {
-    public AlertRepository(SmartTradeBroker broker) : base(broker, "Alert") { }
+    public AlertClient(SmartTradeBroker broker) : base(broker, "Alert") { }
 
     public async Task<int> CreateAlertAsync(int productId)
     {

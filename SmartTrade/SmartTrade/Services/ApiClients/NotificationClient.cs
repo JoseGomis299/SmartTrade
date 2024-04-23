@@ -5,9 +5,9 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.Services.ApiClients;
 
-public class NotificationRepository : ApiRepository
+public class NotificationClient : ApiClient
 {
-    public NotificationRepository(SmartTradeBroker broker) : base(broker, "Notification") { }
+    public NotificationClient(SmartTradeBroker broker) : base(broker, "Notification") { }
 
     public async Task<List<NotificationDTO>?> GetNotificationsAsync()
     {

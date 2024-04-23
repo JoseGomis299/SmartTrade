@@ -7,9 +7,9 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.Services.ApiClients;
 
-public class PostRepository : ApiRepository
+public class PostClient : ApiClient
 {
-    public PostRepository(SmartTradeBroker broker) : base(broker, "Post") { }
+    public PostClient(SmartTradeBroker broker) : base(broker, "Post") { }
 
     public async Task AddPostAsync(PostDTO post)
     {

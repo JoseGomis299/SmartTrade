@@ -52,32 +52,32 @@ namespace SmartTrade.Services
 
         public async Task LogInAsync(string email, string password)
         {
-           await _broker.UserRepository.LogInAsync(email, password);
+           await _broker.UserClient.LogInAsync(email, password);
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
         {
-            await _broker.UserRepository.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
+            await _broker.UserClient.RegisterConsumerAsync(email, password, name, lastnames, dni, dateBirth, billingAddress, consumerAddress);
         }
 
         public async Task RegisterSellerAsync(string email, string password, string name, string lastnames, string dni, string companyName, string iban)
         {
-            await _broker.UserRepository.RegisterSellerAsync(email, password, name, lastnames, dni, companyName, iban);
+            await _broker.UserClient.RegisterSellerAsync(email, password, name, lastnames, dni, companyName, iban);
         }
 
         public async Task AddPaypalAsync(PayPalInfo paypalinfo, string loggedID)
         {
-            await _broker.UserRepository.AddPaypalAsync(paypalinfo, loggedID);
+            await _broker.UserClient.AddPaypalAsync(paypalinfo, loggedID);
         }
 
         public async Task AddCreditCardAsync(CreditCardInfo creditCard)
         {
-            await _broker.UserRepository.AddCreditCardAsync(creditCard);
+            await _broker.UserClient.AddCreditCardAsync(creditCard);
         }
 
         public async Task AddBizumAsync(BizumInfo bizum)
         {
-           await _broker.UserRepository.AddBizumAsync(bizum);
+           await _broker.UserClient.AddBizumAsync(bizum);
         }
 
         #endregion
@@ -92,14 +92,14 @@ namespace SmartTrade.Services
 
         public async Task AddPostAsync(PostDTO post)
         {
-            await _broker.PostRepository.AddPostAsync(post);
-            _cache.SetPosts(await _broker.PostRepository.GetPostsAsync());
+            await _broker.PostClient.AddPostAsync(post);
+            _cache.SetPosts(await _broker.PostClient.GetPostsAsync());
             
         }
 
         public async Task<List<SimplePostDTO>?> RefreshPostsAsync()
         {
-            var posts = await _broker.PostRepository.GetPostsAsync();
+            var posts = await _broker.PostClient.GetPostsAsync();
             _cache.SetPosts(posts);
             return posts;
         }
@@ -109,20 +109,20 @@ namespace SmartTrade.Services
             PostDTO? post = _cache.GetPost(postId);
             if (post != null) return post;
 
-            post = await _broker.PostRepository.GetPostAsync(postId);
+            post = await _broker.PostClient.GetPostAsync(postId);
             _cache.StorePost(post);
             return post;
         }
 
         public async Task EditPostAsync(int postId, PostDTO postInfo)
         {
-            await _broker.PostRepository.EditPostAsync(postId, postInfo);
+            await _broker.PostClient.EditPostAsync(postId, postInfo);
         }
 
         public async Task DeletePostAsync(int postId)
         {
             _cache.RemovePost(postId);
-            await _broker.PostRepository.DeletePostAsync(postId);
+            await _broker.PostClient.DeletePostAsync(postId);
         }
 
         #endregion
@@ -133,20 +133,20 @@ namespace SmartTrade.Services
         {
             if(_cache.Notifications != null) return _cache.Notifications;
 
-            _cache.Notifications = await _broker.NotificationRepository.GetNotificationsAsync();
+            _cache.Notifications = await _broker.NotificationClient.GetNotificationsAsync();
             return _cache.Notifications;
         }
 
         public async Task DeleteNotificationAsync(int notificationId)
         {
             _cache.RemoveNotification(notificationId);
-            await _broker.NotificationRepository.DeleteNotificationAsync(notificationId);
+            await _broker.NotificationClient.DeleteNotificationAsync(notificationId);
         }
 
         public async Task SetNotificationAsVisitedAsync(int notificationId)
         {
            _cache.MarkNotificationAsVisited(notificationId);
-           await _broker.NotificationRepository.SetNotificationAsVisitedAsync(notificationId);
+           await _broker.NotificationClient.SetNotificationAsVisitedAsync(notificationId);
         }
 
         #endregion
@@ -155,17 +155,17 @@ namespace SmartTrade.Services
 
         public async Task<int> CreateAlertAsync(int productId)
         {
-            return await _broker.AlertRepository.CreateAlertAsync(productId);
+            return await _broker.AlertClient.CreateAlertAsync(productId);
         }
 
         public async Task DeleteAlertAsync(int alertId)
         {
-            await _broker.AlertRepository.DeleteAlertAsync(alertId);
+            await _broker.AlertClient.DeleteAlertAsync(alertId);
         }
 
         public async Task<AlertDTO?> GetAlertsAsync(string productName)
         {
-            return await _broker.AlertRepository.GetAlertsAsync(productName);
+            return await _broker.AlertClient.GetAlertsAsync(productName);
         }
 
         #endregion
