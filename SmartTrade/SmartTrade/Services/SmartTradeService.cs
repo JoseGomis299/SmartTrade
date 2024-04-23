@@ -13,13 +13,13 @@ namespace SmartTrade.Services
 {
     public class SmartTradeService
     {
-        public List<SimplePostDTO>? Posts => _proxy.Posts;
+        public List<SimplePostDTO>? Posts => _cache.Posts;
         public UserDTO? Logged => _broker.Logged;
 
         public event Action OnPostsChanged
         {
-            add => _proxy.OnPostsChanged += value;
-            remove => _proxy.OnPostsChanged -= value;
+            add => _cache.OnPostsChanged += value;
+            remove => _cache.OnPostsChanged -= value;
         }
 
         public UserType LoggedType
@@ -32,7 +32,7 @@ namespace SmartTrade.Services
         }
 
         private SmartTradeBroker _broker;
-        private SmartTradeProxy _proxy;
+        private SmartTradeCache _cache;
 
         private static SmartTradeService? _instance;
         public static SmartTradeService Instance => _instance ??= new SmartTradeService();
@@ -40,7 +40,7 @@ namespace SmartTrade.Services
         private SmartTradeService()
         {
             _broker = new SmartTradeBroker();
-            _proxy = new SmartTradeProxy();
+            _cache = new SmartTradeCache();
         }
 
         #region User
@@ -93,24 +93,24 @@ namespace SmartTrade.Services
         public async Task AddPostAsync(PostDTO post)
         {
             await _broker.PostApiClient.AddPostAsync(post);
-            _proxy.SetPosts(await _broker.PostApiClient.GetPostsAsync());
+            _cache.SetPosts(await _broker.PostApiClient.GetPostsAsync());
             
         }
 
         public async Task<List<SimplePostDTO>?> RefreshPostsAsync()
         {
             var posts = await _broker.PostApiClient.GetPostsAsync();
-            _proxy.SetPosts(posts);
+            _cache.SetPosts(posts);
             return posts;
         }
 
         public async Task<PostDTO> GetPostAsync(int postId)
         {
-            PostDTO? post = _proxy.GetPost(postId);
+            PostDTO? post = _cache.GetPost(postId);
             if (post != null) return post;
 
             post = await _broker.PostApiClient.GetPostAsync(postId);
-            _proxy.StorePost(post);
+            _cache.StorePost(post);
             return post;
         }
 
@@ -121,7 +121,7 @@ namespace SmartTrade.Services
 
         public async Task DeletePostAsync(int postId)
         {
-            _proxy.RemovePost(postId);
+            _cache.RemovePost(postId);
             await _broker.PostApiClient.DeletePostAsync(postId);
         }
 
@@ -131,21 +131,21 @@ namespace SmartTrade.Services
 
         public async Task<List<NotificationDTO>?> GetNotificationsAsync()
         {
-            if(_proxy.Notifications != null) return _proxy.Notifications;
+            if(_cache.Notifications != null) return _cache.Notifications;
 
-            _proxy.Notifications = await _broker.NotificationApiClient.GetNotificationsAsync();
-            return _proxy.Notifications;
+            _cache.Notifications = await _broker.NotificationApiClient.GetNotificationsAsync();
+            return _cache.Notifications;
         }
 
         public async Task DeleteNotificationAsync(int notificationId)
         {
-            _proxy.RemoveNotification(notificationId);
+            _cache.RemoveNotification(notificationId);
             await _broker.NotificationApiClient.DeleteNotificationAsync(notificationId);
         }
 
         public async Task SetNotificationAsVisitedAsync(int notificationId)
         {
-           _proxy.MarkNotificationAsVisited(notificationId);
+           _cache.MarkNotificationAsVisited(notificationId);
            await _broker.NotificationApiClient.SetNotificationAsVisitedAsync(notificationId);
         }
 

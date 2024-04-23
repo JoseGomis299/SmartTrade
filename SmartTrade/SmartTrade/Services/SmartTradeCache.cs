@@ -8,7 +8,7 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.Services
 {
-    public class SmartTradeProxy
+    public class SmartTradeCache
     {
         public event Action? OnPostsChanged;
         private List<PostDTO> _completePosts = new List<PostDTO>();
