@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="353" d:DesignHeight="1385"
+             x:Class="SmartTrade.Views.WishListViex"
+			 xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+             x:DataType="vm:WishListModel"
+             xmlns:controls="clr-namespace:SmartTrade.Controls">
+	
+	<Design.DataContext>
+		<vm:WishListModel/>
+	</Design.DataContext>
+	<StackPanel>
+		<ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+			<StackPanel Margin="10">
+				<TextBlock Classes="h1" HorizontalAlignment="Center" Text="WISHLIST"/>
+				<ItemsControl ItemsSource="{Binding ProductsInWishList}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Vertical" HorizontalAlignment="Center"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<controls:ST_ProductNotification Margin="10 0" Command="{Binding OpenProductCommand}" DeleteElement="{Binding DeleteNotificationCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</StackPanel>
+		</ScrollViewer>
+		<Button Content="+ Share list through email" HorizontalAlignment="Right" Margin="10" Classes="Green" Name="ShareWishListButton"/>
+	</StackPanel>	
+</UserControl>
