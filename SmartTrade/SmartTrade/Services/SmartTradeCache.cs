@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Platform;
 using Newtonsoft.Json;
+using SmartTrade.Entities;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services
@@ -15,6 +16,8 @@ namespace SmartTrade.Services
         private List<SimplePostDTO>? _simplePosts;
         public List<SimplePostDTO>? Posts => _simplePosts;
         public List<NotificationDTO>? Notifications { get; set; }
+        public List<CartItem>? CartItems { get; set; } = new List<CartItem>();
+
 
         public void SetPosts(List<SimplePostDTO>? posts)
         {
@@ -74,6 +77,23 @@ namespace SmartTrade.Services
         {
             PostDTO? post = _completePosts.Find(x => x.Id == postId);
             return post;
+        }
+
+        public void AddItemToCart(PostDTO post, int offerIndex, int quantity)
+        {
+            int index = CartItems.FindIndex(x => x.Post.Id == post.Id && x.OfferIndex == offerIndex);
+            
+            if (index == -1)
+            {
+                CartItems.Add(new CartItem(post, offerIndex, quantity));
+            }
+            else CartItems[index].Quantity += quantity;
+        }
+
+        public void DeleteItemFromCart(int? postId, int offerIndex)
+        {
+            int index = CartItems.FindIndex(x => x.Post.Id == postId && x.OfferIndex == offerIndex);
+            if (index != -1) CartItems.RemoveAt(index);
         }
     }
 }

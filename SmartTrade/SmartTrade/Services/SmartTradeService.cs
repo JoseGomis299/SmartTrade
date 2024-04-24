@@ -31,6 +31,8 @@ namespace SmartTrade.Services
             }
         }
 
+        public List<CartItem>? CartItems => _cache.CartItems; 
+
         private SmartTradeBroker _broker;
         private SmartTradeCache _cache;
 
@@ -41,6 +43,16 @@ namespace SmartTrade.Services
         {
             _broker = new SmartTradeBroker();
             _cache = new SmartTradeCache();
+        }
+
+        public void AddItemToCart(PostDTO post, int offerIndex, int quantity = 1)
+        {
+            _cache.AddItemToCart(post, offerIndex, quantity);
+        }
+
+        public void DeleteItemFromCart(int? postId, int offerIndex)
+        {
+            _cache.DeleteItemFromCart(postId, offerIndex);
         }
 
         #region User
@@ -169,6 +181,7 @@ namespace SmartTrade.Services
         }
 
         #endregion
+
 
     }
 }

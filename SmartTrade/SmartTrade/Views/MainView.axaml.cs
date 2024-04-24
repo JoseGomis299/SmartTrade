@@ -56,9 +56,7 @@ public partial class MainView : UserControl
 
         ProfileButton.Click += OnProfileButtonOnClick;
         HomeButton.Click += OnHomeButtonOnClick;
-        HomeButton2.Click += OnHomeButtonOnClick;
         ShoppingCartButton.Click += OnShoppingCartButtonOnClick;
-        ShoppingCartButton2.Click += OnShoppingCartButtonOnClick;
 
         _homeImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Home.png")));
         _userImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/User.png")));
@@ -71,8 +69,6 @@ public partial class MainView : UserControl
         HomeImage.Source = _homeImageSelected;
         UserImage.Source = _userImage;
         CartImage.Source = _cartImage;
-        CartImage2.Source = _cartImage;
-        HomeImage2.Source = _homeImage;
         AlertImage.Source = _alertImage;
 
         SetButtonVisibility();
@@ -85,22 +81,16 @@ public partial class MainView : UserControl
         if (_model.LoggedType == UserType.Admin || _model.LoggedType == UserType.Seller)
         {
             ShoppingCartButton.IsVisible = false;
-            ShoppingCartButton2.IsVisible = false;
-            AddToCartButton.IsVisible = false;
             AlertButton.IsVisible = false;
         }
         else if (_model.LoggedType == UserType.Consumer)
         {
             ShoppingCartButton.IsVisible = true;
-            ShoppingCartButton2.IsVisible = true;
-            AddToCartButton.IsVisible = true;
             AlertButton.IsVisible = true;
         }
         else
         {
             ShoppingCartButton.IsVisible = true;
-            ShoppingCartButton2.IsVisible = true;
-            AddToCartButton.IsVisible = true;
             AlertButton.IsVisible = false;
         }
     }
@@ -143,7 +133,7 @@ public partial class MainView : UserControl
         }
 
         HideLoadingScreen();
-        SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), _selectedButton, 1, out _);
+        SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), _selectedButton, 1, out _, true);
     }
 
     private async void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
@@ -232,9 +222,6 @@ public partial class MainView : UserControl
         if (i == 0) HomeImage.Source = _homeImageSelected;
         else if (i == 1) CartImage.Source = _cartImageSelected;
         else if (i == 2) UserImage.Source = _userImageSelected;
-
-        HomeImage2.Source = HomeImage.Source;
-        CartImage2.Source = CartImage.Source;
     }
 
     public async void OnAlertButtonOnClick(object? sender, RoutedEventArgs e)
@@ -264,20 +251,12 @@ public partial class MainView : UserControl
             return;
         }
 
-        if (type == typeof(ProductView))
-        {
-            BottomBar.IsVisible = false;
-            ShoppingCart.IsVisible = true;
-            return;
-        }
-
         ResetVisibility();
     }
     private void ResetVisibility()
     {
         SearchBar.IsVisible = true;
         BottomBar.IsVisible = true;
-        ShoppingCart.IsVisible = false;
 
     }
 
@@ -371,7 +350,7 @@ public partial class MainView : UserControl
 
     #region SearchBar
 
-    private async void AutoCompleteBox_KeyDown(object? sender, KeyEventArgs e)
+    private void AutoCompleteBox_KeyDown(object? sender, KeyEventArgs e)
     {
 
         if (e.Key.Equals(Key.Enter))

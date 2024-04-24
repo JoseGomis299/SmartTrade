@@ -6,6 +6,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
 using System.Threading.Tasks;
+using Avalonia.Interactivity;
 using SmartTrade.Services;
 
 
@@ -53,6 +54,13 @@ namespace SmartTrade.Views
             SetImageNavigationButtonsVisibility();
 
             SmartTradeNavigationManager.Instance.OnNavigate += OnNavigateAsync;
+
+            AddToCartButton.Click += AddItemToCart;
+        }
+
+        private void AddItemToCart(object? sender, RoutedEventArgs e)
+        {
+            _model.AddItemToCart();
         }
 
         private void NextImage(object sender, Avalonia.Interactivity.RoutedEventArgs e)

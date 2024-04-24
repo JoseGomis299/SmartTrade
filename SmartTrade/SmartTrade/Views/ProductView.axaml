@@ -66,7 +66,8 @@
 				<TextBlock Classes="h1" FontSize="18" Text="{Binding Description, Mode=OneWay}"/>
 				<TextBlock Classes="h1" Text="Product Details"/>
 				<TextBlock Classes="h1" FontSize="22" Text="{Binding Details, Mode=OneWay}"/>
-			</StackPanel>
+				<Button Classes="Green" Content="Add to Cart" Name="AddToCartButton"/>
+            </StackPanel>
 			<StackPanel Grid.Row="2">
 				<controls:ST_Carousel Title="Other Sellers" DataSource="{Binding OtherSellers, Mode=OneWay}"></controls:ST_Carousel>
 				<controls:ST_Carousel Title="Same seller products" DataSource="{Binding SameSellerProducts, Mode=OneWay}"></controls:ST_Carousel>

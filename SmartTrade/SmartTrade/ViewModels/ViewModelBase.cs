@@ -1,4 +1,7 @@
-﻿using ReactiveUI;
+﻿using DynamicData;
+using System.Threading.Tasks;
+using ReactiveUI;
+using SmartTrade.Controls;
 using SmartTrade.Services;
 
 namespace SmartTrade.ViewModels;

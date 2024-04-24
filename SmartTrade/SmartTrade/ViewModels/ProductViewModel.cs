@@ -20,7 +20,7 @@ namespace SmartTrade.ViewModels
 	{
         public event Action OnOfferChanged;
 
-        public PostDTO postView;
+        public PostDTO Post { get; set; }
         public ObservableCollection<ProductModel> OtherSellers { get; set; }
         public ObservableCollection<ProductModel> SameSellerProducts { get; set; }
         public ObservableCollection<ProductModel> RelatedProducts { get; set; }
@@ -32,11 +32,10 @@ namespace SmartTrade.ViewModels
         public string? Seller {  get; set; }
         public string? Description {  get; set; }
         public string? Details {  get; set; }
-        public Bitmap? AlertImage { get; set; }
         private Bitmap? _alertActivated {  get; set; }
         private Bitmap? _alertDeactivated {  get; set; }
-        public Bitmap? AlertToggle {  get; set; }
         private ToggleButton? _alertToggle;
+        private int _currentOfferIndex;
 
         public UserDTO? Logged => Service.Logged;
 
@@ -58,7 +57,7 @@ namespace SmartTrade.ViewModels
 
         public ProductViewModel(PostDTO post)
         {
-            this.postView = post;
+            this.Post = post;
 
             OtherSellers = new ObservableCollection<ProductModel>();
             SameSellerProducts = new ObservableCollection<ProductModel>();
@@ -70,11 +69,12 @@ namespace SmartTrade.ViewModels
             Seller = "Vendido por: " + post.SellerCompanyName;
             Description = post.Description;
 
-            LoadData(post.Offers[0]);
+            LoadData(post.Offers[0], 0);
 
-            foreach(var offer in post.Offers)
+            for (var i = 0; i < post.Offers.Count; i++)
             {
-                Attributes.Add(new AttributeModel(offer.Product.Differentiators, offer, this));
+                var offer = post.Offers[i];
+                Attributes.Add(new AttributeModel(offer.Product.Differentiators, i, offer, this));
             }
 
             Attributes[0].SetChecked(true);
@@ -87,7 +87,7 @@ namespace SmartTrade.ViewModels
 
         //private void SetAlertImage()
         //{
-        //    if (SmartTradeBroker.Instance.Logged == null /*|| postView.Offers[0].Product.UsersWithAlertsInThisProduct[0] != SmartTradeBroker.Instance.Logged.Name*/)
+        //    if (SmartTradeBroker.Instance.Logged == null /*|| Post.Offers[0].Product.UsersWithAlertsInThisProduct[0] != SmartTradeBroker.Instance.Logged.Name*/)
         //    {
         //        AlertImage = _alertDeactivated;
         //    }
@@ -120,18 +120,18 @@ namespace SmartTrade.ViewModels
 
         private bool SameSeller(SimplePostDTO post)
         {
-            return post.SellerID == postView.SellerID;
+            return post.SellerID == Post.SellerID;
         }
         private bool OtherSellersSameProduct(SimplePostDTO post)
         {
-            return post.ProductName == postView.ProductName && post.SellerID != postView.SellerID;
+            return post.ProductName == Post.ProductName && post.SellerID != Post.SellerID;
         }
         public bool IsRelated(SimplePostDTO post)
         {
             return Random.Shared.Next(0, 2) == 1;
         }
 
-        public void LoadData(OfferDTO offer)
+        public void LoadData(OfferDTO offer, int offerIndex)
         {
             Images.Clear();
 
@@ -148,12 +148,18 @@ namespace SmartTrade.ViewModels
             this.RaisePropertyChanged(nameof(ShippingCost));
             this.RaisePropertyChanged(nameof(Details));
 
+            _currentOfferIndex = offerIndex;
             OnOfferChanged?.Invoke();
         }
 
         public async Task CreateAlertAsync(int productId)
         {
             await Service.CreateAlertAsync(productId);
+        }
+
+        public void AddItemToCart()
+        {
+            Service.AddItemToCart(Post, _currentOfferIndex, 1);
         }
     }
 
@@ -163,9 +169,10 @@ namespace SmartTrade.ViewModels
         public bool IsChecked { get; set; }
         public ReactiveCommand<ItemCollection, Unit> ChangeOfferCommand { get; set; }
 
-        public AttributeModel(string? text, OfferDTO offer, ProductViewModel model)
+        public AttributeModel(string? text, int offerIndex,OfferDTO offer, ProductViewModel model)
         {
             Text = text;
+
             ChangeOfferCommand = ReactiveCommand.Create<ItemCollection>(collection =>
             {
                 foreach (var item in collection)
@@ -174,7 +181,7 @@ namespace SmartTrade.ViewModels
                 }
              
                 SetChecked(true);
-                model.LoadData(offer);
+                model.LoadData(offer, offerIndex);
             });
         }
 

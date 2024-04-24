@@ -2,7 +2,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SmartTrade.Views.ShoppingCartView">
-  Your shopping cart
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1385"
+             x:Class="SmartTrade.Views.ShoppingCartView" 
+             xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+             x:DataType="vm:ShoppingCartModel"
+             xmlns:controls="clr-namespace:SmartTrade.Controls">
+    <Design.DataContext>
+		<vm:ShoppingCartModel/>
+    </Design.DataContext>
+    <ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="10">
+            <TextBlock Classes="h1" HorizontalAlignment="Center" Text="SHOPPING CART"/>
+            <ItemsControl ItemsSource="{Binding Products}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ST_CartProduct Margin="10 0" Command="{Binding OpenProductCommand}" DeleteElement="{Binding DeleteItemCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}" Count="{Binding Quantity, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
