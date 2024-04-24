@@ -10,6 +10,7 @@ public partial class Consumer : User
         CreditCards = new List<CreditCardInfo>();
         Alerts = new List<Alert>();
         WishList = new List<Post>();
+        Purchases = new List<Purchase>();
     }
 
     public Consumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address) : base(email, password, name, lastNames)
@@ -23,6 +24,7 @@ public partial class Consumer : User
         BizumAccounts = new List<BizumInfo>();
         CreditCards = new List<CreditCardInfo>();
         Alerts = new List<Alert>();
+        Purchases = new List<Purchase>();   
 
         Addresses.Add(address);
     }
@@ -54,5 +56,10 @@ public partial class Consumer : User
     public void AddWish(Post post)
     {
         WishList.Add(post);
+    }
+
+    public void AddPurchases(Purchase purchase)
+    {
+        Purchases.Add(purchase);
     }
 }
