@@ -16,7 +16,7 @@ public class NotificationClient : ApiClient
 
     public async Task DeleteNotificationAsync(int notificationId)
     {
-        await PerformApiInstructionAsync($"DeleteNotification?id={notificationId}", ApiInstruction.Delete);
+        await PerformApiInstructionAsync($"DeleteElement?id={notificationId}", ApiInstruction.Delete);
     }
 
     public async Task SetNotificationAsVisitedAsync(int notificationId)
