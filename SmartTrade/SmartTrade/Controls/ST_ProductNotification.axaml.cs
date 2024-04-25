@@ -1,8 +1,8 @@
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Microsoft.IdentityModel.Tokens;
-using SmartTrade.Navigation;
 
 namespace SmartTrade.Controls
 {
