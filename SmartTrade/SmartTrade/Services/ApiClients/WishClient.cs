@@ -16,11 +16,11 @@ public class WishClient : ApiClient
 
     public async Task DeleteWishAsync(int WishId)
     {
-        await PerformApiInstructionAsync($"Delete?id={WishId}", ApiInstruction.Delete);
+        await PerformApiInstructionAsync($"DeleteWish?id={WishId}", ApiInstruction.Delete);
     }
 
     public async Task<List<WishDTO>?> GetWishAsync()
     {
-        return JsonConvert.DeserializeObject<List<WishDTO>>(await PerformApiInstructionAsync($"GetWish", ApiInstruction.Get));
+        return JsonConvert.DeserializeObject<List<WishDTO>>(await PerformApiInstructionAsync($"GetWishList", ApiInstruction.Get));
     }
 }

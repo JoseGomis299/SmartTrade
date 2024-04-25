@@ -74,7 +74,7 @@
 						<Button Width="30" Content="+" Classes="White" Name="AddButton"/>
 					</StackPanel>
                 </StackPanel>
-                <Button Classes="Green" Width="130" CornerRadius="10" Content="To WishList" Name="AddToWishList" Margin="10 5 0 0"/>
+                <Button Classes="Green" Width="130" CornerRadius="10" Content="To WishList" Name="AddToWishListButton" Margin="10 5 0 0"/>
 			</StackPanel>
 			<StackPanel Grid.Row="2">
 				<controls:ST_Carousel Title="Other Sellers" DataSource="{Binding OtherSellers, Mode=OneWay}"></controls:ST_Carousel>

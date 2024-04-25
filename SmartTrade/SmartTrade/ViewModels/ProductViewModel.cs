@@ -175,9 +175,9 @@ namespace SmartTrade.ViewModels
             Service.AddItemToCart(Post, _currentOfferIndex, _quantity);
         }
 
-        public void AddItemToWishList()
+        public async Task AddItemToWishListAsync()
         {
-            Service.CreateWishAsync((int)Post.Id);
+            await Service.CreateWishAsync((int)Post.Id);
         }
     }
 

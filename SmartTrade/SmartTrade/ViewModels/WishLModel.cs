@@ -27,8 +27,8 @@ public class WishLModel : ViewModelBase
         OpenProductCommand = ReactiveCommand.CreateFromTask(OpenProduct);
         DeleteWishCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await Service.DeleteWishAsync(wish.Id);
             wishListModel.ProductsInWishList.Remove(this);
+            await Service.DeleteWishAsync(wish.Id);
         });
 
 

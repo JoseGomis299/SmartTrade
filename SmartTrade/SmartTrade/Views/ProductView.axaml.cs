@@ -56,7 +56,7 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.OnNavigate += OnNavigateAsync;
 
             AddToCartButton.Click += AddItemToCart;
-            AddToWishListButton.Click += AddItemToWishList;
+            AddToWishListButton.Click += AddItemToWishListAsync;
 
             AddButton.Click += OnAddButtonOnClick;
             SubtractButton.Click += OnSubtractButtonOnClick;
@@ -68,11 +68,13 @@ namespace SmartTrade.Views
                     SubtractButton.IsEnabled = false;
                 }
             }
+
+            AddToWishListButton.IsVisible = _model.Logged != null;
         }
 
-        private void AddItemToWishList(object? sender, RoutedEventArgs e)
+        private async void AddItemToWishListAsync(object? sender, RoutedEventArgs e)
         {
-            _model.AddItemToWishList();
+            await _model.AddItemToWishListAsync();
         }
         
         private void OnSubtractButtonOnClick(object? sender, RoutedEventArgs e)

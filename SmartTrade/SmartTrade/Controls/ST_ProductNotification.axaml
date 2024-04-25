@@ -14,7 +14,7 @@
             <TextBlock Name="PriceTextBlock" Classes="h1" Foreground="#ff32c378" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Price, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
             <TextBlock Name="ProductNameTextBlock" Classes="h2" Foreground="#A5DFB7" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ProductName, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
         </StackPanel>
-        <Button Grid.Column="2" VerticalAlignment="Center" Margin="10 0 0 0" Content="X" FontSize="50" Height="100" Width="80" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DeleteElement}"/>
+        <Button Grid.Column="2" Classes="Green" VerticalAlignment="Center" Margin="10 0 0 0" Content="X" FontSize="50" Height="100" Width="80" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DeleteElement}"/>
     </Grid>
 
 </UserControl>

@@ -29,9 +29,11 @@ namespace SmartTrade.Views
             else { AddPostButton.IsVisible = false; }
         }
 
-        private void WishListButton_Click(object? sender, RoutedEventArgs e)
+        private async void WishListButton_Click(object? sender, RoutedEventArgs e)
         {
-            SmartTradeNavigationManager.Instance.NavigateTo(new WishListView());
+            var view = new WishListView();
+            SmartTradeNavigationManager.Instance.NavigateTo(view);
+            await ((WishListModel)view.DataContext).LoadWishListAsync();
         }
 
         private async void LogOut(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

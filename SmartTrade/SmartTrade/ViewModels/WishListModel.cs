@@ -13,12 +13,12 @@ namespace SmartTrade.ViewModels
         public UserDTO User;
 
 
-        public WishListModel() 
+        public WishListModel()
         {
             ProductsInWishList = new ObservableCollection<WishLModel>();
         }
 
-        public async Task LoadWishListAsync(string userId)
+        public async Task LoadWishListAsync()
         {
             foreach (var wish in await Service.GetWishAsync())
             {
