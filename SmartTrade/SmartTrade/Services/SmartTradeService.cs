@@ -22,6 +22,12 @@ namespace SmartTrade.Services
             remove => _cache.OnPostsChanged -= value;
         }
 
+        public event Action OnCartChanged
+        {
+            add => _cache.OnCartChanged += value;
+            remove => _cache.OnCartChanged -= value;
+        }
+
         public UserType LoggedType
         {
             get
@@ -32,6 +38,7 @@ namespace SmartTrade.Services
         }
 
         public List<CartItem>? CartItems => _cache.CartItems; 
+        public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
         private SmartTradeBroker _broker;
         private SmartTradeCache _cache;
@@ -55,16 +62,25 @@ namespace SmartTrade.Services
             _cache.DeleteItemFromCart(postId, offerIndex);
         }
 
+        public async Task InitializeCacheAsync()
+        {
+            await _cache.LoadCartItems(Logged == null ? "" : Logged.Email);
+        }
+
         #region User
 
-        public void LogOut()
+        public async Task LogOut()
         {
             _broker.LogOut();
+            await _cache.LoadCartItems("");
         }
 
         public async Task LogInAsync(string email, string password)
         {
            await _broker.UserClient.LogInAsync(email, password);
+
+           if (Logged != null) await _cache.LoadCartItems(email);
+           else await _cache.LoadCartItems("");
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)

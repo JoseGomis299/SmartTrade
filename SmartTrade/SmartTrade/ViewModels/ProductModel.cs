@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
 using SmartTrade.Services;

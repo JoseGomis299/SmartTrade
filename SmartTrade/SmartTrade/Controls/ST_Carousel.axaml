@@ -14,7 +14,7 @@
 
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="5 0" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="225"/>
+                            <VirtualizingStackPanel Orientation="Horizontal" Margin="5 0" HorizontalAlignment="Right" VerticalAlignment="Center" MinHeight="225"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 

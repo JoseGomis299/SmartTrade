@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using SmartTrade.ViewModels;
 
@@ -9,6 +10,21 @@ namespace SmartTrade.Views
         {
             DataContext = new ShoppingCartModel();
             InitializeComponent();
+
+            CheckOutButton.Click += BuyItems;
+            SmartTradeNavigationManager.Instance.OnChangeNavigationStack += ClearReferences;
+        }
+
+        private void ClearReferences(int stack)
+        {
+            ((ShoppingCartModel)DataContext).UnSubscribeFromCartNotifications();
+            CheckOutButton.Click -= BuyItems;
+            SmartTradeNavigationManager.Instance.OnChangeNavigationStack -= ClearReferences;
+            DataContext = null;
+        }
+
+        private void BuyItems(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
         }
     }
 }

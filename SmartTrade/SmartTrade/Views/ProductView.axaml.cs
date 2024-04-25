@@ -56,17 +56,57 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.OnNavigate += OnNavigateAsync;
 
             AddToCartButton.Click += AddItemToCart;
-            AddToWishList.Click += AddItemToWishList;
+            AddToWishListButton.Click += AddItemToWishList;
+
+            AddButton.Click += OnAddButtonOnClick;
+            SubtractButton.Click += OnSubtractButtonOnClick;
+
+            if (int.TryParse(_model.Quantity, out var count))
+            {
+                if (count <= 1)
+                {
+                    SubtractButton.IsEnabled = false;
+                }
+            }
         }
 
         private void AddItemToWishList(object? sender, RoutedEventArgs e)
         {
             _model.AddItemToWishList();
         }
+        
+        private void OnSubtractButtonOnClick(object? sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(_model.Quantity, out var count))
+            {
+                if (count > 1)
+                {
+                    count--;
+                    _model.Quantity = count.ToString();
+                }
+                
+                if(count <= 1) SubtractButton.IsEnabled = false;
+            }
+        }
+
+        private void OnAddButtonOnClick(object? sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(_model.Quantity, out var count))
+            {
+                count++;
+                _model.Quantity = count.ToString();
+
+                if (count > 1)
+                {
+                    SubtractButton.IsEnabled = true;
+                }
+            }
+        }
 
         private void AddItemToCart(object? sender, RoutedEventArgs e)
         {
             _model.AddItemToCart();
+            SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), 1, 1, out _, true);
         }
 
         private void NextImage(object sender, Avalonia.Interactivity.RoutedEventArgs e)

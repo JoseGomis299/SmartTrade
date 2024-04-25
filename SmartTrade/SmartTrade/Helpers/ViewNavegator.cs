@@ -15,7 +15,6 @@ namespace SmartTrade.Navigation
         public override void NavigateTo(Type viewType)
         {
             UserControl? view = null;
-
             PreviousView = CurrentView;
 
             if (_views.ContainsKey(viewType))

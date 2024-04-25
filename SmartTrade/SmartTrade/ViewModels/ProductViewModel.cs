@@ -33,6 +33,17 @@ namespace SmartTrade.ViewModels
         public string? Seller {  get; set; }
         public string? Description {  get; set; }
         public string? Details {  get; set; }
+        private int _quantity;
+
+        public string? Quantity
+        {
+            get => _quantity.ToString();
+            set
+            {
+                _quantity = int.Parse(value);
+                this.RaisePropertyChanged(nameof(Quantity));
+            }
+        }
         private Bitmap? _alertActivated {  get; set; }
         private Bitmap? _alertDeactivated {  get; set; }
         private ToggleButton? _alertToggle;
@@ -83,6 +94,7 @@ namespace SmartTrade.ViewModels
             _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
 
+            Quantity = "1";
             //SetAlertImage();
         }
 
@@ -160,7 +172,7 @@ namespace SmartTrade.ViewModels
 
         public void AddItemToCart()
         {
-            Service.AddItemToCart(Post, _currentOfferIndex, 1);
+            Service.AddItemToCart(Post, _currentOfferIndex, _quantity);
         }
 
         public void AddItemToWishList()

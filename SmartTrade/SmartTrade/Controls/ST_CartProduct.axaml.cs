@@ -34,9 +34,19 @@ namespace SmartTrade.Controls
                     {
                         count--;
                         Count = count.ToString();
-                    }else SubtractButton.IsEnabled = false;
+                    }
+
+                    if (count <= 1) SubtractButton.IsEnabled = false;
                 }
             };
+
+            if (int.TryParse(Count, out var count))
+            {
+                if (count <= 1)
+                {
+                    SubtractButton.IsEnabled = false;
+                }
+            }
         }
 
         public ICommand Command
