@@ -26,6 +26,7 @@ public class SmartTradeContext : BaseDbContext
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Image> Image { get; set; }
     public DbSet<Notification> Notification { get; set; }
+    public DbSet<Purchase> Purchases { get; set; }
 
     public SmartTradeContext()
     {
@@ -58,6 +59,8 @@ public class SmartTradeContext : BaseDbContext
         if(!Alerts.IsNullOrEmpty()) Alerts.RemoveRange(Alerts);
         if(!Addresses.IsNullOrEmpty()) Addresses.RemoveRange(Addresses);
         if(!Notification.IsNullOrEmpty()) Notification.RemoveRange(Notification);
+        if (!Purchases.IsNullOrEmpty()) Purchases.RemoveRange(Purchases);
+
 
         SaveChanges();
     }
