@@ -393,4 +393,54 @@ public class SmartTradeService : ISmartTradeService
         _dal.GetById<Notification>(id).Visited = true;
         _dal.Commit();
     }
+
+    public int CreateWish(string userId, int postId)
+    {
+        var post = _dal.GetById<Post>(postId);
+        var user = _dal.GetById<User>(userId);
+        var wish = new Wish(user, post);
+        user.AddWish(wish);
+        _dal.Commit();
+        return wish.Id;
+    }
+
+    public List<WishDTO> GetWishList(string loggedId)
+    {
+        return _dal.GetAll<Wish>().AsNoTracking().Where(n => n.User.Email == loggedId)
+            .Select(n => new
+            {
+                Id = n.Id,
+                User = n.User.Email,
+                Post = new SimplePostDTO()
+                {
+                    Id = n.Post.Id,
+                    Title = n.Post.Title,
+                    Category = n.Post.Offers.Select(o => o.Product.GetCategories().First()).FirstOrDefault(),
+                    MinimumAge = n.Post.Offers.Select(o => o.Product.MinimumAge).FirstOrDefault(),
+                    EcologicPrint = n.Post.Offers.Select(o => o.Product.EcologicPrint).FirstOrDefault(),
+                    Validated = n.Post.Validated,
+                    SellerID = n.Post.Seller.Email,
+                    Price = n.Post.Offers.Select(o => o.Price).FirstOrDefault(),
+                    Image = n.Post.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
+                    ProductName = n.Post.Offers.Select(o => o.Product.Name).FirstOrDefault()
+                }
+            }).ToList()
+            .Select(anon => new WishDTO()
+            {
+                Id = anon.Id,
+                UserId = anon.User,
+                Post = anon.Post
+            }).ToList();
+    }
+
+
+    public void DeleteWish(int wishId)
+    {
+        Wish wish = _dal.GetById<Wish>(wishId);
+        wish.User.WishList.Remove(wish);
+
+        _dal.Delete<Wish>(wish);
+
+        _dal.Commit();
+    }
 }

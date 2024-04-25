@@ -13,7 +13,7 @@ public class ConsumerDTO : UserDTO
     public List<BizumInfo> BizumAccounts { get; set; }
     public List<CreditCardInfo> CreditCards { get; set; }
     public List<Alert> Alerts { get; set; }
-    public List<Post> WishList { get; set; }
+    public List<Wish> WishList { get; set; }
 
     public ConsumerDTO() : base()
     {
@@ -26,7 +26,7 @@ public class ConsumerDTO : UserDTO
         BizumAccounts = new List<BizumInfo>();
         CreditCards = new List<CreditCardInfo>();
         Alerts = new List<Alert>();
-        WishList = new List<Post>();
+        WishList = new List<Wish>();
     }
 
     public ConsumerDTO(Consumer consumer) : base(consumer)

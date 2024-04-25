@@ -182,6 +182,24 @@ namespace SmartTrade.Services
 
         #endregion
 
+        #region WishList
+
+        public async Task<int> CreateWishAsync(int postId)
+        {
+            return await _broker.WishClient.CreateWishAsync(postId);
+        }
+
+        public async Task DeleteWishAsync(int wishId)
+        {
+            await _broker.WishClient.DeleteWishAsync(wishId);
+        }
+
+        public async Task<List<WishDTO?>> GetWishAsync()
+        {
+            return await _broker.WishClient.GetWishAsync();
+        }
+
+        #endregion
 
     }
 }

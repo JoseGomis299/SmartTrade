@@ -40,5 +40,9 @@ namespace SmartTrade.BusinessLogic
         public AlertDTO GetAlert(string productName);
         public void DeleteNotification(int notificationId);
         public void SetVisited(int id);
+        public int CreateWish(string? loggedId, int id);
+        public List<WishDTO> GetWishList(string loggedId);
+        public void DeleteWish(int id);
+
     }
 }

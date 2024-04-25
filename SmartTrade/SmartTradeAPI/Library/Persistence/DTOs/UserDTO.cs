@@ -12,8 +12,12 @@ public class UserDTO
     public string Password { get; set; }
     public string Name { get; set; }
     public string LastNames { get; set; }
+    public List<Wish> WishList { get; set; }
 
-    public UserDTO() { }
+    public UserDTO()
+    {
+        WishList = new List<Wish>();
+    }
 
     public UserDTO(User user)
     {
@@ -25,5 +29,6 @@ public class UserDTO
         Password = user.Password;
         Name = user.Name;
         LastNames = user.LastNames;
+        WishList = user.WishList.ToList();
     }
 }

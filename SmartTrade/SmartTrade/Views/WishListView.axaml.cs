@@ -1,13 +1,15 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
+using SmartTrade.ViewModels;
 
 namespace SmartTrade.Views
 {
-    public partial class WishListViex : UserControl
+    public partial class WishListView : UserControl
     {
-        public WishListViex()
+        public WishListView()
         {
+            DataContext = new WishListModel();
             InitializeComponent();
             ShareWishListButton.Click += ShareWishListButton_click;
         }

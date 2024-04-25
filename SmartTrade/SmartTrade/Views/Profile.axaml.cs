@@ -1,7 +1,9 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using SmartTrade.Services;
 using SmartTrade.ViewModels;
 using SmartTradeDTOs;
+using System;
 
 namespace SmartTrade.Views
 {
@@ -14,6 +16,7 @@ namespace SmartTrade.Views
             InitializeComponent();
 
             LogoutButton.Click += LogOut;
+            WhisListButton.Click += WishListButton_Click;
 
             if (_model.LoggedType == UserType.Seller)
             {
@@ -24,6 +27,11 @@ namespace SmartTrade.Views
                 };
             }
             else { AddPostButton.IsVisible = false; }
+        }
+
+        private void WishListButton_Click(object? sender, RoutedEventArgs e)
+        {
+            SmartTradeNavigationManager.Instance.NavigateTo(new WishListView());
         }
 
         private async void LogOut(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

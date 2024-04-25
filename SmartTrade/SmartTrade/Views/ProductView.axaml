@@ -67,6 +67,7 @@
 				<TextBlock Classes="h1" Text="Product Details"/>
 				<TextBlock Classes="h1" FontSize="22" Text="{Binding Details, Mode=OneWay}"/>
 				<Button Classes="Green" Content="Add to Cart" Name="AddToCartButton"/>
+				<Button Classes="Green" Content="To WishList" Name="AddToWishList" Margin="0 5 0 0"/>
             </StackPanel>
 			<StackPanel Grid.Row="2">
 				<controls:ST_Carousel Title="Other Sellers" DataSource="{Binding OtherSellers, Mode=OneWay}"></controls:ST_Carousel>

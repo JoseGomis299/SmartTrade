@@ -56,6 +56,12 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.OnNavigate += OnNavigateAsync;
 
             AddToCartButton.Click += AddItemToCart;
+            AddToWishList.Click += AddItemToWishList;
+        }
+
+        private void AddItemToWishList(object? sender, RoutedEventArgs e)
+        {
+            _model.AddItemToWishList();
         }
 
         private void AddItemToCart(object? sender, RoutedEventArgs e)

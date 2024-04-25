@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -160,6 +161,11 @@ namespace SmartTrade.ViewModels
         public void AddItemToCart()
         {
             Service.AddItemToCart(Post, _currentOfferIndex, 1);
+        }
+
+        public void AddItemToWishList()
+        {
+            Service.CreateWishAsync((int)Post.Id);
         }
     }
 

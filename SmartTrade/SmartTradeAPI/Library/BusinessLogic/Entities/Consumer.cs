@@ -9,7 +9,7 @@ public partial class Consumer : User
         BizumAccounts = new List<BizumInfo>();
         CreditCards = new List<CreditCardInfo>();
         Alerts = new List<Alert>();
-        WishList = new List<Post>();
+        WishList = new List<Wish>();
         Purchases = new List<Purchase>();
     }
 
@@ -24,6 +24,7 @@ public partial class Consumer : User
         BizumAccounts = new List<BizumInfo>();
         CreditCards = new List<CreditCardInfo>();
         Alerts = new List<Alert>();
+        WishList = new List<Wish>();
         Purchases = new List<Purchase>();   
 
         Addresses.Add(address);
@@ -53,9 +54,9 @@ public partial class Consumer : User
         Alerts.Add(alert);
     }
 
-    public void AddWish(Post post)
+    public void AddWish(Wish wish)
     {
-        WishList.Add(post);
+        WishList.Add(wish);
     }
 
     public void AddPurchases(Purchase purchase)

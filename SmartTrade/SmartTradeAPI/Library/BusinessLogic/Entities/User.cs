@@ -7,6 +7,7 @@ public abstract partial class User
     protected User()
     {
         Alerts = new List<Alert>();
+        WishList = new List<Wish>();
     }
     protected User(string email, string password, string name, string lastNames)
     {
@@ -19,5 +20,10 @@ public abstract partial class User
     public void AddAlert(Alert alert)
     {
         Alerts.Add(alert);
+    }
+
+    public void AddWish(Wish wish)
+    {
+        WishList.Add(wish);
     }
 }
