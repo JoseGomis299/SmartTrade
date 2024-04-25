@@ -39,8 +39,8 @@ public class MainViewModel : ViewModelBase
 
     public async Task InitializeAsync(MainView mainView)
     {
-        await Service.InitializeCacheAsync();
         await mainView.ShowCatalogAsync();
+        await Service.InitializeCacheAsync();
 
         foreach (var name in Service.Posts.Select(x => x.Title))
         {

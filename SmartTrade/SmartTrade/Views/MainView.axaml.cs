@@ -31,7 +31,7 @@ public partial class MainView : UserControl
     bool _isLoadingCart = false;
     bool _isLoadingUser = false;
     
-    private int? CurrentCategory;
+    private int? _currentCategory;
     public bool ShowingPopUp { get; set; }
 
     public MainView()
@@ -42,6 +42,8 @@ public partial class MainView : UserControl
         InitializeComponent();
 
         SmartTradeNavigationManager.Instance.Initialize(ViewContent, new ProductCatalog());
+        SmartTradeNavigationManager.Instance.MainView = this;
+
 
         AutoCompleteBox.TextChanged += AutoCompleteBox_TextChanged;
         AutoCompleteBox.KeyDown += AutoCompleteBox_KeyDown;
@@ -72,8 +74,6 @@ public partial class MainView : UserControl
         AlertImage.Source = _alertImage;
 
         SetButtonVisibility();
-
-        SmartTradeNavigationManager.Instance.MainView = this;
     }
 
     private void SetButtonVisibility()
@@ -108,16 +108,16 @@ public partial class MainView : UserControl
 
     private void ListBoxDepartments_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        CurrentCategory = ListBoxDepartments.SelectedIndex;
+        _currentCategory = ListBoxDepartments.SelectedIndex;
         SideBar.IsPaneOpen = false;
 
         if (ListBoxDepartments.SelectedIndex == -1)
         {
-            CurrentCategory = null;
+            _currentCategory = null;
         }
 
-        _catalogModel?.SortByCategory(CurrentCategory);
-        _searchModel?.SortByCategory(CurrentCategory);
+        _catalogModel?.SortByCategory(_currentCategory);
+        _searchModel?.SortByCategory(_currentCategory);
     }
 
     #endregion
@@ -202,8 +202,8 @@ public partial class MainView : UserControl
                 await model.LoadProductsAsync();
                 _catalogModel = model;
 
-                if (CurrentCategory != null)
-                    _catalogModel.SortByCategory(CurrentCategory); 
+                if (_currentCategory != null)
+                    _catalogModel.SortByCategory(_currentCategory); 
 
                 if (_selectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
                 StopLoading(loadingScreen);
@@ -325,8 +325,8 @@ public partial class MainView : UserControl
             await model.LoadProductsAsync();
             _catalogModel = model;
 
-            if(CurrentCategory != null)
-                _catalogModel.SortByCategory(CurrentCategory);
+            if(_currentCategory != null)
+                _catalogModel.SortByCategory(_currentCategory);
 
             if (_selectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
             StopLoading(loadingScreen);
@@ -361,8 +361,8 @@ public partial class MainView : UserControl
             else SmartTradeNavigationManager.Instance.AddToStack(searchResult, loadingScreen);
 
             _searchModel = (SearchResultModel)searchResult.DataContext;
-            if(CurrentCategory != null)
-                _searchModel.SortByCategory(CurrentCategory);
+            if(_currentCategory != null)
+                _searchModel.SortByCategory(_currentCategory);
 
             StopLoading(loadingScreen);
         }
