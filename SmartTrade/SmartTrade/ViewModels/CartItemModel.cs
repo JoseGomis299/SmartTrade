@@ -12,6 +12,7 @@ public class CartItemModel : ViewModelBase
 {
     public string? Name { get; set; }
     public string? Price { get; set; }
+    public string? ShippingCost { get; set; }
     public Bitmap? Image { get; set; }
     public PostDTO Post { get; set; }
     public int OfferIndex { get; set; }
@@ -40,13 +41,14 @@ public class CartItemModel : ViewModelBase
         OpenProductCommand = ReactiveCommand.Create(OpenProduct);
         DeleteItemCommand = ReactiveCommand.Create(() =>
         {
-            Service.DeleteItemFromCart(item.Post.Id, item.OfferIndex);
             shoppingCartModel.Products.Remove(this);
+            Service.DeleteItemFromCart(item.Post.Id, item.OfferIndex);
         });
 
 
         Name = item.Post.Title;
         Price = item.Post.Offers[item.OfferIndex].Price + "€";
+        ShippingCost = item.Post.Offers[item.OfferIndex].ShippingCost + "€";
         Image = item.Post.Offers[item.OfferIndex].Product.Images[0].ToBitmap();
         Quantity = item.Quantity.ToString();
     }

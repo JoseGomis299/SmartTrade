@@ -25,6 +25,23 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+            <StackPanel HorizontalAlignment="Right" Margin=" 30 10" Spacing="2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="h1" Text="TOTAL: "/>
+                    <TextBlock Classes="h1" Foreground="#ff32c378" Text="{Binding Total, Mode=OneWay}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="h2" Text="SUBTOTAL: "/>
+                    <TextBlock Classes="h2" Foreground="#ff32c378" Text="{Binding SubTotal, Mode=OneWay}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="h2" Text="SHIPPING: "/>
+                    <TextBlock Classes="h2" Foreground="#ff32c378" Text="{Binding ShippingCost, Mode=OneWay}"/>
+                </StackPanel>
+				<Button Classes="Green" Content="CHECKOUT" CornerRadius="10" Width="150" Margin="0 5 0  0" Name="CheckOutButton"/>
+            </StackPanel>
+           
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>
