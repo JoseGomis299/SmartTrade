@@ -200,8 +200,12 @@ public partial class MainView : UserControl
                 var model = (CatalogModel)catalog.DataContext;
                 await model.LoadProductsAsync();
 
-                OnCategorySelected -= model.SortByCategory;
-                OnCategorySelected += model.SortByCategory;
+                if (!model.SubscribedToSort)
+                {
+                    OnCategorySelected += model.SortByCategory;
+                    model.SubscribedToSort = true;
+                }
+
                 OnCategorySelected?.Invoke(CurrentCategory);
  
 
@@ -324,9 +328,11 @@ public partial class MainView : UserControl
             var model = (CatalogModel)catalog.DataContext;
             await model.LoadProductsAsync();
 
-            OnCategorySelected -= model.SortByCategory;
-            OnCategorySelected += model.SortByCategory;
-            OnCategorySelected?.Invoke(CurrentCategory);
+            if (!model.SubscribedToSort)
+            {
+                OnCategorySelected += model.SortByCategory;
+                model.SubscribedToSort = true;
+            }
 
             if (_selectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
             StopLoading(loadingScreen);

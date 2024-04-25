@@ -34,6 +34,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\packs\Microsoft.Android.Ref.34\34.0.79\ref\net8.0\Mono.Android.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Views\Paypal.axaml.cs">
       <DependentUpon>Paypal.axaml</DependentUpon>
     </Compile>

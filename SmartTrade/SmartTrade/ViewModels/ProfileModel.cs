@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using ReactiveUI;
 using SmartTrade.Services;
 using SmartTradeDTOs;
@@ -48,8 +49,8 @@ public class ProfileModel : ViewModelBase
             ProfileData.Add("User Type: Admin");
         }
     }
-    public void LogOut()
+    public async Task LogOut()
     {
-        Service.LogOut();
+       await Service.LogOut();
     }
 }

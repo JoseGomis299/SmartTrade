@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Platform;
 using Newtonsoft.Json;
 using SmartTrade.Entities;
+using SmartTrade.Helpers;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services
@@ -12,12 +16,41 @@ namespace SmartTrade.Services
     public class SmartTradeCache
     {
         public event Action? OnPostsChanged;
+        public event Action? OnCartChanged;
         private List<PostDTO> _completePosts = new List<PostDTO>();
         private List<SimplePostDTO>? _simplePosts;
         public List<SimplePostDTO>? Posts => _simplePosts;
         public List<NotificationDTO>? Notifications { get; set; }
         public List<CartItem>? CartItems { get; set; } = new List<CartItem>();
 
+        private string _cartFileName;
+
+        public SmartTradeCache()
+        {
+            OnCartChanged += async () => await JSONsaving.WriteToJsonFileAsync(CartItems, _cartFileName);
+        }
+
+        public async Task LoadCartItems(string loggedEmail)
+        {
+            string prefix = loggedEmail == "" ? "" : loggedEmail + "_";
+            _cartFileName = prefix + "ShoppingCartItems";
+
+            var items = await JSONsaving.ReadFromJsonFileAsync<List<CartItem>>(_cartFileName);
+            if (items != null)
+            {
+                CartItems = items;
+                OnCartChanged?.Invoke();
+            }
+            else if (loggedEmail != "")
+            {
+                items = await JSONsaving.ReadFromJsonFileAsync<List<CartItem>>("ShoppingCartItems");
+                if (items != null)
+                {
+                    CartItems = items;
+                    OnCartChanged?.Invoke();
+                }
+            }
+        }
 
         public void SetPosts(List<SimplePostDTO>? posts)
         {
@@ -88,12 +121,16 @@ namespace SmartTrade.Services
                 CartItems.Add(new CartItem(post, offerIndex, quantity));
             }
             else CartItems[index].Quantity += quantity;
+
+            OnCartChanged?.Invoke();
         }
 
         public void DeleteItemFromCart(int? postId, int offerIndex)
         {
             int index = CartItems.FindIndex(x => x.Post.Id == postId && x.OfferIndex == offerIndex);
             if (index != -1) CartItems.RemoveAt(index);
+
+            OnCartChanged?.Invoke();
         }
     }
 }

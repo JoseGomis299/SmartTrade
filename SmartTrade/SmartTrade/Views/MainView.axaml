@@ -70,9 +70,14 @@
 								<Button Grid.Column="0" HorizontalAlignment="Left" Background="Transparent" Margin=" 25 0" Width="60" Height="60" Name="HomeButton">
 									<Image Stretch="Uniform" Width="80" Name="HomeImage"></Image>
 								</Button>
-								<Button Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" Width="60" Height="60" Name="ShoppingCartButton">
-									<Image Stretch="Uniform" Name="CartImage" Width="80"></Image>
-								</Button>
+								<Grid Grid.Column="1">
+									<Border ZIndex="1" CornerRadius="20" Background="#ff32c378" Width="25" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="28 5">
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Classes="h2" Foreground="White" Text="{Binding CartItems, Mode=OneWay}"/>
+									</Border>
+									<Button HorizontalAlignment="Center" Background="Transparent" Width="60" Height="60" Name="ShoppingCartButton">
+                                        <Image Stretch="Uniform" Name="CartImage" Width="80"></Image>
+                                    </Button>
+                                </Grid>
 								<Button Grid.Column="2" HorizontalAlignment="Right" Background="Transparent" Margin="25 0" Width="60" Height="60" Name="ProfileButton">
 									<Image Stretch="Uniform"  Name="UserImage" Width="80"></Image>
 								</Button>

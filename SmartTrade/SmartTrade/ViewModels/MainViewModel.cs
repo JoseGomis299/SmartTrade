@@ -14,6 +14,7 @@ namespace SmartTrade.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
+    public string? CartItems { get; set; }
     public string? SearchText { get; set; }
     public ObservableCollection<string> SearchAutoComplete { get; set; }
 
@@ -25,11 +26,20 @@ public class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         SearchAutoComplete = new ObservableCollection<string>();
+
+        Service.OnCartChanged += OnServiceOnOnCartChanged;
+        OnServiceOnOnCartChanged();
+    }
+
+    private void OnServiceOnOnCartChanged()
+    {
+        CartItems = Service.CartItemsCount.ToString();
+        this.RaisePropertyChanged(nameof(CartItems));
     }
 
     public async Task InitializeAsync(MainView mainView)
     {
-        
+        await Service.InitializeCacheAsync();
         await mainView.ShowCatalogAsync();
 
         foreach (var name in Service.Posts.Select(x => x.Title))

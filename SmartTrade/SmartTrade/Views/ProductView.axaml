@@ -66,7 +66,14 @@
 				<TextBlock Classes="h1" FontSize="18" Text="{Binding Description, Mode=OneWay}"/>
 				<TextBlock Classes="h1" Text="Product Details"/>
 				<TextBlock Classes="h1" FontSize="22" Text="{Binding Details, Mode=OneWay}"/>
-				<Button Classes="Green" Content="Add to Cart" Name="AddToCartButton"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Classes="Green" Width="150" CornerRadius="10" Content="Add To Cart" Name="AddToCartButton"/>
+				    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+						<Button Width="30" Content="-" Classes="White" Name="SubtractButton"/>
+                        <TextBlock Margin="5 0" Text="{Binding Quantity, Mode=TwoWay}" Classes="h2" VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
+						<Button Width="30" Content="+" Classes="White" Name="AddButton"/>
+					</StackPanel>
+                </StackPanel>
             </StackPanel>
 			<StackPanel Grid.Row="2">
 				<controls:ST_Carousel Title="Other Sellers" DataSource="{Binding OtherSellers, Mode=OneWay}"></controls:ST_Carousel>

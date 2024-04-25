@@ -28,7 +28,7 @@ namespace SmartTrade.Views
 
         private async void LogOut(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            _model.LogOut();
+            await _model.LogOut();
             await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
         }
     }
