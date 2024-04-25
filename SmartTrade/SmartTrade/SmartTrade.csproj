@@ -35,6 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SmartTradeAPI\SmartTradeAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Mono.Android">
       <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\packs\Microsoft.Android.Ref.34\34.0.79\ref\net8.0\Mono.Android.dll</HintPath>
     </Reference>

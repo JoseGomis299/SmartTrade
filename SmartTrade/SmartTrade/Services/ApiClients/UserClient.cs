@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SmartTrade.Entities;
+using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services.ApiClients;
@@ -71,4 +73,17 @@ public class UserClient : ApiClient
         await PerformApiInstructionAsync($"AddBizum?id={Logged.Email}", ApiInstruction.Post, bizum);
     }
 
+    public async Task AddPurchaseAsync(int idProduct,int idPost, string emailSeller, int precio)
+    {
+        var registerData = new PurchaseDTO()
+        {
+            Idproducto = idProduct,
+            Idpost = idPost,
+            EmailSeller = emailSeller,
+            Precio = precio
+
+        };
+
+        await Broker.SetLoggedAsync(await PerformApiInstructionAsync("AddPurchase", ApiInstruction.Post, registerData));
+    }
 }

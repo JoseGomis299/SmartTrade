@@ -14,9 +14,8 @@ namespace SmartTrade.Entities
         {
         }
 
-        protected Purchase(int id, Product? product, int price, int shippingPrice, Seller seller, Post? post ) : this()
+        protected Purchase(Product? product, int price, int shippingPrice, Seller seller, Post? post ) : this()
         {
-            Id = id;
             PurchaseProduct = product;
             Price = price;
             ShippingPrice = shippingPrice;

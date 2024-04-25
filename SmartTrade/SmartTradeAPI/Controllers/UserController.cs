@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartTrade.BusinessLogic;
 using SmartTrade.Entities;
+using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTradeAPI.Controllers;
@@ -35,7 +36,7 @@ public class UserController : ControllerBase
     public void AddPaypal(string id, [FromBody] PayPalInfo info)
     {
         ISmartTradeService service = new SmartTradeService();
-        service.AddPaypal(info,id);
+        service.AddPaypal(info, id);
     }
 
     [HttpPost("AddCreditCard")]
@@ -46,9 +47,24 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("AddBizum")]
-    public void Add(string id, [FromBody] BizumInfo info)
+    public void AddBizum(string id, [FromBody] BizumInfo info)
     {
         ISmartTradeService service = new SmartTradeService();
         service.AddBizum(info, id);
     }
+
+    /*[HttpPost("AddPurchase")]
+    public void AddPurchase(string id, [FromBody] Purchase info)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        service.AddPurchase(info, id);
+    }
+
+    [HttpPost("Purchase")]
+    public Purchase getPurchase([FromBody] PurchaseDTO purchase)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        return service.getPurchase(purchase);
+    }
+    */
 }
