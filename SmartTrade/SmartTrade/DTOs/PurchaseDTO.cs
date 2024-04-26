@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartTrade.DTOs
+namespace SmartTradeDTOs
 {
     public class PurchaseDTO
     {

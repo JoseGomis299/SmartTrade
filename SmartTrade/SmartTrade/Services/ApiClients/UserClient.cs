@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SmartTrade.Entities;
-using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services.ApiClients;
@@ -78,11 +74,11 @@ public class UserClient : ApiClient
     {
         var registerData = new PurchaseDTO()
         {
-            Idproducto = idProduct,
+            ProductId = idProduct,
             PostId = idPost,
             EmailSeller = emailSeller,
-            Precio = precio,
-            PrecioEnvio = precioEnvio,
+            Price = precio,
+            ShippingPrice = precioEnvio,
             OfferId = idoffer
 
         };

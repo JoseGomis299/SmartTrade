@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1385"
+             x:Class="SmartTrade.Views.GiftsView" 
+             xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+             x:DataType="vm:GiftsModel"
+             xmlns:controls="clr-namespace:SmartTrade.Controls">
+    <Design.DataContext>
+		<vm:ShoppingCartModel/>
+    </Design.DataContext>
+    <ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="10">
+            <TextBlock Classes="h1" HorizontalAlignment="Center" Text="SHOPPING CART"/>
+            <ItemsControl ItemsSource="{Binding Products}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ST_CartProduct Margin="10 0" Command="{Binding OpenProductCommand}" DeleteElement="{Binding DeleteItemCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}" Count="{Binding Quantity, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel HorizontalAlignment="Right" Margin=" 30 10" Spacing="2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="h1" Text="TOTAL: "/>
+                    <TextBlock Classes="h1" Foreground="#ff32c378" Text="{Binding Total, Mode=OneWay}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="h2" Text="SUBTOTAL: "/>
+                    <TextBlock Classes="h2" Foreground="#ff32c378" Text="{Binding SubTotal, Mode=OneWay}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="h2" Text="SHIPPING: "/>
+                    <TextBlock Classes="h2" Foreground="#ff32c378" Text="{Binding ShippingCost, Mode=OneWay}"/>
+                </StackPanel>
+				<Button Classes="Green" Content="CHECKOUT" CornerRadius="10" Width="150" Margin="0 5 0  0" Name="CheckOutButton"/>
+            </StackPanel>
+           
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

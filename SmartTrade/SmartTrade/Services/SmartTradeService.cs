@@ -190,7 +190,7 @@ namespace SmartTrade.Services
         {
             await _broker.AlertClient.DeleteAlertAsync(alertId);
         }
-
+        
         public async Task<AlertDTO?> GetAlertsAsync(string productName)
         {
             return await _broker.AlertClient.GetAlertsAsync(productName);
@@ -209,7 +209,7 @@ namespace SmartTrade.Services
         {
             await _broker.WishClient.DeleteWishAsync(wishId);
         }
-
+        
         public async Task<List<WishDTO?>> GetWishAsync()
         {
             return await _broker.WishClient.GetWishAsync();
