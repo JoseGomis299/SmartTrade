@@ -67,7 +67,7 @@ public class SmartTradeService : ISmartTradeService
             OfferDTO offerDto = postInfo.Offers[i];
             ProductDTO productDto = offerDto.Product;
 
-            Product product = ProductFactoryFactory.GetFactory(postInfo.Category).CreateProduct(postInfo.ProductName, postInfo.Certifications, postInfo.EcologicPrint, postInfo.MinimumAge, postInfo.HowToUse, postInfo.HowToReducePrint, productDto.Attributes);
+            Product product = GetProductFactory(postInfo.Category).CreateProduct(postInfo.ProductName, postInfo.Certifications, postInfo.EcologicPrint, postInfo.MinimumAge, postInfo.HowToUse, postInfo.HowToReducePrint, productDto.Attributes);
             foreach (var image in productDto.Images)
             {
                 product.AddImage(new Image(image));
@@ -102,6 +102,23 @@ public class SmartTradeService : ISmartTradeService
 
         _dal.Commit();
         return post;
+
+        ProductFactory GetProductFactory(Category category)
+        {
+            switch (category)
+            {
+                case Category.Toy:
+                    return new ToyFactory();
+                case Category.Nutrition:
+                    return new NutritionFactory();
+                case Category.Clothing:
+                    return new ClothingFactory();
+                case Category.Book:
+                    return new BookFactory();
+                default:
+                    throw new ArgumentException("Invalid category");
+            }
+        }
     }
 
     public void EditPost(int postID, PostDTO postInfo, string loggedID)
