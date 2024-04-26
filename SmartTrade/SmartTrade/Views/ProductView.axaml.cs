@@ -105,9 +105,9 @@ namespace SmartTrade.Views
             }
         }
 
-        private void AddItemToCart(object? sender, RoutedEventArgs e)
+        private async void AddItemToCart(object? sender, RoutedEventArgs e)
         {
-            _model.AddItemToCart();
+            await _model.AddItemToCartAsync();
             SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), 1, 1, out _, true);
         }
 

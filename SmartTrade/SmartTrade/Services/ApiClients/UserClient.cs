@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SmartTrade.DTOs;
 using SmartTrade.Entities;
-using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services.ApiClients;
@@ -78,11 +75,11 @@ public class UserClient : ApiClient
     {
         var registerData = new PurchaseDTO()
         {
-            Idproducto = idProduct,
+            ProductId = idProduct,
             PostId = idPost,
             EmailSeller = emailSeller,
-            Precio = precio,
-            PrecioEnvio = precioEnvio,
+            Price = precio,
+            ShippingPrice = precioEnvio,
             OfferId = idoffer
 
         };
@@ -94,5 +91,20 @@ public class UserClient : ApiClient
     {
         return JsonConvert.DeserializeObject<List<PurchaseDTO>>(await PerformApiInstructionAsync($"GetPurchases?id={Logged.Email}", ApiInstruction.Get));
 
+    }
+
+    public async Task<List<CartItemDTO>?> GetShoppingCartAsync()
+    {
+        return JsonConvert.DeserializeObject<List<CartItemDTO>>(await PerformApiInstructionAsync($"GetShoppingCart", ApiInstruction.Get));
+    }
+
+    public async Task AddToCartAsync(CartItemDTO cartItem)
+    {
+        await PerformApiInstructionAsync($"AddToShoppingCart", ApiInstruction.Post, cartItem);
+    }
+
+    public async Task RemoveFromCartAsync(int offerId)
+    {
+        await PerformApiInstructionAsync($"RemoveFromShoppingCart?id={offerId}", ApiInstruction.Delete);
     }
 }

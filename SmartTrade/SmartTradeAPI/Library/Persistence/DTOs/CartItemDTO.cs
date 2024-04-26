@@ -7,16 +7,17 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.Entities
 {
-    public class CartItem
+    public class CartItemDTO
     {
         public PostDTO Post { get; set; }
-        public int OfferIndex { get; set; }
+        public OfferDTO Offer { get; set; }
         public int Quantity { get; set; }
 
-        public CartItem(PostDTO post, int offerIndex, int quantity = 1)
+        public CartItemDTO(){}
+        public CartItemDTO(PostDTO post, OfferDTO offer, int quantity = 1)
         {
             Post = post;
-            OfferIndex = offerIndex;
+            Offer = offer;
             Quantity = quantity;
         }
     }

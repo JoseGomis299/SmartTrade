@@ -446,6 +446,45 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
+    public void AddToCart(string consumerId, CartItemDTO cartItemDTO)
+    {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+        Post post = _dal.GetById<Post>(cartItemDTO.Post.Id);
+        Offer offer = _dal.GetById<Offer>(cartItemDTO.Offer.Id);
+        consumer.AddToCart(new CartItem(post, offer, cartItemDTO.Quantity));
+        _dal.Commit();
+    }
+
+    public void RemoveFromCart(string consumerId, int offerId)
+    {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+        consumer.RemoveFromCart(offerId);
+        _dal.Commit();
+    }
+
+    public List<CartItemDTO> GetShoppingCart(string consumerId)
+    {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+
+        return consumer.ShoppingCart.AsQueryable().Select(c => new CartItemDTO
+        {
+            Offer = new OfferDTO
+            {
+                Id = c.Offer.Id,
+                Price = c.Offer.Price,
+                ShippingCost = c.Offer.ShippingCost,
+                Stock = c.Offer.Stock,
+                Product = new ProductDTO
+                {
+                    Id = c.Offer.Product.Id,
+                    Images = new List<byte[]>(){ c.Offer.Product.Images.First().ImageSource }
+                }
+            },
+            Post = GetPost(c.Post.Id),
+            Quantity = c.Quantity
+        }).ToList();
+    }
+
     public void AddPurchase(int? idproduct, int? idpost, string? emailseller, int precio, int precioEnvio, int? idoffer)
     {
         throw new NotImplementedException();

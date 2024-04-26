@@ -11,6 +11,7 @@ public partial class Consumer : User
         Alerts = new List<Alert>();
         WishList = new List<Wish>();
         Purchases = new List<Purchase>();
+        ShoppingCart = new List<CartItem>();
     }
 
     public Consumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address) : base(email, password, name, lastNames)
@@ -44,6 +45,15 @@ public partial class Consumer : User
         }
     }
 
+    public void AddToCart(CartItem cartItem)
+    {
+        var index = ((List<CartItemDTO>)ShoppingCart).FindIndex(x => x.Offer.Id == cartItem.Offer.Id);
+
+        if(index == -1)
+            ShoppingCart.Add(cartItem);
+        else ((List<CartItemDTO>)ShoppingCart)[index].Quantity = cartItem.Quantity;
+    }
+
     public void AddShippingAddress(Address address)
     {
         Addresses.Add(address);
@@ -62,5 +72,11 @@ public partial class Consumer : User
     public void AddPurchases(Purchase purchase)
     {
         Purchases.Add(purchase);
+    }
+
+    public void RemoveFromCart(int OfferId)
+    {
+        var index = ((List<CartItemDTO>)ShoppingCart).FindIndex(x => x.Offer.Id == OfferId);
+        if (index != -1) ((List<CartItemDTO>)ShoppingCart).RemoveAt(index);
     }
 }

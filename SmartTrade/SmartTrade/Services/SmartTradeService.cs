@@ -37,7 +37,7 @@ namespace SmartTrade.Services
             }
         }
 
-        public List<CartItem>? CartItems => _cache.CartItems; 
+        public List<CartItemDTO>? CartItems => _cache.CartItems; 
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
         private SmartTradeBroker _broker;
@@ -52,19 +52,31 @@ namespace SmartTrade.Services
             _cache = new SmartTradeCache();
         }
 
-        public void AddItemToCart(PostDTO post, int offerIndex, int quantity = 1)
+        public async Task AddItemToCartAsync(PostDTO post, OfferDTO offer, int quantity = 1)
         {
-            _cache.AddItemToCart(post, offerIndex, quantity);
+            _cache.AddItemToCart(post, offer, quantity);
+            await _broker.UserClient.AddToCartAsync(new CartItemDTO(post, offer, quantity));
         }
 
-        public void DeleteItemFromCart(int? postId, int offerIndex)
+        public async Task DeleteItemFromCartAsync(int offerId)
         {
-            _cache.DeleteItemFromCart(postId, offerIndex);
+            _cache.DeleteItemFromCart(offerId);
+            await _broker.UserClient.RemoveFromCartAsync(offerId);
         }
 
         public async Task InitializeCacheAsync()
         {
-            await _cache.LoadCartItems(Logged == null ? "" : Logged.Email);
+            await LoadCartItems();
+        }
+
+        private async Task LoadCartItems()
+        {
+            if (Logged != null)
+            {
+                var items = await _broker.UserClient.GetShoppingCartAsync();
+                _cache.LoadCartItems(items);
+            }
+            else await _cache.LoadCartItems("");
         }
 
         #region User
@@ -72,15 +84,13 @@ namespace SmartTrade.Services
         public async Task LogOut()
         {
             _broker.LogOut();
-            await _cache.LoadCartItems("");
+            await LoadCartItems();
         }
 
         public async Task LogInAsync(string email, string password)
         {
            await _broker.UserClient.LogInAsync(email, password);
-
-           if (Logged != null) await _cache.LoadCartItems(email);
-           else await _cache.LoadCartItems("");
+           await LoadCartItems();
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
