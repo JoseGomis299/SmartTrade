@@ -79,11 +79,11 @@ public class UserClient : ApiClient
         var registerData = new PurchaseDTO()
         {
             Idproducto = idProduct,
-            Idpost = idPost,
+            PostId = idPost,
             EmailSeller = emailSeller,
             Precio = precio,
             PrecioEnvio = precioEnvio,
-            Idoffer = idoffer
+            OfferId = idoffer
 
         };
 

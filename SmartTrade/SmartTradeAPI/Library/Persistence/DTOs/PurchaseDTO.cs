@@ -4,23 +4,23 @@ namespace SmartTradeAPI.Library.Persistence.DTOs
 {
     public class PurchaseDTO
     {
-        public int Precio { get; set; }
-        public int? Idproducto { get; set; }
+        public float Price { get; set; }
+        public float ShippingPrice { get; set; }
+        public int? ProductId { get; set; }
         public string? EmailSeller { get; set; }
-        public int? Idpost { get; set; }
-        public int PrecioEnvio { get; set; }
-        public int? Idoffer { get; set; }
+        public int? PostId { get; set; }
+        public int? OfferId { get; set; }
 
         public PurchaseDTO(){}
         
-        public PurchaseDTO(int? idproduct, int? idpost, string? emailseller, int precio, int precioEnvio, int? idOffer)
+        public PurchaseDTO(int? idproduct, int? postId, string? emailseller, int? idOffer, float precio, float precioEnvio)
         {
-            this.Precio = precio;
-            Idproducto = idproduct;
+            Price = precio;
+            ShippingPrice = precioEnvio;
+            ProductId = idproduct;
             EmailSeller = emailseller;
-            Idpost = idpost;
-            PrecioEnvio = precioEnvio;
-            Idoffer = idOffer;
+            PostId = postId;
+            OfferId = idOffer;
         }
     }
 }

@@ -14,14 +14,13 @@ namespace SmartTrade.Entities
         {
         }
 
-        protected Purchase(Product? product, int price, int shippingPrice, Seller seller, Post? post, int precioEnvio, Offer? purchaseOffer ) : this()
+        protected Purchase(Product? product, float price, float shippingPrice, Seller seller, Post? post, Offer? purchaseOffer ) : this()
         {
             PurchaseProduct = product;
             Price = price;
             ShippingPrice = shippingPrice;
             PurchaseSeller = seller;
             PurchasePost = post;
-            PrecioEnvio = precioEnvio;
             PurchaseOffer = purchaseOffer;
         }
     }
