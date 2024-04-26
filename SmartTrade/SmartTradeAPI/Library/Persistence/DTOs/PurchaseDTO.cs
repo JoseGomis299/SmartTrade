@@ -6,6 +6,7 @@ namespace SmartTradeAPI.Library.Persistence.DTOs
     {
         public float Price { get; set; }
         public float ShippingPrice { get; set; }
+        public byte[] Image { get; set; }
         public int? ProductId { get; set; }
         public string? EmailSeller { get; set; }
         public int? PostId { get; set; }
