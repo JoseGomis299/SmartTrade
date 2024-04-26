@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
 using SmartTrade.Services;
+using SmartTrade.DTOs;
 
 namespace SmartTrade.ViewModels
 {
@@ -27,19 +28,20 @@ namespace SmartTrade.ViewModels
         {
             List<SimplePostDTO>? posts = await Service.RefreshPostsAsync();
 
-            posts.ForEach(post =>
+            foreach(var post in posts)
             {
                 OriginalProducts.Add(new ProductModel(post));
 
                 if (IsEcologic(post))
                 {
                     RecommendedProducts.Add(new ProductModel(post));
-                }else if (IsRelated(post))
+                }
+                else if (await IsRelated(post))
                 {
                     RelatedProducts.Add(new ProductModel(post));
                 }
                 else OtherProducts.Add(new ProductModel(post));
-            });
+            }
         }
 
         public bool IsEcologic(SimplePostDTO post)
@@ -47,12 +49,19 @@ namespace SmartTrade.ViewModels
             return int.TryParse(post.EcologicPrint, out int ecologicPrint) && ecologicPrint < 10;
         }
 
-        public bool IsRelated(SimplePostDTO post)
+        public async Task<bool> IsRelated(SimplePostDTO post)
         {
+            Category categoryPost = post.Category;
+            string productNamePost = post.ProductName;
+            string sellerIdPost = post.SellerID;
+            List<PurchaseDTO> purchases = new List<PurchaseDTO>();
+
+            purchases = await Service.GetPurchases();
+
             return Random.Shared.Next(0, 2) == 1;
         }
 
-        public void UpdateProducts(IEnumerable<ProductModel> list)
+        public async void UpdateProducts(IEnumerable<ProductModel> list)
         {
             OtherProducts.Clear();
             RecommendedProducts.Clear();
@@ -66,7 +75,7 @@ namespace SmartTrade.ViewModels
                 {
                     RecommendedProducts.Add(product);
                 }
-                else if (IsRelated(post))
+                else if (await IsRelated(post))
                 { 
                     RelatedProducts.Add(product);
                 }
