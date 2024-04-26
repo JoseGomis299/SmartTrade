@@ -6,6 +6,7 @@ using SmartTrade.Persistence;
 using Microsoft.EntityFrameworkCore;
 using SmartTradeAPI.Library.Persistence.DTOs;
 using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartTrade.BusinessLogic;
 
@@ -66,7 +67,7 @@ public class SmartTradeService : ISmartTradeService
             OfferDTO offerDto = postInfo.Offers[i];
             ProductDTO productDto = offerDto.Product;
 
-            Product product = ProductFactory.GetFactory(postInfo.Category).CreateProduct(postInfo.ProductName, postInfo.Certifications, postInfo.EcologicPrint, postInfo.MinimumAge, postInfo.HowToUse, postInfo.HowToReducePrint, productDto.Attributes);
+            Product product = GetProductFactory(postInfo.Category).CreateProduct(postInfo.ProductName, postInfo.Certifications, postInfo.EcologicPrint, postInfo.MinimumAge, postInfo.HowToUse, postInfo.HowToReducePrint, productDto.Attributes);
             foreach (var image in productDto.Images)
             {
                 product.AddImage(new Image(image));
@@ -101,12 +102,79 @@ public class SmartTradeService : ISmartTradeService
 
         _dal.Commit();
         return post;
+
+        ProductFactory GetProductFactory(Category category)
+        {
+            switch (category)
+            {
+                case Category.Toy:
+                    return new ToyFactory();
+                case Category.Nutrition:
+                    return new NutritionFactory();
+                case Category.Clothing:
+                    return new ClothingFactory();
+                case Category.Book:
+                    return new BookFactory();
+                default:
+                    throw new ArgumentException("Invalid category");
+            }
+        }
     }
 
     public void EditPost(int postID, PostDTO postInfo, string loggedID)
     {
-        DeletePost(postID);
-        Post post = AddPost(postInfo, loggedID);
+        Post post = _dal.GetById<Post>(postID);
+        
+        post.Title = postInfo.Title;
+        post.Description = postInfo.Description;
+        post.Validated = postInfo.Validated;
+                
+        List<Offer> offers = new();
+        List<Offer> originalOffers = post.Offers.ToList();
+
+        foreach (var originalOffer in originalOffers)
+        {
+            OfferDTO? offerDto = postInfo.Offers.FirstOrDefault(x => x.Id == originalOffer.Id);
+            if (offerDto == null) continue;
+            
+            originalOffer.Price = offerDto.Price;
+            originalOffer.ShippingCost = offerDto.ShippingCost;
+            originalOffer.Stock = offerDto.Stock;
+
+            originalOffer.Product.Name = offerDto.Product.Name;
+            originalOffer.Product.Certification = offerDto.Product.Certification;
+            originalOffer.Product.EcologicPrint = offerDto.Product.EcologicPrint;
+            originalOffer.Product.MinimumAge = offerDto.Product.MinimumAge;
+            originalOffer.Product.HowToUse = offerDto.Product.HowToUse;
+            originalOffer.Product.HowToReducePrint = offerDto.Product.HowToReducePrint;
+
+            if (originalOffer.Product is Nutrition nutrition)
+            {
+                nutrition.Weight = offerDto.Product.Attributes["Weight"];
+            }else if (originalOffer.Product is Toy toy)
+            {
+                toy.Material = offerDto.Product.Attributes["Material"];
+            }else if (originalOffer.Product is Clothing clothing)
+            {
+                clothing.Size = offerDto.Product.Attributes["Size"];
+                clothing.Color = offerDto.Product.Attributes["Color"];
+            }else if (originalOffer.Product is Book book)
+            {
+                book.Language = offerDto.Product.Attributes["Language"];
+            }
+
+            List<Image> images = new();
+            for (int i = 0; i < originalOffer.Product.Images.Count; i++)
+            {
+                if(offerDto.Product.Images.Count <= i) break;
+                Image image = originalOffer.Product.GetImage(i);
+                image.ImageSource = offerDto.Product.Images[i];
+                images.Add(image);
+            }
+            originalOffer.Product.Images = images;
+            offers.Add(originalOffer);
+        }
+        post.Offers = offers;
 
         //TODO: Si el postInfo está validado creamos la notificación pertinente si toca crear
        if(postInfo.Validated) CreateNotifications(post);
@@ -446,14 +514,65 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public void AddPurchase(int? idproduct, int? idpost, string? emailseller, int precio, int precioEnvio, int? idoffer)
+    public void AddToCart(string consumerId, CartItemDTO cartItemDTO)
     {
-        throw new NotImplementedException();
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+        Post post = _dal.GetById<Post>(cartItemDTO.Post.Id);
+        Offer offer = _dal.GetById<Offer>(cartItemDTO.Offer.Id);
+        consumer.AddToCart(new CartItem(post, offer, cartItemDTO.Quantity));
+        _dal.Commit();
+    }
 
+    public void RemoveFromCart(string consumerId, int offerId)
+    {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+        consumer.RemoveFromCart(offerId);
+        _dal.Commit();
+    }
+
+    public List<CartItemDTO> GetShoppingCart(string consumerId)
+    {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+
+        return consumer.ShoppingCart.AsQueryable().Select(c => new CartItemDTO
+        {
+            Offer = new OfferDTO
+            {
+                Id = c.Offer.Id,
+                Price = c.Offer.Price,
+                ShippingCost = c.Offer.ShippingCost,
+                Stock = c.Offer.Stock,
+                Product = new ProductDTO
+                {
+                    Id = c.Offer.Product.Id,
+                    Images = new List<byte[]>(){ c.Offer.Product.Images.First().ImageSource }
+                }
+            },
+            Post = GetPost(c.Post.Id),
+            Quantity = c.Quantity
+        }).ToList();
+    }
+
+    public void AddPurchase(string userId, PurchaseDTO purchaseDTO)
+    {
+        Consumer? logged = _dal.GetById<Consumer>(userId);
+       // logged.AddPurchases(purchaseDTO);
+        _dal.Commit();
     }
 
     public List<PurchaseDTO> GetPurchases(string? emailconsumer)
     {
-        throw new NotImplementedException();
+        Consumer? logged = _dal.GetById<Consumer>(emailconsumer);
+        return (logged.Purchases.AsQueryable())
+        .Select(p => new PurchaseDTO
+        {
+            Image = p.PurchaseProduct.Images.First().ImageSource,
+            ProductId = p.PurchaseProduct.Id,
+            PostId = p.PurchasePost.Id,
+            EmailSeller = p.PurchaseSeller.Email,
+            OfferId = p.PurchaseOffer.Id,
+            Price = p.Price,
+            ShippingPrice = p.ShippingPrice
+        }).ToList();
     }
 }

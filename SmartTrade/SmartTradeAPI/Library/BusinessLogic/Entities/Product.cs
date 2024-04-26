@@ -41,6 +41,11 @@ namespace SmartTrade.Entities;
             Alerts.Add(alert);
         }
 
+        public Image GetImage(int index)
+        {
+            return ((List<Image>)Images)[index];
+        }
+
 
         public abstract Dictionary<string, string> GetAttributes();
         public abstract string GetInfo();

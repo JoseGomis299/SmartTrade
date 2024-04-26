@@ -60,11 +60,38 @@ public class UserController : ControllerBase
         service.AddPurchase(idproduct,idpost,emailseller,precio, precioEnvio, offerId);
     }
     
-    [HttpPost("Purchase")]
+    [HttpGet("GetPurchases")]
     public List<PurchaseDTO> GetPurchases(string? emailConsumer)
     {
         ISmartTradeService service = new SmartTradeService();
         return service.GetPurchases(emailConsumer);
+    }
+
+    [HttpGet("GetShoppingCart")]
+    public List<CartItemDTO> GetShoppingCart()
+    {
+        ISmartTradeService service = new SmartTradeService();
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        return service.GetShoppingCart(loggedId);
+    }
+
+    [HttpPost("AddToShoppingCart")]
+    public void AddToShoppingCart([FromBody] CartItemDTO item)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        service.AddToCart(loggedId, item);
+    }
+
+    [HttpDelete("RemoveFromShoppingCart")]
+    public void RemoveFromShoppingCart(int id)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        service.RemoveFromCart(loggedId, id);
     }
 
 }

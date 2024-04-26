@@ -4,23 +4,6 @@ namespace SmartTrade.Entities
 {
     public abstract class ProductFactory
     {
-        public static ProductFactory GetFactory(Category category)
-        {
-            switch (category)
-            {
-                case Category.Toy:
-                    return new ToyFactory();
-                case Category.Nutrition:
-                    return new NutritionFactory();
-                case Category.Clothing:
-                    return new ClothingFactory();
-                case Category.Book:
-                    return new BookFactory();
-                default:
-                    throw new ArgumentException("Invalid category");
-            }
-        }
-
         protected T CreateBaseProduct<T>(string name, string certification, string ecologicPrint, int minimumAge, string howToUse, string howToReducePrint) where T : Product, new()
         {
             T product = new T();

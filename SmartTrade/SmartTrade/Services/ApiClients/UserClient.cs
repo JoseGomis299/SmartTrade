@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SmartTrade.DTOs;
 using SmartTrade.Entities;
 using SmartTradeDTOs;
 
@@ -90,5 +91,20 @@ public class UserClient : ApiClient
     {
         return JsonConvert.DeserializeObject<List<PurchaseDTO>>(await PerformApiInstructionAsync($"GetPurchases?id={Logged.Email}", ApiInstruction.Get));
 
+    }
+
+    public async Task<List<CartItemDTO>?> GetShoppingCartAsync()
+    {
+        return JsonConvert.DeserializeObject<List<CartItemDTO>>(await PerformApiInstructionAsync($"GetShoppingCart", ApiInstruction.Get));
+    }
+
+    public async Task AddToCartAsync(CartItemDTO cartItem)
+    {
+        await PerformApiInstructionAsync($"AddToShoppingCart", ApiInstruction.Post, cartItem);
+    }
+
+    public async Task RemoveFromCartAsync(int offerId)
+    {
+        await PerformApiInstructionAsync($"RemoveFromShoppingCart?id={offerId}", ApiInstruction.Delete);
     }
 }

@@ -13,4 +13,5 @@ public partial class Consumer : User
     public virtual ICollection<Alert> Alerts { get; set; }
     public virtual ICollection<Wish> WishList { get; set; }
     public virtual ICollection<Purchase> Purchases { get; set;}
+    public virtual ICollection<CartItem> ShoppingCart { get; set;}
 }

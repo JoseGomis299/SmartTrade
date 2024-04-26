@@ -21,7 +21,7 @@ namespace SmartTrade.Services
         private List<SimplePostDTO>? _simplePosts;
         public List<SimplePostDTO>? Posts => _simplePosts;
         public List<NotificationDTO>? Notifications { get; set; }
-        public List<CartItem>? CartItems { get; set; } = new List<CartItem>();
+        public List<CartItemDTO>? CartItems { get; set; } = new List<CartItemDTO>();
 
         private string _cartFileName;
 
@@ -35,7 +35,7 @@ namespace SmartTrade.Services
             string prefix = loggedEmail == "" ? "" : loggedEmail + "_";
             _cartFileName = prefix + "ShoppingCartItems";
 
-            var items = await JSONsaving.ReadFromJsonFileAsync<List<CartItem>>(_cartFileName);
+            var items = await JSONsaving.ReadFromJsonFileAsync<List<CartItemDTO>>(_cartFileName);
             if (items != null)
             {
                 CartItems = items;
@@ -43,13 +43,18 @@ namespace SmartTrade.Services
             }
             else if (loggedEmail != "")
             {
-                items = await JSONsaving.ReadFromJsonFileAsync<List<CartItem>>("ShoppingCartItems");
+                items = await JSONsaving.ReadFromJsonFileAsync<List<CartItemDTO>>("ShoppingCartItems");
                 if (items != null)
                 {
                     CartItems = items;
                     OnCartChanged?.Invoke();
                 }
             }
+        }
+        public void LoadCartItems(List<CartItemDTO> items)
+        {
+            CartItems = items;
+            OnCartChanged?.Invoke();
         }
 
         public void SetPosts(List<SimplePostDTO>? posts)
@@ -112,22 +117,22 @@ namespace SmartTrade.Services
             return post;
         }
 
-        public void AddItemToCart(PostDTO post, int offerIndex, int quantity)
+        public void AddItemToCart(PostDTO post, OfferDTO offer, int quantity)
         {
-            int index = CartItems.FindIndex(x => x.Post.Id == post.Id && x.OfferIndex == offerIndex);
+            int index = CartItems.FindIndex(x => x.Post.Id == post.Id && x.Offer.Id == offer.Id);
             
             if (index == -1)
             {
-                CartItems.Add(new CartItem(post, offerIndex, quantity));
+                CartItems.Add(new CartItemDTO(post, offer, quantity));
             }
             else CartItems[index].Quantity += quantity;
 
             OnCartChanged?.Invoke();
         }
 
-        public void DeleteItemFromCart(int? postId, int offerIndex)
+        public void DeleteItemFromCart(int offerId)
         {
-            int index = CartItems.FindIndex(x => x.Post.Id == postId && x.OfferIndex == offerIndex);
+            int index = CartItems.FindIndex(x=> x.Offer.Id == offerId);
             if (index != -1) CartItems.RemoveAt(index);
 
             OnCartChanged?.Invoke();

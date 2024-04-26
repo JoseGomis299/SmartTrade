@@ -28,7 +28,7 @@ public class Stock
 
     #region Constructors
 
-    // Constructor for creating a new stock from an offer (Used in Validate Post)
+    // Constructor for creating a new stock from an Offer (Used in Validate Post)
     public Stock(OfferDTO offer, ValidatePostModel model)
     {
         InitializeValues(model);

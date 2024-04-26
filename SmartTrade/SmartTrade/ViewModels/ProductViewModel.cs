@@ -47,7 +47,7 @@ namespace SmartTrade.ViewModels
         private Bitmap? _alertActivated {  get; set; }
         private Bitmap? _alertDeactivated {  get; set; }
         private ToggleButton? _alertToggle;
-        private int _currentOfferIndex;
+        private OfferDTO _currentOffer;
 
         public UserDTO? Logged => Service.Logged;
 
@@ -81,12 +81,11 @@ namespace SmartTrade.ViewModels
             Seller = "Vendido por: " + post.SellerCompanyName;
             Description = post.Description;
 
-            LoadData(post.Offers[0], 0);
+            LoadData(post.Offers[0]);
 
-            for (var i = 0; i < post.Offers.Count; i++)
+            foreach (var offer in post.Offers)
             {
-                var offer = post.Offers[i];
-                Attributes.Add(new AttributeModel(offer.Product.Differentiators, i, offer, this));
+                Attributes.Add(new AttributeModel(offer.Product.Differentiators, offer, this));
             }
 
             Attributes[0].SetChecked(true);
@@ -144,7 +143,7 @@ namespace SmartTrade.ViewModels
             return Random.Shared.Next(0, 2) == 1;
         }
 
-        public void LoadData(OfferDTO offer, int offerIndex)
+        public void LoadData(OfferDTO offer)
         {
             Images.Clear();
 
@@ -161,7 +160,7 @@ namespace SmartTrade.ViewModels
             this.RaisePropertyChanged(nameof(ShippingCost));
             this.RaisePropertyChanged(nameof(Details));
 
-            _currentOfferIndex = offerIndex;
+            _currentOffer = offer;
             OnOfferChanged?.Invoke();
         }
 
@@ -170,9 +169,9 @@ namespace SmartTrade.ViewModels
             await Service.CreateAlertAsync(productId);
         }
 
-        public void AddItemToCart()
+        public async Task AddItemToCartAsync()
         {
-            Service.AddItemToCart(Post, _currentOfferIndex, _quantity);
+            await Service.AddItemToCartAsync(Post, _currentOffer, _quantity);
         }
 
         public async Task AddItemToWishListAsync()
@@ -187,7 +186,7 @@ namespace SmartTrade.ViewModels
         public bool IsChecked { get; set; }
         public ReactiveCommand<ItemCollection, Unit> ChangeOfferCommand { get; set; }
 
-        public AttributeModel(string? text, int offerIndex,OfferDTO offer, ProductViewModel model)
+        public AttributeModel(string? text,OfferDTO offer, ProductViewModel model)
         {
             Text = text;
 
@@ -199,7 +198,7 @@ namespace SmartTrade.ViewModels
                 }
              
                 SetChecked(true);
-                model.LoadData(offer, offerIndex);
+                model.LoadData(offer);
             });
         }
 
