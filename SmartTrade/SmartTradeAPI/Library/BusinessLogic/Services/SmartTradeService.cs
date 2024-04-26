@@ -67,7 +67,7 @@ public class SmartTradeService : ISmartTradeService
             OfferDTO offerDto = postInfo.Offers[i];
             ProductDTO productDto = offerDto.Product;
 
-            Product product = ProductFactory.GetFactory(postInfo.Category).CreateProduct(postInfo.ProductName, postInfo.Certifications, postInfo.EcologicPrint, postInfo.MinimumAge, postInfo.HowToUse, postInfo.HowToReducePrint, productDto.Attributes);
+            Product product = ProductFactoryFactory.GetFactory(postInfo.Category).CreateProduct(postInfo.ProductName, postInfo.Certifications, postInfo.EcologicPrint, postInfo.MinimumAge, postInfo.HowToUse, postInfo.HowToReducePrint, productDto.Attributes);
             foreach (var image in productDto.Images)
             {
                 product.AddImage(new Image(image));
