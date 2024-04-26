@@ -6,6 +6,7 @@ using SmartTrade.Persistence;
 using Microsoft.EntityFrameworkCore;
 using SmartTradeAPI.Library.Persistence.DTOs;
 using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartTrade.BusinessLogic;
 
@@ -446,14 +447,26 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public void AddPurchase(int? idproduct, int? idpost, string? emailseller, int precio, int precioEnvio, int? idoffer)
+    public void AddPurchase(string userId, PurchaseDTO purchaseDTO)
     {
-        throw new NotImplementedException();
-
+        Consumer? logged = _dal.GetById<Consumer>(userId);
+       // logged.AddPurchases(purchaseDTO);
+        _dal.Commit();
     }
 
     public List<PurchaseDTO> GetPurchases(string? emailconsumer)
     {
-        throw new NotImplementedException();
+        Consumer? logged = _dal.GetById<Consumer>(emailconsumer);
+        return (logged.Purchases.AsQueryable())
+        .Select(p => new PurchaseDTO
+        {
+            Image = p.PurchaseProduct.Images.First().ImageSource,
+            ProductId = p.PurchaseProduct.Id,
+            PostId = p.PurchasePost.Id,
+            EmailSeller = p.PurchaseSeller.Email,
+            OfferId = p.PurchaseOffer.Id,
+            Price = p.Price,
+            ShippingPrice = p.ShippingPrice
+        }).ToList();
     }
 }
