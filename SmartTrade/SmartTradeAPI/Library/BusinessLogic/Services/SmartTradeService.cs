@@ -123,8 +123,58 @@ public class SmartTradeService : ISmartTradeService
 
     public void EditPost(int postID, PostDTO postInfo, string loggedID)
     {
-        DeletePost(postID);
-        Post post = AddPost(postInfo, loggedID);
+        Post post = _dal.GetById<Post>(postID);
+        
+        post.Title = postInfo.Title;
+        post.Description = postInfo.Description;
+        post.Validated = postInfo.Validated;
+                
+        List<Offer> offers = new();
+        List<Offer> originalOffers = post.Offers.ToList();
+
+        foreach (var originalOffer in originalOffers)
+        {
+            OfferDTO? offerDto = postInfo.Offers.FirstOrDefault(x => x.Id == originalOffer.Id);
+            if (offerDto == null) continue;
+            
+            originalOffer.Price = offerDto.Price;
+            originalOffer.ShippingCost = offerDto.ShippingCost;
+            originalOffer.Stock = offerDto.Stock;
+
+            originalOffer.Product.Name = offerDto.Product.Name;
+            originalOffer.Product.Certification = offerDto.Product.Certification;
+            originalOffer.Product.EcologicPrint = offerDto.Product.EcologicPrint;
+            originalOffer.Product.MinimumAge = offerDto.Product.MinimumAge;
+            originalOffer.Product.HowToUse = offerDto.Product.HowToUse;
+            originalOffer.Product.HowToReducePrint = offerDto.Product.HowToReducePrint;
+
+            if (originalOffer.Product is Nutrition nutrition)
+            {
+                nutrition.Weight = offerDto.Product.Attributes["Weight"];
+            }else if (originalOffer.Product is Toy toy)
+            {
+                toy.Material = offerDto.Product.Attributes["Material"];
+            }else if (originalOffer.Product is Clothing clothing)
+            {
+                clothing.Size = offerDto.Product.Attributes["Size"];
+                clothing.Color = offerDto.Product.Attributes["Color"];
+            }else if (originalOffer.Product is Book book)
+            {
+                book.Language = offerDto.Product.Attributes["Language"];
+            }
+
+            List<Image> images = new();
+            for (int i = 0; i < originalOffer.Product.Images.Count; i++)
+            {
+                if(offerDto.Product.Images.Count <= i) break;
+                Image image = originalOffer.Product.GetImage(i);
+                image.ImageSource = offerDto.Product.Images[i];
+                images.Add(image);
+            }
+            originalOffer.Product.Images = images;
+            offers.Add(originalOffer);
+        }
+        post.Offers = offers;
 
         //TODO: Si el postInfo está validado creamos la notificación pertinente si toca crear
        if(postInfo.Validated) CreateNotifications(post);
