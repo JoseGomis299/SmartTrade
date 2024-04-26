@@ -53,18 +53,18 @@ public class UserController : ControllerBase
         service.AddBizum(info, id);
     }
 
-    /*[HttpPost("AddPurchase")]
-    public void AddPurchase(string id, [FromBody] Purchase info)
+    [HttpPost("AddPurchase")]
+    public void AddPurchase(int idproduct, int idpost, string? emailseller, int precio)
     {
         ISmartTradeService service = new SmartTradeService();
-        service.AddPurchase(info, id);
+        service.AddPurchase(idproduct,idpost,emailseller,precio);
+    }
+    
+    [HttpPost("Purchase")]
+    public List<PurchaseDTO> GetPurchases()
+    {
+        ISmartTradeService service = new SmartTradeService();
+        return service.GetPurchases();
     }
 
-    [HttpPost("Purchase")]
-    public Purchase getPurchase([FromBody] PurchaseDTO purchase)
-    {
-        ISmartTradeService service = new SmartTradeService();
-        return service.getPurchase(purchase);
-    }
-    */
 }

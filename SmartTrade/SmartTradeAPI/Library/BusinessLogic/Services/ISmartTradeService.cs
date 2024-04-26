@@ -1,4 +1,5 @@
 ﻿using SmartTrade.Entities;
+using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.BusinessLogic
@@ -44,5 +45,7 @@ namespace SmartTrade.BusinessLogic
         public List<WishDTO> GetWishList(string loggedId);
         public void DeleteWish(int id);
 
+        public void AddPurchase(int idproduct, int idpost, string? emailseller, int precio);
+        public List<PurchaseDTO> GetPurchases();
     }
 }

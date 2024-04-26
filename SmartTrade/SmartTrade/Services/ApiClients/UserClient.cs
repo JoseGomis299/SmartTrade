@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -73,7 +74,7 @@ public class UserClient : ApiClient
         await PerformApiInstructionAsync($"AddBizum?id={Logged.Email}", ApiInstruction.Post, bizum);
     }
 
-    public async Task AddPurchaseAsync(int idProduct,int idPost, string emailSeller, int precio)
+    public async Task AddPurchaseAsync(int idProduct, int idPost, string emailSeller, int precio)
     {
         var registerData = new PurchaseDTO()
         {
@@ -85,5 +86,11 @@ public class UserClient : ApiClient
         };
 
         await Broker.SetLoggedAsync(await PerformApiInstructionAsync("AddPurchase", ApiInstruction.Post, registerData));
+    }
+
+    public async Task<List<PurchaseDTO>?> GetPurchaseAsync()
+    {
+        return JsonConvert.DeserializeObject<List<PurchaseDTO>>(await PerformApiInstructionAsync("GetPurchases", ApiInstruction.Get));
+
     }
 }

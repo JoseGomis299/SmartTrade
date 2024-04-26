@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SmartTrade.Entities;
 using SmartTrade.Persistence;
 using Microsoft.EntityFrameworkCore;
+using SmartTradeAPI.Library.Persistence.DTOs;
 
 namespace SmartTrade.BusinessLogic;
 
@@ -442,5 +443,15 @@ public class SmartTradeService : ISmartTradeService
         _dal.Delete<Wish>(wish);
 
         _dal.Commit();
+    }
+
+    void ISmartTradeService.AddPurchase(int idproduct, int idpost, string? emailseller, int precio)
+    {
+        throw new NotImplementedException();
+    }
+
+    List<PurchaseDTO> ISmartTradeService.GetPurchases()
+    {
+        throw new NotImplementedException();
     }
 }
