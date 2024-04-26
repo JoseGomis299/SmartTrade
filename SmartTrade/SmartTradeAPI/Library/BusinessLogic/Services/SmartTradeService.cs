@@ -556,7 +556,14 @@ public class SmartTradeService : ISmartTradeService
     public void AddPurchase(string userId, PurchaseDTO purchaseDTO)
     {
         Consumer? logged = _dal.GetById<Consumer>(userId);
-       // logged.AddPurchases(purchaseDTO);
+
+        var post = _dal.GetById<Post>(purchaseDTO.PostId);
+        var seller = _dal.GetById<Seller>(purchaseDTO.EmailSeller);
+        var product = _dal.GetById<Product>(purchaseDTO.ProductId);
+        var offer = _dal.GetById<Offer>(purchaseDTO.OfferId);
+
+        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, seller, post, offer);
+        logged.AddPurchases(purchase);
         _dal.Commit();
     }
 
