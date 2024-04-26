@@ -141,12 +141,12 @@ public class SmartTradeService : ISmartTradeService
             originalOffer.ShippingCost = offerDto.ShippingCost;
             originalOffer.Stock = offerDto.Stock;
 
-            originalOffer.Product.Name = offerDto.Product.Name;
-            originalOffer.Product.Certification = offerDto.Product.Certification;
-            originalOffer.Product.EcologicPrint = offerDto.Product.EcologicPrint;
-            originalOffer.Product.MinimumAge = offerDto.Product.MinimumAge;
-            originalOffer.Product.HowToUse = offerDto.Product.HowToUse;
-            originalOffer.Product.HowToReducePrint = offerDto.Product.HowToReducePrint;
+            originalOffer.Product.Name = postInfo.ProductName;
+            originalOffer.Product.Certification = postInfo.Certifications;
+            originalOffer.Product.EcologicPrint = postInfo.EcologicPrint;
+            originalOffer.Product.MinimumAge = postInfo.MinimumAge;
+            originalOffer.Product.HowToUse = postInfo.HowToUse;
+            originalOffer.Product.HowToReducePrint = postInfo.HowToReducePrint;
 
             if (originalOffer.Product is Nutrition nutrition)
             {

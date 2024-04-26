@@ -7,6 +7,7 @@ namespace SmartTrade.Entities
     public partial class Purchase
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public virtual Product? PurchaseProduct { get; set; }
         public float Price { get; set; }
         public float ShippingPrice { get; set; }
