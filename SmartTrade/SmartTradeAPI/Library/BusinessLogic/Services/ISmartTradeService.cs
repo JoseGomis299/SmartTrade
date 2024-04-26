@@ -45,7 +45,7 @@ namespace SmartTrade.BusinessLogic
         public List<WishDTO> GetWishList(string loggedId);
         public void DeleteWish(int id);
 
-        public void AddPurchase(int idproduct, int idpost, string? emailseller, int precio);
-        public List<PurchaseDTO> GetPurchases();
+        public void AddPurchase(int? idproduct, int? idpost, string? emailseller, int precio, int precioEnvio, int? idoffer);
+        public List<PurchaseDTO> GetPurchases(string? emailConsumer);
     }
 }

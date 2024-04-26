@@ -5,6 +5,7 @@ using SmartTrade.Entities;
 using SmartTrade.Persistence;
 using Microsoft.EntityFrameworkCore;
 using SmartTradeAPI.Library.Persistence.DTOs;
+using Microsoft.Extensions.Hosting;
 
 namespace SmartTrade.BusinessLogic;
 
@@ -445,12 +446,13 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    void ISmartTradeService.AddPurchase(int idproduct, int idpost, string? emailseller, int precio)
+    public void AddPurchase(int? idproduct, int? idpost, string? emailseller, int precio, int precioEnvio, int? idoffer)
     {
         throw new NotImplementedException();
+
     }
 
-    List<PurchaseDTO> ISmartTradeService.GetPurchases()
+    public List<PurchaseDTO> GetPurchases(string? emailconsumer)
     {
         throw new NotImplementedException();
     }

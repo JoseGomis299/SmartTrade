@@ -12,5 +12,7 @@ namespace SmartTrade.Entities
         public int ShippingPrice { get; set; }
         public virtual Post? PurchasePost { get; set; }
         public virtual Seller? PurchaseSeller { get; set; }
+        public int PrecioEnvio {  get; set; }
+        public virtual Offer? PurchaseOffer { get; set;}
     }
 }

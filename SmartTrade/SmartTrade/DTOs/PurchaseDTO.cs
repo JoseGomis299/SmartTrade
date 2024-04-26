@@ -13,15 +13,19 @@ namespace SmartTrade.DTOs
         public int? Idproducto { get; set; }
         public string? EmailSeller { get; set; }
         public int? Idpost { get; set; }
+        public int PrecioEnvio {  get; set; } 
+        public int? Idoffer { get; set; }    
 
         public PurchaseDTO() { }
 
-        public PurchaseDTO(Product product, Post post, Seller seller, int precio)
+        public PurchaseDTO(int? idproduct, int? idpost, string? emailseller, int precio, int precioEnvio, int? idOffer)
         {
             this.Precio = precio;
-            Idproducto = product.Id;
-            EmailSeller = seller.Email;
-            Idpost = post.Id;
+            Idproducto = idproduct;
+            EmailSeller = emailseller;
+            Idpost = idpost;
+            PrecioEnvio = precioEnvio;
+            Idoffer = idOffer;
         }
     }
 }

@@ -54,17 +54,17 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("AddPurchase")]
-    public void AddPurchase(int idproduct, int idpost, string? emailseller, int precio)
+    public void AddPurchase(int? idproduct, int? idpost, string? emailseller, int precio, int precioEnvio, int? offerId)
     {
         ISmartTradeService service = new SmartTradeService();
-        service.AddPurchase(idproduct,idpost,emailseller,precio);
+        service.AddPurchase(idproduct,idpost,emailseller,precio, precioEnvio, offerId);
     }
     
     [HttpPost("Purchase")]
-    public List<PurchaseDTO> GetPurchases()
+    public List<PurchaseDTO> GetPurchases(string? emailConsumer)
     {
         ISmartTradeService service = new SmartTradeService();
-        return service.GetPurchases();
+        return service.GetPurchases(emailConsumer);
     }
 
 }
