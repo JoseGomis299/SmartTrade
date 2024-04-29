@@ -6,6 +6,8 @@ using SmartTradeDTOs;
 using SmartTrade.Entities;
 using SmartTrade.Services;
 using SmartTrade.DTOs;
+using System.Linq;
+using FuzzySharp;
 
 namespace SmartTrade.ViewModels
 {
@@ -51,14 +53,43 @@ namespace SmartTrade.ViewModels
 
         public async Task<bool> IsRelated(SimplePostDTO post)
         {
+            int limitPoints = 175;
+            int count = 0;
             Category categoryPost = post.Category;
             string productNamePost = post.ProductName;
             string sellerIdPost = post.SellerID;
             List<PurchaseDTO> purchases = new List<PurchaseDTO>();
-
+            
             purchases = await Service.GetPurchases();
+           
 
-            return Random.Shared.Next(0, 2) == 1;
+            if(purchases==null || purchases.Count == 0) { return false; } 
+            var purchasesToCompare = purchases.TakeLast(3).ToList();
+
+            foreach (var purchase in purchasesToCompare)
+            {
+                int? idPostPurchase = purchase.PostId;
+                if (idPostPurchase.HasValue)
+                {
+                    PostDTO postPurchase = await Service.GetPostAsync((int)idPostPurchase);
+                    Category categoryPurchase = postPurchase.Category;
+                    String namePurchase = postPurchase.ProductName;
+                    String emailSellerPurchase = purchase.EmailSeller;
+
+                    if (Fuzz.PartialTokenSortRatio(productNamePost, namePurchase) > 50) count += 50;
+                    if (Fuzz.PartialTokenSortRatio(productNamePost, namePurchase) > 80) count += 50;
+                    if (categoryPost.Equals(categoryPurchase)) count += 70;
+                    if (sellerIdPost.Equals(emailSellerPurchase)) count += 30;
+                    if (count >=limitPoints)
+                    {
+                        return true;
+                    }
+                }
+                
+            }
+
+            return false;
+
         }
 
         public async void UpdateProducts(IEnumerable<ProductModel> list)
