@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FuzzySharp;
 using Newtonsoft.Json;
+using SmartTrade.DTOs;
 using SmartTrade.Entities;
 using SmartTradeDTOs;
 
@@ -118,6 +119,10 @@ namespace SmartTrade.Services
            await _broker.UserClient.AddBizumAsync(bizum);
         }
 
+        public async Task<List<PurchaseDTO>?> GetPurchases()
+        {
+            return await _broker.UserClient.GetPurchaseAsync();
+        }
         #endregion
 
         #region Post
@@ -224,6 +229,11 @@ namespace SmartTrade.Services
         {
             return await _broker.WishClient.GetWishAsync();
         }
+
+        #endregion
+
+        #region Product
+
 
         #endregion
 

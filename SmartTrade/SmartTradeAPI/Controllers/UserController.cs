@@ -54,17 +54,21 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("AddPurchase")]
-    public void AddPurchase(int? idproduct, int? idpost, string? emailseller, int precio, int precioEnvio, int? offerId)
+    public void AddPurchase([FromBody] PurchaseDTO purchase)
     {
         ISmartTradeService service = new SmartTradeService();
-        service.AddPurchase(idproduct,idpost,emailseller,precio, precioEnvio, offerId);
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        service.AddPurchase(loggedId, purchase);
     }
     
     [HttpGet("GetPurchases")]
-    public List<PurchaseDTO> GetPurchases(string? emailConsumer)
+    public List<PurchaseDTO> GetPurchases()
     {
         ISmartTradeService service = new SmartTradeService();
-        return service.GetPurchases(emailConsumer);
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        return service.GetPurchases(loggedId);
     }
 
     [HttpGet("GetShoppingCart")]

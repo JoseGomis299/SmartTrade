@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTrade.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTrade.Persistence;
 namespace SmartTradeAPI.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240426115145_purch")]
+    partial class purch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

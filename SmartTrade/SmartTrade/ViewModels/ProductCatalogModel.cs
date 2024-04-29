@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
 using SmartTrade.Services;
+using SmartTrade.DTOs;
+using System.Linq;
+using FuzzySharp;
 
 namespace SmartTrade.ViewModels
 {
@@ -27,19 +30,20 @@ namespace SmartTrade.ViewModels
         {
             List<SimplePostDTO>? posts = await Service.RefreshPostsAsync();
 
-            posts.ForEach(post =>
+            foreach(var post in posts)
             {
                 OriginalProducts.Add(new ProductModel(post));
 
                 if (IsEcologic(post))
                 {
                     RecommendedProducts.Add(new ProductModel(post));
-                }else if (IsRelated(post))
+                }
+                else if (await IsRelated(post))
                 {
                     RelatedProducts.Add(new ProductModel(post));
                 }
                 else OtherProducts.Add(new ProductModel(post));
-            });
+            }
         }
 
         public bool IsEcologic(SimplePostDTO post)
@@ -47,12 +51,48 @@ namespace SmartTrade.ViewModels
             return int.TryParse(post.EcologicPrint, out int ecologicPrint) && ecologicPrint < 10;
         }
 
-        public bool IsRelated(SimplePostDTO post)
+        public async Task<bool> IsRelated(SimplePostDTO post)
         {
-            return Random.Shared.Next(0, 2) == 1;
+            int limitPoints = 175;
+            int count = 0;
+            Category categoryPost = post.Category;
+            string productNamePost = post.ProductName;
+            string sellerIdPost = post.SellerID;
+            List<PurchaseDTO> purchases = new List<PurchaseDTO>();
+            
+            purchases = await Service.GetPurchases();
+           
+
+            if(purchases==null || purchases.Count == 0) { return false; } 
+            var purchasesToCompare = purchases.TakeLast(3).ToList();
+
+            foreach (var purchase in purchasesToCompare)
+            {
+                int? idPostPurchase = purchase.PostId;
+                if (idPostPurchase.HasValue)
+                {
+                    PostDTO postPurchase = await Service.GetPostAsync((int)idPostPurchase);
+                    Category categoryPurchase = postPurchase.Category;
+                    String namePurchase = postPurchase.ProductName;
+                    String emailSellerPurchase = purchase.EmailSeller;
+
+                    if (Fuzz.PartialTokenSortRatio(productNamePost, namePurchase) > 50) count += 50;
+                    if (Fuzz.PartialTokenSortRatio(productNamePost, namePurchase) > 80) count += 50;
+                    if (categoryPost.Equals(categoryPurchase)) count += 70;
+                    if (sellerIdPost.Equals(emailSellerPurchase)) count += 30;
+                    if (count >=limitPoints)
+                    {
+                        return true;
+                    }
+                }
+                
+            }
+
+            return false;
+
         }
 
-        public void UpdateProducts(IEnumerable<ProductModel> list)
+        public async void UpdateProducts(IEnumerable<ProductModel> list)
         {
             OtherProducts.Clear();
             RecommendedProducts.Clear();
@@ -66,7 +106,7 @@ namespace SmartTrade.ViewModels
                 {
                     RecommendedProducts.Add(product);
                 }
-                else if (IsRelated(post))
+                else if (await IsRelated(post))
                 { 
                     RelatedProducts.Add(product);
                 }

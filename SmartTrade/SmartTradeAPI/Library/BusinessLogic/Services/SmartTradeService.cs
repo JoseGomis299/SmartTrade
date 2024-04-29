@@ -141,12 +141,12 @@ public class SmartTradeService : ISmartTradeService
             originalOffer.ShippingCost = offerDto.ShippingCost;
             originalOffer.Stock = offerDto.Stock;
 
-            originalOffer.Product.Name = offerDto.Product.Name;
-            originalOffer.Product.Certification = offerDto.Product.Certification;
-            originalOffer.Product.EcologicPrint = offerDto.Product.EcologicPrint;
-            originalOffer.Product.MinimumAge = offerDto.Product.MinimumAge;
-            originalOffer.Product.HowToUse = offerDto.Product.HowToUse;
-            originalOffer.Product.HowToReducePrint = offerDto.Product.HowToReducePrint;
+            originalOffer.Product.Name = postInfo.ProductName;
+            originalOffer.Product.Certification = postInfo.Certifications;
+            originalOffer.Product.EcologicPrint = postInfo.EcologicPrint;
+            originalOffer.Product.MinimumAge = postInfo.MinimumAge;
+            originalOffer.Product.HowToUse = postInfo.HowToUse;
+            originalOffer.Product.HowToReducePrint = postInfo.HowToReducePrint;
 
             if (originalOffer.Product is Nutrition nutrition)
             {
@@ -556,7 +556,14 @@ public class SmartTradeService : ISmartTradeService
     public void AddPurchase(string userId, PurchaseDTO purchaseDTO)
     {
         Consumer? logged = _dal.GetById<Consumer>(userId);
-       // logged.AddPurchases(purchaseDTO);
+
+        var post = _dal.GetById<Post>(purchaseDTO.PostId);
+        var seller = _dal.GetById<Seller>(purchaseDTO.EmailSeller);
+        var product = _dal.GetById<Product>(purchaseDTO.ProductId);
+        var offer = _dal.GetById<Offer>(purchaseDTO.OfferId);
+
+        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, seller, post, offer);
+        logged.AddPurchases(purchase);
         _dal.Commit();
     }
 

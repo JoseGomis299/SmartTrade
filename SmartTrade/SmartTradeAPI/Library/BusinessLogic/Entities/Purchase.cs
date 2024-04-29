@@ -10,11 +10,11 @@ namespace SmartTrade.Entities
 {
     public partial class Purchase
     {
-        protected Purchase()
+        public Purchase()
         {
         }
 
-        protected Purchase(Product? product, float price, float shippingPrice, Seller seller, Post? post, Offer? purchaseOffer ) : this()
+        public Purchase(Product? product, float price, float shippingPrice, Seller seller, Post? post, Offer? purchaseOffer ) : this()
         {
             PurchaseProduct = product;
             Price = price;
