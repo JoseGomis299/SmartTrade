@@ -58,12 +58,11 @@ namespace SmartTrade.ViewModels
             Category categoryPost = post.Category;
             string productNamePost = post.ProductName;
             string sellerIdPost = post.SellerID;
-            List<PurchaseDTO> purchases = new List<PurchaseDTO>();
-            
-            purchases = await Service.GetPurchases();
-           
+            List<PurchaseDTO> purchases = await Service.GetPurchases();
+            string titlePost = post.Title;
 
-            if(purchases==null || purchases.Count == 0) { return false; } 
+            if (purchases == null || purchases.Count == 0) { return false; }
+
             var purchasesToCompare = purchases.TakeLast(3).ToList();
 
             foreach (var purchase in purchasesToCompare)
@@ -75,21 +74,45 @@ namespace SmartTrade.ViewModels
                     Category categoryPurchase = postPurchase.Category;
                     String namePurchase = postPurchase.ProductName;
                     String emailSellerPurchase = purchase.EmailSeller;
+                    String titlePostPurchase = postPurchase.Title;
 
-                    if (Fuzz.PartialTokenSortRatio(productNamePost, namePurchase) > 50) count += 50;
-                    if (Fuzz.PartialTokenSortRatio(productNamePost, namePurchase) > 80) count += 50;
-                    if (categoryPost.Equals(categoryPurchase)) count += 70;
-                    if (sellerIdPost.Equals(emailSellerPurchase)) count += 30;
-                    if (count >=limitPoints)
+                    count += CalculateProductNameScore(productNamePost, namePurchase, 50);
+                    count += CalculateProductNameScore(productNamePost, namePurchase, 80);
+                    count += CalculateCategoryAndSellerScore(categoryPost, categoryPurchase, sellerIdPost, emailSellerPurchase);
+                    count += CalculateProductNameScore(titlePost, titlePostPurchase, 80);
+                    if (count >= limitPoints)
                     {
                         return true;
                     }
                 }
-                
             }
 
             return false;
+        }
 
+        private static int CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
+        {
+            int similarity = 100;
+            int scoreIncrement = (int)Math.Pow(Math.Max(0, (similarity - threshold)), 2) / (int)Math.Pow(100 - threshold, 2) * 50 * 2;
+            if (threshold == 50 || threshold == 80)
+            {
+                return Math.Min(scoreIncrement, 25); 
+            }
+            else if (threshold == 50)
+            {
+                return Math.Min(scoreIncrement, 50);
+            }
+            return scoreIncrement;
+        }
+
+        private static int CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
+        {
+            int score = 0;
+
+            if (categoryPost.Equals(categoryPurchase)) score += 70;
+            if (sellerIdPost.Equals(emailSellerPurchase)) score += 30;
+
+            return score;
         }
 
         public async void UpdateProducts(IEnumerable<ProductModel> list)
