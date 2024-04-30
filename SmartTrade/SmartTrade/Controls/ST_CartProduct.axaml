@@ -5,7 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="800"
              xmlns:controls="clr-namespace:SmartTrade.Controls"
              x:Class="SmartTrade.Controls.ST_CartProduct">
-    <Grid Width="350" MinHeight="225" ColumnDefinitions="Auto * Auto">
+    <Grid Width="320" MinHeight="225" ColumnDefinitions="Auto * Auto">
         <Button Grid.Column="0" Height="150" Width="150" Classes="White" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Command}">
             <Border CornerRadius="25" ClipToBounds="True">
                 <Image Stretch="UniformToFill" Name="ProductImage" Source="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Image, Mode=OneWay}"></Image>

@@ -27,7 +27,7 @@ namespace SmartTrade.Services
 
         public async Task LoadCartItemsAsync()
         {
-            CartItems = await JSONsaving.ReadFromJsonFileAsync<List<CartItemDTO>>("ShoppingCartItems");
+            CartItems = await JSONsaving.ReadFromJsonFileAsync<List<CartItemDTO>>("ShoppingCartItems") ?? new List<CartItemDTO>();
             await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
 
             OnCartChanged?.Invoke();

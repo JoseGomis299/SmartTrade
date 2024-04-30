@@ -11,6 +11,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Utilities;
+using FuzzySharp;
 using ReactiveUI;
 using SmartTrade.DTOs;
 using SmartTrade.Entities;
@@ -125,7 +126,7 @@ namespace SmartTrade.ViewModels
                 {
                     SameSellerProducts.Add(new ProductModel(post));
                 }
-                else if (await IsRelatedAsync(post))
+                else if (IsRelated(post))
                 {
                     RelatedProducts.Add(new ProductModel(post));
                 }
@@ -134,65 +135,56 @@ namespace SmartTrade.ViewModels
 
         private bool SameSeller(SimplePostDTO post)
         {
-            return post.SellerID == Post.SellerID;
+            return post.Id != Post.Id && post.SellerID == Post.SellerID;
         }
         private bool OtherSellersSameProduct(SimplePostDTO post)
         {
             return post.ProductName == Post.ProductName && post.SellerID != Post.SellerID;
         }
-        public async Task<bool> IsRelatedAsync(SimplePostDTO post)
+        public bool IsRelated(SimplePostDTO post)
         {
-            int limitPoints = 145;
-            int count = 0;
+            float count = 0;
             Category categoryPost = post.Category;
             string namePost = post.ProductName;
             string sellerIdPost = post.SellerID;
             string titlePost = post.Title;
 
-                int? idPost = Post.Id;
-                if (idPost.HasValue)
-                {
-                    Category category = Post.Category;
-                    String name = Post.ProductName;
-                    String emailSeller = Seller;
-                    String title = Title;
+            int? idPost = Post.Id;
+            if (idPost.HasValue)
+            {
+                Category category = Post.Category;
+                String name = Post.ProductName;
+                String emailSeller = Seller;
+                String title = Title;
 
-                    count += CalculateProductNameScore(namePost, name, 50);
-                    count += CalculateProductNameScore(namePost, name, 80);
-                    count += CalculateCategoryAndSellerScore(categoryPost, category, sellerIdPost, emailSeller);
-                    count += CalculateProductNameScore(titlePost, title,80);
-                    if (count >= limitPoints)
-                    {
-                        return true;
-                    }
+                count += CalculateProductNameScore(namePost, name, 60) * 10;
+                count += CalculateProductNameScore(titlePost, title, 40) * 10;
+                count += CalculateCategoryAndSellerScore(categoryPost, category, sellerIdPost, emailSeller) * 80;
+
+                if (count >= 70f)
+                {
+                    return true;
                 }
+            }
             
 
             return false;
         }
     
 
-    private static int CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
+    private float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
     {
-        int similarity = 100;
-        int scoreIncrement = (int)Math.Pow(Math.Max(0, (similarity - threshold)), 2) / (int)Math.Pow(100 - threshold, 2) * 50 * 2;
-        if (threshold == 50 || threshold == 80)
-        {
-            return Math.Min(scoreIncrement, 25);
-        }
-        else if (threshold == 50)
-        {
-            return Math.Min(scoreIncrement, 50);
-        }
+        float similarity = Fuzz.PartialTokenSortRatio(productNamePost, namePurchase);
+        float scoreIncrement = MathF.Max(0, (similarity - threshold)) / (100 - threshold);
         return scoreIncrement;
     }
 
-    private static int CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
+    private float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
     {
-        int score = 0;
+        float score = 0;
 
-        if (categoryPost.Equals(categoryPurchase)) score += 70;
-        if (sellerIdPost.Equals(emailSellerPurchase)) score += 30;
+        if (categoryPost.Equals(categoryPurchase)) score += 1f;
+       // if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.3f;
 
         return score;
     }

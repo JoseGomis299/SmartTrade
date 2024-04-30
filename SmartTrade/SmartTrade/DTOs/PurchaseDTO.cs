@@ -15,5 +15,19 @@ namespace SmartTrade.DTOs
         public string? EmailSeller { get; set; }
         public int? PostId { get; set; }
         public int? OfferId { get; set; }
+
+        public PurchaseDTO()
+        {
+        }
+
+        public PurchaseDTO(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId)
+        {
+            Price = price;
+            ShippingPrice = shippingPrice;
+            ProductId = productId;
+            EmailSeller = emailSeller;
+            PostId = postId;
+            OfferId = offerId;
+        }
     }
 }

@@ -23,8 +23,9 @@ namespace SmartTrade.Views
             DataContext = null;
         }
 
-        private void BuyItems(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void BuyItems(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
+             await ((ShoppingCartModel)DataContext).BuyItemsAsync();
         }
     }
 }

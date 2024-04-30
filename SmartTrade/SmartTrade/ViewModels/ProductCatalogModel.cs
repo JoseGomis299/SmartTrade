@@ -8,6 +8,8 @@ using SmartTrade.Services;
 using SmartTrade.DTOs;
 using System.Linq;
 using FuzzySharp;
+using static Android.Icu.Text.CaseMap;
+using static Java.Util.Jar.Attributes;
 
 namespace SmartTrade.ViewModels
 {
@@ -53,8 +55,6 @@ namespace SmartTrade.ViewModels
 
         public async Task<bool> IsRelated(SimplePostDTO post)
         {
-            int limitPoints = 175;
-            int count = 0;
             Category categoryPost = post.Category;
             string productNamePost = post.ProductName;
             string sellerIdPost = post.SellerID;
@@ -63,24 +63,25 @@ namespace SmartTrade.ViewModels
 
             if (purchases == null || purchases.Count == 0) { return false; }
 
-            var purchasesToCompare = purchases.TakeLast(3).ToList();
+            var purchasesToCompare = purchases.Distinct().TakeLast(3).ToList();
 
             foreach (var purchase in purchasesToCompare)
             {
+                float count = 0;
                 int? idPostPurchase = purchase.PostId;
                 if (idPostPurchase.HasValue)
                 {
-                    PostDTO postPurchase = await Service.GetPostAsync((int)idPostPurchase);
+                    SimplePostDTO postPurchase = Service.Posts.First(x => x.Id == idPostPurchase);
                     Category categoryPurchase = postPurchase.Category;
                     String namePurchase = postPurchase.ProductName;
                     String emailSellerPurchase = purchase.EmailSeller;
                     String titlePostPurchase = postPurchase.Title;
 
-                    count += CalculateProductNameScore(productNamePost, namePurchase, 50);
-                    count += CalculateProductNameScore(productNamePost, namePurchase, 80);
-                    count += CalculateCategoryAndSellerScore(categoryPost, categoryPurchase, sellerIdPost, emailSellerPurchase);
-                    count += CalculateProductNameScore(titlePost, titlePostPurchase, 80);
-                    if (count >= limitPoints)
+                    count += CalculateProductNameScore(namePurchase, productNamePost, 50) * 10;
+                    count += CalculateProductNameScore(titlePost, titlePostPurchase, 40) * 10;
+                    count += CalculateCategoryAndSellerScore(categoryPost, categoryPurchase, sellerIdPost, emailSellerPurchase) * 80;
+
+                    if (count >= 65f)
                     {
                         return true;
                     }
@@ -90,27 +91,20 @@ namespace SmartTrade.ViewModels
             return false;
         }
 
-        private static int CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
+        private float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
         {
-            int similarity = 100;
-            int scoreIncrement = (int)Math.Pow(Math.Max(0, (similarity - threshold)), 2) / (int)Math.Pow(100 - threshold, 2) * 50 * 2;
-            if (threshold == 50 || threshold == 80)
-            {
-                return Math.Min(scoreIncrement, 25); 
-            }
-            else if (threshold == 50)
-            {
-                return Math.Min(scoreIncrement, 50);
-            }
+            float similarity = Fuzz.PartialTokenSortRatio(productNamePost, namePurchase);
+            float scoreIncrement = MathF.Max(0, (similarity - threshold)) / (100 - threshold);
             return scoreIncrement;
         }
 
-        private static int CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
-        {
-            int score = 0;
 
-            if (categoryPost.Equals(categoryPurchase)) score += 70;
-            if (sellerIdPost.Equals(emailSellerPurchase)) score += 30;
+        private float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
+        {
+            float score = 0;
+
+            if (categoryPost.Equals(categoryPurchase)) score += 0.7f;
+            if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.3f;
 
             return score;
         }
