@@ -45,7 +45,7 @@ namespace SmartTrade.BusinessLogic
         public List<WishDTO> GetWishList(string loggedId);
         public void DeleteWish(int id);
 
-        public void AddToCart(string consumerId, CartItemDTO  cartItemDTO);
+        public void AddToCart(string consumerId, SimpleCartItemDTO  cartItemDTO);
         public void RemoveFromCart(string consumerId, int id);
         public List<CartItemDTO> GetShoppingCart(string consumerId);
 

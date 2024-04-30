@@ -47,11 +47,11 @@ public partial class Consumer : User
 
     public void AddToCart(CartItem cartItem)
     {
-        var index = ((List<CartItemDTO>)ShoppingCart).FindIndex(x => x.Offer.Id == cartItem.Offer.Id);
+        var index = ((List<CartItem>)ShoppingCart).FindIndex(x => x.Offer.Id == cartItem.Offer.Id);
 
         if(index == -1)
             ShoppingCart.Add(cartItem);
-        else ((List<CartItemDTO>)ShoppingCart)[index].Quantity = cartItem.Quantity;
+        else ((List<CartItem>)ShoppingCart)[index].Quantity = cartItem.Quantity;
     }
 
     public void AddShippingAddress(Address address)
@@ -76,7 +76,7 @@ public partial class Consumer : User
 
     public void RemoveFromCart(int OfferId)
     {
-        var index = ((List<CartItemDTO>)ShoppingCart).FindIndex(x => x.Offer.Id == OfferId);
-        if (index != -1) ((List<CartItemDTO>)ShoppingCart).RemoveAt(index);
+        var index = ((List<CartItem>)ShoppingCart).FindIndex(x => x.Offer.Id == OfferId);
+        if (index != -1) ((List<CartItem>)ShoppingCart).RemoveAt(index);
     }
 }

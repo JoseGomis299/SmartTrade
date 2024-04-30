@@ -57,22 +57,26 @@ public class UserClient : ApiClient
 
     public async Task AddPaypalAsync(PayPalInfo paypalinfo, string loggedID)
     {
+        if(Logged == null) return;
         await PerformApiInstructionAsync($"AddPaypal?id={loggedID}", ApiInstruction.Post, paypalinfo);
-
     }
 
     public async Task AddCreditCardAsync(CreditCardInfo creditCard)
     {
+        if (Logged == null) return;
         await PerformApiInstructionAsync($"AddCreditCard?id={Logged.Email}", ApiInstruction.Post, creditCard);
     }
 
     public async Task AddBizumAsync(BizumInfo bizum)
     {
+        if (Logged == null) return;
         await PerformApiInstructionAsync($"AddBizum?id={Logged.Email}", ApiInstruction.Post, bizum);
     }
 
     public async Task AddPurchaseAsync(int idProduct, int idPost, string emailSeller, int precio, int precioEnvio, int idoffer)
     {
+        if (Logged == null) return;
+
         var registerData = new PurchaseDTO()
         {
             ProductId = idProduct,
@@ -84,27 +88,30 @@ public class UserClient : ApiClient
 
         };
 
-        await Broker.SetLoggedAsync(await PerformApiInstructionAsync("AddPurchase", ApiInstruction.Post, registerData));
+        await PerformApiInstructionAsync("AddPurchase", ApiInstruction.Post, registerData);
     }
 
     public async Task<List<PurchaseDTO>?> GetPurchaseAsync()
     {
+        if (Logged == null) return null;
         return JsonConvert.DeserializeObject<List<PurchaseDTO>>(await PerformApiInstructionAsync($"GetPurchases?id={Logged.Email}", ApiInstruction.Get));
-
     }
 
     public async Task<List<CartItemDTO>?> GetShoppingCartAsync()
     {
+        if (Logged == null) return null;
         return JsonConvert.DeserializeObject<List<CartItemDTO>>(await PerformApiInstructionAsync($"GetShoppingCart", ApiInstruction.Get));
     }
 
-    public async Task AddToCartAsync(CartItemDTO cartItem)
+    public async Task AddToCartAsync(SimpleCartItemDTO cartItem)
     {
+        if (Logged == null) return;
         await PerformApiInstructionAsync($"AddToShoppingCart", ApiInstruction.Post, cartItem);
     }
 
     public async Task RemoveFromCartAsync(int offerId)
     {
+        if (Logged == null) return;
         await PerformApiInstructionAsync($"RemoveFromShoppingCart?id={offerId}", ApiInstruction.Delete);
     }
 }
