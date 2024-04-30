@@ -59,6 +59,7 @@ namespace SmartTrade.ViewModels
             string productNamePost = post.ProductName;
             string sellerIdPost = post.SellerID;
             List<PurchaseDTO> purchases = await Service.GetPurchases();
+            string titlePost = post.Title;
 
             if (purchases == null || purchases.Count == 0) { return false; }
 
@@ -73,11 +74,12 @@ namespace SmartTrade.ViewModels
                     Category categoryPurchase = postPurchase.Category;
                     String namePurchase = postPurchase.ProductName;
                     String emailSellerPurchase = purchase.EmailSeller;
+                    String titlePostPurchase = postPurchase.Title;
 
                     count += CalculateProductNameScore(productNamePost, namePurchase, 50);
                     count += CalculateProductNameScore(productNamePost, namePurchase, 80);
                     count += CalculateCategoryAndSellerScore(categoryPost, categoryPurchase, sellerIdPost, emailSellerPurchase);
-
+                    count += CalculateProductNameScore(titlePost, titlePostPurchase, 80);
                     if (count >= limitPoints)
                     {
                         return true;
@@ -90,8 +92,16 @@ namespace SmartTrade.ViewModels
 
         private static int CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
         {
-            int similarity = Fuzz.PartialTokenSortRatio(productNamePost, namePurchase);
-            int scoreIncrement = (int)Math.Pow(Math.Max(0, (similarity - threshold)), 2) / (int)Math.Pow(100 - threshold, 2) * 50 * 2; // Multiplicamos por 2 para aumentar el incremento
+            int similarity = 100;
+            int scoreIncrement = (int)Math.Pow(Math.Max(0, (similarity - threshold)), 2) / (int)Math.Pow(100 - threshold, 2) * 50 * 2;
+            if (threshold == 50 || threshold == 80)
+            {
+                return Math.Min(scoreIncrement, 25); 
+            }
+            else if (threshold == 50)
+            {
+                return Math.Min(scoreIncrement, 50);
+            }
             return scoreIncrement;
         }
 
