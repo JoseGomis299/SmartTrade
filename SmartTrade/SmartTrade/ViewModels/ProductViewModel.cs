@@ -142,38 +142,31 @@ namespace SmartTrade.ViewModels
         }
         public async Task<bool> IsRelatedAsync(SimplePostDTO post)
         {
-            int limitPoints = 175;
+            int limitPoints = 145;
             int count = 0;
             Category categoryPost = post.Category;
-            string productNamePost = post.ProductName;
+            string namePost = post.ProductName;
             string sellerIdPost = post.SellerID;
-            IEnumerable<SimplePostDTO>? posts = Service.Posts;
             string titlePost = post.Title;
 
-            if (posts == null) { return false; }
-
-
-            foreach (var postComparable in posts)
-            {
-                int? idPost = postComparable.Id;
+                int? idPost = Post.Id;
                 if (idPost.HasValue)
                 {
-                    PostDTO postDTO = await Service.GetPostAsync((int)idPost);
-                    Category categoryPostDTO = postDTO.Category;
-                    String namePostDTO = postDTO.ProductName;
-                    String emailSellerPostDTO = postDTO.SellerID;
-                    String titlePostPostDTO = postDTO.Title;
+                    Category category = Post.Category;
+                    String name = Post.ProductName;
+                    String emailSeller = Seller;
+                    String title = Title;
 
-                    count += CalculateProductNameScore(productNamePost, namePostDTO, 50);
-                    count += CalculateProductNameScore(productNamePost, namePostDTO, 80);
-                    count += CalculateCategoryAndSellerScore(categoryPost, categoryPostDTO, sellerIdPost, emailSellerPostDTO);
-                    count += CalculateProductNameScore(titlePost, titlePostPostDTO,80);
+                    count += CalculateProductNameScore(namePost, name, 50);
+                    count += CalculateProductNameScore(namePost, name, 80);
+                    count += CalculateCategoryAndSellerScore(categoryPost, category, sellerIdPost, emailSeller);
+                    count += CalculateProductNameScore(titlePost, title,80);
                     if (count >= limitPoints)
                     {
                         return true;
                     }
                 }
-            }
+            
 
             return false;
         }
