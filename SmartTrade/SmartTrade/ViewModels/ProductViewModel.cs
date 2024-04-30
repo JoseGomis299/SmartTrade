@@ -12,6 +12,8 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Utilities;
 using ReactiveUI;
+using SmartTrade.DTOs;
+using SmartTrade.Entities;
 using SmartTrade.Services;
 using SmartTradeDTOs;
 
@@ -109,7 +111,7 @@ namespace SmartTrade.ViewModels
         //    }
         //}
 
-        public void LoadProducts()
+        public async Task LoadProductsAsync()
         {
             IEnumerable<SimplePostDTO>? posts = Service.Posts;
 
@@ -123,7 +125,7 @@ namespace SmartTrade.ViewModels
                 {
                     SameSellerProducts.Add(new ProductModel(post));
                 }
-                else if (IsRelated(post))
+                else if (await IsRelatedAsync(post))
                 {
                     RelatedProducts.Add(new ProductModel(post));
                 }
@@ -138,12 +140,71 @@ namespace SmartTrade.ViewModels
         {
             return post.ProductName == Post.ProductName && post.SellerID != Post.SellerID;
         }
-        public bool IsRelated(SimplePostDTO post)
+        public async Task<bool> IsRelatedAsync(SimplePostDTO post)
         {
-            return Random.Shared.Next(0, 2) == 1;
-        }
+            int limitPoints = 175;
+            int count = 0;
+            Category categoryPost = post.Category;
+            string productNamePost = post.ProductName;
+            string sellerIdPost = post.SellerID;
+            IEnumerable<SimplePostDTO>? posts = Service.Posts;
+            string titlePost = post.Title;
 
-        public void LoadData(OfferDTO offer)
+            if (posts == null) { return false; }
+
+
+            foreach (var postComparable in posts)
+            {
+                int? idPost = postComparable.Id;
+                if (idPost.HasValue)
+                {
+                    PostDTO postDTO = await Service.GetPostAsync((int)idPost);
+                    Category categoryPostDTO = postDTO.Category;
+                    String namePostDTO = postDTO.ProductName;
+                    String emailSellerPostDTO = postDTO.SellerID;
+                    String titlePostPostDTO = postDTO.Title;
+
+                    count += CalculateProductNameScore(productNamePost, namePostDTO, 50);
+                    count += CalculateProductNameScore(productNamePost, namePostDTO, 80);
+                    count += CalculateCategoryAndSellerScore(categoryPost, categoryPostDTO, sellerIdPost, emailSellerPostDTO);
+                    count += CalculateProductNameScore(titlePost, titlePostPostDTO,80);
+                    if (count >= limitPoints)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    
+
+    private static int CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
+    {
+        int similarity = 100;
+        int scoreIncrement = (int)Math.Pow(Math.Max(0, (similarity - threshold)), 2) / (int)Math.Pow(100 - threshold, 2) * 50 * 2;
+        if (threshold == 50 || threshold == 80)
+        {
+            return Math.Min(scoreIncrement, 25);
+        }
+        else if (threshold == 50)
+        {
+            return Math.Min(scoreIncrement, 50);
+        }
+        return scoreIncrement;
+    }
+
+    private static int CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
+    {
+        int score = 0;
+
+        if (categoryPost.Equals(categoryPurchase)) score += 70;
+        if (sellerIdPost.Equals(emailSellerPurchase)) score += 30;
+
+        return score;
+    }
+
+    public void LoadData(OfferDTO offer)
         {
             Images.Clear();
 
