@@ -11,7 +11,10 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Utilities;
+using FuzzySharp;
 using ReactiveUI;
+using SmartTrade.DTOs;
+using SmartTrade.Entities;
 using SmartTrade.Services;
 using SmartTradeDTOs;
 
@@ -109,7 +112,7 @@ namespace SmartTrade.ViewModels
         //    }
         //}
 
-        public void LoadProducts()
+        public async Task LoadProductsAsync()
         {
             IEnumerable<SimplePostDTO>? posts = Service.Posts;
 
@@ -132,7 +135,7 @@ namespace SmartTrade.ViewModels
 
         private bool SameSeller(SimplePostDTO post)
         {
-            return post.SellerID == Post.SellerID;
+            return post.Id != Post.Id && post.SellerID == Post.SellerID;
         }
         private bool OtherSellersSameProduct(SimplePostDTO post)
         {
@@ -140,10 +143,53 @@ namespace SmartTrade.ViewModels
         }
         public bool IsRelated(SimplePostDTO post)
         {
-            return Random.Shared.Next(0, 2) == 1;
-        }
+            float count = 0;
+            Category categoryPost = post.Category;
+            string namePost = post.ProductName;
+            string sellerIdPost = post.SellerID;
+            string titlePost = post.Title;
 
-        public void LoadData(OfferDTO offer)
+            int? idPost = Post.Id;
+            if (idPost.HasValue)
+            {
+                Category category = Post.Category;
+                String name = Post.ProductName;
+                String emailSeller = Seller;
+                String title = Title;
+
+                count += CalculateProductNameScore(namePost, name, 60) * 10;
+                count += CalculateProductNameScore(titlePost, title, 40) * 10;
+                count += CalculateCategoryAndSellerScore(categoryPost, category, sellerIdPost, emailSeller) * 80;
+
+                if (count >= 70f)
+                {
+                    return true;
+                }
+            }
+            
+
+            return false;
+        }
+    
+
+    private float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
+    {
+        float similarity = Fuzz.PartialTokenSortRatio(productNamePost, namePurchase);
+        float scoreIncrement = MathF.Max(0, (similarity - threshold)) / (100 - threshold);
+        return scoreIncrement;
+    }
+
+    private float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
+    {
+        float score = 0;
+
+        if (categoryPost.Equals(categoryPurchase)) score += 1f;
+       // if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.3f;
+
+        return score;
+    }
+
+    public void LoadData(OfferDTO offer)
         {
             Images.Clear();
 

@@ -60,7 +60,7 @@ public class CartItemModel : ViewModelBase
     {
         var view = new ProductView(Post);
         SmartTradeNavigationManager.Instance.NavigateTo(view);
-        ((ProductViewModel)view.DataContext).LoadProducts();
+        ((ProductViewModel)view.DataContext).LoadProductsAsync();
     }
 
     private async Task AddItemToCartAsync(int previousQuantity, int quantity)

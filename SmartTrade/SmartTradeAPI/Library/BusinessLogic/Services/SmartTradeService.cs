@@ -514,11 +514,11 @@ public class SmartTradeService : ISmartTradeService
         _dal.Commit();
     }
 
-    public void AddToCart(string consumerId, CartItemDTO cartItemDTO)
+    public void AddToCart(string consumerId, SimpleCartItemDTO cartItemDTO)
     {
         Consumer consumer = _dal.GetById<Consumer>(consumerId);
-        Post post = _dal.GetById<Post>(cartItemDTO.Post.Id);
-        Offer offer = _dal.GetById<Offer>(cartItemDTO.Offer.Id);
+        Post post = _dal.GetById<Post>(cartItemDTO.PostId);
+        Offer offer = _dal.GetById<Offer>(cartItemDTO.OfferId);
         consumer.AddToCart(new CartItem(post, offer, cartItemDTO.Quantity));
         _dal.Commit();
     }

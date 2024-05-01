@@ -81,7 +81,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("AddToShoppingCart")]
-    public void AddToShoppingCart([FromBody] CartItemDTO item)
+    public void AddToShoppingCart([FromBody] SimpleCartItemDTO item)
     {
         ISmartTradeService service = new SmartTradeService();
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;

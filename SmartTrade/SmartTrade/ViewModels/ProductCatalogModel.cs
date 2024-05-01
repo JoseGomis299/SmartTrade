@@ -7,6 +7,8 @@ using SmartTrade.Entities;
 using SmartTrade.Services;
 using System.Linq;
 using FuzzySharp;
+using static Android.Icu.Text.CaseMap;
+using static Java.Util.Jar.Attributes;
 
 namespace SmartTrade.ViewModels
 {
@@ -52,43 +54,58 @@ namespace SmartTrade.ViewModels
 
         public async Task<bool> IsRelated(SimplePostDTO post)
         {
-            int limitPoints = 175;
-            int count = 0;
             Category categoryPost = post.Category;
             string productNamePost = post.ProductName;
             string sellerIdPost = post.SellerID;
-            List<PurchaseDTO> purchases = new List<PurchaseDTO>();
-            
-            purchases = await Service.GetPurchases();
-           
+            List<PurchaseDTO> purchases = await Service.GetPurchases();
+            string titlePost = post.Title;
 
-            if(purchases==null || purchases.Count == 0) { return false; } 
-            var purchasesToCompare = purchases.TakeLast(3).ToList();
+            if (purchases == null || purchases.Count == 0) { return false; }
+
+            var purchasesToCompare = purchases.Distinct().TakeLast(3).ToList();
 
             foreach (var purchase in purchasesToCompare)
             {
+                float count = 0;
                 int? idPostPurchase = purchase.PostId;
                 if (idPostPurchase.HasValue)
                 {
-                    PostDTO postPurchase = await Service.GetPostAsync((int)idPostPurchase);
+                    SimplePostDTO postPurchase = Service.Posts.First(x => x.Id == idPostPurchase);
                     Category categoryPurchase = postPurchase.Category;
                     String namePurchase = postPurchase.ProductName;
                     String emailSellerPurchase = purchase.EmailSeller;
+                    String titlePostPurchase = postPurchase.Title;
 
-                    if (Fuzz.PartialTokenSortRatio(productNamePost, namePurchase) > 50) count += 50;
-                    if (Fuzz.PartialTokenSortRatio(productNamePost, namePurchase) > 80) count += 50;
-                    if (categoryPost.Equals(categoryPurchase)) count += 70;
-                    if (sellerIdPost.Equals(emailSellerPurchase)) count += 30;
-                    if (count >=limitPoints)
+                    count += CalculateProductNameScore(namePurchase, productNamePost, 50) * 10;
+                    count += CalculateProductNameScore(titlePost, titlePostPurchase, 40) * 10;
+                    count += CalculateCategoryAndSellerScore(categoryPost, categoryPurchase, sellerIdPost, emailSellerPurchase) * 80;
+
+                    if (count >= 65f)
                     {
                         return true;
                     }
                 }
-                
             }
 
             return false;
+        }
 
+        private float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
+        {
+            float similarity = Fuzz.PartialTokenSortRatio(productNamePost, namePurchase);
+            float scoreIncrement = MathF.Max(0, (similarity - threshold)) / (100 - threshold);
+            return scoreIncrement;
+        }
+
+
+        private float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
+        {
+            float score = 0;
+
+            if (categoryPost.Equals(categoryPurchase)) score += 0.7f;
+            if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.3f;
+
+            return score;
         }
 
         public async void UpdateProducts(IEnumerable<ProductModel> list)

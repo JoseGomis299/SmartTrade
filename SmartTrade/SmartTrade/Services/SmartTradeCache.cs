@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Platform;
 using Newtonsoft.Json;
+using SmartTrade.DTOs;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
 using SmartTradeDTOs;
@@ -22,35 +23,15 @@ namespace SmartTrade.Services
         public List<SimplePostDTO>? Posts => _simplePosts;
         public List<NotificationDTO>? Notifications { get; set; }
         public List<CartItemDTO>? CartItems { get; set; } = new List<CartItemDTO>();
+        public List<PurchaseDTO>? Purchases { get; set; }
         public List<List<CartItemDTO>>? GiftLists { get; set; } = new List<List<CartItemDTO>>(); 
 
-        private string _cartFileName;
-
-        public SmartTradeCache()
+        public async Task LoadCartItemsAsync()
         {
-            OnCartChanged += async () => await JSONsaving.WriteToJsonFileAsync(CartItems, _cartFileName);
-        }
+            CartItems = await JSONsaving.ReadFromJsonFileAsync<List<CartItemDTO>>("ShoppingCartItems") ?? new List<CartItemDTO>();
+            await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
 
-        public async Task LoadCartItems(string loggedEmail)
-        {
-            string prefix = loggedEmail == "" ? "" : loggedEmail + "_";
-            _cartFileName = prefix + "ShoppingCartItems";
-
-            var items = await JSONsaving.ReadFromJsonFileAsync<List<CartItemDTO>>(_cartFileName);
-            if (items != null)
-            {
-                CartItems = items;
-                OnCartChanged?.Invoke();
-            }
-            else if (loggedEmail != "")
-            {
-                items = await JSONsaving.ReadFromJsonFileAsync<List<CartItemDTO>>("ShoppingCartItems");
-                if (items != null)
-                {
-                    CartItems = items;
-                    OnCartChanged?.Invoke();
-                }
-            }
+            OnCartChanged?.Invoke();
         }
         public void LoadCartItems(List<CartItemDTO> items)
         {
@@ -118,7 +99,7 @@ namespace SmartTrade.Services
             return post;
         }
 
-        public void AddItemToCart(PostDTO post, OfferDTO offer, int quantity)
+        public async Task<int> AddItemToCartAsync(PostDTO post, OfferDTO offer, int quantity)
         {
             int index = CartItems.FindIndex(x => x.Post.Id == post.Id && x.Offer.Id == offer.Id);
             
@@ -129,6 +110,24 @@ namespace SmartTrade.Services
             else CartItems[index].Quantity += quantity;
 
             OnCartChanged?.Invoke();
+            await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
+
+            return index == -1 ? quantity : CartItems[index].Quantity;
+        }
+
+        public int AddItemToCart(PostDTO post, OfferDTO offer, int quantity)
+        {
+            int index = CartItems.FindIndex(x => x.Post.Id == post.Id && x.Offer.Id == offer.Id);
+
+            if (index == -1)
+            {
+                CartItems.Add(new CartItemDTO(post, offer, quantity));
+            }
+            else CartItems[index].Quantity += quantity;
+
+            OnCartChanged?.Invoke();
+
+            return index == -1 ? quantity : CartItems[index].Quantity;
         }
 
         public void DeleteItemFromCart(int offerId)
@@ -137,6 +136,15 @@ namespace SmartTrade.Services
             if (index != -1) CartItems.RemoveAt(index);
 
             OnCartChanged?.Invoke();
+        }
+
+        public async Task DeleteItemFromCartAsync(int offerId)
+        {
+            int index = CartItems.FindIndex(x => x.Offer.Id == offerId);
+            if (index != -1) CartItems.RemoveAt(index);
+
+            OnCartChanged?.Invoke();
+            await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
         }
     }
 }

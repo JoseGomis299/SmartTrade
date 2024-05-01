@@ -35,7 +35,7 @@ public class ProductModel : ViewModelBase
     {
         var view = new ProductView(await Service.GetPostAsync((int)Post.Id));
         SmartTradeNavigationManager.Instance.NavigateTo(view);
-        ((ProductViewModel)view.DataContext).LoadProducts();
+        ((ProductViewModel)view.DataContext).LoadProductsAsync();
     }
 
     private async Task EditProduct()

@@ -52,16 +52,12 @@ namespace SmartTrade.Services
             _cache = new SmartTradeCache();
         }
 
-        public async Task AddItemToCartAsync(PostDTO post, OfferDTO offer, int quantity = 1)
+        public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity)
         {
-            _cache.AddItemToCart(post, offer, quantity);
-            await _broker.UserClient.AddToCartAsync(new CartItemDTO(post, offer, quantity));
-        }
-
-        public async Task DeleteItemFromCartAsync(int offerId)
-        {
-            _cache.DeleteItemFromCart(offerId);
-            await _broker.UserClient.RemoveFromCartAsync(offerId);
+            for (int i = 0; i < quantity; i++)
+            {
+                _cache.Purchases.Add(new PurchaseDTO(offer.Price, offer.ShippingCost, offer.Product.Id, post.SellerID, (int)post.Id, offer.Id));
+            }
         }
 
         public async Task InitializeCacheAsync()
@@ -69,15 +65,6 @@ namespace SmartTrade.Services
             await LoadCartItems();
         }
 
-        private async Task LoadCartItems()
-        {
-            if (Logged != null)
-            {
-                var items = await _broker.UserClient.GetShoppingCartAsync();
-                _cache.LoadCartItems(items);
-            }
-            else await _cache.LoadCartItems("");
-        }
 
         #region User
 
@@ -89,8 +76,9 @@ namespace SmartTrade.Services
 
         public async Task LogInAsync(string email, string password)
         {
-           await _broker.UserClient.LogInAsync(email, password);
-           await LoadCartItems();
+            await _broker.UserClient.LogInAsync(email, password);
+            await LoadCartItems();
+            _cache.Purchases = null;
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -120,7 +108,45 @@ namespace SmartTrade.Services
 
         public async Task<List<PurchaseDTO>?> GetPurchases()
         {
-            return await _broker.UserClient.GetPurchaseAsync();
+            if(_cache.Purchases == null)
+            {
+                var res = await _broker.UserClient.GetPurchaseAsync();
+                _cache.Purchases = res ?? new List<PurchaseDTO>();
+            }
+
+            return _cache.Purchases;
+        }
+
+        public async Task AddItemToCartAsync(PostDTO post, OfferDTO offer, int quantity = 1)
+        {
+            int count;
+            if (Logged != null) count = _cache.AddItemToCart(post, offer, quantity);
+            else count = await _cache.AddItemToCartAsync(post, offer, quantity);
+
+            await _broker.UserClient.AddToCartAsync(new SimpleCartItemDTO((int)post.Id, offer.Id, count));
+        }
+
+        public async Task DeleteItemFromCartAsync(int offerId)
+        {
+            if (Logged != null) _cache.DeleteItemFromCart(offerId);
+            else await _cache.DeleteItemFromCartAsync(offerId);
+
+            await _broker.UserClient.RemoveFromCartAsync(offerId);
+        }
+        private async Task LoadCartItems()
+        {
+            await _cache.LoadCartItemsAsync();
+            var guestItems = new List<CartItemDTO>(_cache.CartItems);
+            var userItems = await _broker.UserClient.GetShoppingCartAsync();
+
+            if (userItems == null) return;
+
+            _cache.LoadCartItems(userItems);
+            foreach (var cartItem in guestItems)
+            {
+                if (userItems.Any(x => x.Offer.Id == cartItem.Offer.Id)) continue;
+                await AddItemToCartAsync(cartItem.Post, cartItem.Offer, cartItem.Quantity);
+            }
         }
         #endregion
 
@@ -235,6 +261,7 @@ namespace SmartTrade.Services
 
 
         #endregion
+
 
     }
 }
