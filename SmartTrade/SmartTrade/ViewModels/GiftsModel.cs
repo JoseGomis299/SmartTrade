@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Avalonia.Media.Imaging;
 using ReactiveUI;
 
 namespace SmartTrade.ViewModels;

@@ -8,11 +8,18 @@
              x:DataType="vm:GiftsModel"
              xmlns:controls="clr-namespace:SmartTrade.Controls">
     <Design.DataContext>
-		<vm:ShoppingCartModel/>
+		<vm:GiftsModel/>
     </Design.DataContext>
     <ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="10">
-            <TextBlock Classes="h1" HorizontalAlignment="Center" Text="SHOPPING CART"/>
+            <TextBlock Classes="h1" HorizontalAlignment="Center" Text="GIFTS"/>
+			<Grid ColumnDefinitions="* auto">
+				<ComboBox Name="ComboBoxGiftList" ItemsSource="{Binding GiftListsNames}" Grid.Column="0" HorizontalAlignment="Center" Width="300" SelectedIndex="0" MaxDropDownHeight="100">
+				</ComboBox>
+				<Button Grid.Column="1" Background="Transparent" Width="40" Height="40" Margin="0 0 2 0" Name="EditButton">
+					<Image VerticalAlignment="Center" Stretch="Uniform" Name="EditImage" Width="40"></Image>
+				</Button>
+			</Grid>
             <ItemsControl ItemsSource="{Binding Products}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

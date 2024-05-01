@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using SmartTrade.DTOs;
-using SmartTrade.Entities;
 using SmartTradeDTOs;
+using SmartTrade.Entities;
 
 namespace SmartTrade.Services.ApiClients;
 

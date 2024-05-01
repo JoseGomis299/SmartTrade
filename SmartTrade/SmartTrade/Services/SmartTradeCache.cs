@@ -22,6 +22,7 @@ namespace SmartTrade.Services
         public List<SimplePostDTO>? Posts => _simplePosts;
         public List<NotificationDTO>? Notifications { get; set; }
         public List<CartItemDTO>? CartItems { get; set; } = new List<CartItemDTO>();
+        public List<List<CartItemDTO>>? GiftLists { get; set; } = new List<List<CartItemDTO>>(); 
 
         private string _cartFileName;
 

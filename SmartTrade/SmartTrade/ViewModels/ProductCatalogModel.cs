@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
 using SmartTrade.Services;
-using SmartTrade.DTOs;
 using System.Linq;
 using FuzzySharp;
 

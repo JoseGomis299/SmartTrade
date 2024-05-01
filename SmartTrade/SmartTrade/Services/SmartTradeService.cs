@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using FuzzySharp;
 using Newtonsoft.Json;
-using SmartTrade.DTOs;
 using SmartTrade.Entities;
 using SmartTradeDTOs;
 
