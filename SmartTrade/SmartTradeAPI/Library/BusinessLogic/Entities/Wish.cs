@@ -3,7 +3,7 @@
 public partial class Wish
 {
     public Wish() { }
-    public Wish(User user, Post post)
+    public Wish(Consumer user, Post post)
     {
         User = user;
         Post = post;

@@ -16,4 +16,5 @@ public abstract partial class Product
     public virtual ICollection<Image> Images { get; set; }
     public virtual ICollection<Post> Posts { get; set; }
     public virtual ICollection<Alert> Alerts { get; set; }
+    public virtual ICollection<Wish> Wishes { get; set; }
 }

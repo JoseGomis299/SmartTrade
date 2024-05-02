@@ -75,6 +75,11 @@
 					</StackPanel>
                 </StackPanel>
                 <Button Classes="Green" Width="130" CornerRadius="10" Content="To WishList" Name="AddToWishListButton" Margin="10 5 0 0"/>
+                <ToggleButton  ZIndex="1" Name="WishListToggle" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="45 0" Width="50">
+                    <Panel>
+                        <Image Name="WishListImage" Stretch="Uniform"/>
+                    </Panel>
+                </ToggleButton>
 			</StackPanel>
 			<StackPanel Grid.Row="2">
 				<controls:ST_Carousel Title="Other Sellers" DataSource="{Binding OtherSellers, Mode=OneWay}"></controls:ST_Carousel>

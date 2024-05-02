@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using DynamicData;
 using FuzzySharp;
 using Newtonsoft.Json;
 using SmartTrade.DTOs;
@@ -80,6 +81,7 @@ namespace SmartTrade.Services
             await _broker.UserClient.LogInAsync(email, password);
             await LoadCartItems();
             _cache.Purchases = null;
+            _cache.Wishes = null;
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -241,19 +243,42 @@ namespace SmartTrade.Services
 
         #region WishList
 
-        public async Task<int> CreateWishAsync(int postId)
+        public async Task CreateWishAsync(PostDTO post)
         {
-            return await _broker.WishClient.CreateWishAsync(postId);
+            if (_cache.Wishes.Exists(x => x.Post.Id == post.Id))
+            {
+                return;
+            }
+
+            int id = await _broker.WishClient.CreateWishAsync((int)post.Id);
+            _cache.Wishes.Add(new WishDTO(post, id));
         }
 
         public async Task DeleteWishAsync(int wishId)
         {
+            int index = _cache.Wishes.FindIndex(w => w.Id == wishId);
+            if (index != -1) _cache.Wishes.RemoveAt(index);
+
             await _broker.WishClient.DeleteWishAsync(wishId);
         }
 
         public async Task<List<WishDTO?>> GetWishAsync()
         {
-            return await _broker.WishClient.GetWishAsync();
+            _cache.Wishes ??= await _broker.WishClient.GetWishAsync();
+            return _cache.Wishes;
+        }
+
+        public async Task DeleteWishFromPostAsync(int id)
+        {
+            int wishId = 0;
+            int index = _cache.Wishes.FindIndex(w => w.Post.Id == id);
+            if (index != -1)
+            {
+                wishId = _cache.Wishes[index].Id;
+                _cache.Wishes.RemoveAt(index);
+            }
+            
+            await _broker.WishClient.DeleteWishAsync(wishId);
         }
 
         #endregion

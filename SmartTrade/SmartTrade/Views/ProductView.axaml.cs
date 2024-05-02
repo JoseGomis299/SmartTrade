@@ -16,11 +16,13 @@ namespace SmartTrade.Views
     {
         private Bitmap? _alertActivated;
         private Bitmap? _alertDeactivated;
+        private Bitmap? _wishListDeactivated;
         private PostDTO _post;
         private Bitmap? _isEco;
         private Bitmap? _isNotEco;
 
         private bool _isAlertActivated;
+        private bool _isWishActivated;
 
         public ProductViewModel _model => (ProductViewModel)DataContext;
 
@@ -39,17 +41,21 @@ namespace SmartTrade.Views
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
             _isEco = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/IconoSostenible.png")));
             _isNotEco = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/IconoNOSostenible.png")));
+            _wishListDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/WishListHeart.png")));
             AlertImage.Source = _alertDeactivated;
+            WishListImage.Source = _wishListDeactivated;
             EcoImage.Source = _isNotEco;
 
             NextImageButton.Click += NextImage;
             PreviousImageButton.Click += PreviousImage;
             ((ProductViewModel)DataContext).OnOfferChanged += SetImageNavigationButtonsVisibility;
             AlertToggle.Click += ToggleAlert;
+            WishListToggle.Click += ToggleWishList;
 
 
             SetToggleVisibility();
             SetAlertImage();
+            SetWishListImage();
             SetEcoImage();
             SetImageNavigationButtonsVisibility();
 
@@ -70,6 +76,26 @@ namespace SmartTrade.Views
             }
 
             AddToWishListButton.IsVisible = _model.Logged != null;
+            WishListToggle.IsVisible = _model.Logged != null;
+        }
+
+        private void ToggleWishList(object? sender, RoutedEventArgs e)
+        {
+            if (_model.Logged == null)
+            {
+                return;
+            }
+
+            if (WishListToggle.IsChecked == true)
+            {
+                _post.Offers[0].Product.UsersWithWishesInThisProduct.Add(_model.Logged.Email);
+                _isWishActivated = true;
+            }
+            else
+            {
+                _post.Offers[0].Product.UsersWithWishesInThisProduct.Remove(_model.Logged.Email);
+                _isWishActivated = false;
+            }
         }
 
         private async void AddItemToWishListAsync(object? sender, RoutedEventArgs e)
@@ -160,6 +186,18 @@ namespace SmartTrade.Views
             }
         }
 
+        private void SetWishListImage()
+        {
+            if (_model.Logged == null || !(_post.Offers[0].Product.UsersWithWishesInThisProduct.Contains(_model.Logged.Email)))
+            {
+                WishListToggle.IsChecked = false;
+            }
+            else
+            {
+                WishListToggle.IsChecked = true;
+            }
+        }
+
         private void SetEcoImage()
         {
             if (int.TryParse(_post.EcologicPrint, out int ecologicPrint) && ecologicPrint < 10)
@@ -200,9 +238,21 @@ namespace SmartTrade.Views
                 return;
             }
 
-            if (_isAlertActivated && type != typeof(ProductView) && SmartTradeNavigationManager.Instance.Navigator.PreviousView.GetType() == typeof(ProductView))
+            if (type != typeof(ProductView) && SmartTradeNavigationManager.Instance.Navigator.PreviousView.GetType() == typeof(ProductView))
             {
-                await _model.CreateAlertAsync(_post.Offers[0].Product.Id);
+                if (_isAlertActivated)
+                {
+                    await _model.CreateAlertAsync(_post.Offers[0].Product.Id);
+                }
+
+                if (_isWishActivated)
+                {
+                    await _model.AddItemToWishListAsync();
+                }
+                else
+                {
+                    await _model.DeleteFromWishListAsync();
+                }
             }
         }
 

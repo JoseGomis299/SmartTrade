@@ -8,8 +8,8 @@ using SmartTrade.Services;
 using SmartTrade.DTOs;
 using System.Linq;
 using FuzzySharp;
-using static Android.Icu.Text.CaseMap;
-using static Java.Util.Jar.Attributes;
+//using static Android.Icu.Text.CaseMap;
+//using static Java.Util.Jar.Attributes;
 
 namespace SmartTrade.ViewModels
 {

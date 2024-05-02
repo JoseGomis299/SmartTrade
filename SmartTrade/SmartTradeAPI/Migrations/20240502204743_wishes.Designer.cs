@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTrade.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTrade.Persistence;
 namespace SmartTradeAPI.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240502204743_wishes")]
+    partial class wishes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -444,17 +447,11 @@ namespace SmartTradeAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AdminEmail")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
-
-                    b.Property<string>("SellerEmail")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
@@ -462,13 +459,9 @@ namespace SmartTradeAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdminEmail");
-
                     b.HasIndex("PostId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("SellerEmail");
 
                     b.HasIndex("UserEmail");
 
@@ -813,10 +806,6 @@ namespace SmartTradeAPI.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Wish", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Admin", null)
-                        .WithMany("WishList")
-                        .HasForeignKey("AdminEmail");
-
                     b.HasOne("SmartTrade.Entities.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId")
@@ -827,11 +816,7 @@ namespace SmartTradeAPI.Migrations
                         .WithMany("Wishes")
                         .HasForeignKey("ProductId");
 
-                    b.HasOne("SmartTrade.Entities.Seller", null)
-                        .WithMany("WishList")
-                        .HasForeignKey("SellerEmail");
-
-                    b.HasOne("SmartTrade.Entities.Consumer", "User")
+                    b.HasOne("SmartTrade.Entities.User", "User")
                         .WithMany("WishList")
                         .HasForeignKey("UserEmail")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -872,6 +857,8 @@ namespace SmartTradeAPI.Migrations
             modelBuilder.Entity("SmartTrade.Entities.User", b =>
                 {
                     b.Navigation("Alerts");
+
+                    b.Navigation("WishList");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Admin", b =>
@@ -881,8 +868,6 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("ValidatedPosts");
 
                     b.Navigation("ValidatedProducts");
-
-                    b.Navigation("WishList");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Consumer", b =>
@@ -900,8 +885,6 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("Purchases");
 
                     b.Navigation("ShoppingCart");
-
-                    b.Navigation("WishList");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Seller", b =>
@@ -909,8 +892,6 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("Notifications");
 
                     b.Navigation("Posts");
-
-                    b.Navigation("WishList");
                 });
 #pragma warning restore 612, 618
         }
