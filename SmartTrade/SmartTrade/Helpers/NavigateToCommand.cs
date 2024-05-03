@@ -5,6 +5,8 @@ namespace SmartTrade.Navigation;
 
 public class NavigateToCommand : ICommand 
 {
+    public Type ViewType => _viewType ?? _view.GetType();
+
     private Type? _viewType;
     private ContentControl? _view;
     private ContentControl? _previousView;

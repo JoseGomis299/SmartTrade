@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Controls;
 using SmartTrade.Navigation;
 using SmartTrade.Views;
@@ -103,5 +104,12 @@ public class SmartTradeNavigationManager : NavigationManager
         if (stack == 0) HomeCommands.Clear();
         else if (stack == 1) CartCommands.Clear();
         else UserCommands.Clear();
+    }
+
+    public bool IsViewOnStack(Type viewType, int stack)
+    {
+        if(stack == 0) return HomeCommands.Any(c => (c as NavigateToCommand).ViewType == viewType);
+        if(stack == 1) return CartCommands.Any(c => (c as NavigateToCommand).ViewType == viewType);
+        return UserCommands.Any(c => (c as NavigateToCommand).ViewType == viewType);
     }
 }
