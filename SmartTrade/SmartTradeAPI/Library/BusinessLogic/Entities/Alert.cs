@@ -3,7 +3,7 @@
 public partial class Alert
 {
     public Alert(){}
-    public Alert(User user, Product product)
+    public Alert(Consumer user, Product product)
     {
         User = user;
         Product = product;

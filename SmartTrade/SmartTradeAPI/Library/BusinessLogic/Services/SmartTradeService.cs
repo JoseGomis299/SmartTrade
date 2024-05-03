@@ -428,7 +428,7 @@ public class SmartTradeService : ISmartTradeService
     public int CreateAlert(string userId, int productId)
     {
         var product =_dal.GetById<Product>(productId);
-        var user = _dal.GetById<User>(userId);
+        var user = _dal.GetById<Consumer>(userId);
         var alert = new Alert(user, product);
         product.AddAlert(alert);
         user.AddAlert(alert);

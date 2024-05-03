@@ -10,7 +10,4 @@ public abstract partial class User
     public string Password { get; set; }
     public string Name { get; set; }
     public string LastNames { get; set; }
-    public virtual ICollection<Alert> Alerts { get; set; }
-    public virtual ICollection<Notification> Notifications { get; set; }
-    public virtual ICollection<Wish> WishList { get; set; }
 }
