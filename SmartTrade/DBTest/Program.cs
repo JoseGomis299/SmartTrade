@@ -8,6 +8,15 @@ var service = new SmartTradeService();
 Datos data = new Datos();
 
 //service.RemoveAll();
+for (int i = 11; i < 20; i++)
+{
+    var seller = AddSeller(i);
+    for (int j = 0; j < Random.Shared.Next(2, 5); j++)
+    {
+        AddPost(seller, true);
+    }
+   // AddCostumer(i);
+}
 
 
 
