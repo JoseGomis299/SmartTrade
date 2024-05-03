@@ -20,6 +20,7 @@ namespace SmartTrade.ViewModels
 
         public async Task LoadWishListAsync()
         {
+            ProductsInWishList.Clear();
             foreach (var wish in await Service.GetWishAsync())
             {
                 ProductsInWishList.Add(new WishLModel(wish.Post, this, wish));
