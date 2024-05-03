@@ -14,11 +14,18 @@
 		<Grid RowDefinitions="auto auto *" Margin="0 10 0 0">
 			<StackPanel Grid.Row="0">
 				<Grid>
-					<ToggleButton  ZIndex="1" Name="AlertToggle" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 0" Width="50">
-						<Panel>
-							<Image Name="AlertImage" Stretch="Uniform"/>
-						</Panel>
-					</ToggleButton>
+					<StackPanel Orientation="Horizontal">
+                        <ToggleButton  ZIndex="2" Name="AlertToggle" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10 0 0 0" Width="50">
+                            <Panel>
+                                <Image Name="AlertImage" Stretch="Uniform"/>
+                            </Panel>
+                        </ToggleButton>
+                        <ToggleButton  ZIndex="2" Name="WishListToggle" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5 0" Width="50">
+                            <Panel>
+                                <Image Name="WishListImage" Stretch="Uniform"/>
+                            </Panel>
+                        </ToggleButton>
+					</StackPanel>
 					<Image ZIndex="1" Name="EcoImage" Stretch="Uniform" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10 0" Width="50"/>
 					<Carousel ItemsSource="{Binding Images, Mode=OneWay}" Name="ImageCarousel"  Height="300">
 						<Carousel.PageTransition >
@@ -74,12 +81,6 @@
 						<Button Width="30" Content="+" Classes="White" Name="AddButton"/>
 					</StackPanel>
                 </StackPanel>
-                <Button Classes="Green" Width="130" CornerRadius="10" Content="To WishList" Name="AddToWishListButton" Margin="10 5 0 0"/>
-                <ToggleButton  ZIndex="1" Name="WishListToggle" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="45 0" Width="50">
-                    <Panel>
-                        <Image Name="WishListImage" Stretch="Uniform"/>
-                    </Panel>
-                </ToggleButton>
 			</StackPanel>
 			<StackPanel Grid.Row="2">
 				<controls:ST_Carousel Title="Other Sellers" DataSource="{Binding OtherSellers, Mode=OneWay}"></controls:ST_Carousel>

@@ -27,13 +27,22 @@ namespace SmartTrade.Views
                 };
             }
             else { AddPostButton.IsVisible = false; }
+
+            SetWishListButtonVisibility();
         }
 
-        private async void WishListButton_Click(object? sender, RoutedEventArgs e)
+        private void SetWishListButtonVisibility()
+        {
+            if (_model.LoggedType != UserType.Consumer)
+            {
+                WhisListButton.IsVisible = false;
+            }
+        }
+
+        private void WishListButton_Click(object? sender, RoutedEventArgs e)
         {
             var view = new WishListView();
             SmartTradeNavigationManager.Instance.NavigateTo(view);
-            await ((WishListModel)view.DataContext).LoadWishListAsync();
         }
 
         private async void LogOut(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

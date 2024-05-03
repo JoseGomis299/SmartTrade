@@ -12,7 +12,7 @@ using SmartTrade.Services;
 
 namespace SmartTrade.Views
 {
-    public partial class ProductView : UserControl
+    public partial class ProductView : RefreshableUserControl
     {
         private Bitmap? _alertActivated;
         private Bitmap? _alertDeactivated;
@@ -52,18 +52,15 @@ namespace SmartTrade.Views
             AlertToggle.Click += ToggleAlert;
             WishListToggle.Click += ToggleWishList;
 
-
             SetToggleVisibility();
             SetAlertImage();
-            SetWishListImage();
+            SetWishListImageAsync();
             SetEcoImage();
             SetImageNavigationButtonsVisibility();
 
             SmartTradeNavigationManager.Instance.OnNavigate += OnNavigateAsync;
 
             AddToCartButton.Click += AddItemToCart;
-            AddToWishListButton.Click += AddItemToWishListAsync;
-
             AddButton.Click += OnAddButtonOnClick;
             SubtractButton.Click += OnSubtractButtonOnClick;
 
@@ -75,11 +72,19 @@ namespace SmartTrade.Views
                 }
             }
 
-            AddToWishListButton.IsVisible = _model.Logged != null;
             WishListToggle.IsVisible = _model.Logged != null;
         }
 
-        private void ToggleWishList(object? sender, RoutedEventArgs e)
+        protected override void Refresh()
+        {
+            SetToggleVisibility();
+            SetAlertImage();
+            SetWishListImageAsync();
+            SetEcoImage();
+            SetImageNavigationButtonsVisibility();
+        }
+
+        private async void ToggleWishList(object? sender, RoutedEventArgs e)
         {
             if (_model.Logged == null)
             {
@@ -88,13 +93,13 @@ namespace SmartTrade.Views
 
             if (WishListToggle.IsChecked == true)
             {
-                _post.Offers[0].Product.UsersWithWishesInThisProduct.Add(_model.Logged.Email);
                 _isWishActivated = true;
+                await _model.AddItemToWishListAsync();
             }
             else
             {
-                _post.Offers[0].Product.UsersWithWishesInThisProduct.Remove(_model.Logged.Email);
                 _isWishActivated = false;
+                await _model.DeleteFromWishListAsync();
             }
         }
 
@@ -186,9 +191,9 @@ namespace SmartTrade.Views
             }
         }
 
-        private void SetWishListImage()
+        private void SetWishListImageAsync()
         {
-            if (_model.Logged == null || !(_post.Offers[0].Product.UsersWithWishesInThisProduct.Contains(_model.Logged.Email)))
+            if (_model.Logged == null || !(_model.IsPostInWishes(_post)))
             {
                 WishListToggle.IsChecked = false;
             }
@@ -243,15 +248,6 @@ namespace SmartTrade.Views
                 if (_isAlertActivated)
                 {
                     await _model.CreateAlertAsync(_post.Offers[0].Product.Id);
-                }
-
-                if (_isWishActivated)
-                {
-                    await _model.AddItemToWishListAsync();
-                }
-                else
-                {
-                    await _model.DeleteFromWishListAsync();
                 }
             }
         }

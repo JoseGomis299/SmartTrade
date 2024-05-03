@@ -12,4 +12,11 @@ public class WishDTO
     {
 
     }
+
+    public WishDTO(Wish wish)
+    {
+        Id = wish.Id;
+        UserId = wish.User.Email;
+        Post = new SimplePostDTO(new PostDTO(wish.Post));
+    }
 }

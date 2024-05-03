@@ -229,6 +229,11 @@ namespace SmartTrade.ViewModels
         {
             await Service.DeleteWishFromPostAsync((int)Post.Id);
         }
+
+        public bool IsPostInWishes(PostDTO post)
+        {
+            return Service.WishList.Exists(x => x.Post.Id == post.Id);
+        }
     }
 
     public class AttributeModel : ReactiveObject

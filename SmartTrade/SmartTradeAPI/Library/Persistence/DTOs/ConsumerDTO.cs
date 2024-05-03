@@ -12,8 +12,8 @@ public class ConsumerDTO : UserDTO
     public List<PayPalInfo> PayPalAccounts { get; set; }
     public List<BizumInfo> BizumAccounts { get; set; }
     public List<CreditCardInfo> CreditCards { get; set; }
-    public List<Alert> Alerts { get; set; }
-    public List<Wish> WishList { get; set; }
+    public List<AlertDTO> Alerts { get; set; }
+    public List<WishDTO> WishList { get; set; }
 
     public ConsumerDTO() : base()
     {
@@ -25,8 +25,8 @@ public class ConsumerDTO : UserDTO
         PayPalAccounts = new List<PayPalInfo>();
         BizumAccounts = new List<BizumInfo>();
         CreditCards = new List<CreditCardInfo>();
-        Alerts = new List<Alert>();
-        WishList = new List<Wish>();
+        Alerts = new List<AlertDTO>();
+        WishList = new List<WishDTO>();
     }
 
     public ConsumerDTO(Consumer consumer) : base(consumer)
@@ -39,7 +39,7 @@ public class ConsumerDTO : UserDTO
         PayPalAccounts = consumer.PayPalAccounts.ToList();
         BizumAccounts = consumer.BizumAccounts.ToList();
         CreditCards = consumer.CreditCards.ToList();
-        Alerts = consumer.Alerts.ToList();
-        WishList = consumer.WishList.ToList();
+        Alerts = consumer.Alerts.Select(a => new AlertDTO(a)).ToList();
+        WishList = consumer.WishList.Select(w => new WishDTO(w)).ToList();
     }
 }

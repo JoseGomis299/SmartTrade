@@ -455,7 +455,6 @@ public class SmartTradeService : ISmartTradeService
         var user = _dal.GetById<Consumer>(userId);
         var wish = new Wish(user, post);
         user.AddWish(wish);
-        post.Offers.First().Product.AddWish(wish);
         _dal.Commit();
         return wish.Id;
     }
@@ -494,7 +493,6 @@ public class SmartTradeService : ISmartTradeService
     {
         Wish wish = _dal.GetById<Wish>(wishId);
         wish.User.WishList.Remove(wish);
-        wish.Post.Offers.First().Product.Wishes.Remove(wish);
 
         _dal.Delete<Wish>(wish);
 
