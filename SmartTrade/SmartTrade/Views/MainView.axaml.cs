@@ -139,7 +139,7 @@ public partial class MainView : UserControl
     private async void OpenWishListAsync(object? sender, RoutedEventArgs e)
     {
         var view = new WishListView();
-        SmartTradeNavigationManager.Instance.NavigateWithButton(view.GetType(), 0, 2, out _);
+        SmartTradeNavigationManager.Instance.NavigateTo(view);
         await ((WishListModel)view.DataContext).LoadWishListAsync();
     }
 
