@@ -14,4 +14,23 @@ public class SimplePostDTO
     public float Price { get; set; }
     public byte[]? Image { get; set; }
     public string ProductName { get; set; }
+
+    public SimplePostDTO()
+    {
+
+    }
+
+    public SimplePostDTO(PostDTO post)
+    {
+        Id = post.Id;
+        Title = post.Title;
+        Category = post.Category;
+        MinimumAge = post.MinimumAge;
+        EcologicPrint = post.EcologicPrint;
+        Validated = post.Validated;
+        SellerID = post.SellerID;
+        Price = post.Offers[0].Price;
+        Image = post.Offers[0].Product.Images[0];
+        ProductName = post.ProductName;
+    }
 }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
@@ -221,7 +222,12 @@ namespace SmartTrade.ViewModels
 
         public async Task AddItemToWishListAsync()
         {
-            await Service.CreateWishAsync((int)Post.Id);
+            await Service.CreateWishAsync(Post);
+        }
+
+        public async Task DeleteFromWishListAsync()
+        {
+            await Service.DeleteWishFromPostAsync((int)Post.Id);
         }
     }
 

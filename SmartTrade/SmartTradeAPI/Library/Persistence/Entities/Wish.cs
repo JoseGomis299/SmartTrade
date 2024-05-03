@@ -8,7 +8,7 @@ public partial class Wish
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [Required]
-    public virtual User User { get; set; }
+    public virtual Consumer User { get; set; }
     [Required]
     public virtual Post Post { get; set; }
 }

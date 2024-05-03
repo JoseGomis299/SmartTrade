@@ -12,4 +12,5 @@ public class ProductDTO
     public string? Differentiators { get; set; }
     public string? Info { get; set; }
     public List<string> UsersWithAlertsInThisProduct { get; set; }
+    public List<string> UsersWithWishesInThisProduct { get; set; }
 }

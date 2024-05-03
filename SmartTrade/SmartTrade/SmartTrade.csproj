@@ -20,6 +20,7 @@
     <None Remove="Assets\Share.png" />
     <None Remove="Assets\SmartTradeIcon.ico" />
     <None Remove="Assets\visibilityON.png" />
+    <None Remove="Assets\wishListHeart.png" />
   </ItemGroup>
 
   <ItemGroup>
