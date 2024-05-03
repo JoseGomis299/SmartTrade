@@ -39,6 +39,7 @@ namespace SmartTrade.Services
         }
 
         public List<CartItemDTO>? CartItems => _cache.CartItems; 
+        public List<WishDTO>? WishList => _cache.Wishes; 
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
         private SmartTradeBroker _broker;
@@ -78,9 +79,10 @@ namespace SmartTrade.Services
         public async Task LogInAsync(string email, string password)
         {
             await _broker.UserClient.LogInAsync(email, password);
+
             await LoadCartItems();
             _cache.Purchases = null;
-            _cache.Wishes = null;
+            _cache.Wishes = await GetWishAsync();
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -261,7 +263,7 @@ namespace SmartTrade.Services
             await _broker.WishClient.DeleteWishAsync(wishId);
         }
         
-        public async Task<List<WishDTO?>> GetWishAsync()
+        public async Task<List<WishDTO>>? GetWishAsync()
         {
             _cache.Wishes ??= await _broker.WishClient.GetWishAsync();
             return _cache.Wishes;

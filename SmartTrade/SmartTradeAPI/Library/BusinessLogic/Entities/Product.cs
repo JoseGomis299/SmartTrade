@@ -14,7 +14,6 @@ namespace SmartTrade.Entities;
             Images = new List<Image>();
             Posts = new List<Post>();
             Alerts = new List<Alert>();
-            Wishes = new List<Wish>();
         }
 
         protected Product(string name, string certification, string ecologicPrint, int minimumAge, string howToUse, string howToReducePrint) : this()
@@ -40,11 +39,6 @@ namespace SmartTrade.Entities;
         public void AddAlert(Alert alert)
         {
             Alerts.Add(alert);
-        }
-
-        public void AddWish(Wish wish)
-        {
-            Wishes.Add(wish);
         }
 
         public Image GetImage(int index)

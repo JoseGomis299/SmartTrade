@@ -55,7 +55,7 @@ namespace SmartTrade.Views
 
             SetToggleVisibility();
             SetAlertImage();
-            SetWishListImage();
+            SetWishListImageAsync();
             SetEcoImage();
             SetImageNavigationButtonsVisibility();
 
@@ -88,12 +88,10 @@ namespace SmartTrade.Views
 
             if (WishListToggle.IsChecked == true)
             {
-                _post.Offers[0].Product.UsersWithWishesInThisProduct.Add(_model.Logged.Email);
                 _isWishActivated = true;
             }
             else
             {
-                _post.Offers[0].Product.UsersWithWishesInThisProduct.Remove(_model.Logged.Email);
                 _isWishActivated = false;
             }
         }
@@ -186,9 +184,9 @@ namespace SmartTrade.Views
             }
         }
 
-        private void SetWishListImage()
+        private void SetWishListImageAsync()
         {
-            if (_model.Logged == null || !(_post.Offers[0].Product.UsersWithWishesInThisProduct.Contains(_model.Logged.Email)))
+            if (_model.Logged == null || !(_model.IsPostInWishes(_post)))
             {
                 WishListToggle.IsChecked = false;
             }

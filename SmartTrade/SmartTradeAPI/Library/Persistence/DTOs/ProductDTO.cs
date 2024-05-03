@@ -10,7 +10,6 @@ public class ProductDTO
     public string? Differentiators { get; set; }
     public string? Info { get; set; }
     public List<string> UsersWithAlertsInThisProduct { get; set; }
-    public List<string> UsersWithWishesInThisProduct { get; set; }
 
     public ProductDTO(){}
     public ProductDTO(Product product)
@@ -21,6 +20,5 @@ public class ProductDTO
         Differentiators = product.GetDifferentiations();
         Info = product.GetInfo();
         UsersWithAlertsInThisProduct = product.Alerts.Select(a => a.User.Email).ToList();
-        UsersWithWishesInThisProduct = product.Wishes.Select(w => w.User.Email).ToList();
     }
 }
