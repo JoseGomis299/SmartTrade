@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using ReactiveUI;
 using SmartTrade.Services;
@@ -53,4 +54,6 @@ public class ProfileModel : ViewModelBase
     {
        await Service.LogOut();
     }
+
+   
 }
