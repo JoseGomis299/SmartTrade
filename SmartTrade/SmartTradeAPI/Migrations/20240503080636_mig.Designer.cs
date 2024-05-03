@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTrade.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTrade.Persistence;
 namespace SmartTradeAPI.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240503080636_mig")]
+    partial class mig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,6 +68,29 @@ namespace SmartTradeAPI.Migrations
                     b.HasIndex("ConsumerEmail");
 
                     b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("SmartTrade.Entities.Admin", b =>
+                {
+                    b.Property<string>("Email")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LastNames")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Alert", b =>
@@ -135,6 +161,41 @@ namespace SmartTradeAPI.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("CartItem");
+                });
+
+            modelBuilder.Entity("SmartTrade.Entities.Consumer", b =>
+                {
+                    b.Property<string>("Email")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BillingAddressId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DNI")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastNames")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Email");
+
+                    b.HasIndex("BillingAddressId");
+
+                    b.ToTable("Consumers");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.CreditCardInfo", b =>
@@ -427,16 +488,23 @@ namespace SmartTradeAPI.Migrations
                     b.ToTable("Purchases");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.User", b =>
+            modelBuilder.Entity("SmartTrade.Entities.Seller", b =>
                 {
                     b.Property<string>("Email")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Discriminator")
+                    b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DNI")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IBAN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastNames")
                         .IsRequired()
@@ -452,11 +520,7 @@ namespace SmartTradeAPI.Migrations
 
                     b.HasKey("Email");
 
-                    b.ToTable("Users");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-
-                    b.UseTphMappingStrategy();
+                    b.ToTable("Sellers");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Wish", b =>
@@ -593,57 +657,6 @@ namespace SmartTradeAPI.Migrations
                     b.HasDiscriminator().HasValue("Toy");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Admin", b =>
-                {
-                    b.HasBaseType("SmartTrade.Entities.User");
-
-                    b.HasDiscriminator().HasValue("Admin");
-                });
-
-            modelBuilder.Entity("SmartTrade.Entities.Consumer", b =>
-                {
-                    b.HasBaseType("SmartTrade.Entities.User");
-
-                    b.Property<int>("BillingAddressId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DNI")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("BillingAddressId");
-
-                    b.ToTable("Users", t =>
-                        {
-                            t.Property("DNI")
-                                .HasColumnName("Consumer_DNI");
-                        });
-
-                    b.HasDiscriminator().HasValue("Consumer");
-                });
-
-            modelBuilder.Entity("SmartTrade.Entities.Seller", b =>
-                {
-                    b.HasBaseType("SmartTrade.Entities.User");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DNI")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IBAN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Seller");
-                });
-
             modelBuilder.Entity("SmartTrade.Entities.Address", b =>
                 {
                     b.HasOne("SmartTrade.Entities.Consumer", null)
@@ -698,6 +711,17 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("Offer");
 
                     b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("SmartTrade.Entities.Consumer", b =>
+                {
+                    b.HasOne("SmartTrade.Entities.Address", "BillingAddress")
+                        .WithMany()
+                        .HasForeignKey("BillingAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BillingAddress");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.CreditCardInfo", b =>
@@ -866,33 +890,6 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Consumer", b =>
-                {
-                    b.HasOne("SmartTrade.Entities.Address", "BillingAddress")
-                        .WithMany()
-                        .HasForeignKey("BillingAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BillingAddress");
-                });
-
-            modelBuilder.Entity("SmartTrade.Entities.Post", b =>
-                {
-                    b.Navigation("Offers");
-                });
-
-            modelBuilder.Entity("SmartTrade.Entities.Product", b =>
-                {
-                    b.Navigation("Alerts");
-
-                    b.Navigation("Images");
-
-                    b.Navigation("Posts");
-
-                    b.Navigation("Wishes");
-                });
-
             modelBuilder.Entity("SmartTrade.Entities.Admin", b =>
                 {
                     b.Navigation("ValidatedPosts");
@@ -921,6 +918,22 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("ShoppingCart");
 
                     b.Navigation("WishList");
+                });
+
+            modelBuilder.Entity("SmartTrade.Entities.Post", b =>
+                {
+                    b.Navigation("Offers");
+                });
+
+            modelBuilder.Entity("SmartTrade.Entities.Product", b =>
+                {
+                    b.Navigation("Alerts");
+
+                    b.Navigation("Images");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Wishes");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Seller", b =>

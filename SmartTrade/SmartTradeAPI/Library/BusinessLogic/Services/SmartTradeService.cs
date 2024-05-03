@@ -196,7 +196,7 @@ public class SmartTradeService : ISmartTradeService
         User? logged = _dal.GetById<User>(loggedID);
 
         var postDtos = _dal.GetAll<Post>().AsNoTracking()
-            .Select(p => new
+            .Select(p => new SimplePostDTO
             {
                 Id = p.Id,
                 Title = p.Title,
@@ -204,26 +204,11 @@ public class SmartTradeService : ISmartTradeService
                 MinimumAge = p.Offers.Select(o => o.Product.MinimumAge).FirstOrDefault(),
                 EcologicPrint = p.Offers.Select(o => o.Product.EcologicPrint).FirstOrDefault(),
                 Validated = p.Validated,
-                SellerEmail = p.Seller.Email,
+                SellerID = p.Seller.Email,
                 Price = p.Offers.Select(o => o.Price).FirstOrDefault(),
-                ImageSource = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
-                ProductName = p.Offers.Select(o => o.Product.Name).FirstOrDefault()
-            })
-            .ToList()
-            .Select(anon => new SimplePostDTO
-            {
-                Id = anon.Id,
-                Title = anon.Title,
-                Category = anon.Category,
-                MinimumAge = anon.MinimumAge,
-                EcologicPrint = anon.EcologicPrint,
-                Validated = anon.Validated,
-                SellerID = anon.SellerEmail,
-                Price = anon.Price,
-                Image = anon.ImageSource,
-                ProductName = anon.ProductName
-            })
-            .ToList();
+                Image = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
+                ProductName = p.Offers.Select(o => o.Product.Name).First()
+            }).ToList();
 
         if (logged is Admin) postDtos = postDtos.Where(x => !x.Validated).ToList();
         else if (logged is Seller seller) postDtos = postDtos.Where(x => x.SellerID == seller.Email).ToList();
