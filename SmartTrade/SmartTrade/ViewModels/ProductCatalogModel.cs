@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
-using SmartTrade.Services;
 using System.Linq;
 using FuzzySharp;
 
@@ -171,5 +170,37 @@ namespace SmartTrade.ViewModels
 
             UpdateProducts(FilteredProducts);
         }
+
+        public bool ParentalControlerChecker(DateTime BirthDate)
+        {
+            DateTime currentDate = DateTime.Now;
+            int totalDays = currentDate.Day - BirthDate.Day;
+            int totalMonths = currentDate.Month - BirthDate.Month;
+            int totalYears = currentDate.Year - BirthDate.Year;
+            if (totalDays < 0)
+            {
+                totalDays += DateTime.DaysInMonth(BirthDate.Year, BirthDate.Month);
+                totalMonths--;
+            }
+            if (totalMonths < 0)
+            {
+                totalMonths += 12;
+                totalYears--;
+            }
+            int age = totalYears;
+            if (totalMonths > 0 || totalDays > 0)
+            {
+                age++;
+            }
+            if (age >= 18)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
+
 }
