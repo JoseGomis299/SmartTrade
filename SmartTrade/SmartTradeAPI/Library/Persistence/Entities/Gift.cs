@@ -7,14 +7,11 @@ public partial class Gift
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    [Required]
     public string ListName { get; set; }
-
-    [Required]
+    public DateOnly Date { get; set; }
+    public int Quantity { get; set; }
     public virtual Consumer User { get; set; }
-    [Required]
     public virtual Post Post { get; set; }
-    [Required]
     public virtual Offer Offer { get; set; }
 
 }
