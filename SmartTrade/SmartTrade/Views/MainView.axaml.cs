@@ -32,6 +32,7 @@ public partial class MainView : UserControl
     bool _isLoadingUser = false;
     
     private int? _currentCategory;
+
     public bool ShowingPopUp { get; set; }
 
     public MainView()
@@ -53,6 +54,7 @@ public partial class MainView : UserControl
         SideBarButton.Click += SideBarButton_Click;
         SideBar.PaneClosing += SideBar_PaneClosing;
         ListBoxDepartments.SelectionChanged += ListBoxDepartments_SelectionChanged;
+        WishListButton.Click += OpenWishListAsync;
        
         AlertButton.Click += OnAlertButtonOnClick;
 
@@ -82,16 +84,22 @@ public partial class MainView : UserControl
         {
             ShoppingCartButton.IsVisible = false;
             AlertButton.IsVisible = false;
+            CartItems.IsVisible = false;
+            Menus.IsVisible = false;
         }
         else if (_model.LoggedType == UserType.Consumer)
         {
             ShoppingCartButton.IsVisible = true;
             AlertButton.IsVisible = true;
+            CartItems.IsVisible = true;
+            Menus.IsVisible = true;
         }
         else
         {
             ShoppingCartButton.IsVisible = true;
             AlertButton.IsVisible = false;
+            CartItems.IsVisible = true;
+            Menus.IsVisible = false;
         }
     }
 
@@ -118,6 +126,13 @@ public partial class MainView : UserControl
 
         _catalogModel?.SortByCategory(_currentCategory);
         _searchModel?.SortByCategory(_currentCategory);
+    }
+
+    private async void OpenWishListAsync(object? sender, RoutedEventArgs e)
+    {
+        var view = new WishListView();
+        SmartTradeNavigationManager.Instance.NavigateTo(view);
+        await ((WishListModel)view.DataContext).LoadWishListAsync();
     }
 
     #endregion

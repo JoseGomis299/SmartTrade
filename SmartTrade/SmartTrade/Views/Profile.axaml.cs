@@ -27,6 +27,16 @@ namespace SmartTrade.Views
                 };
             }
             else { AddPostButton.IsVisible = false; }
+
+            SetWishListButtonVisibility();
+        }
+
+        private void SetWishListButtonVisibility()
+        {
+            if (_model.LoggedType != UserType.Consumer)
+            {
+                WhisListButton.IsVisible = false;
+            }
         }
 
         private async void WishListButton_Click(object? sender, RoutedEventArgs e)
