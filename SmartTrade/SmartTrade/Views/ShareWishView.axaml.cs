@@ -3,19 +3,23 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using SmartTrade.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net;
 using SmartTrade.Services;
+using SmartTradeDTOs;
 
 namespace SmartTrade.Views
 {
     public partial class ShareWishView : UserControl
     {
         private Popup _popup;
+        private List<WishDTO>? _wishList;
         public ShareWishView()
         {
             InitializeComponent();
 
+            _wishList = SmartTradeService.Instance.WishList;
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
             _popup = new Popup
@@ -32,24 +36,33 @@ namespace SmartTrade.Views
 
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
-            SendEmail(TextBoxEmail.Text);
+            if (_wishList != null)
+            {
+                SendEmail(TextBoxEmail.Text);
+            }
+            else
+            {
+                Console.WriteLine("No hay productos en la WishList");
+            }
+
+            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
 
         public void SendEmail(string email)
         {
             // Dirección de correo electrónico del remitente
-            string fromAddress = "smart.trade.app.24@gmail.com";
+            string fromAddress = "smart.trade.app@outlook.es";
 
             // Configuración del servidor SMTP
-            string smtpHost = "smtp.gmail.com"; // Servidor SMTP de Gmail
-            int smtpPort = 587; // Puerto SMTP para Gmail
-            string smtpUsername = "smart.trade.app.24@gmail.com"; // Tu dirección de correo electrónico
+            string smtpHost = "smtp-mail.outlook.com";
+            int smtpPort = 587;
+            string smtpUsername = "smart.trade.app@outlook.es"; // Tu dirección de correo electrónico
             string smtpPassword = "SmartTradeMolaMazo"; // Tu contraseña
 
             // Crear el mensaje de correo electrónico
             MailMessage mailMessage = new MailMessage(fromAddress, email);
             mailMessage.Subject = "Mira mi WishList";
-            mailMessage.Body = SmartTradeService.Instance.Logged.Name + " te ha enviado su WishList.";
+            mailMessage.Body = SmartTradeService.Instance.Logged.Name + " te ha enviado su WishList." + WishToString();
 
             // Configurar el cliente SMTP
             SmtpClient smtpClient = new SmtpClient(smtpHost, smtpPort);
@@ -73,6 +86,16 @@ namespace SmartTrade.Views
                 mailMessage.Dispose();
                 smtpClient.Dispose();
             }
+        }
+
+        private string WishToString()
+        {
+            string result = null;
+            foreach (WishDTO wish in _wishList)
+            {
+                result += "\n -" + wish.Post.ProductName;
+            }
+            return result;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
-using static Android.Resource;
+//using static Android.Resource;
 
 namespace SmartTrade.ViewModels;
 
