@@ -98,4 +98,12 @@ public class UserController : ControllerBase
         service.RemoveFromCart(loggedId, id);
     }
 
+    [HttpPost("AddGift")]
+    public void AddGift([FromBody] SimpleGiftDTO gift)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        service.AddGift(loggedId, gift);
+    }
 }

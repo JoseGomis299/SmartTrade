@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using SmartTradeDTOs;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
 
@@ -10,9 +12,12 @@ public class GiftsModel : ViewModelBase
     public string? SubTotal { get; set; }
     public string? Total { get; set; }
     public ObservableCollection<CartItemModel> Products { get; set; }
+
+    private Dictionary<string, SimplePostDTO> GiftLists;
     public GiftsModel()
     {
         Products = new ObservableCollection<CartItemModel>();
+        GiftLists = new Dictionary<string, SimplePostDTO>();
 
         foreach (var item in Service.CartItems)
         {

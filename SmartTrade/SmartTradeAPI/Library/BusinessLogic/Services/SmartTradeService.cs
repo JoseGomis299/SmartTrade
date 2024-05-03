@@ -569,4 +569,16 @@ public class SmartTradeService : ISmartTradeService
             ShippingPrice = p.ShippingPrice
         }).ToList();
     }
+
+    public void AddGift(string consumerId, SimpleGiftDTO giftDTO)
+    {
+        Consumer? logged = _dal.GetById<Consumer>(consumerId);
+
+        var post = _dal.GetById<Post>(giftDTO.PostId);
+        var offer = _dal.GetById<Offer>(giftDTO.OfferId);
+
+        Gift gift = new Gift(giftDTO.ListName,giftDTO.Date,giftDTO.Quantity,post,offer);
+        logged.AddGift(gift);
+        _dal.Commit();
+    }
 }

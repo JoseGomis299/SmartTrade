@@ -24,7 +24,7 @@ namespace SmartTrade.Services
         public List<CartItemDTO>? CartItems { get; set; } = new List<CartItemDTO>();
         public List<PurchaseDTO>? Purchases { get; set; }
         public List<WishDTO>? Wishes { get; set; }
-        public List<List<CartItemDTO>>? GiftLists { get; set; } = new List<List<CartItemDTO>>(); 
+        public List<SimpleGiftDTO>? Gifts { get; set; } = new List<SimpleGiftDTO>(); 
 
         public async Task LoadCartItemsAsync()
         {
@@ -145,6 +145,22 @@ namespace SmartTrade.Services
 
             OnCartChanged?.Invoke();
             await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
+        }
+
+        public async Task<int> AddGiftAsync(PostDTO post, OfferDTO offer, int quantity)
+        {
+            int index = Gifts.FindIndex(x => x.PostId == post.Id && x.OfferId == offer.Id);
+
+            if (index == -1)
+            {
+                CartItems.Add(new CartItemDTO(post, offer, quantity));
+            }
+            else CartItems[index].Quantity += quantity;
+
+            OnCartChanged?.Invoke();
+            await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
+
+            return index == -1 ? quantity : CartItems[index].Quantity;
         }
     }
 }

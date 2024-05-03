@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
+using HarfBuzzSharp;
 
 namespace SmartTrade.Services.ApiClients;
 
@@ -112,5 +113,22 @@ public class UserClient : ApiClient
     {
         if (Logged == null) return;
         await PerformApiInstructionAsync($"RemoveFromShoppingCart?id={offerId}", ApiInstruction.Delete);
+    }
+
+    public async Task AddGiftAsync(string ListName, DateOnly? Date, int? Quantity, string? ConsumerEmail, int? PostId, int? OfferId)
+    {
+        if (Logged == null) return;
+
+        var registerData = new SimpleGiftDTO()
+        {
+            ListName = ListName,
+            Date = Date,
+            Quantity = Quantity,
+            ConsumerEmail = ConsumerEmail,
+            PostId = PostId,
+            OfferId = OfferId
+        };
+
+        await PerformApiInstructionAsync("AddGift", ApiInstruction.Post, registerData);
     }
 }

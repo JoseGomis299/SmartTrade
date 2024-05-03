@@ -51,5 +51,6 @@ namespace SmartTrade.BusinessLogic
 
         public void AddPurchase(string userId, PurchaseDTO purchaseDTO);
         public List<PurchaseDTO> GetPurchases(string? emailConsumer);
+        public void AddGift(string consumerId, SimpleGiftDTO giftDTO);
     }
 }

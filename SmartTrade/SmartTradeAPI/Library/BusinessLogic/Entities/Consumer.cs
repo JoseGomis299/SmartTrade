@@ -11,6 +11,7 @@ public partial class Consumer : User
         Alerts = new List<Alert>();
         WishList = new List<Wish>();
         Purchases = new List<Purchase>();
+        Gifts = new List<Gift>();
         ShoppingCart = new List<CartItem>();
     }
 
@@ -26,6 +27,7 @@ public partial class Consumer : User
         CreditCards = new List<CreditCardInfo>();
         Alerts = new List<Alert>();
         WishList = new List<Wish>();
+        Gifts = new List<Gift>();
         Purchases = new List<Purchase>();   
 
         Addresses.Add(address);
@@ -72,6 +74,11 @@ public partial class Consumer : User
     public void AddPurchases(Purchase purchase)
     {
         Purchases.Add(purchase);
+    }
+
+    public void AddGift(Gift gift)
+    {
+        Gifts.Add(gift);
     }
 
     public void RemoveFromCart(int OfferId)

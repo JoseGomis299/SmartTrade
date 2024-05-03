@@ -81,6 +81,7 @@ namespace SmartTrade.Services
             await LoadCartItems();
             _cache.Purchases = null;
             _cache.Wishes = null;
+            _cache.Gifts = null;
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -278,6 +279,18 @@ namespace SmartTrade.Services
             }
             
             await _broker.WishClient.DeleteWishAsync(wishId);
+        }
+
+        #endregion
+
+        #region WishList
+        public async Task AddGiftAsync(PostDTO post, OfferDTO offer, int quantity = 1)
+        {
+            int count;
+            if (Logged != null) count = _cache.AddItemToCart(post, offer, quantity);
+            else count = await _cache.AddItemToCartAsync(post, offer, quantity);
+
+            await _broker.UserClient.AddToCartAsync(new SimpleCartItemDTO((int)post.Id, offer.Id, count));
         }
 
         #endregion
