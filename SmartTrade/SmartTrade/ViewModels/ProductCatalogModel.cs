@@ -7,8 +7,6 @@ using SmartTrade.Entities;
 using SmartTrade.Services;
 using System.Linq;
 using FuzzySharp;
-using static Android.Icu.Text.CaseMap;
-using static Java.Util.Jar.Attributes;
 
 namespace SmartTrade.ViewModels
 {

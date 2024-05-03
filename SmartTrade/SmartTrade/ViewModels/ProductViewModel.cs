@@ -13,7 +13,6 @@ using Avalonia.Platform;
 using Avalonia.Utilities;
 using FuzzySharp;
 using ReactiveUI;
-using SmartTrade.DTOs;
 using SmartTrade.Entities;
 using SmartTrade.Services;
 using SmartTradeDTOs;

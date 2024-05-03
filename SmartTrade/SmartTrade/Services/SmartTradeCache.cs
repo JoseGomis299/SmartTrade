@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Platform;
 using Newtonsoft.Json;
-using SmartTrade.DTOs;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
 using SmartTradeDTOs;
