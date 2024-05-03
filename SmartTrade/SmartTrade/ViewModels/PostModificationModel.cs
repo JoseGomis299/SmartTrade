@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
+using static Android.Resource;
 
 namespace SmartTrade.ViewModels;
 
@@ -121,7 +122,7 @@ public class PostModificationModel : ViewModelBase
             SellerID = post != null ? post.SellerID : "",
             Offers = new List<OfferDTO>(),
             SellerCompanyName = post != null? post.SellerCompanyName : "",
-            Id = post != null ? post.Id : 0
+            Id = post.Id,
         };
 
         for (int i = 0; i < stocks.Count; i++)
@@ -142,6 +143,9 @@ public class PostModificationModel : ViewModelBase
                 }
             };
 
+            if (post.Offers.Count > i)
+                offerDto.Id = post.Offers[i].Id;
+            else offerDto.Id = -1;
             postDto.Offers.Add(offerDto);
         }
 

@@ -55,7 +55,6 @@ namespace SmartTrade.Views
                 _model.ValidarEmail();
                 await _model.Login(_model.Email, _model.Password);
                 if (_model.Logged == null) { return; }
-                await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
             }
             catch (Exception ex)
             {
@@ -73,6 +72,8 @@ namespace SmartTrade.Views
                     TextBoxPassword.ErrorText = ex.Message;     
                 }
             }
+
+            await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
         }
     }
 }

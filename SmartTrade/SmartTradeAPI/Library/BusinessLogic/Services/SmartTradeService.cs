@@ -128,7 +128,7 @@ public class SmartTradeService : ISmartTradeService
         post.Title = postInfo.Title;
         post.Description = postInfo.Description;
         post.Validated = postInfo.Validated;
-                
+
         List<Offer> offers = new();
         List<Offer> originalOffers = post.Offers.ToList();
 
@@ -177,7 +177,7 @@ public class SmartTradeService : ISmartTradeService
         post.Offers = offers;
 
         //TODO: Si el postInfo está validado creamos la notificación pertinente si toca crear
-       if(postInfo.Validated) CreateNotifications(post);
+       if (postInfo.Validated) CreateNotifications(post);
 
         _dal.Commit();
     }

@@ -12,11 +12,14 @@ namespace SmartTrade.ViewModels;
 public class SellerCatalogModel : CatalogModel
 {
     public List<ProductModel> OriginalMyProducts { get; set; }
+    public List<ProductModel> OriginalNotValidatedPosts { get; set; }
     public ObservableCollection<ProductModel> MyProducts { get; set; }
+    public ObservableCollection<ProductModel> NotValidatedPosts { get; set; }
 
     public SellerCatalogModel()
     {
         MyProducts = new ObservableCollection<ProductModel>();
+        NotValidatedPosts = new ObservableCollection<ProductModel>();
     }
 
     public override async Task LoadProductsAsync()
@@ -25,10 +28,13 @@ public class SellerCatalogModel : CatalogModel
         
         posts.ForEach(post =>
         {
-            MyProducts.Add(new ProductModel(post));
+            if(post.Validated)
+             MyProducts.Add(new ProductModel(post));
+            else NotValidatedPosts.Add(new ProductModel(post));
         });
 
         OriginalMyProducts = new List<ProductModel>(MyProducts);
+        OriginalNotValidatedPosts = new List<ProductModel>(NotValidatedPosts);
     }
 
     public override void SortByCategory(int? category)
@@ -39,6 +45,11 @@ public class SellerCatalogModel : CatalogModel
             foreach (var product in OriginalMyProducts)
             {
                 MyProducts.Add(product);
+            }
+
+            foreach (var product in OriginalNotValidatedPosts)
+            {
+                NotValidatedPosts.Add(product);
             }
         }
         else
@@ -72,6 +83,14 @@ public class SellerCatalogModel : CatalogModel
             if (product.Post.Category == category) 
             {
                 MyProducts.Add(product);
+            } 
+        }
+
+        foreach (var product in OriginalNotValidatedPosts)
+        {
+            if (product.Post.Category == category)
+            {
+                NotValidatedPosts.Add(product);
             } 
         }
     }

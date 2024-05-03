@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using ReactiveUI;
 using SmartTrade.Services;
 using SmartTrade.Views;

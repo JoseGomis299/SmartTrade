@@ -33,6 +33,19 @@ namespace SmartTrade.Views
             ConfirmButton.Click += ValidateAsync;
             RejectButton.Click += Reject;
             CancelButton.Click += Cancel;
+
+            if (_model.Logged.IsAdmin)
+            {
+                RejectButton.Content = "Reject";
+                ConfirmButton.Content = "Validate";
+                ViewTitle.Text = "Validate Post";
+            }
+            else
+            {
+                RejectButton.Content = "Remove Post";
+                ConfirmButton.Content = "Confirm";
+                ViewTitle.Text = "Edit Post";
+            }
         }
 
         private void Cancel(object? sender, RoutedEventArgs e)
