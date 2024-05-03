@@ -12,7 +12,7 @@ using SmartTrade.Services;
 
 namespace SmartTrade.Views
 {
-    public partial class ProductView : UserControl
+    public partial class ProductView : RefreshableUserControl
     {
         private Bitmap? _alertActivated;
         private Bitmap? _alertDeactivated;
@@ -52,7 +52,6 @@ namespace SmartTrade.Views
             AlertToggle.Click += ToggleAlert;
             WishListToggle.Click += ToggleWishList;
 
-
             SetToggleVisibility();
             SetAlertImage();
             SetWishListImageAsync();
@@ -62,8 +61,6 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.OnNavigate += OnNavigateAsync;
 
             AddToCartButton.Click += AddItemToCart;
-            AddToWishListButton.Click += AddItemToWishListAsync;
-
             AddButton.Click += OnAddButtonOnClick;
             SubtractButton.Click += OnSubtractButtonOnClick;
 
@@ -75,11 +72,19 @@ namespace SmartTrade.Views
                 }
             }
 
-            AddToWishListButton.IsVisible = _model.Logged != null;
             WishListToggle.IsVisible = _model.Logged != null;
         }
 
-        private void ToggleWishList(object? sender, RoutedEventArgs e)
+        protected override void Refresh()
+        {
+            SetToggleVisibility();
+            SetAlertImage();
+            SetWishListImageAsync();
+            SetEcoImage();
+            SetImageNavigationButtonsVisibility();
+        }
+
+        private async void ToggleWishList(object? sender, RoutedEventArgs e)
         {
             if (_model.Logged == null)
             {
@@ -89,10 +94,12 @@ namespace SmartTrade.Views
             if (WishListToggle.IsChecked == true)
             {
                 _isWishActivated = true;
+                await _model.AddItemToWishListAsync();
             }
             else
             {
                 _isWishActivated = false;
+                await _model.DeleteFromWishListAsync();
             }
         }
 
@@ -241,15 +248,6 @@ namespace SmartTrade.Views
                 if (_isAlertActivated)
                 {
                     await _model.CreateAlertAsync(_post.Offers[0].Product.Id);
-                }
-
-                if (_isWishActivated)
-                {
-                    await _model.AddItemToWishListAsync();
-                }
-                else
-                {
-                    await _model.DeleteFromWishListAsync();
                 }
             }
         }

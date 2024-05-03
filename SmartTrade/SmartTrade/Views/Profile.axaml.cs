@@ -39,11 +39,10 @@ namespace SmartTrade.Views
             }
         }
 
-        private async void WishListButton_Click(object? sender, RoutedEventArgs e)
+        private void WishListButton_Click(object? sender, RoutedEventArgs e)
         {
             var view = new WishListView();
             SmartTradeNavigationManager.Instance.NavigateTo(view);
-            await ((WishListModel)view.DataContext).LoadWishListAsync();
         }
 
         private async void LogOut(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
