@@ -8,6 +8,7 @@ namespace SmartTrade.ViewModels;
 public class ValidatePostModel : PostModificationModel
 {
     public PostDTO Post { get; }
+    public UserDTO Logged => Service.Logged;
 
     public ValidatePostModel()
     {
@@ -35,7 +36,7 @@ public class ValidatePostModel : PostModificationModel
     public async Task ValidatePostAsync()
     {
         PostDTO postDto = CreatePostInfo(Post);
-        postDto.Validated = true;
+        postDto.Validated = Logged.IsAdmin;
 
         await Service.EditPostAsync((int) Post.Id, postDto);
         SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();

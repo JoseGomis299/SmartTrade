@@ -82,6 +82,9 @@
 									<Button HorizontalAlignment="Center" Background="Transparent" Width="60" Height="60" Name="ShoppingCartButton">
                                         <Image Stretch="Uniform" Name="CartImage" Width="80"></Image>
                                     </Button>
+                                    <Button HorizontalAlignment="Center" Classes="Green" Width="60" Height="60" Name="AddPostButton">
+										<TextBlock Classes="h1" Foreground="White" VerticalAlignment="Center" FontSize="40">+</TextBlock>
+                                    </Button>
                                 </Grid>
 								<Button Grid.Column="2" HorizontalAlignment="Right" Background="Transparent" Margin="25 0" Width="60" Height="60" Name="ProfileButton">
 									<Image Stretch="Uniform"  Name="UserImage" Width="80"></Image>

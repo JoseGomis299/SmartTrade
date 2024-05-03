@@ -63,6 +63,10 @@ namespace SmartTrade.Views
             AddToCartButton.Click += AddItemToCart;
             AddButton.Click += OnAddButtonOnClick;
             SubtractButton.Click += OnSubtractButtonOnClick;
+            EditPostButton.Click += (_, _) =>
+            {
+                SmartTradeNavigationManager.Instance.NavigateTo(new ValidatePost(_post));
+            };
 
             if (int.TryParse(_model.Quantity, out var count))
             {
@@ -73,6 +77,8 @@ namespace SmartTrade.Views
             }
 
             WishListToggle.IsVisible = _model.Logged != null;
+            SellerPanel.IsVisible = _model.Logged != null && _model.Logged.GetUserType() == UserType.Seller;
+            AddToCartPanel.IsVisible = _model.Logged == null || _model.Logged.GetUserType() != UserType.Seller;
         }
 
         protected override void Refresh()

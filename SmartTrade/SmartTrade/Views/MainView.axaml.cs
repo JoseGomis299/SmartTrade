@@ -61,6 +61,7 @@ public partial class MainView : UserControl
         ProfileButton.Click += OnProfileButtonOnClick;
         HomeButton.Click += OnHomeButtonOnClick;
         ShoppingCartButton.Click += OnShoppingCartButtonOnClick;
+        AddPostButton.Click += (sender, e) =>  SmartTradeNavigationManager.Instance.NavigateTo(new RegisterPost());
 
         _homeImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Home.png")));
         _userImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/User.png")));
@@ -86,6 +87,11 @@ public partial class MainView : UserControl
             AlertButton.IsVisible = false;
             CartItems.IsVisible = false;
             Menus.IsVisible = false;
+
+            if (_model.LoggedType == UserType.Seller)
+            {
+                AddPostButton.IsVisible = true;
+            }
         }
         else if (_model.LoggedType == UserType.Consumer)
         {
@@ -93,6 +99,7 @@ public partial class MainView : UserControl
             AlertButton.IsVisible = true;
             CartItems.IsVisible = true;
             Menus.IsVisible = true;
+            AddPostButton.IsVisible = false;
         }
         else
         {
@@ -100,6 +107,7 @@ public partial class MainView : UserControl
             AlertButton.IsVisible = false;
             CartItems.IsVisible = true;
             Menus.IsVisible = false;
+            AddPostButton.IsVisible = false;
         }
     }
 
