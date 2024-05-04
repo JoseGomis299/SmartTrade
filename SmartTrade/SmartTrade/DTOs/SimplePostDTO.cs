@@ -12,6 +12,7 @@ public class SimplePostDTO
     public bool Validated { get; set; }
     public string? SellerID { get; set; }
     public float Price { get; set; }
+    public float ShippingCost { get; set; }
     public byte[]? Image { get; set; }
     public string ProductName { get; set; }
 
@@ -32,5 +33,6 @@ public class SimplePostDTO
         Price = post.Offers[0].Price;
         Image = post.Offers[0].Product.Images[0];
         ProductName = post.ProductName;
+        ShippingCost = post.Offers[0].ShippingCost;
     }
 }

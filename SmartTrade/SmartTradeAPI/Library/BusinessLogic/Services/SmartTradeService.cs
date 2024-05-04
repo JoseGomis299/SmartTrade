@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using SmartTradeAPI.Library.Persistence.DTOs;
 using Microsoft.Extensions.Hosting;
 using System.ComponentModel.DataAnnotations;
+using SmartTradeAPI.Helpers;
 
 namespace SmartTrade.BusinessLogic;
 
@@ -195,20 +196,7 @@ public class SmartTradeService : ISmartTradeService
     { 
         User? logged = _dal.GetById<User>(loggedID);
 
-        var postDtos = _dal.GetAll<Post>().AsNoTracking()
-            .Select(p => new SimplePostDTO
-            {
-                Id = p.Id,
-                Title = p.Title,
-                Category = p.Offers.Select(o => o.Product.GetCategories().First()).FirstOrDefault(),
-                MinimumAge = p.Offers.Select(o => o.Product.MinimumAge).FirstOrDefault(),
-                EcologicPrint = p.Offers.Select(o => o.Product.EcologicPrint).FirstOrDefault(),
-                Validated = p.Validated,
-                SellerID = p.Seller.Email,
-                Price = p.Offers.Select(o => o.Price).FirstOrDefault(),
-                Image = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
-                ProductName = p.Offers.Select(o => o.Product.Name).First()
-            }).ToList();
+        var postDtos = _dal.GetAll<Post>().AsNoTracking().SelectSimplePost().ToList();
 
         if (logged is Admin) postDtos = postDtos.Where(x => !x.Validated).ToList();
         else if (logged is Seller seller) postDtos = postDtos.Where(x => x.SellerID == seller.Email).ToList();
@@ -224,33 +212,8 @@ public class SmartTradeService : ISmartTradeService
 
     public List<SimplePostDTO> GetPostsFuzzyContain(string searchFor)
     {
-        return _dal.GetAll<Post>().AsNoTracking()
-            .Select(p => new
-            {
-                Id = p.Id,
-                Title = p.Title,
-                Category = p.Offers.Select(o => o.Product.GetCategories().First()).FirstOrDefault(),
-                MinimumAge = p.Offers.Select(o => o.Product.MinimumAge).FirstOrDefault(),
-                EcologicPrint = p.Offers.Select(o => o.Product.EcologicPrint).FirstOrDefault(),
-                Validated = p.Validated,
-                SellerEmail = p.Seller.Email,
-                Price = p.Offers.Select(o => o.Price).FirstOrDefault(),
-                ImageSource = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
-                ProductName = p.Offers.Select(o => o.Product.Name).FirstOrDefault()
-            }).ToList()
-            .Select(anon => new SimplePostDTO
-            {
-                Id = anon.Id,
-                Title = anon.Title,
-                Category = anon.Category,
-                MinimumAge = anon.MinimumAge,
-                EcologicPrint = anon.EcologicPrint,
-                Validated = anon.Validated,
-                SellerID = anon.SellerEmail,
-                Price = anon.Price,
-                Image = anon.ImageSource,
-                ProductName = anon.ProductName
-            }).Where(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title) > 60)
+        return _dal.GetAll<Post>().AsNoTracking().SelectSimplePost()
+            .Where(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title) > 60)
             .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title))
             .ToList();
     }
@@ -398,7 +361,8 @@ public class SmartTradeService : ISmartTradeService
                    SellerID = n.TargetPost.Seller.Email,
                    Price = n.TargetPost.Offers.Select(o => o.Price).FirstOrDefault(),
                    Image = n.TargetPost.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
-                   ProductName = n.TargetPost.Offers.Select(o => o.Product.Name).FirstOrDefault()
+                   ProductName = n.TargetPost.Offers.Select(o => o.Product.Name).FirstOrDefault(),
+                   ShippingCost = n.TargetPost.Offers.Select(o => o.ShippingCost).First()
                }
            }).ToList()
            .Select(anon => new NotificationDTO
@@ -415,6 +379,8 @@ public class SmartTradeService : ISmartTradeService
         var product =_dal.GetById<Product>(productId);
         var user = _dal.GetById<Consumer>(userId);
         var alert = new Alert(user, product);
+        if (user.Alerts.Any(n => n.Product.Name == product.Name)) return -1;
+
         product.AddAlert(alert);
         user.AddAlert(alert);
         _dal.Commit();
@@ -477,7 +443,8 @@ public class SmartTradeService : ISmartTradeService
                     SellerID = n.Post.Seller.Email,
                     Price = n.Post.Offers.Select(o => o.Price).FirstOrDefault(),
                     Image = n.Post.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
-                    ProductName = n.Post.Offers.Select(o => o.Product.Name).FirstOrDefault()
+                    ProductName = n.Post.Offers.Select(o => o.Product.Name).FirstOrDefault(),
+                    ShippingCost = n.Post.Offers.Select(o => o.ShippingCost).First()
                 }
             }).ToList()
             .Select(anon => new WishDTO()

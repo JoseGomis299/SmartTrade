@@ -21,7 +21,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <controls:ST_CartProduct Margin="10 0" Command="{Binding OpenProductCommand}" DeleteElement="{Binding DeleteItemCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}" Count="{Binding Quantity, Mode=TwoWay}"/>
+                        <controls:ST_CartProduct Margin="10 0" Command="{Binding OpenProductCommand}" DeleteElement="{Binding DeleteItemCommand}" Image="{Binding Image}" ShippingCost="{Binding ShippingCost}" Price="{Binding Price}" ProductName="{Binding Name}" Count="{Binding Quantity, Mode=TwoWay}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

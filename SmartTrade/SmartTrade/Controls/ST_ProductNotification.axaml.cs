@@ -40,6 +40,15 @@ namespace SmartTrade.Controls
         public static readonly StyledProperty<string?> PriceProperty =
             AvaloniaProperty.Register<ST_Product, string?>(nameof(Price));
 
+        public string? ShippingCost
+        {
+            get => GetValue(ShippingCostProperty);
+            set => SetValue(ShippingCostProperty, value);
+        }
+
+        public static readonly StyledProperty<string?> ShippingCostProperty =
+            AvaloniaProperty.Register<ST_Product, string?>(nameof(Price));
+
         public string? ProductName
         {
             get => GetValue(ProductNameProperty);

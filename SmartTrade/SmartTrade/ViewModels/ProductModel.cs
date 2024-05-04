@@ -15,6 +15,7 @@ public class ProductModel : ViewModelBase
 {
     public string? Name { get; set; }
     public string? Price { get; set; }
+    public string? ShippingCost { get; set; }
     public Bitmap? Image { get; set; }
     public SimplePostDTO Post { get; set; }
 
@@ -30,6 +31,7 @@ public class ProductModel : ViewModelBase
 
         Name = post.Title;
         Price = post.Price + "€";
+        ShippingCost = post.ShippingCost + "€";
         Image = post.Image.ToBitmap();
     }
 

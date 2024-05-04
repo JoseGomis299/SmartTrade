@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:SmartTrade.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SmartTrade.Controls.ST_WrapPanel">
+    <Grid ColumnDefinitions="* *" MaxWidth="350">
+        <ItemsControl Grid.Column="0" HorizontalAlignment="Left" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=LeftProducts, Mode=TwoWay}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel HorizontalAlignment="Left" MaxWidth="175"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <controls:ST_Product Margin=" 10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" ShippingCost="{Binding ShippingCost}" Price="{Binding Price}" ProductName="{Binding Name}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <ItemsControl Grid.Column="1" HorizontalAlignment="Right" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=RightProducts, Mode=TwoWay}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel HorizontalAlignment="Right" MaxWidth="175"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <controls:ST_Product Margin=" 10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" ShippingCost="{Binding ShippingCost}" Price="{Binding Price}" ProductName="{Binding Name}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+	</Grid>
+</UserControl>

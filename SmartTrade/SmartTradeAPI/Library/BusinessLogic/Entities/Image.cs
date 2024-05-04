@@ -1,4 +1,6 @@
-﻿namespace SmartTrade.Entities;
+﻿using SmartTradeAPI.Helpers;
+
+namespace SmartTrade.Entities;
 
 public partial class Image
 {
@@ -8,7 +10,8 @@ public partial class Image
 
     public Image(byte[] image) : this()
     {
-        ImageSource = image;
+        ImageSource = image.EncodeAsPng();
+        Thumbnail = image.ResizeImage(128, 128);
     }
 
     public override bool Equals(object? obj)

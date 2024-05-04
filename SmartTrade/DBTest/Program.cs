@@ -7,18 +7,30 @@ using DateTime = System.DateTime;
 var service = new SmartTradeService();
 Datos data = new Datos();
 
-//service.RemoveAll();
-for (int i = 11; i < 20; i++)
+InitializeDatabase();
+
+void InitializeDatabase()
 {
-    var seller = AddSeller(i);
-    for (int j = 0; j < Random.Shared.Next(2, 5); j++)
+    service.RemoveAll();
+    for (int i = 0; i < 20; i++)
     {
-        AddPost(seller, true);
+        var seller = AddSeller(i);
+        for (int j = 0; j < Random.Shared.Next(2, 6); j++)
+        {
+            AddPost(seller, true);
+        }
     }
-   // AddCostumer(i);
+
+    for (int i = 0; i < 5; i++)
+    {
+        AddCostumer(i);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        AddAdmin(i);
+    }
 }
-
-
 
 void AddAdmin(int i)
 {
@@ -171,7 +183,7 @@ SellerRegisterData AddSeller(int i)
 
     service.RegisterSeller(seller);
     return seller;
-}
+} 
 
 
 
