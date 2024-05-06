@@ -92,8 +92,6 @@ namespace SmartTrade.Services
             _cache.Notifications = await GetNotificationsAsync() ?? new List<NotificationDTO>();
             _cache.Alerts = await GetAlertsAsync() ?? new List<AlertDTO>();
             _cache.Wishes = await GetWishAsync() ?? new List<WishDTO>();
-
-            
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -183,6 +181,8 @@ namespace SmartTrade.Services
         public async Task<List<SimplePostDTO>?> RefreshPostsAsync()
         {
             var posts = await _broker.PostClient.GetPostsAsync();
+            
+            if(IsParentalControlEnabled) posts = posts.Where(x => x.MinimumAge < 18).ToList();
             _cache.SetPosts(posts);
             return posts;
         }

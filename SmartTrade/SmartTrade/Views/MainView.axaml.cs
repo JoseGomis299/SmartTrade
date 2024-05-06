@@ -34,6 +34,7 @@ public partial class MainView : UserControl
     private int? _currentCategory;
 
     public bool ShowingPopUp { get; set; }
+    public bool ReinitializeHomeNextTime { get; set; }
 
     public MainView()
     {
@@ -161,7 +162,12 @@ public partial class MainView : UserControl
 
     private async void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        await ShowCatalogAsync();
+        if (ReinitializeHomeNextTime)
+        {
+            await ShowCatalogReinitializingAsync();
+            ReinitializeHomeNextTime = false;
+        }
+        else await ShowCatalogAsync();
     }
 
     private void OnProfileButtonOnClick(object? sender, RoutedEventArgs e)

@@ -49,6 +49,6 @@ namespace SmartTrade.Entities;
 
         public override bool Equals(object? obj)
         {
-            return obj is Product product && Name.ToCommonSyntax() == product.Name.ToCommonSyntax();
+            return obj is Product product && Name.ToCommonSyntax() == product.Name.ToCommonSyntax() && product.MinimumAge == MinimumAge;
         }
     }

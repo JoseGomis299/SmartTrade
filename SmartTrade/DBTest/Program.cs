@@ -53,7 +53,7 @@ void AddPost(SellerRegisterData seller, bool validated)
     post.Title = post.ProductName;
     post.Description = "Descripción de " + post.ProductName;
     post.Category = data.GetSellerCategory(seller.CompanyName);
-    post.MinimumAge = Random.Shared.Next(1, 18);
+    post.MinimumAge = Random.Shared.Next(1, 50);
     post.Certifications = "Certificaciones de " + post.ProductName;
     post.EcologicPrint = $"{Random.Shared.Next(0, 100)}";
     post.HowToUse = "Cómo usar " + post.ProductName;

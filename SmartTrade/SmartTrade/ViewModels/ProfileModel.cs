@@ -28,12 +28,15 @@ public class ProfileModel : ViewModelBase
     {
         ProfileData = new ObservableCollection<string>();
         SetProfileData(Service.Logged);
+        IsParentalControlEnabled = Service.IsParentalControlEnabled;
 
     }
     public void UpdateParentalControlStatus()
     {
         Service.SetIsParentalControlEnabled(IsParentalControlEnabled);
+        SmartTradeNavigationManager.Instance.MainView.ReinitializeHomeNextTime = true;
     }
+
     public DateTime getBirth(UserDTO? user)
     {
         try { 

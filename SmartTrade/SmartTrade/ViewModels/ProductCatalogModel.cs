@@ -31,32 +31,17 @@ namespace SmartTrade.ViewModels
             foreach (var post in posts)
             {
 
-                if (!Service.IsParentalControlEnabled) { 
-                    OriginalProducts.Add(new ProductModel(post));
+                OriginalProducts.Add(new ProductModel(post));
 
-                    if (IsEcologic(post))
-                    {
-                    RecommendedProducts.Add(new ProductModel(post));
-                    }
-                    else if (await IsRelated(post))
-                    {
-                        RelatedProducts.Add(new ProductModel(post));
-                    }
-                    else OtherProducts.Add(new ProductModel(post));
-                }else if(post.MinimumAge < 18)
+                if (IsEcologic(post))
                 {
-                    OriginalProducts.Add(new ProductModel(post));
-
-                    if (IsEcologic(post))
-                    {
-                        RecommendedProducts.Add(new ProductModel(post));
-                    }
-                    else if (await IsRelated(post))
-                    {
-                        RelatedProducts.Add(new ProductModel(post));
-                    }
-                    else OtherProducts.Add(new ProductModel(post));
+                    RecommendedProducts.Add(new ProductModel(post));
                 }
+                else if (await IsRelated(post))
+                { 
+                    RelatedProducts.Add(new ProductModel(post));
+                }
+                else OtherProducts.Add(new ProductModel(post));
             }
         }
 
@@ -75,7 +60,7 @@ namespace SmartTrade.ViewModels
 
             if (purchases == null || purchases.Count == 0) { return false; }
 
-            var purchasesToCompare = purchases.Distinct().TakeLast(3).ToList();
+            var purchasesToCompare = purchases.DistinctBy(x => x.PostId).TakeLast(3).ToList();
 
             foreach (var purchase in purchasesToCompare)
             {
@@ -89,7 +74,7 @@ namespace SmartTrade.ViewModels
                     String emailSellerPurchase = purchase.EmailSeller;
                     String titlePostPurchase = postPurchase.Title;
 
-                    count += CalculateProductNameScore(namePurchase, productNamePost, 50) * 10;
+                    count += CalculateProductNameScore(namePurchase, productNamePost, 50) * 30;
                     count += CalculateProductNameScore(titlePost, titlePostPurchase, 40) * 10;
                     count += CalculateCategoryAndSellerScore(categoryPost, categoryPurchase, sellerIdPost, emailSellerPurchase) * 80;
 
@@ -115,8 +100,8 @@ namespace SmartTrade.ViewModels
         {
             float score = 0;
 
-            if (categoryPost.Equals(categoryPurchase)) score += 0.7f;
-            if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.3f;
+            if (categoryPost.Equals(categoryPurchase)) score += 0.85f;
+            if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.15f;
 
             return score;
         }

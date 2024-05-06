@@ -30,7 +30,6 @@ namespace SmartTrade.Views
 
             SetWishListButtonVisibility();
             SetParentalToggleButtonVisibility();
-            _model.IsParentalControlEnabled = _model.ParentalControlerChecker(_model.getBirth(_model.User));
             ParentalToggleButton.IsChecked = _model.IsParentalControlEnabled;
         }
 
