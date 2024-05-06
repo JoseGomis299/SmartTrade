@@ -28,8 +28,12 @@ public class ProfileModel : ViewModelBase
     {
         ProfileData = new ObservableCollection<string>();
         SetProfileData(Service.Logged);
-    }
 
+    }
+    public void UpdateParentalControlStatus()
+    {
+        Service.SetIsParentalControlEnabled(IsParentalControlEnabled);
+    }
     public DateTime getBirth(UserDTO? user)
     {
         try { 

@@ -118,17 +118,34 @@ namespace SmartTrade.ViewModels
 
             foreach(var post in posts)
             {
-                if (OtherSellersSameProduct(post))
+                if (!Service.IsParentalControlEnabled)
                 {
-                    OtherSellers.Add(new ProductModel(post));
-                }
-                else if (SameSeller(post))
+                    if (OtherSellersSameProduct(post))
+                    {
+                        OtherSellers.Add(new ProductModel(post));
+                    }
+                    else if (SameSeller(post))
+                    {
+                        SameSellerProducts.Add(new ProductModel(post));
+                    }
+                    else if (IsRelated(post))
+                    {
+                        RelatedProducts.Add(new ProductModel(post));
+                    }
+                }else if(post.MinimumAge < 18)
                 {
-                    SameSellerProducts.Add(new ProductModel(post));
-                }
-                else if (IsRelated(post))
-                {
-                    RelatedProducts.Add(new ProductModel(post));
+                    if (OtherSellersSameProduct(post))
+                    {
+                        OtherSellers.Add(new ProductModel(post));
+                    }
+                    else if (SameSeller(post))
+                    {
+                        SameSellerProducts.Add(new ProductModel(post));
+                    }
+                    else if (IsRelated(post))
+                    {
+                        RelatedProducts.Add(new ProductModel(post));
+                    }
                 }
             }
         }

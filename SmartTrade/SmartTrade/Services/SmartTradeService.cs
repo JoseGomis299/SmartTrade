@@ -37,6 +37,12 @@ namespace SmartTrade.Services
                 return Logged.GetUserType();
             }
         }
+        public void SetIsParentalControlEnabled(bool isEnabled)
+        {
+            IsParentalControlEnabled = isEnabled;
+        }
+
+        public bool IsParentalControlEnabled { get; private set; }
 
         public List<CartItemDTO>? CartItems => _cache.CartItems; 
         public List<WishDTO>? WishList => _cache.Wishes; 
@@ -281,14 +287,15 @@ namespace SmartTrade.Services
             
             await _broker.WishClient.DeleteWishAsync(wishId);
         }
-
-        #endregion
-
-        #region Product
-
-
-        #endregion
-
-
     }
+
+    #endregion
+
+    #region Product
+
+
+    #endregion
+
+
+}
 }

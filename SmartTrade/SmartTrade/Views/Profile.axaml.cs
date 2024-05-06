@@ -45,6 +45,7 @@ namespace SmartTrade.Views
             {
                 _model.IsParentalControlEnabled = true;
                 ParentalToggleButton.IsChecked = _model.IsParentalControlEnabled;
+                _model.UpdateParentalControlStatus();
             }
 
         }

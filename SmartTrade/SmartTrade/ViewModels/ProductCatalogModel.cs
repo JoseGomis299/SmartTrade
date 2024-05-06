@@ -16,21 +16,12 @@ namespace SmartTrade.ViewModels
         public ObservableCollection<ProductModel> RecommendedProducts { get; set; }
         public ObservableCollection<ProductModel> RelatedProducts { get; set; }
 
-        private readonly ProfileModel _ProfileModel;
-
-
         public ProductCatalogModel()
         {
             OriginalProducts = new List<ProductModel>();
             OtherProducts = new ObservableCollection<ProductModel>();
             RecommendedProducts = new ObservableCollection<ProductModel>();
             RelatedProducts = new ObservableCollection<ProductModel>();
-        }
-
-        public ProductCatalogModel(ProfileModel profileModel)
-        {
-            _ProfileModel = profileModel;
-
         }
 
         public override async Task LoadProductsAsync()
@@ -40,12 +31,25 @@ namespace SmartTrade.ViewModels
             foreach (var post in posts)
             {
 
-                if (!_ProfileModel.IsParentalControlEnabled) { 
+                if (!Service.IsParentalControlEnabled) { 
                     OriginalProducts.Add(new ProductModel(post));
 
                     if (IsEcologic(post))
                     {
                     RecommendedProducts.Add(new ProductModel(post));
+                    }
+                    else if (await IsRelated(post))
+                    {
+                        RelatedProducts.Add(new ProductModel(post));
+                    }
+                    else OtherProducts.Add(new ProductModel(post));
+                }else if(post.MinimumAge < 18)
+                {
+                    OriginalProducts.Add(new ProductModel(post));
+
+                    if (IsEcologic(post))
+                    {
+                        RecommendedProducts.Add(new ProductModel(post));
                     }
                     else if (await IsRelated(post))
                     {

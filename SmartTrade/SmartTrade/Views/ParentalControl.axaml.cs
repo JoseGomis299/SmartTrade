@@ -45,6 +45,7 @@ namespace SmartTrade.Views
             if (_model.IsCorrectPassword())
             {
                 _model.IsParentalControlEnabled = false;
+                _model.UpdateParentalControlStatus();
                 SmartTradeNavigationManager.Instance.MainView.HidePopUp();
             }
             else
