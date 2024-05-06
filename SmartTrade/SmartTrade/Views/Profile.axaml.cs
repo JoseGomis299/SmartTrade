@@ -30,7 +30,8 @@ namespace SmartTrade.Views
 
             SetWishListButtonVisibility();
             SetParentalToggleButtonVisibility();
-
+            _model.IsParentalControlEnabled = _model.ParentalControlerChecker(_model.getBirth(_model.User));
+            ParentalToggleButton.IsChecked = _model.IsParentalControlEnabled;
         }
 
         private void ParentalToggleButton_Click(object? sender, RoutedEventArgs e)
@@ -39,6 +40,11 @@ namespace SmartTrade.Views
             if (_model.IsParentalControlEnabled)
             {
                 SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new ParentalControl(_model));
+            }
+            else
+            {
+                _model.IsParentalControlEnabled = true;
+                ParentalToggleButton.IsChecked = _model.IsParentalControlEnabled;
             }
 
         }

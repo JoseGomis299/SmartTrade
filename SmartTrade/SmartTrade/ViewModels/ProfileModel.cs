@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SmartTrade.Services;
 using SmartTradeDTOs;
 
@@ -12,7 +13,15 @@ public class ProfileModel : ViewModelBase
     public ObservableCollection<string> ProfileData { get; set; }
     public UserType LoggedType => Service.LoggedType;
 
-    public bool IsParentalControlEnabled { get; set; } = true;
+    public UserDTO User
+    {
+        get
+        {
+            return Service.Logged;
+        }
+    }
+
+    public bool IsParentalControlEnabled { get; set; }
     public string Password { get; set; }
 
     public ProfileModel()
@@ -21,11 +30,15 @@ public class ProfileModel : ViewModelBase
         SetProfileData(Service.Logged);
     }
 
-    private void OnToggleParentalControl()
+    public DateTime getBirth(UserDTO? user)
     {
-        throw new NotImplementedException();
+        try { 
+            ConsumerDTO consumer = (ConsumerDTO)user;
+            return consumer.BirthDate;
+        }
+        catch { throw new Exception("Not Consumer");}
+        
     }
-
     public void SetProfileData(UserDTO? user)
     {
         ProfileData.Clear();
@@ -70,5 +83,35 @@ public class ProfileModel : ViewModelBase
             return true;
         }
         else { return false; }
+    }
+    public bool ParentalControlerChecker(DateTime BirthDate)
+    {
+        DateTime currentDate = DateTime.Now;
+        int totalDays = currentDate.Day - BirthDate.Day;
+        int totalMonths = currentDate.Month - BirthDate.Month;
+        int totalYears = currentDate.Year - BirthDate.Year;
+        if (totalDays < 0)
+        {
+            totalDays += DateTime.DaysInMonth(BirthDate.Year, BirthDate.Month);
+            totalMonths--;
+        }
+        if (totalMonths < 0)
+        {
+            totalMonths += 12;
+            totalYears--;
+        }
+        int age = totalYears;
+        if (totalMonths > 0 || totalDays > 0)
+        {
+            age++;
+        }
+        if (age >= 18)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
