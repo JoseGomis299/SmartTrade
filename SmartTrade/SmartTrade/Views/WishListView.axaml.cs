@@ -32,12 +32,7 @@ namespace SmartTrade.Views
 
         protected override void Refresh()
         {
-
-        }
-
-        protected override async Task RefreshAsync()
-        {
-            await ((WishListModel)DataContext).LoadWishListAsync();
+            ((WishListModel)DataContext).LoadWishList();
         }
 
         private void ShareWishListButton_click(object? sender, RoutedEventArgs e)

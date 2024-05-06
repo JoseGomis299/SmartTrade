@@ -185,9 +185,10 @@ public class SmartTradeService : ISmartTradeService
 
     private void CreateNotifications(Post post)
     {
-        foreach (var alert in post.Offers.First().Product.Alerts)
+        List<Alert> alerts = _dal.GetWhere<Alert>(x => x.ProductName == post.Offers.First().Product.Name).ToList();
+        foreach (var alert in alerts)
         {
-            var notification = new Notification(false, (Consumer)alert.User, post);
+            var notification = new Notification(false, alert.User, post);
             _dal.Insert(notification);
         }
     }
@@ -374,14 +375,12 @@ public class SmartTradeService : ISmartTradeService
            }).ToList();
     }
 
-    public int CreateAlert(string userId, int productId)
+    public int CreateAlert(string userId, string productName)
     {
-        var product =_dal.GetById<Product>(productId);
         var user = _dal.GetById<Consumer>(userId);
-        var alert = new Alert(user, product);
-        if (user.Alerts.Any(n => n.Product.Name == product.Name)) return -1;
+        var alert = new Alert(user, productName);
+        if (user.Alerts.Any(n => n.ProductName == productName)) return -1;
 
-        product.AddAlert(alert);
         user.AddAlert(alert);
         _dal.Commit();
         return alert.Id;
@@ -390,17 +389,35 @@ public class SmartTradeService : ISmartTradeService
     public void DeleteAlert(int alertId)
     {
         Alert alert = _dal.GetById<Alert>(alertId);
-        alert.Product.Alerts.Remove(alert);
         alert.User.Alerts.Remove(alert);
-
         _dal.Delete<Alert>(alert);
 
         _dal.Commit();
     }
 
-    public AlertDTO GetAlert(string productName)
+    public void DeleteAlert(string productName, string loggedId)
     {
-        return _dal.GetWhere<AlertDTO>(n => n.ProductName == productName).FirstOrDefault();
+        Alert alert = _dal.GetWhere<Alert>(x => x.ProductName == productName && x.User.Email == loggedId).FirstOrDefault();
+        alert.User.Alerts.Remove(alert);
+        _dal.Delete<Alert>(alert);
+
+        _dal.Commit();
+    }
+
+    public AlertDTO GetAlert(string productName, string loggedId)
+    {
+        Alert alert = _dal.GetWhere<Alert>(x => x.ProductName == productName && x.User.Email == loggedId).FirstOrDefault();
+        return alert == null ? null : new AlertDTO(alert);
+    }
+
+    public List<AlertDTO> GetAlerts(string loggedId)
+    {
+        return _dal.GetAll<Alert>().AsQueryable().Where(x => x.User.Email == loggedId).Select(x => new AlertDTO()
+        {
+            UserId = loggedId,
+            Id = x.Id,
+            ProductName = x.ProductName
+        }).ToList();
     }
 
     public void DeleteNotification(int id)

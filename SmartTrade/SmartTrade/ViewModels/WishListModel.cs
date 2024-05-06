@@ -16,12 +16,13 @@ namespace SmartTrade.ViewModels
         public WishListModel()
         {
             ProductsInWishList = new ObservableCollection<WishModel>();
+            LoadWishList();
         }
 
-        public async Task LoadWishListAsync()
+        public void LoadWishList()
         {
             ProductsInWishList.Clear();
-            foreach (var wish in await Service.GetWishAsync())
+            foreach (var wish in Service.WishList)
             {
                 ProductsInWishList.Add(new WishModel(wish.Post, this, wish));
             }

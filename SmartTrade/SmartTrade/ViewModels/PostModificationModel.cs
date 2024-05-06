@@ -139,7 +139,6 @@ public class PostModificationModel : ViewModelBase
                     Info = "",
                     Id = 0,
                     Differentiators = "",
-                    UsersWithAlertsInThisProduct = new List<string>()
                 }
             };
 

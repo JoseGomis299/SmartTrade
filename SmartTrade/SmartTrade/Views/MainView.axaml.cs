@@ -136,11 +136,10 @@ public partial class MainView : UserControl
         _searchModel?.SortByCategory(_currentCategory);
     }
 
-    private async void OpenWishListAsync(object? sender, RoutedEventArgs e)
+    private void OpenWishListAsync(object? sender, RoutedEventArgs e)
     {
         var view = new WishListView();
         SmartTradeNavigationManager.Instance.NavigateTo(view);
-        await ((WishListModel)view.DataContext).LoadWishListAsync();
     }
 
     #endregion
