@@ -351,6 +351,18 @@ namespace SmartTrade.Services;
             _cache.LoadGiftLists(giftLists);
         }
 
+        public List<String> GetGiftListNames()
+        {
+            List<String> listNames = new List<String>();
+
+            foreach(GiftListDTO list in _cache.GiftLists)
+            {
+                listNames.Add(list.Name);
+            }
+
+            return listNames;
+        }
+
         public async Task AddGiftAsync(int quantity, PostDTO post, OfferDTO offer, string giftListName)
         {
             int count;
