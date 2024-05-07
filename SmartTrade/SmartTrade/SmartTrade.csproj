@@ -43,6 +43,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\AddGiftView.axaml.cs">
+      <DependentUpon>AddGiftView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Paypal.axaml.cs">
       <DependentUpon>Paypal.axaml</DependentUpon>
     </Compile>

@@ -220,6 +220,11 @@ namespace SmartTrade.ViewModels
             await Service.AddItemToCartAsync(Post, _currentOffer, _quantity);
         }
 
+        public async Task AddGiftAsync(string giftListName)
+        {
+            await Service.AddGiftAsync(_quantity, Post, _currentOffer, giftListName);
+        }
+
         public async Task AddItemToWishListAsync()
         {
             await Service.CreateWishAsync(Post);
@@ -249,6 +254,8 @@ namespace SmartTrade.ViewModels
         {
             await Service.DeleteAlertAsync(productName);
         }
+
+        
     }
 
     public class AttributeModel : ReactiveObject

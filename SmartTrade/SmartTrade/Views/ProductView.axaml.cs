@@ -52,6 +52,8 @@ namespace SmartTrade.Views
             AlertToggle.Click += ToggleAlert;
             WishListToggle.Click += ToggleWishList;
 
+            AddToGiftsButton.Click += AddToGiftsButtonOnClick;
+
             AddToCartButton.Click += AddItemToCart;
             AddButton.Click += OnAddButtonOnClick;
             SubtractButton.Click += OnSubtractButtonOnClick;
@@ -71,6 +73,7 @@ namespace SmartTrade.Views
             WishListToggle.IsVisible = _model.Logged != null;
             SellerPanel.IsVisible = _model.Logged != null && _model.Logged.GetUserType() == UserType.Seller;
             AddToCartPanel.IsVisible = _model.Logged == null || _model.Logged.GetUserType() != UserType.Seller;
+            AddToGiftsButton.IsVisible = _model.Logged == null;
         }
 
         protected override void Refresh()
@@ -138,6 +141,16 @@ namespace SmartTrade.Views
         {
             await _model.AddItemToCartAsync();
             SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), 1, 1, out _, true);
+        }
+
+        public async void AddGift(string giftListName)
+        {
+            _model.AddGiftAsync(giftListName);
+        }
+
+        private void AddToGiftsButtonOnClick(object? sender, RoutedEventArgs e)
+        {
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new AddGiftView(this));
         }
 
         private void NextImage(object sender, Avalonia.Interactivity.RoutedEventArgs e)

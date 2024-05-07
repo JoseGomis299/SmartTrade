@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Avalonia;
@@ -174,19 +175,20 @@ namespace SmartTrade.Services
             GiftLists = giftLists;
         }
 
-        public void AddGift(int quantity, PostDTO post, OfferDTO offer, string giftListName)
+        public int AddGift(int quantity, PostDTO post, OfferDTO offer, string giftListName)
         {
             int indexList = GiftLists.FindIndex(x => x.Name == giftListName);
             int indexGift = GiftLists[indexList].Gifts.FindIndex(x => x.Offer.Id == offer.Id);
 
             if (indexGift != -1)
             {
-                GiftLists[indexList].Gifts[indexGift].Quantity = quantity;
+                GiftLists[indexList].Gifts[indexGift].Quantity += quantity;
             }
             else
             {
                 GiftLists[indexGift].Gifts.Add(new GiftDTO(quantity, post, offer, giftListName));
             }
+            return indexGift == -1 ? quantity : GiftLists[indexList].Gifts[indexGift].Quantity;
         }
 
         public void RemoveGift(string GiftListName, int offerId)

@@ -3,9 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="300"
-			 x:Class="SmartTrade.Views.EditGiftListView"
+			 x:Class="SmartTrade.Views.AddGiftView"
 			 xmlns:vm="clr-namespace:SmartTrade.ViewModels"
-			 x:DataType="vm:GiftsModel"
+			 x:DataType="vm:ProductViewModel"
 			 xmlns:controls="clr-namespace:SmartTrade.Controls">
 	<Design.DataContext>
 		<vm:GiftsModel/>
@@ -13,8 +13,8 @@
 
 	<StackPanel HorizontalAlignment="Center" Spacing="10">
 		<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-			<TextBlock Text="Edit Gift List" Classes="h1" FontSize="38" HorizontalAlignment="Left" Margin="30 7 0 25"/>
-			<Image Source="avares://SmartTrade/Assets/Edit.png"  Margin="15 -15 0 0"/>
+		<TextBlock Text="Add To Gift List" Classes="h1" FontSize="38" HorizontalAlignment="Left" Margin="30 7 0 25"/>
+		<Image Source="avares://SmartTrade/Assets/Add.png"  Margin="15 -15 0 0"/>
 		</StackPanel>
 		<controls:ST_TextBox LabelText="Name" Text="{Binding Name, Mode=OneWayToSource}" TextHeight="40" Margin="-20 -10 50 20" Name="TextBoxName"/>
 		<Grid Margin="-20 -10 0 10" HorizontalAlignment="Center" ColumnDefinitions="auto *">
