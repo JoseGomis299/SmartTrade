@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Platform;
-using Newtonsoft.Json;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
 using SmartTradeDTOs;

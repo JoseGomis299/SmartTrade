@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using DynamicData;
 using FuzzySharp;
-using Newtonsoft.Json;
 using SmartTrade.Entities;
 using SmartTradeDTOs;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace SmartTrade.Services
-{
+namespace SmartTrade.Services;
+
     public class SmartTradeService
     {
         public List<SimplePostDTO>? Posts => _cache.Posts;
@@ -322,8 +316,6 @@ namespace SmartTrade.Services
             
             await _broker.WishClient.DeleteWishAsync(wishId);
         }
-    }
-
         #endregion
 
         #region Gifts
@@ -379,11 +371,10 @@ namespace SmartTrade.Services
         }
         #endregion
 
-    #region Product
+        #region Product
 
 
-    #endregion
+        #endregion
 
-
-}
+    }
 
