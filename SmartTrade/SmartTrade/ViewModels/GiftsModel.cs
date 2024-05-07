@@ -44,19 +44,22 @@ public class GiftsModel : ViewModelBase
 
     public void UpdateView()
     {
-            GiftListsNames = new ObservableCollection<string>();
-            
-            if(Service.GiftLists == null) { return; }
+        GiftListsNames = new ObservableCollection<string>();
 
-            foreach (GiftListDTO giftList in this.GiftLists)
-            {
-                GiftListsNames.Add(giftList.Name);
-            }
+        if (Service.GiftLists == null) { return; }
 
-            foreach (GiftDTO gift in GiftLists[ComboBoxIndex].Gifts)
+        foreach (GiftListDTO giftList in this.GiftLists)
+        {
+            GiftListsNames.Add(giftList.Name);
+        }
+
+        if (GiftListsNames.Count == 0) { EditButtonIsVisible = false; RemoveButtonIsVisible = false; }
+        else { 
+        foreach (GiftDTO gift in GiftLists[ComboBoxIndex].Gifts)
             {
                 Gifts.Add(new GiftItemModel(gift, this));
             }
+        }
     }
 
     public void Calculate()

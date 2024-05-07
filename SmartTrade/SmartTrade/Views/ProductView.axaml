@@ -86,8 +86,9 @@
 				<StackPanel Spacing="5" Name="SellerPanel">
                     <Button Classes="Green" Width="150" CornerRadius="10" Content="Edit Post" Name="EditPostButton"/>
 				</StackPanel>
-				<StackPanel Spacing="5">
+				<StackPanel Spacing="5" Name="GiftsPanel" Orientation="Horizontal">
 					<Button Name="AddToGiftsButton" Classes="Green" Width="150" CornerRadius="10">Add To Gifts</Button>
+					<TextBlock Name="GiftsButtonErrorText" Foreground="Red" VerticalAlignment="Center" Text=""></TextBlock>
 				</StackPanel>
 			</StackPanel>
 			<StackPanel Grid.Row="2">
