@@ -224,6 +224,10 @@ namespace SmartTrade.ViewModels
         {
             await Service.AddGiftAsync(_quantity, Post, _currentOffer, giftListName);
         }
+        public List<String> GetGiftListNames()
+        {
+            return Service.GetGiftListNames();
+        }
 
         public async Task AddItemToWishListAsync()
         {

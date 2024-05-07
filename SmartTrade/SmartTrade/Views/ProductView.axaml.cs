@@ -6,6 +6,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Avalonia.Interactivity;
 using SmartTrade.Services;
 
@@ -145,12 +146,18 @@ namespace SmartTrade.Views
 
         public async void AddGift(string giftListName)
         {
-            _model.AddGiftAsync(giftListName);
+            await _model.AddGiftAsync(giftListName);
         }
 
         private void AddToGiftsButtonOnClick(object? sender, RoutedEventArgs e)
         {
-            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new AddGiftView(this));
+            List<String> giftListNames = _model.GetGiftListNames();
+            if (giftListNames.Count == 0)
+            {
+                GiftsButtonErrorText.Text = "Make a gift list first";
+                return;
+            }
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new AddGiftView(this, giftListNames));
         }
 
         private void NextImage(object sender, Avalonia.Interactivity.RoutedEventArgs e)
