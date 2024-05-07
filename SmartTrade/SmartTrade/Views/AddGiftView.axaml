@@ -5,7 +5,7 @@
 			 mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="300"
 			 x:Class="SmartTrade.Views.AddGiftView"
 			 xmlns:vm="clr-namespace:SmartTrade.ViewModels"
-			 x:DataType="vm:ProductViewModel"
+			 x:DataType="vm:GiftsModel"
 			 xmlns:controls="clr-namespace:SmartTrade.Controls">
 	<Design.DataContext>
 		<vm:GiftsModel/>

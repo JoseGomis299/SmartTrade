@@ -25,7 +25,11 @@ namespace SmartTrade.Views
                 IsLightDismissEnabled = true
             };
         }
-        public EditGiftListView() { }
+
+        public EditGiftListView()
+        {
+            InitializeComponent();
+        }
         private void TextBox_TextChanged(object? sender, TextChangedEventArgs e)
         {
             if (TextBoxName.Text == "")

@@ -16,6 +16,8 @@ public class NavigationManager
     protected static NavigationManager _instance;
     public static NavigationManager Instance => _instance ??= new NavigationManager();
 
+    protected NavigationManager() { }
+
     public virtual void Initialize(ContentControl mainView, ContentControl targetView)
     {
         Navigator = new ViewNavigator(mainView);

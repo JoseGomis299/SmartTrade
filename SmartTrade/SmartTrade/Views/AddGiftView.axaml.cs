@@ -25,7 +25,10 @@ namespace SmartTrade.Views
             };
         }
 
-        public AddGiftView() { }
+        public AddGiftView()
+        {
+            InitializeComponent();
+        }
 
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
