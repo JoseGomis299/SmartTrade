@@ -11,13 +11,14 @@
 		<vm:GiftsModel/>
 	</Design.DataContext>
 
-	<StackPanel HorizontalAlignment="Center" Spacing="10">
+	<StackPanel HorizontalAlignment="Center" Spacing="10"  Width="380" Height="200">
 		<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
 		<TextBlock Text="Add To Gift List" Classes="h1" FontSize="38" HorizontalAlignment="Left" Margin="-5 7 0 25"/>
 		<Image Source="avares://SmartTrade/Assets/Add.png"  Margin="15 -15 0 0"/>
 		</StackPanel>
-		<ComboBox Name="ComboBoxGiftList" Margin="-20 0 0 100" ItemsSource="{Binding GiftListsNames}" Grid.Row="0" HorizontalAlignment="Center" Width="300" SelectedIndex="{Binding ComboBoxIndex, Mode=TwoWay}" MaxDropDownHeight="80">
+		<ComboBox Name="ComboBoxGiftList" Margin="-20 0 0 10" ItemsSource="{Binding GiftListsNames}" Grid.Row="0" HorizontalAlignment="Center" Width="300" SelectedIndex="{Binding ComboBoxIndex, Mode=TwoWay}" MaxDropDownHeight="80">
 		</ComboBox>
+        <TextBlock Name="NoElementsTextBlock" Classes="h1=" Width="300" TextAlignment="Center" HorizontalAlignment="Center"></TextBlock>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 			<Button HorizontalAlignment="Center" Height="40" Width="100" Margin="10 0 15 0" Classes="White" Name="CancelButton">Cancel</Button>
 			<Button HorizontalAlignment="Center" Height="40" Width="100" Margin="0 0 0 0" Classes="White" Name="AcceptButton">Accept</Button>

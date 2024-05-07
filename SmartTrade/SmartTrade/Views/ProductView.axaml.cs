@@ -74,7 +74,7 @@ namespace SmartTrade.Views
             WishListToggle.IsVisible = _model.Logged != null;
             SellerPanel.IsVisible = _model.Logged != null && _model.Logged.GetUserType() == UserType.Seller;
             AddToCartPanel.IsVisible = _model.Logged == null || _model.Logged.GetUserType() != UserType.Seller;
-            AddToGiftsButton.IsVisible = _model.Logged == null;
+            AddToGiftsButton.IsVisible = AddToCartPanel.IsVisible;
         }
 
         protected override void Refresh()
@@ -144,7 +144,7 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), 1, 1, out _, true);
         }
 
-        public async void AddGift(string giftListName)
+        public async Task AddGift(string giftListName)
         {
             await _model.AddGiftAsync(giftListName);
         }

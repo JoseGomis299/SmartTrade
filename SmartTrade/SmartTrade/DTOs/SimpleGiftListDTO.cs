@@ -12,18 +12,26 @@ namespace SmartTradeDTOs
     {
         public int? Id { get; set; }
         public string Name { get; set; }
-        public DateOnly? Date { get; set; }
+        public DateTime? Date { get; set; }
         public string? ConsumerEmail { get; set; }
 
         public SimpleGiftListDTO()
         {
         }
 
-        public SimpleGiftListDTO(string name, DateOnly? date, string consumerId)
+        public SimpleGiftListDTO(string name, DateTime? date, string consumerId)
         {
             Name = name;
             Date = date;
             ConsumerEmail = consumerId;
+        }
+
+        public SimpleGiftListDTO(string name, DateTime? date, string consumerId, int id)
+        {
+            Name = name;
+            Date = date;
+            ConsumerEmail = consumerId;
+            Id = id;
         }
     }
 }

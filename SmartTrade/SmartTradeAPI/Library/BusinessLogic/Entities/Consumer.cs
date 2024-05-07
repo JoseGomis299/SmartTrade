@@ -82,17 +82,20 @@ public partial class Consumer : User
         if (index != -1) ((List<CartItem>)ShoppingCart).RemoveAt(index);
     }
 
-    public void AddGiftList(GiftList giftList)
+    public bool AddGiftList(GiftList giftList)
     {
-        var index = ((List<GiftList>)GiftLists).FindIndex(x => x.Name == giftList.Name);
+        var index = ((List<GiftList>)GiftLists).FindIndex(x => x.Id == giftList.Id);
         if (index != -1) 
         {
             ((List<GiftList>)GiftLists)[index].Name = giftList.Name;
             ((List<GiftList>)GiftLists)[index].Date = giftList.Date;
+            return false;
         }
-        else 
+        else
         {
+            giftList.Id = 0;
             GiftLists.Add(giftList);
+            return true;
         }
     }
 
@@ -108,7 +111,7 @@ public partial class Consumer : User
         var gifts = ((List<GiftList>)GiftLists)[indexList].Gifts;
         var indexGift = ((List<Gift>)gifts).FindIndex(x => x.Offer.Id == gift.Offer.Id);
 
-        if (indexGift != -1)
+        if (indexGift == -1)
         {
             ((List<GiftList>)GiftLists)[indexList].Gifts.Add(gift);
         }

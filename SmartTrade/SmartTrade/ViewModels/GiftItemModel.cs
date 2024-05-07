@@ -54,7 +54,10 @@ public class GiftItemModel : ViewModelBase
         Image = giftDTO.Offer.Product.Images[0].ToBitmap();
         Quantity = giftDTO.Quantity.ToString();
 
-        OnQuantityChanged += async (prev, quantity) => await AddGiftAsync(prev, quantity);
+        OnQuantityChanged += async (prev, quantity) =>
+        {
+            await AddGiftAsync(prev, quantity);
+        };
     }
 
     private void OpenProduct()

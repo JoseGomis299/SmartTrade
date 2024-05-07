@@ -55,7 +55,8 @@ public partial class MainView : UserControl
         SideBarButton.Click += SideBarButton_Click;
         SideBar.PaneClosing += SideBar_PaneClosing;
         ListBoxDepartments.SelectionChanged += ListBoxDepartments_SelectionChanged;
-        WishListButton.Click += OpenWishListAsync;
+        WishListButton.Click += OpenWishList;
+        GiftListButton.Click += OpenGiftList;
        
         AlertButton.Click += OnAlertButtonOnClick;
 
@@ -137,9 +138,15 @@ public partial class MainView : UserControl
         _searchModel?.SortByCategory(_currentCategory);
     }
 
-    private void OpenWishListAsync(object? sender, RoutedEventArgs e)
+    private void OpenWishList(object? sender, RoutedEventArgs e)
     {
         var view = new WishListView();
+        SmartTradeNavigationManager.Instance.NavigateTo(view);
+    }
+
+    private void OpenGiftList(object? sender, RoutedEventArgs e)
+    {
+        var view = new GiftsView();
         SmartTradeNavigationManager.Instance.NavigateTo(view);
     }
 

@@ -24,10 +24,6 @@ public class ShoppingCartModel : ViewModelBase
         Calculate();
     }
 
-    ~ShoppingCartModel()
-    {
-        
-    }
 
     public void Calculate()
     {

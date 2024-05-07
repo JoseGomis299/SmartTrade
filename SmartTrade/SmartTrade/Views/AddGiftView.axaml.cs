@@ -31,6 +31,18 @@ namespace SmartTrade.Views
                 Child = this,
                 IsLightDismissEnabled = true
             };
+
+            if (ComboBoxGiftList.Items.Count > 0)
+            {
+                ComboBoxGiftList.SelectedIndex = 0;
+                NoElementsTextBlock.IsVisible = false;
+            }
+            else
+            {
+                ComboBoxGiftList.SelectedIndex = -1;
+                NoElementsTextBlock.Text = "No gift lists available, create one first.";
+                NoElementsTextBlock.IsVisible = true;
+            }
         }
 
         public AddGiftView()
@@ -38,9 +50,14 @@ namespace SmartTrade.Views
             InitializeComponent();
         }
 
-        private void AcceptButton_Click(object? sender, RoutedEventArgs e)
+        private async void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
-            ProductView.AddGift(GiftListNames[ComboBoxGiftList.SelectedIndex]);
+            if (ComboBoxGiftList.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            await ProductView.AddGift(GiftListNames[ComboBoxGiftList.SelectedIndex]);
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
         private void CancelButton_Click(object? sender, RoutedEventArgs e)

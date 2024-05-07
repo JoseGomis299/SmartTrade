@@ -21,7 +21,7 @@ namespace SmartTradeDTOs
             Gifts = new List<GiftDTO>();
         }
 
-        public GiftListDTO(string name, DateOnly? date, string consumerId, List<GiftDTO> gifts) 
+        public GiftListDTO(string name, DateOnly? date, string consumerId, List<GiftDTO> gifts) : this()
         {
             Name = name;
             Date = date;

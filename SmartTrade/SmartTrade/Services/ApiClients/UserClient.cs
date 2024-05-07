@@ -124,7 +124,7 @@ public class UserClient : ApiClient
     public async Task RemoveGiftListAsync(string listName)
     {
         if (Logged == null) return;
-        await PerformApiInstructionAsync($"RemoveGiftList?id={listName}", ApiInstruction.Delete);
+        await PerformApiInstructionAsync($"RemoveGiftList?listName={listName}", ApiInstruction.Delete);
     }
 
     public async Task<List<GiftListDTO>?> GetGiftListsAsync()
@@ -142,6 +142,6 @@ public class UserClient : ApiClient
     public async Task RemoveGiftAsync(SimpleGiftDTO giftList)
     {
         if (Logged == null) return;
-        await PerformApiInstructionAsync($"RemoveGift", ApiInstruction.Delete, giftList);
+        await PerformApiInstructionAsync($"RemoveGift", ApiInstruction.Put, giftList);
     }
 }

@@ -10,10 +10,11 @@ public partial class GiftList
         Gifts = new List<Gift>();
     }
 
-    public GiftList(string Name, DateOnly? Date, string ConsumerEmail):this()
+    public GiftList(string name, DateOnly? date, string consumerEmail, int id) : this()
     {
-        Name = Name;
-        Date = Date;
-        ConsumerEmail = ConsumerEmail;
+        Name = name;
+        Date = date;
+        ConsumerEmail = consumerEmail;
+        Id = id;
     }
 }

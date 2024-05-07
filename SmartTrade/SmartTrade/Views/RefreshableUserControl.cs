@@ -18,6 +18,8 @@ namespace SmartTrade.Views
 
             SmartTradeNavigationManager.Instance.OnNavigate += Refresh;
             SmartTradeNavigationManager.Instance.OnNavigate += RefreshAsync;
+
+            _currentStack = SmartTradeNavigationManager.Instance.CurrentStack;
         }
 
         private void Refresh(Type viewType)
@@ -62,7 +64,7 @@ namespace SmartTrade.Views
         {
         }
 
-        public void Dispose()
+        protected virtual void Dispose()
         {
             SmartTradeNavigationManager.Instance.OnNavigate -= Refresh;
             SmartTradeNavigationManager.Instance.OnNavigate -= RefreshAsync;

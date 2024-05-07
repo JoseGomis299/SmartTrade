@@ -28,7 +28,8 @@
 				<StackPanel Background="#32C378">
                     <StackPanel Name="Menus">
                         <TextBlock Classes="h1" Text="Menus" Margin="0 50 0 0" HorizontalAlignment="Center"/>
-                        <Button Name="WishListButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White" CornerRadius="0">WishList</Button>
+                        <Button Name="WishListButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White" CornerRadius="0">Wish List</Button>
+                        <Button Name="GiftListButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White" CornerRadius="0">Gifts</Button>
                     </StackPanel>
                     <TextBlock Classes="h1" Text="Categories" Margin="0 40 0 0" HorizontalAlignment="Center"/>
                     <ListBox Name="ListBoxDepartments" SelectionMode="Toggle" HorizontalAlignment="Center" Margin="0 5 0 0" Background="Transparent">

@@ -101,7 +101,7 @@ public class UserController : ControllerBase
     [HttpPost("AddGiftList")]
     public void AddGiftList([FromBody] SimpleGiftListDTO giftList)
     {
-        ISmartTradeService service = new SmartTradeService();
+            ISmartTradeService service = new SmartTradeService();
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
 
         service.AddGiftList(loggedId, giftList);
@@ -134,7 +134,7 @@ public class UserController : ControllerBase
         service.AddGift(loggedId, gift);
     }
 
-    [HttpDelete("RemoveGift")]
+    [HttpPut("RemoveGift")]
     public void RemoveGift([FromBody] SimpleGiftDTO gift)
     {
         ISmartTradeService service = new SmartTradeService();

@@ -31,12 +31,6 @@ namespace SmartTrade.Services;
             remove => _cache.OnGiftsChanged -= value;
         }
 
-        public event Action OnGiftListsChanged
-        {
-            add => _cache.OnGiftsChanged += value;
-            remove => _cache.OnGiftsChanged -= value;
-        }
-
         public UserType LoggedType
         {
             get
@@ -91,6 +85,10 @@ namespace SmartTrade.Services;
             _broker.LogOut();
             await LoadCartItems();
             _cache.GiftLists = null;
+            _cache.Purchases = null;
+            _cache.Notifications = null;
+            _cache.Alerts = null;
+            _cache.Wishes = null;
         }
 
         public async Task LogInAsync(string email, string password)
@@ -102,6 +100,7 @@ namespace SmartTrade.Services;
             _cache.Notifications = await GetNotificationsAsync() ?? new List<NotificationDTO>();
             _cache.Alerts = await GetAlertsAsync() ?? new List<AlertDTO>();
             _cache.Wishes = await GetWishAsync() ?? new List<WishDTO>();
+            _cache.GiftLists = await LoadGiftListsAsync() ?? new List<GiftListDTO>();
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -327,10 +326,25 @@ namespace SmartTrade.Services;
                 return;
             }
             _cache.AddGiftList(name, date, Logged.Email);
-            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(name, date, Logged.Email));
+            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(name, date.Value.ToDateTime(new TimeOnly()), Logged.Email));
         }
 
-        public async Task RemoveGiftListAsync(string listName)
+        public async Task EditGiftListAsync(string name, string newName, DateOnly? date)
+        {
+            if (Logged == null)
+            {
+                return;
+            }
+            int id = _cache.EditGiftList(name, newName, date);
+            if (id == -1)
+            {
+                return;
+            }
+
+            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(newName, date.Value.ToDateTime(new TimeOnly()), Logged.Email, id));
+        }
+
+    public async Task RemoveGiftListAsync(string listName)
         {
             if (Logged == null)
             {
@@ -340,15 +354,14 @@ namespace SmartTrade.Services;
             await _broker.UserClient.RemoveGiftListAsync(listName);
         }
 
-        public async Task LoadGiftListsAsync()
+        public async Task<List<GiftListDTO>?> LoadGiftListsAsync()
         {
             if (Logged == null)
             {
-                return;
+                return null;
             }
 
-            List<GiftListDTO> giftLists = await _broker.UserClient.GetGiftListsAsync(); ;
-            _cache.LoadGiftLists(giftLists);
+            return await _broker.UserClient.GetGiftListsAsync(); 
         }
 
         public List<String> GetGiftListNames()

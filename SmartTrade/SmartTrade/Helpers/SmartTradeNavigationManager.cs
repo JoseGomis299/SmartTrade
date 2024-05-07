@@ -18,6 +18,7 @@ public class SmartTradeNavigationManager : NavigationManager
     protected static SmartTradeNavigationManager? _instance;
     public static SmartTradeNavigationManager Instance => _instance ??= new SmartTradeNavigationManager();
     public MainView MainView { get; set; }
+    public int CurrentStack { get; private set; }
 
     private SmartTradeNavigationManager() { }
 
@@ -47,6 +48,8 @@ public class SmartTradeNavigationManager : NavigationManager
             Commands = CartCommands;
             OnChangeNavigationStack?.Invoke(1);
         }
+
+        CurrentStack = targetButton;
 
         if (targetViewType == null)
         {
@@ -80,6 +83,7 @@ public class SmartTradeNavigationManager : NavigationManager
             HomeCommands.Clear();
             UserCommands.Clear();
 
+            CurrentStack = 0;
             Commands = HomeCommands;
             OnChangeNavigationStack?.Invoke(0);
         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
 using SmartTradeDTOs;
+using static Java.Util.Jar.Attributes;
 
 namespace SmartTrade.Services
 {
@@ -148,16 +149,20 @@ namespace SmartTrade.Services
 
         public void AddGiftList(string name, DateOnly? date, string consumerId)
         {
+            GiftLists.Add(new GiftListDTO(name, date, consumerId, new List<GiftDTO>()));
+        }
+
+        public int EditGiftList(string name, string newName, DateOnly? date)
+        {
             var index = GiftLists.FindIndex(x => x.Name == name);
             if (index != -1)
             {
-                GiftLists[index].Name = name;
+                GiftLists[index].Name = newName;
                 GiftLists[index].Date = date;
+                return GiftLists[index].Id ?? -1;
             }
-            else
-            {
-                GiftLists.Add(new GiftListDTO(name, date, consumerId, new List<GiftDTO>()));
-            }
+
+            return -1;
         }
 
         public void RemoveGiftList(string listName)
@@ -169,6 +174,8 @@ namespace SmartTrade.Services
         public void LoadGiftLists(List<GiftListDTO> giftLists)
         {
             GiftLists = giftLists;
+
+
         }
 
         public int AddGift(int quantity, PostDTO post, OfferDTO offer, string giftListName)
@@ -182,8 +189,10 @@ namespace SmartTrade.Services
             }
             else
             {
-                GiftLists[indexGift].Gifts.Add(new GiftDTO(quantity, post, offer, giftListName));
+                GiftLists[indexList].Gifts.Add(new GiftDTO(quantity, post, offer, giftListName));
             }
+
+            OnGiftsChanged?.Invoke();
             return indexGift == -1 ? quantity : GiftLists[indexList].Gifts[indexGift].Quantity;
         }
 
@@ -192,6 +201,8 @@ namespace SmartTrade.Services
             var indexList = GiftLists.FindIndex(x => x.Name == GiftListName);
             var indexGift = GiftLists[indexList].Gifts.FindIndex(x => x.Offer.Id == offerId);
             if (indexGift != -1) GiftLists[indexList].Gifts.RemoveAt(indexGift);
+
+            OnGiftsChanged?.Invoke();
         }
     }
 }

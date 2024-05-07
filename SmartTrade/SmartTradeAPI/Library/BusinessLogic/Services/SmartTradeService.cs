@@ -554,13 +554,32 @@ public class SmartTradeService : ISmartTradeService
 
     public void AddGiftList(string consumerId, SimpleGiftListDTO giftListDTO) {
         Consumer consumer = _dal.GetById<Consumer>(consumerId);
-        consumer.AddGiftList(new GiftList(giftListDTO.Name,giftListDTO.Date,consumerId));
+
+        if (giftListDTO.Id == null) giftListDTO.Id = -1;
+       
+        DateOnly? date = null;
+        if(giftListDTO.Date != null) date = DateOnly.FromDateTime(giftListDTO.Date.Value);
+
+        GiftList giftList = new GiftList(giftListDTO.Name, date, giftListDTO.ConsumerEmail, (int) giftListDTO.Id);
+        if(consumer.AddGiftList(giftList))
+           _dal.Insert(giftList);
         _dal.Commit();
     }
 
     public void RemoveGiftList(string consumerId, string listName)
     {
         Consumer consumer = _dal.GetById<Consumer>(consumerId);
+        var giftsInList = consumer.GiftLists.AsQueryable().Select(x => new SimpleGiftDTO()
+        {
+            GiftListName = x.Name,
+            OfferId = x.Gifts.Select(g => g.Offer.Id).FirstOrDefault()
+        }).ToList();
+
+        foreach (var gift in giftsInList)
+        {
+            RemoveGift(consumerId, gift);
+        }
+
         consumer.RemoveGiftList(listName);
         _dal.Commit();
     }
@@ -591,16 +610,17 @@ public class SmartTradeService : ISmartTradeService
                 },
                 Post = GetPost(g.Post.Id),
                 Quantity = g.Quantity,
-                Notified = g.Notified
+                Notified = g.Notified,
+                GiftListName = gl.Name
             }).ToList(),
-
+            ConsumerEmail = consumerId
         }).ToList();
 
         foreach (var giftList in giftLists)
         {
             foreach (var gift in giftList.Gifts)
             {
-                if(gift.Notified) continue;
+                if(gift.Notified || giftList.Date == null) continue;
 
                 int remainingDays = giftList.Date.Value.DayNumber - DateOnly.FromDateTime(DateTime.Now).DayNumber;
                 if (remainingDays <= 7)
