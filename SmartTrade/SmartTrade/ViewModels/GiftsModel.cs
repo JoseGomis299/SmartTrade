@@ -20,13 +20,13 @@ public class GiftsModel : ViewModelBase
     public bool? EditButtonIsVisible { get; set; }
     public bool? RemoveButtonIsVisible { get; set; }
     public int ComboBoxIndex {  get; set; }
-    public ObservableCollection<CartItemModel> Gifts { get; set; }
+    public ObservableCollection<GiftItemModel> Gifts { get; set; }
     List<GiftListDTO>? GiftLists => Service.GiftLists;
     public ObservableCollection<string> GiftListsNames { get; set; }
 
     public GiftsModel()
     {
-        Gifts = new ObservableCollection<CartItemModel>();
+        Gifts = new ObservableCollection<GiftItemModel>();
         GiftListsNames = new ObservableCollection<string>();
         ComboBoxIndex = 0;
 
@@ -45,6 +45,8 @@ public class GiftsModel : ViewModelBase
     public void UpdateView()
     {
             GiftListsNames = new ObservableCollection<string>();
+            
+            if(Service.GiftLists == null) { return; }
 
             foreach (GiftListDTO giftList in this.GiftLists)
             {
@@ -53,7 +55,7 @@ public class GiftsModel : ViewModelBase
 
             foreach (GiftDTO gift in GiftLists[ComboBoxIndex].Gifts)
             {
-                //Gifts.Add(new CartItemModel());
+                Gifts.Add(new GiftItemModel(gift, this));
             }
     }
 

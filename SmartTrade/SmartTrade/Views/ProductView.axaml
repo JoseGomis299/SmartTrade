@@ -38,6 +38,7 @@
                                 <Image Name="WishListImage" Stretch="Uniform"/>
                             </Panel>
                         </ToggleButton>
+						
                     </StackPanel>
                     <Image ZIndex="1" Name="EcoImage" Stretch="Uniform" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10 0" Width="50"/>
 
@@ -84,6 +85,9 @@
                 </StackPanel>
 				<StackPanel Spacing="5" Name="SellerPanel">
                     <Button Classes="Green" Width="150" CornerRadius="10" Content="Edit Post" Name="EditPostButton"/>
+				</StackPanel>
+				<StackPanel Spacing="5">
+					<Button Name="AddToGiftsButton" Classes="Green" Width="150" CornerRadius="10">Add To Gifts</Button>
 				</StackPanel>
 			</StackPanel>
 			<StackPanel Grid.Row="2">

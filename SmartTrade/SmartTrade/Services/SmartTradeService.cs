@@ -316,6 +316,7 @@ namespace SmartTrade.Services;
             
             await _broker.WishClient.DeleteWishAsync(wishId);
         }
+
         #endregion
 
         #region Gifts
@@ -352,12 +353,15 @@ namespace SmartTrade.Services;
 
         public async Task AddGiftAsync(int quantity, PostDTO post, OfferDTO offer, string giftListName)
         {
+            int count;
+
             if (Logged == null)
             {
                 return;
             }
-            _cache.AddGift(quantity, post, offer, giftListName);
-            await _broker.UserClient.AddGiftAsync(new SimpleGiftDTO(quantity, (int)post.Id, (int)offer.Id, giftListName));
+
+            count = _cache.AddGift(quantity, post, offer, giftListName);
+            await _broker.UserClient.AddGiftAsync(new SimpleGiftDTO(count, (int)post.Id, (int)offer.Id, giftListName));
         }
         
         public async Task RemoveGiftAsync(int quantity, int postId, int OfferId, string giftListName)
@@ -377,4 +381,3 @@ namespace SmartTrade.Services;
         #endregion
 
     }
-
