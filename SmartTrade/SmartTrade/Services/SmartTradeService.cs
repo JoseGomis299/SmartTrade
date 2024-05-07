@@ -51,9 +51,16 @@ namespace SmartTrade.Services
                 return Logged.GetUserType();
             }
         }
+        public void SetIsParentalControlEnabled(bool isEnabled)
+        {
+            IsParentalControlEnabled = isEnabled;
+        }
+
+        public bool IsParentalControlEnabled { get; private set; }
 
         public List<CartItemDTO>? CartItems => _cache.CartItems; 
-        public List<WishDTO>? WishList => _cache.Wishes;
+        public List<WishDTO>? WishList => _cache.Wishes; 
+        public List<AlertDTO>? Alerts => _cache.Alerts;
         public List<GiftListDTO>? GiftLists => _cache.GiftLists;
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
@@ -98,8 +105,9 @@ namespace SmartTrade.Services
 
             await LoadCartItems();
             _cache.Purchases = null;
-            _cache.Wishes = await GetWishAsync();
-            await LoadGiftListsAsync();
+            _cache.Notifications = await GetNotificationsAsync() ?? new List<NotificationDTO>();
+            _cache.Alerts = await GetAlertsAsync() ?? new List<AlertDTO>();
+            _cache.Wishes = await GetWishAsync() ?? new List<WishDTO>();
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -165,7 +173,7 @@ namespace SmartTrade.Services
             _cache.LoadCartItems(userItems);
             foreach (var cartItem in guestItems)
             {
-                if (userItems.Any(x => x.Offer.Id == cartItem.Offer.Id)) continue;
+                if (userItems.Any(x => x.Post.ProductName == cartItem.Post.ProductName)) continue;
                 await AddItemToCartAsync(cartItem.Post, cartItem.Offer, cartItem.Quantity);
             }
         }
@@ -189,6 +197,8 @@ namespace SmartTrade.Services
         public async Task<List<SimplePostDTO>?> RefreshPostsAsync()
         {
             var posts = await _broker.PostClient.GetPostsAsync();
+            
+            if(IsParentalControlEnabled) posts = posts.Where(x => x.MinimumAge < 18).ToList();
             _cache.SetPosts(posts);
             return posts;
         }
@@ -242,19 +252,34 @@ namespace SmartTrade.Services
 
         #region Alert
 
-        public async Task<int> CreateAlertAsync(int productId)
+        public async Task<int> CreateAlertAsync(string productName)
         {
-            return await _broker.AlertClient.CreateAlertAsync(productId);
+            if (_cache.Alerts.Exists(x => x.ProductName == productName)) return -1;
+            
+            int id = await _broker.AlertClient.CreateAlertAsync(productName);
+            _cache.Alerts.Add(new AlertDTO(productName, Logged.Email, id));
+            return id;
         }
 
-        public async Task DeleteAlertAsync(int alertId)
+        public async Task DeleteAlertAsync(string productName)
         {
-            await _broker.AlertClient.DeleteAlertAsync(alertId);
+            int index = _cache.Alerts.FindIndex(a => a.ProductName == productName);
+
+            if (index != -1)
+            {
+                _cache.Alerts.RemoveAt(index);
+                await _broker.AlertClient.DeleteAlertAsync(productName);
+            }
         }
         
-        public async Task<AlertDTO?> GetAlertsAsync(string productName)
+        public async Task<AlertDTO?> GetAlertAsync(string productName)
         {
-            return await _broker.AlertClient.GetAlertsAsync(productName);
+            return await _broker.AlertClient.GetAlertAsync(productName);
+        }
+
+        public async Task<List<AlertDTO>?> GetAlertsAsync()
+        {
+            return await _broker.AlertClient.GetAlertsAsync();
         }
 
         #endregion
@@ -280,10 +305,9 @@ namespace SmartTrade.Services
             await _broker.WishClient.DeleteWishAsync(wishId);
         }
         
-        public async Task<List<WishDTO>>? GetWishAsync()
+        public async Task<List<WishDTO>?> GetWishAsync()
         {
-            _cache.Wishes ??= await _broker.WishClient.GetWishAsync();
-            return _cache.Wishes;
+            return await _broker.WishClient.GetWishAsync(); 
         }
 
         public async Task DeleteWishFromPostAsync(int id)
@@ -298,6 +322,7 @@ namespace SmartTrade.Services
             
             await _broker.WishClient.DeleteWishAsync(wishId);
         }
+    }
 
         #endregion
 
@@ -354,11 +379,11 @@ namespace SmartTrade.Services
         }
         #endregion
 
-        #region Product
+    #region Product
 
 
-        #endregion
+    #endregion
 
 
-    }
 }
+

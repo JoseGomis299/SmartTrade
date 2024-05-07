@@ -123,7 +123,7 @@ namespace SmartTrade.ViewModels
                     OtherSellers.Add(new ProductModel(post));
                 }
                 else if (SameSeller(post))
-                {
+                { 
                     SameSellerProducts.Add(new ProductModel(post));
                 }
                 else if (IsRelated(post))
@@ -210,9 +210,9 @@ namespace SmartTrade.ViewModels
             OnOfferChanged?.Invoke();
         }
 
-        public async Task CreateAlertAsync(int productId)
+        public async Task CreateAlertAsync(string productName)
         {
-            await Service.CreateAlertAsync(productId);
+            await Service.CreateAlertAsync(productName);
         }
 
         public async Task AddItemToCartAsync()
@@ -233,6 +233,21 @@ namespace SmartTrade.ViewModels
         public bool IsPostInWishes(PostDTO post)
         {
             return Service.WishList.Exists(x => x.Post.Id == post.Id);
+        }
+
+        public bool IsPostInAlert(string productName)
+        {
+            return Service.Alerts.Exists(x => x.ProductName == productName);
+        }
+
+        public async Task AssignAlertToProduct(string productName)
+        {
+            await Service.CreateAlertAsync(productName);
+        }
+
+        public async Task UnAssignAlertToProduct(string productName)
+        {
+            await Service.DeleteAlertAsync(productName);
         }
     }
 

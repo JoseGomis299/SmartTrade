@@ -7,22 +7,19 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
 
-public class WishLModel : ViewModelBase
+public class WishModel : ViewModelBase
 {
     public string? Name { get; set; }
     public string? Price { get; set; }
+    public string? ShippingCost { get; set; }
     public Bitmap? Image { get; set; }
     public SimplePostDTO Post { get; set; }
 
     public ICommand OpenProductCommand { get; }
     public ICommand DeleteWishCommand { get; }
 
-    private WishDTO _wish;
-
-    public WishLModel(SimplePostDTO post, WishListModel wishListModel, WishDTO wish)
+    public WishModel(SimplePostDTO post, WishListModel wishListModel, WishDTO wish)
     {
-        _wish = wish;
-
         Post = post;
         OpenProductCommand = ReactiveCommand.CreateFromTask(OpenProduct);
         DeleteWishCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -34,6 +31,7 @@ public class WishLModel : ViewModelBase
 
         Name = post.Title;
         Price = post.Price + "€";
+        ShippingCost = post.ShippingCost + "€";
         Image = post.Image.ToBitmap();
     }
 

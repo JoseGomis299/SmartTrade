@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
-using SmartTrade.Services;
 using System.Linq;
 using FuzzySharp;
 
@@ -29,8 +28,9 @@ namespace SmartTrade.ViewModels
         {
             List<SimplePostDTO>? posts = await Service.RefreshPostsAsync();
 
-            foreach(var post in posts)
+            foreach (var post in posts)
             {
+
                 OriginalProducts.Add(new ProductModel(post));
 
                 if (IsEcologic(post))
@@ -38,7 +38,7 @@ namespace SmartTrade.ViewModels
                     RecommendedProducts.Add(new ProductModel(post));
                 }
                 else if (await IsRelated(post))
-                {
+                { 
                     RelatedProducts.Add(new ProductModel(post));
                 }
                 else OtherProducts.Add(new ProductModel(post));
@@ -60,7 +60,7 @@ namespace SmartTrade.ViewModels
 
             if (purchases == null || purchases.Count == 0) { return false; }
 
-            var purchasesToCompare = purchases.Distinct().TakeLast(3).ToList();
+            var purchasesToCompare = purchases.DistinctBy(x => x.PostId).TakeLast(3).ToList();
 
             foreach (var purchase in purchasesToCompare)
             {
@@ -74,7 +74,7 @@ namespace SmartTrade.ViewModels
                     String emailSellerPurchase = purchase.EmailSeller;
                     String titlePostPurchase = postPurchase.Title;
 
-                    count += CalculateProductNameScore(namePurchase, productNamePost, 50) * 10;
+                    count += CalculateProductNameScore(namePurchase, productNamePost, 50) * 30;
                     count += CalculateProductNameScore(titlePost, titlePostPurchase, 40) * 10;
                     count += CalculateCategoryAndSellerScore(categoryPost, categoryPurchase, sellerIdPost, emailSellerPurchase) * 80;
 
@@ -100,8 +100,8 @@ namespace SmartTrade.ViewModels
         {
             float score = 0;
 
-            if (categoryPost.Equals(categoryPurchase)) score += 0.7f;
-            if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.3f;
+            if (categoryPost.Equals(categoryPurchase)) score += 0.85f;
+            if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.15f;
 
             return score;
         }
@@ -171,5 +171,37 @@ namespace SmartTrade.ViewModels
 
             UpdateProducts(FilteredProducts);
         }
+
+        public bool ParentalControlerChecker(DateTime BirthDate)
+        {
+            DateTime currentDate = DateTime.Now;
+            int totalDays = currentDate.Day - BirthDate.Day;
+            int totalMonths = currentDate.Month - BirthDate.Month;
+            int totalYears = currentDate.Year - BirthDate.Year;
+            if (totalDays < 0)
+            {
+                totalDays += DateTime.DaysInMonth(BirthDate.Year, BirthDate.Month);
+                totalMonths--;
+            }
+            if (totalMonths < 0)
+            {
+                totalMonths += 12;
+                totalYears--;
+            }
+            int age = totalYears;
+            if (totalMonths > 0 || totalDays > 0)
+            {
+                age++;
+            }
+            if (age >= 18)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
+
 }

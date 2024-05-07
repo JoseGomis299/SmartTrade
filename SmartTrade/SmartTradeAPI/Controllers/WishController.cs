@@ -16,7 +16,7 @@ public class WishController : ControllerBase
         return service.CreateWish(loggedId, id);
     }
 
-    [HttpDelete("DeletWish")]
+    [HttpDelete("DeleteWish")]
     public void DeleteWish(int id)
     {
         SmartTradeService service = new();

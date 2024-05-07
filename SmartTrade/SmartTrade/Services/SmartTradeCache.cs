@@ -26,6 +26,7 @@ namespace SmartTrade.Services
         public List<PurchaseDTO>? Purchases { get; set; }
         public List<WishDTO>? Wishes { get; set; }
         public List<GiftListDTO>? GiftLists { get; set; }
+        public List<AlertDTO>? Alerts { get; set; }
 
         public async Task LoadCartItemsAsync()
         {

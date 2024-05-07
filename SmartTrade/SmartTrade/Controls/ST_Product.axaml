@@ -6,12 +6,16 @@
              x:Class="SmartTrade.Controls.ST_Product">
  <StackPanel Width="150" MinHeight="225">
      <Button Height="150" Width="150" Classes="White" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Command}">
-         <Border CornerRadius="25" ClipToBounds="True">
-             <Image Stretch="UniformToFill" Name="ProductImage" Source="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Image, Mode=OneWay}"></Image>
-		 </Border>
+         <Border ClipToBounds="True">
+             <Image Stretch="Uniform" Name="ProductImage" Source="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Image, Mode=OneWay}"></Image>
+         </Border>
      </Button>
      <StackPanel Margin="10 0 0 0">
-         <TextBlock Name="PriceTextBlock" Classes="h1" Foreground="#ff32c378" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Price, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
+         <StackPanel Orientation="Horizontal" Spacing="5">
+			 <TextBlock Name="PriceTextBlock" Classes="h1" Foreground="#ff32c378" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Price, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
+			 <TextBlock Name="ShippingCostTextBlock" Classes="h2" Foreground="#A5DFB7" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ShippingCost, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
+             <Image Stretch="Uniform" Source="../Assets/Delivery.png" Width="25" VerticalAlignment="Center"/>
+		 </StackPanel>
          <TextBlock Name="ProductNameTextBlock" Classes="h2" Foreground="#A5DFB7" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ProductName, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 	 </StackPanel>
  </StackPanel>

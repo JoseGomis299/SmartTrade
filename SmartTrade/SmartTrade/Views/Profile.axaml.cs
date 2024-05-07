@@ -14,7 +14,7 @@ namespace SmartTrade.Views
         {
             DataContext = _model = new ProfileModel();
             InitializeComponent();
-
+            ParentalToggleButton.Click += ParentalToggleButton_Click;
             LogoutButton.Click += LogOut;
             WhisListButton.Click += WishListButton_Click;
 
@@ -29,9 +29,34 @@ namespace SmartTrade.Views
             else { AddPostButton.IsVisible = false; }
 
             SetWishListButtonVisibility();
+            SetParentalToggleButtonVisibility();
+            ParentalToggleButton.IsChecked = _model.IsParentalControlEnabled;
         }
 
+        private void ParentalToggleButton_Click(object? sender, RoutedEventArgs e)
+        {
+
+            if (_model.IsParentalControlEnabled)
+            {
+                SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new ParentalControl(_model));
+            }
+            else
+            {
+                _model.IsParentalControlEnabled = true;
+                ParentalToggleButton.IsChecked = _model.IsParentalControlEnabled;
+                _model.UpdateParentalControlStatus();
+            }
+
+        }
         private void SetWishListButtonVisibility()
+        {
+            if (_model.LoggedType != UserType.Consumer)
+            {
+                WhisListButton.IsVisible = false;
+            }
+        }
+
+        private void SetParentalToggleButtonVisibility()
         {
             if (_model.LoggedType != UserType.Consumer)
             {
@@ -50,5 +75,7 @@ namespace SmartTrade.Views
             await _model.LogOut();
             await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
         }
+
+       
     }
 }

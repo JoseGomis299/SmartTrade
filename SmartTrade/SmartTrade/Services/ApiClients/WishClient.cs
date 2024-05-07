@@ -16,7 +16,7 @@ public class WishClient : ApiClient
 
     public async Task DeleteWishAsync(int WishId)
     {
-        await PerformApiInstructionAsync($"DeletWish?id={WishId}", ApiInstruction.Delete);
+        await PerformApiInstructionAsync($"DeleteWish?id={WishId}", ApiInstruction.Delete);
     }
 
     public async Task<List<WishDTO>?> GetWishAsync()

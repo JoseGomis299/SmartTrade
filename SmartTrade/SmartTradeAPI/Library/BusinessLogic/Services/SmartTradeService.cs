@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using SmartTradeAPI.Library.Persistence.DTOs;
 using Microsoft.Extensions.Hosting;
 using System.ComponentModel.DataAnnotations;
+using SmartTradeAPI.Helpers;
 
 namespace SmartTrade.BusinessLogic;
 
@@ -128,7 +129,7 @@ public class SmartTradeService : ISmartTradeService
         post.Title = postInfo.Title;
         post.Description = postInfo.Description;
         post.Validated = postInfo.Validated;
-                
+
         List<Offer> offers = new();
         List<Offer> originalOffers = post.Offers.ToList();
 
@@ -177,16 +178,17 @@ public class SmartTradeService : ISmartTradeService
         post.Offers = offers;
 
         //TODO: Si el postInfo está validado creamos la notificación pertinente si toca crear
-       if(postInfo.Validated) CreateNotifications(post);
+       if (postInfo.Validated) CreateNotifications(post);
 
         _dal.Commit();
     }
 
     private void CreateNotifications(Post post)
     {
-        foreach (var alert in post.Offers.First().Product.Alerts)
+        List<Alert> alerts = _dal.GetWhere<Alert>(x => x.ProductName == post.Offers.First().Product.Name).ToList();
+        foreach (var alert in alerts)
         {
-            var notification = new Notification(false, (Consumer)alert.User, post);
+            var notification = new Notification(false, alert.User, post);
             _dal.Insert(notification);
         }
     }
@@ -195,20 +197,7 @@ public class SmartTradeService : ISmartTradeService
     { 
         User? logged = _dal.GetById<User>(loggedID);
 
-        var postDtos = _dal.GetAll<Post>().AsNoTracking()
-            .Select(p => new SimplePostDTO
-            {
-                Id = p.Id,
-                Title = p.Title,
-                Category = p.Offers.Select(o => o.Product.GetCategories().First()).FirstOrDefault(),
-                MinimumAge = p.Offers.Select(o => o.Product.MinimumAge).FirstOrDefault(),
-                EcologicPrint = p.Offers.Select(o => o.Product.EcologicPrint).FirstOrDefault(),
-                Validated = p.Validated,
-                SellerID = p.Seller.Email,
-                Price = p.Offers.Select(o => o.Price).FirstOrDefault(),
-                Image = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
-                ProductName = p.Offers.Select(o => o.Product.Name).First()
-            }).ToList();
+        var postDtos = _dal.GetAll<Post>().AsNoTracking().SelectSimplePost().ToList();
 
         if (logged is Admin) postDtos = postDtos.Where(x => !x.Validated).ToList();
         else if (logged is Seller seller) postDtos = postDtos.Where(x => x.SellerID == seller.Email).ToList();
@@ -224,33 +213,8 @@ public class SmartTradeService : ISmartTradeService
 
     public List<SimplePostDTO> GetPostsFuzzyContain(string searchFor)
     {
-        return _dal.GetAll<Post>().AsNoTracking()
-            .Select(p => new
-            {
-                Id = p.Id,
-                Title = p.Title,
-                Category = p.Offers.Select(o => o.Product.GetCategories().First()).FirstOrDefault(),
-                MinimumAge = p.Offers.Select(o => o.Product.MinimumAge).FirstOrDefault(),
-                EcologicPrint = p.Offers.Select(o => o.Product.EcologicPrint).FirstOrDefault(),
-                Validated = p.Validated,
-                SellerEmail = p.Seller.Email,
-                Price = p.Offers.Select(o => o.Price).FirstOrDefault(),
-                ImageSource = p.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
-                ProductName = p.Offers.Select(o => o.Product.Name).FirstOrDefault()
-            }).ToList()
-            .Select(anon => new SimplePostDTO
-            {
-                Id = anon.Id,
-                Title = anon.Title,
-                Category = anon.Category,
-                MinimumAge = anon.MinimumAge,
-                EcologicPrint = anon.EcologicPrint,
-                Validated = anon.Validated,
-                SellerID = anon.SellerEmail,
-                Price = anon.Price,
-                Image = anon.ImageSource,
-                ProductName = anon.ProductName
-            }).Where(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title) > 60)
+        return _dal.GetAll<Post>().AsNoTracking().SelectSimplePost()
+            .Where(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title) > 60)
             .OrderByDescending(x => Fuzz.PartialTokenSortRatio(searchFor, x.Title))
             .ToList();
     }
@@ -398,7 +362,8 @@ public class SmartTradeService : ISmartTradeService
                    SellerID = n.TargetPost.Seller.Email,
                    Price = n.TargetPost.Offers.Select(o => o.Price).FirstOrDefault(),
                    Image = n.TargetPost.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
-                   ProductName = n.TargetPost.Offers.Select(o => o.Product.Name).FirstOrDefault()
+                   ProductName = n.TargetPost.Offers.Select(o => o.Product.Name).FirstOrDefault(),
+                   ShippingCost = n.TargetPost.Offers.Select(o => o.ShippingCost).First()
                }
            }).ToList()
            .Select(anon => new NotificationDTO
@@ -410,12 +375,12 @@ public class SmartTradeService : ISmartTradeService
            }).ToList();
     }
 
-    public int CreateAlert(string userId, int productId)
+    public int CreateAlert(string userId, string productName)
     {
-        var product =_dal.GetById<Product>(productId);
         var user = _dal.GetById<Consumer>(userId);
-        var alert = new Alert(user, product);
-        product.AddAlert(alert);
+        var alert = new Alert(user, productName);
+        if (user.Alerts.Any(n => n.ProductName == productName)) return -1;
+
         user.AddAlert(alert);
         _dal.Commit();
         return alert.Id;
@@ -424,17 +389,35 @@ public class SmartTradeService : ISmartTradeService
     public void DeleteAlert(int alertId)
     {
         Alert alert = _dal.GetById<Alert>(alertId);
-        alert.Product.Alerts.Remove(alert);
         alert.User.Alerts.Remove(alert);
-
         _dal.Delete<Alert>(alert);
 
         _dal.Commit();
     }
 
-    public AlertDTO GetAlert(string productName)
+    public void DeleteAlert(string productName, string loggedId)
     {
-        return _dal.GetWhere<AlertDTO>(n => n.ProductName == productName).FirstOrDefault();
+        Alert alert = _dal.GetWhere<Alert>(x => x.ProductName == productName && x.User.Email == loggedId).FirstOrDefault();
+        alert.User.Alerts.Remove(alert);
+        _dal.Delete<Alert>(alert);
+
+        _dal.Commit();
+    }
+
+    public AlertDTO GetAlert(string productName, string loggedId)
+    {
+        Alert alert = _dal.GetWhere<Alert>(x => x.ProductName == productName && x.User.Email == loggedId).FirstOrDefault();
+        return alert == null ? null : new AlertDTO(alert);
+    }
+
+    public List<AlertDTO> GetAlerts(string loggedId)
+    {
+        return _dal.GetAll<Alert>().AsQueryable().Where(x => x.User.Email == loggedId).Select(x => new AlertDTO()
+        {
+            UserId = loggedId,
+            Id = x.Id,
+            ProductName = x.ProductName
+        }).ToList();
     }
 
     public void DeleteNotification(int id)
@@ -477,7 +460,8 @@ public class SmartTradeService : ISmartTradeService
                     SellerID = n.Post.Seller.Email,
                     Price = n.Post.Offers.Select(o => o.Price).FirstOrDefault(),
                     Image = n.Post.Offers.Select(o => o.Product.Images.Select(i => i.ImageSource).FirstOrDefault()).FirstOrDefault(),
-                    ProductName = n.Post.Offers.Select(o => o.Product.Name).FirstOrDefault()
+                    ProductName = n.Post.Offers.Select(o => o.Product.Name).FirstOrDefault(),
+                    ShippingCost = n.Post.Offers.Select(o => o.ShippingCost).First()
                 }
             }).ToList()
             .Select(anon => new WishDTO()

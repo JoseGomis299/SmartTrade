@@ -52,17 +52,13 @@ namespace SmartTrade.Views
             AlertToggle.Click += ToggleAlert;
             WishListToggle.Click += ToggleWishList;
 
-            SetToggleVisibility();
-            SetAlertImage();
-            SetWishListImageAsync();
-            SetEcoImage();
-            SetImageNavigationButtonsVisibility();
-
-            SmartTradeNavigationManager.Instance.OnNavigate += OnNavigateAsync;
-
             AddToCartButton.Click += AddItemToCart;
             AddButton.Click += OnAddButtonOnClick;
             SubtractButton.Click += OnSubtractButtonOnClick;
+            EditPostButton.Click += (_, _) =>
+            {
+                SmartTradeNavigationManager.Instance.NavigateTo(new ValidatePost(_post));
+            };
 
             if (int.TryParse(_model.Quantity, out var count))
             {
@@ -73,6 +69,8 @@ namespace SmartTrade.Views
             }
 
             WishListToggle.IsVisible = _model.Logged != null;
+            SellerPanel.IsVisible = _model.Logged != null && _model.Logged.GetUserType() == UserType.Seller;
+            AddToCartPanel.IsVisible = _model.Logged == null || _model.Logged.GetUserType() != UserType.Seller;
         }
 
         protected override void Refresh()
@@ -179,15 +177,13 @@ namespace SmartTrade.Views
 
         private void SetAlertImage()
         {
-            if (_model.Logged == null || !(_post.Offers[0].Product.UsersWithAlertsInThisProduct.Contains(_model.Logged.Email)))
+            if (_model.Logged == null || !(_model.IsPostInAlert(_post.ProductName)))
             {
                 AlertToggle.IsChecked = false;
-              //  AlertImage.Source = _alertDeactivated;
             }
             else
             {
                 AlertToggle.IsChecked = true;
-               // AlertImage.Source = _alertActivated;
             }
         }
 
@@ -224,31 +220,13 @@ namespace SmartTrade.Views
 
             if (AlertToggle.IsChecked == true)
             {
-                _post.Offers[0].Product.UsersWithAlertsInThisProduct.Add(_model.Logged.Email);
+                _model.AssignAlertToProduct(_post.ProductName);
                 _isAlertActivated = true;
-                //AlertImage.Source = _alertActivated;
             }
             else
             {
-                _post.Offers[0].Product.UsersWithAlertsInThisProduct.Remove(_model.Logged.Email);
+                _model.UnAssignAlertToProduct(_post.ProductName);
                 _isAlertActivated = false;
-                //AlertImage.Source = _alertDeactivated;
-            }
-        }
-
-        private async void OnNavigateAsync(Type type)
-        {
-            if (_model.Logged == null)
-            {
-                return;
-            }
-
-            if (type != typeof(ProductView) && SmartTradeNavigationManager.Instance.Navigator.PreviousView.GetType() == typeof(ProductView))
-            {
-                if (_isAlertActivated)
-                {
-                    await _model.CreateAlertAsync(_post.Offers[0].Product.Id);
-                }
             }
         }
 

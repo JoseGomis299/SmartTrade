@@ -13,6 +13,10 @@ public class AlertDTO
     {
         Id = alert.Id;
         UserId = alert.User.Email;
-        ProductName = alert.Product.Name;
+        ProductName = alert.ProductName;
+    }
+
+    public AlertDTO()
+    {
     }
 }

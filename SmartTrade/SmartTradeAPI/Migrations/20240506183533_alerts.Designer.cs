@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTrade.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTrade.Persistence;
 namespace SmartTradeAPI.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240506183533_alerts")]
+    partial class alerts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,10 +180,10 @@ namespace SmartTradeAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OfferId")
+                    b.Property<int>("OfferId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PostId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -192,38 +195,13 @@ namespace SmartTradeAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GiftListId");
-
                     b.HasIndex("OfferId");
 
                     b.HasIndex("PostId");
 
+                    b.HasIndex("UserEmail");
+
                     b.ToTable("Gift");
-                });
-
-            modelBuilder.Entity("SmartTrade.Entities.GiftList", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ConsumerEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateOnly?>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConsumerEmail");
-
-                    b.ToTable("GiftList");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Image", b =>
@@ -730,34 +708,29 @@ namespace SmartTradeAPI.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Gift", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.GiftList", "GiftList")
-                        .WithMany("Gifts")
-                        .HasForeignKey("GiftListId")
+                    b.HasOne("SmartTrade.Entities.Offer", "Offer")
+                        .WithMany()
+                        .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartTrade.Entities.Offer", "Offer")
-                        .WithMany()
-                        .HasForeignKey("OfferId");
-
                     b.HasOne("SmartTrade.Entities.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("GiftList");
+                    b.HasOne("SmartTrade.Entities.Consumer", "User")
+                        .WithMany("Gifts")
+                        .HasForeignKey("UserEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Offer");
 
                     b.Navigation("Post");
-                });
 
-            modelBuilder.Entity("SmartTrade.Entities.GiftList", b =>
-                {
-                    b.HasOne("SmartTrade.Entities.Consumer", null)
-                        .WithMany("GiftLists")
-                        .HasForeignKey("ConsumerEmail")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Image", b =>
@@ -899,11 +872,6 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("BillingAddress");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.GiftList", b =>
-                {
-                    b.Navigation("Gifts");
-                });
-
             modelBuilder.Entity("SmartTrade.Entities.Post", b =>
                 {
                     b.Navigation("Offers");
@@ -933,7 +901,7 @@ namespace SmartTradeAPI.Migrations
 
                     b.Navigation("CreditCards");
 
-                    b.Navigation("GiftLists");
+                    b.Navigation("Gifts");
 
                     b.Navigation("Notifications");
 

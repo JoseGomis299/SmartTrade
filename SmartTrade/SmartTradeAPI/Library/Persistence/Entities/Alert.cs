@@ -10,5 +10,5 @@ public partial class Alert
     [Required]
     public virtual Consumer User { get; set; }
     [Required]
-    public virtual Product Product { get; set; }
+    public string ProductName { get; set; }
 }

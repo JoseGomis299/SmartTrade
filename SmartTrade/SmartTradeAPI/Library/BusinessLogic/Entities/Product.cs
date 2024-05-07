@@ -13,7 +13,6 @@ namespace SmartTrade.Entities;
         {
             Images = new List<Image>();
             Posts = new List<Post>();
-            Alerts = new List<Alert>();
         }
 
         protected Product(string name, string certification, string ecologicPrint, int minimumAge, string howToUse, string howToReducePrint) : this()
@@ -36,11 +35,6 @@ namespace SmartTrade.Entities;
             Posts.Add(post);
         }
 
-        public void AddAlert(Alert alert)
-        {
-            Alerts.Add(alert);
-        }
-
         public Image GetImage(int index)
         {
             return ((List<Image>)Images)[index];
@@ -55,6 +49,6 @@ namespace SmartTrade.Entities;
 
         public override bool Equals(object? obj)
         {
-            return obj is Product product && Name.ToCommonSyntax() == product.Name.ToCommonSyntax();
+            return obj is Product product && Name.ToCommonSyntax() == product.Name.ToCommonSyntax() && product.MinimumAge == MinimumAge;
         }
     }

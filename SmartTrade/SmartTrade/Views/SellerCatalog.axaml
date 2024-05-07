@@ -13,19 +13,9 @@
 	</Design.DataContext>
 	<ScrollViewer Margin="0 10 0 0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
 		<StackPanel >
-			<TextBlock Classes="h1" HorizontalAlignment="Stretch" MaxWidth="320" Margin="0 10">My products</TextBlock>
-			<ItemsControl ItemsSource="{Binding MyProducts}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="450"/>
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<controls:ST_Product Margin=" 10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ProductName="{Binding Name}"/>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
+			<controls:ST_Carousel Title="Not yet validated" DataSource="{Binding NotValidatedPosts, Mode=OneWay}"/>
+            <TextBlock Classes="h1" HorizontalAlignment="Stretch" MaxWidth="320" Margin="0 10">My products</TextBlock>
+            <controls:ST_WrapPanel Products="{Binding MyProducts, Mode=OneWay}"/>
 		</StackPanel>
 	</ScrollViewer>
 </UserControl>

@@ -27,9 +27,10 @@ namespace SmartTrade.BusinessLogic
 
         public ConsumerDTO RegisterConsumer(ConsumerRegisterData registerData);
         public void RegisterAdmin(AdminRegisterData registerData);
-        public int CreateAlert(string userId, int productId);
+        public int CreateAlert(string userId, string productName);
 
         public void DeleteAlert(int alertId);
+        public void DeleteAlert(string productName, string loggedId);
         public void DeletePost(int postID);
 
         public List<SimplePostDTO> GetPosts(string? loggedID);
@@ -38,7 +39,7 @@ namespace SmartTrade.BusinessLogic
         public List<String> GetPostsNamesStartWith(string startWith, int numPosts);
         public List<string> GetPostNames();
         public List<NotificationDTO> GetNotifications(string loggedId);
-        public AlertDTO GetAlert(string productName);
+        public AlertDTO GetAlert(string productName, string loggedId);
         public void DeleteNotification(int notificationId);
         public void SetVisited(int id);
         public int CreateWish(string? loggedId, int id);
@@ -56,5 +57,6 @@ namespace SmartTrade.BusinessLogic
         public List<GiftListDTO> GetGiftLists(string consumerId);
         public void AddGift(string consumerId, SimpleGiftDTO giftDTO);
         public void RemoveGift(string consumerId, SimpleGiftDTO giftDTO);
+        public List<AlertDTO> GetAlerts(string loggedId);
     }
 }

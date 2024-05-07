@@ -14,7 +14,7 @@
 		<Grid RowDefinitions="Auto Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
 
 			<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="10 0 0 0">
-				<TextBlock Classes="h1" HorizontalAlignment="Stretch" Margin="-10 30 0 25" TextAlignment="Center">POST VALIDATION</TextBlock>
+				<TextBlock Classes="h1" HorizontalAlignment="Stretch" Margin="-10 30 0 25" TextAlignment="Center" Name="ViewTitle"/>
 				<controls:ST_TextBox LabelText="Title" Text="{Binding Title, Mode=TwoWay}" TextHeight="40" Name="Title"/>
 				<controls:ST_TextBox LabelText="Description" TextWrapping="Wrap" TextMinHeight="80" AcceptsReturn="True" Text="{Binding Description, Mode=TwoWay}" Name="Description"/>
 				<controls:ST_TextBox LabelText="Product name" TextWrapping="Wrap" Text="{Binding ProductName, Mode=TwoWay}" Name="ProductName"/>
@@ -93,8 +93,8 @@
 			</StackPanel>
 
 			<StackPanel Grid.Row="2" HorizontalAlignment="Center">
-				<Button Margin="0 10" HorizontalAlignment="Center" Height="40" Width="150" Classes="Green" Name="ConfirmButton">Validate</Button>
-                <Button Margin="0 10" HorizontalAlignment="Center" Height="40" Width="150" Classes="Red" Name="RejectButton">Reject</Button>
+				<Button Margin="0 10" HorizontalAlignment="Center" Height="40" Width="150" Classes="Green" Name="ConfirmButton"/>
+                <Button Margin="0 10" HorizontalAlignment="Center" Height="40" Width="150" Classes="Red" Name="RejectButton"/>
 				<Button Margin="0 10" HorizontalAlignment="Center" Height="40" Width="110" Classes="Black" Name="CancelButton">Cancel</Button>
 			</StackPanel>
 

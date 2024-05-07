@@ -68,6 +68,7 @@ public class ShoppingCartModel : ViewModelBase
             await Service.DeleteItemFromCartAsync(item.Offer.Id);
         }
 
+        SmartTradeNavigationManager.Instance.MainView.ReinitializeHomeNextTime = true;
         Products.Clear();
         this.RaisePropertyChanged(nameof(Products));
         Calculate();

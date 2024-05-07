@@ -9,21 +9,22 @@ namespace SmartTrade.ViewModels
 {
 	public class WishListModel : ViewModelBase
     {
-        public ObservableCollection<WishLModel> ProductsInWishList { get; set; }
+        public ObservableCollection<WishModel> ProductsInWishList { get; set; }
         public UserDTO User;
 
 
         public WishListModel()
         {
-            ProductsInWishList = new ObservableCollection<WishLModel>();
+            ProductsInWishList = new ObservableCollection<WishModel>();
+            LoadWishList();
         }
 
-        public async Task LoadWishListAsync()
+        public void LoadWishList()
         {
             ProductsInWishList.Clear();
-            foreach (var wish in await Service.GetWishAsync())
+            foreach (var wish in Service.WishList)
             {
-                ProductsInWishList.Add(new WishLModel(wish.Post, this, wish));
+                ProductsInWishList.Add(new WishModel(wish.Post, this, wish));
             }
         }
     }

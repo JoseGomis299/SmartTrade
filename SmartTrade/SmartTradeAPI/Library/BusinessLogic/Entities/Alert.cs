@@ -3,9 +3,9 @@
 public partial class Alert
 {
     public Alert(){}
-    public Alert(Consumer user, Product product)
+    public Alert(Consumer user, string productName)
     {
         User = user;
-        Product = product;
+        ProductName = productName;
     }
 }

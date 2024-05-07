@@ -9,7 +9,6 @@ public class ProductDTO
     public Dictionary<string, string> Attributes { get; set; }
     public string? Differentiators { get; set; }
     public string? Info { get; set; }
-    public List<string> UsersWithAlertsInThisProduct { get; set; }
 
     public ProductDTO(){}
     public ProductDTO(Product product)
@@ -19,6 +18,5 @@ public class ProductDTO
         Attributes = product.GetAttributes();
         Differentiators = product.GetDifferentiations();
         Info = product.GetInfo();
-        UsersWithAlertsInThisProduct = product.Alerts.Select(a => a.User.Email).ToList();
     }
 }

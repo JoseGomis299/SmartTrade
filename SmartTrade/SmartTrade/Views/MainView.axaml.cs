@@ -34,6 +34,7 @@ public partial class MainView : UserControl
     private int? _currentCategory;
 
     public bool ShowingPopUp { get; set; }
+    public bool ReinitializeHomeNextTime { get; set; }
 
     public MainView()
     {
@@ -61,6 +62,7 @@ public partial class MainView : UserControl
         ProfileButton.Click += OnProfileButtonOnClick;
         HomeButton.Click += OnHomeButtonOnClick;
         ShoppingCartButton.Click += OnShoppingCartButtonOnClick;
+        AddPostButton.Click += (sender, e) =>  SmartTradeNavigationManager.Instance.NavigateTo(new RegisterPost());
 
         _homeImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Home.png")));
         _userImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/User.png")));
@@ -86,6 +88,11 @@ public partial class MainView : UserControl
             AlertButton.IsVisible = false;
             CartItems.IsVisible = false;
             Menus.IsVisible = false;
+
+            if (_model.LoggedType == UserType.Seller)
+            {
+                AddPostButton.IsVisible = true;
+            }
         }
         else if (_model.LoggedType == UserType.Consumer)
         {
@@ -93,6 +100,7 @@ public partial class MainView : UserControl
             AlertButton.IsVisible = true;
             CartItems.IsVisible = true;
             Menus.IsVisible = true;
+            AddPostButton.IsVisible = false;
         }
         else
         {
@@ -100,6 +108,7 @@ public partial class MainView : UserControl
             AlertButton.IsVisible = false;
             CartItems.IsVisible = true;
             Menus.IsVisible = false;
+            AddPostButton.IsVisible = false;
         }
     }
 
@@ -128,11 +137,10 @@ public partial class MainView : UserControl
         _searchModel?.SortByCategory(_currentCategory);
     }
 
-    private async void OpenWishListAsync(object? sender, RoutedEventArgs e)
+    private void OpenWishListAsync(object? sender, RoutedEventArgs e)
     {
         var view = new WishListView();
         SmartTradeNavigationManager.Instance.NavigateTo(view);
-        await ((WishListModel)view.DataContext).LoadWishListAsync();
     }
 
     #endregion
@@ -154,7 +162,12 @@ public partial class MainView : UserControl
 
     private async void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        await ShowCatalogAsync();
+        if (ReinitializeHomeNextTime)
+        {
+            await ShowCatalogReinitializingAsync();
+            ReinitializeHomeNextTime = false;
+        }
+        else await ShowCatalogAsync();
     }
 
     private void OnProfileButtonOnClick(object? sender, RoutedEventArgs e)

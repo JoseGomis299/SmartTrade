@@ -31,7 +31,7 @@ namespace SmartTrade.Views
                     _stackHasChanged = false;
                 }
             }
-            else if (!_stackHasChanged)
+            else if (!_stackHasChanged && !SmartTradeNavigationManager.Instance.IsViewOnStack(viewType, _currentStack))
             {
                 Dispose();
             }
@@ -48,7 +48,7 @@ namespace SmartTrade.Views
                     _stackHasChanged = false;
                 }
             }
-            else if (!_stackHasChanged)
+            else if (!_stackHasChanged && !SmartTradeNavigationManager.Instance.IsViewOnStack(viewType, _currentStack))
             {
                 Dispose();
             }
