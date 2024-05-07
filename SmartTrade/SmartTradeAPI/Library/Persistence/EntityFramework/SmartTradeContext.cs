@@ -30,6 +30,8 @@ public class SmartTradeContext : BaseDbContext
     public DbSet<Purchase> Purchases { get; set; }
     public DbSet<Wish> Wish { get; set; }
     public DbSet<CartItem> CartItem { get; set; }
+    public DbSet<Gift> Gifts { get; set; }
+    public DbSet<GiftList> GiftLists { get; set; }
 
     public SmartTradeContext()
     {
@@ -65,6 +67,8 @@ public class SmartTradeContext : BaseDbContext
         if (!Purchases.IsNullOrEmpty()) Purchases.RemoveRange(Purchases);
         if(!Wish.IsNullOrEmpty()) Wish.RemoveRange(Wish);
         if(!CartItem.IsNullOrEmpty()) CartItem.RemoveRange(CartItem);
+        if(!Gifts.IsNullOrEmpty()) Gifts.RemoveRange(Gifts);
+        if(!GiftLists.IsNullOrEmpty()) GiftLists.RemoveRange(GiftLists);
 
         SaveChanges();
     }

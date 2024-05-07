@@ -12,8 +12,8 @@ using SmartTrade.Persistence;
 namespace SmartTradeAPI.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    [Migration("20240503082404_migra")]
-    partial class migra
+    [Migration("20240507093829_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,16 +78,15 @@ namespace SmartTradeAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserEmail");
 
@@ -174,29 +173,55 @@ namespace SmartTradeAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ListName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OfferId")
+                    b.Property<int?>("GiftListId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PostId")
+                    b.Property<bool>("Notified")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("OfferId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GiftListId");
 
                     b.HasIndex("OfferId");
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("UserEmail");
+                    b.ToTable("Gifts");
+                });
 
-                    b.ToTable("Gift");
+            modelBuilder.Entity("SmartTrade.Entities.GiftList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ConsumerEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateOnly?>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsumerEmail");
+
+                    b.ToTable("GiftLists");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Image", b =>
@@ -214,6 +239,10 @@ namespace SmartTradeAPI.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("Thumbnail")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
@@ -228,6 +257,10 @@ namespace SmartTradeAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TargetPostId")
                         .HasColumnType("int");
@@ -473,9 +506,6 @@ namespace SmartTradeAPI.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -483,8 +513,6 @@ namespace SmartTradeAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserEmail");
 
@@ -656,19 +684,11 @@ namespace SmartTradeAPI.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Alert", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Product", "Product")
-                        .WithMany("Alerts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SmartTrade.Entities.Consumer", "User")
                         .WithMany("Alerts")
                         .HasForeignKey("UserEmail")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });
@@ -712,29 +732,30 @@ namespace SmartTradeAPI.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Gift", b =>
                 {
+                    b.HasOne("SmartTrade.Entities.GiftList", null)
+                        .WithMany("Gifts")
+                        .HasForeignKey("GiftListId");
+
                     b.HasOne("SmartTrade.Entities.Offer", "Offer")
                         .WithMany()
-                        .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OfferId");
 
                     b.HasOne("SmartTrade.Entities.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SmartTrade.Entities.Consumer", "User")
-                        .WithMany("Gifts")
-                        .HasForeignKey("UserEmail")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostId");
 
                     b.Navigation("Offer");
 
                     b.Navigation("Post");
+                });
 
-                    b.Navigation("User");
+            modelBuilder.Entity("SmartTrade.Entities.GiftList", b =>
+                {
+                    b.HasOne("SmartTrade.Entities.Consumer", null)
+                        .WithMany("GiftLists")
+                        .HasForeignKey("ConsumerEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Image", b =>
@@ -854,10 +875,6 @@ namespace SmartTradeAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartTrade.Entities.Product", null)
-                        .WithMany("Wishes")
-                        .HasForeignKey("ProductId");
-
                     b.HasOne("SmartTrade.Entities.Consumer", "User")
                         .WithMany("WishList")
                         .HasForeignKey("UserEmail")
@@ -880,6 +897,11 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("BillingAddress");
                 });
 
+            modelBuilder.Entity("SmartTrade.Entities.GiftList", b =>
+                {
+                    b.Navigation("Gifts");
+                });
+
             modelBuilder.Entity("SmartTrade.Entities.Post", b =>
                 {
                     b.Navigation("Offers");
@@ -887,13 +909,9 @@ namespace SmartTradeAPI.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Product", b =>
                 {
-                    b.Navigation("Alerts");
-
                     b.Navigation("Images");
 
                     b.Navigation("Posts");
-
-                    b.Navigation("Wishes");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Admin", b =>
@@ -913,7 +931,7 @@ namespace SmartTradeAPI.Migrations
 
                     b.Navigation("CreditCards");
 
-                    b.Navigation("Gifts");
+                    b.Navigation("GiftLists");
 
                     b.Navigation("Notifications");
 

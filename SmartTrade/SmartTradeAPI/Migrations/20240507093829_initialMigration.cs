@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartTradeAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class newImp : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace SmartTradeAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -48,12 +48,32 @@ namespace SmartTradeAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Email);
+                    table.PrimaryKey("PK_Users", x => x.Email);
                     table.ForeignKey(
-                        name: "FK_User_Addresses_BillingAddressId",
+                        name: "FK_Users_Addresses_BillingAddressId",
                         column: x => x.BillingAddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Alerts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Alerts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Alerts_Users_UserEmail",
+                        column: x => x.UserEmail,
+                        principalTable: "Users",
+                        principalColumn: "Email",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -68,9 +88,9 @@ namespace SmartTradeAPI.Migrations
                 {
                     table.PrimaryKey("PK_Bizums", x => x.TelephonNumber);
                     table.ForeignKey(
-                        name: "FK_Bizums_User_ConsumerEmail",
+                        name: "FK_Bizums_Users_ConsumerEmail",
                         column: x => x.ConsumerEmail,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Email");
                 });
 
@@ -88,10 +108,31 @@ namespace SmartTradeAPI.Migrations
                 {
                     table.PrimaryKey("PK_CreditCards", x => x.CardNumber);
                     table.ForeignKey(
-                        name: "FK_CreditCards_User_ConsumerEmail",
+                        name: "FK_CreditCards_Users_ConsumerEmail",
                         column: x => x.ConsumerEmail,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Email");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GiftLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Date = table.Column<DateOnly>(type: "date", nullable: true),
+                    ConsumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GiftLists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GiftLists_Users_ConsumerEmail",
+                        column: x => x.ConsumerEmail,
+                        principalTable: "Users",
+                        principalColumn: "Email",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,9 +147,9 @@ namespace SmartTradeAPI.Migrations
                 {
                     table.PrimaryKey("PK_PayPals", x => x.Email);
                     table.ForeignKey(
-                        name: "FK_PayPals_User_ConsumerEmail",
+                        name: "FK_PayPals_Users_ConsumerEmail",
                         column: x => x.ConsumerEmail,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Email");
                 });
 
@@ -148,36 +189,10 @@ namespace SmartTradeAPI.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_User_AdminEmail",
+                        name: "FK_Products_Users_AdminEmail",
                         column: x => x.AdminEmail,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Email");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Alerts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Alerts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Alerts_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Alerts_User_UserEmail",
-                        column: x => x.UserEmail,
-                        principalTable: "User",
-                        principalColumn: "Email",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,6 +202,7 @@ namespace SmartTradeAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageSource = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Thumbnail = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -221,14 +237,14 @@ namespace SmartTradeAPI.Migrations
                         principalTable: "Products",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Posts_User_AdminEmail",
+                        name: "FK_Posts_Users_AdminEmail",
                         column: x => x.AdminEmail,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Email");
                     table.ForeignKey(
-                        name: "FK_Posts_User_SellerEmail",
+                        name: "FK_Posts_Users_SellerEmail",
                         column: x => x.SellerEmail,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Email",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -239,6 +255,7 @@ namespace SmartTradeAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Visited = table.Column<bool>(type: "bit", nullable: false),
                     TargetUserEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TargetPostId = table.Column<int>(type: "int", nullable: false)
@@ -253,9 +270,9 @@ namespace SmartTradeAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Notification_User_TargetUserEmail",
+                        name: "FK_Notification_Users_TargetUserEmail",
                         column: x => x.TargetUserEmail,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Email",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -289,15 +306,145 @@ namespace SmartTradeAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Wish",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Wish", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Wish_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Wish_Users_UserEmail",
+                        column: x => x.UserEmail,
+                        principalTable: "Users",
+                        principalColumn: "Email",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PostId = table.Column<int>(type: "int", nullable: false),
+                    OfferId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ConsumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CartItem_Offers_OfferId",
+                        column: x => x.OfferId,
+                        principalTable: "Offers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartItem_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_CartItem_Users_ConsumerEmail",
+                        column: x => x.ConsumerEmail,
+                        principalTable: "Users",
+                        principalColumn: "Email");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Gifts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Notified = table.Column<bool>(type: "bit", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: true),
+                    OfferId = table.Column<int>(type: "int", nullable: true),
+                    GiftListId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Gifts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Gifts_GiftLists_GiftListId",
+                        column: x => x.GiftListId,
+                        principalTable: "GiftLists",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Gifts_Offers_OfferId",
+                        column: x => x.OfferId,
+                        principalTable: "Offers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Gifts_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PurchaseProductId = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    ShippingPrice = table.Column<float>(type: "real", nullable: false),
+                    PurchasePostId = table.Column<int>(type: "int", nullable: true),
+                    PurchaseSellerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PurchaseOfferId = table.Column<int>(type: "int", nullable: true),
+                    ConsumerEmail = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchases_Offers_PurchaseOfferId",
+                        column: x => x.PurchaseOfferId,
+                        principalTable: "Offers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Purchases_Posts_PurchasePostId",
+                        column: x => x.PurchasePostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Purchases_Products_PurchaseProductId",
+                        column: x => x.PurchaseProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Purchases_Users_ConsumerEmail",
+                        column: x => x.ConsumerEmail,
+                        principalTable: "Users",
+                        principalColumn: "Email");
+                    table.ForeignKey(
+                        name: "FK_Purchases_Users_PurchaseSellerEmail",
+                        column: x => x.PurchaseSellerEmail,
+                        principalTable: "Users",
+                        principalColumn: "Email");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_ConsumerEmail",
                 table: "Addresses",
                 column: "ConsumerEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Alerts_ProductId",
-                table: "Alerts",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Alerts_UserEmail",
@@ -310,9 +457,44 @@ namespace SmartTradeAPI.Migrations
                 column: "ConsumerEmail");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CartItem_ConsumerEmail",
+                table: "CartItem",
+                column: "ConsumerEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItem_OfferId",
+                table: "CartItem",
+                column: "OfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItem_PostId",
+                table: "CartItem",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CreditCards_ConsumerEmail",
                 table: "CreditCards",
                 column: "ConsumerEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GiftLists_ConsumerEmail",
+                table: "GiftLists",
+                column: "ConsumerEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Gifts_GiftListId",
+                table: "Gifts",
+                column: "GiftListId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Gifts_OfferId",
+                table: "Gifts",
+                column: "OfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Gifts_PostId",
+                table: "Gifts",
+                column: "PostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Image_ProductId",
@@ -365,15 +547,50 @@ namespace SmartTradeAPI.Migrations
                 column: "AdminEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_BillingAddressId",
-                table: "User",
+                name: "IX_Purchases_ConsumerEmail",
+                table: "Purchases",
+                column: "ConsumerEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Purchases_PurchaseOfferId",
+                table: "Purchases",
+                column: "PurchaseOfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Purchases_PurchasePostId",
+                table: "Purchases",
+                column: "PurchasePostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Purchases_PurchaseProductId",
+                table: "Purchases",
+                column: "PurchaseProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Purchases_PurchaseSellerEmail",
+                table: "Purchases",
+                column: "PurchaseSellerEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_BillingAddressId",
+                table: "Users",
                 column: "BillingAddressId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_Wish_PostId",
+                table: "Wish",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wish_UserEmail",
+                table: "Wish",
+                column: "UserEmail");
+
             migrationBuilder.AddForeignKey(
-                name: "FK_Addresses_User_ConsumerEmail",
+                name: "FK_Addresses_Users_ConsumerEmail",
                 table: "Addresses",
                 column: "ConsumerEmail",
-                principalTable: "User",
+                principalTable: "Users",
                 principalColumn: "Email");
         }
 
@@ -381,7 +598,7 @@ namespace SmartTradeAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_User_ConsumerEmail",
+                name: "FK_Addresses_Users_ConsumerEmail",
                 table: "Addresses");
 
             migrationBuilder.DropTable(
@@ -391,7 +608,13 @@ namespace SmartTradeAPI.Migrations
                 name: "Bizums");
 
             migrationBuilder.DropTable(
+                name: "CartItem");
+
+            migrationBuilder.DropTable(
                 name: "CreditCards");
+
+            migrationBuilder.DropTable(
+                name: "Gifts");
 
             migrationBuilder.DropTable(
                 name: "Image");
@@ -400,10 +623,19 @@ namespace SmartTradeAPI.Migrations
                 name: "Notification");
 
             migrationBuilder.DropTable(
-                name: "Offers");
+                name: "PayPals");
 
             migrationBuilder.DropTable(
-                name: "PayPals");
+                name: "Purchases");
+
+            migrationBuilder.DropTable(
+                name: "Wish");
+
+            migrationBuilder.DropTable(
+                name: "GiftLists");
+
+            migrationBuilder.DropTable(
+                name: "Offers");
 
             migrationBuilder.DropTable(
                 name: "Posts");
@@ -412,7 +644,7 @@ namespace SmartTradeAPI.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Addresses");

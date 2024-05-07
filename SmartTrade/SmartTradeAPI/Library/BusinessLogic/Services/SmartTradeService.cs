@@ -188,7 +188,7 @@ public class SmartTradeService : ISmartTradeService
         List<Alert> alerts = _dal.GetWhere<Alert>(x => x.ProductName == post.Offers.First().Product.Name).ToList();
         foreach (var alert in alerts)
         {
-            var notification = new Notification(false, alert.User, post);
+            var notification = new Notification(false, $"{alert.ProductName} has new stock!", alert.User, post);
             _dal.Insert(notification);
         }
     }
@@ -569,13 +569,14 @@ public class SmartTradeService : ISmartTradeService
     {
         Consumer consumer = _dal.GetById<Consumer>(consumerId);
 
-        return consumer.GiftLists.AsQueryable().Select(gl => new GiftListDTO
+        var giftLists = consumer.GiftLists.AsQueryable().Select(gl => new GiftListDTO
         {
             Id = gl.Id,
             Name = gl.Name,
             Date = gl.Date,
             Gifts = gl.Gifts.AsQueryable().Select(g => new GiftDTO
             {
+                Id = g.Id,
                 Offer = new OfferDTO
                 {
                     Id = g.Offer.Id,
@@ -589,9 +590,35 @@ public class SmartTradeService : ISmartTradeService
                     }
                 },
                 Post = GetPost(g.Post.Id),
-                Quantity = g.Quantity
+                Quantity = g.Quantity,
+                Notified = g.Notified
             }).ToList(),
+
         }).ToList();
+
+        foreach (var giftList in giftLists)
+        {
+            foreach (var gift in giftList.Gifts)
+            {
+                if(gift.Notified) continue;
+
+                int remainingDays = giftList.Date.Value.DayNumber - DateOnly.FromDateTime(DateTime.Now).DayNumber;
+                if (remainingDays <= 7)
+                {
+                    _dal.GetById<Gift>(gift.Id).Notified = true;
+
+                    string message = $"You have {remainingDays} days left to buy {gift.Post.Title}!";
+                    if(remainingDays == 0) message = $"Today is the last day to buy {gift.Post.Title}!";
+                    else if(remainingDays < 0) message = $"You have passed the deadline to buy {gift.Post.Title}!";
+                    var notification = new Notification(false, message,consumer, _dal.GetById<Post>(gift.Post.Id));
+                    
+                    _dal.Insert(notification);
+                    _dal.Commit();
+                }
+            }
+        }
+
+        return giftLists;
     }
 
     public void AddGift(string consumerId, SimpleGiftDTO giftDTO)

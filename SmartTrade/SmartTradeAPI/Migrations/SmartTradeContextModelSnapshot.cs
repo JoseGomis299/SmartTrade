@@ -170,12 +170,11 @@ namespace SmartTradeAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<int?>("GiftListId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ListName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Notified")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("OfferId")
                         .HasColumnType("int");
@@ -186,10 +185,6 @@ namespace SmartTradeAPI.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GiftListId");
@@ -198,7 +193,7 @@ namespace SmartTradeAPI.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Gift");
+                    b.ToTable("Gifts");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.GiftList", b =>
@@ -223,7 +218,7 @@ namespace SmartTradeAPI.Migrations
 
                     b.HasIndex("ConsumerEmail");
 
-                    b.ToTable("GiftList");
+                    b.ToTable("GiftLists");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Image", b =>
@@ -259,6 +254,10 @@ namespace SmartTradeAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TargetPostId")
                         .HasColumnType("int");
@@ -730,11 +729,9 @@ namespace SmartTradeAPI.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Gift", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.GiftList", "GiftList")
+                    b.HasOne("SmartTrade.Entities.GiftList", null)
                         .WithMany("Gifts")
-                        .HasForeignKey("GiftListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GiftListId");
 
                     b.HasOne("SmartTrade.Entities.Offer", "Offer")
                         .WithMany()
@@ -743,8 +740,6 @@ namespace SmartTradeAPI.Migrations
                     b.HasOne("SmartTrade.Entities.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId");
-
-                    b.Navigation("GiftList");
 
                     b.Navigation("Offer");
 

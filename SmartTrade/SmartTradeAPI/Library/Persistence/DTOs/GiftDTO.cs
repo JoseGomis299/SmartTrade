@@ -10,9 +10,11 @@ namespace SmartTradeDTOs
     public class GiftDTO
     {
         public int Quantity { get; set; }
+        public bool Notified { get; set; }
         public PostDTO Post { get; set; }
         public OfferDTO Offer { get; set; }
         public string GiftListName { get; set; }
+        public int Id { get; set; }
 
         public GiftDTO()
         {
