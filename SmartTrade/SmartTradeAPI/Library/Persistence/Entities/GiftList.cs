@@ -3,14 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartTrade.Entities;
 
-public partial class Gift
+public partial class GiftList
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    [Required]
-    public virtual GiftList GiftList { get; set; }
-    public int Quantity { get; set; }
-    public virtual Post? Post { get; set; }
-    public virtual Offer? Offer { get; set; }
+    public string? Name { get; set; }
+    public DateOnly? Date { get; set; }
+    public virtual string ConsumerEmail { get; set; }
+    public virtual ICollection<Gift> Gifts { get; set; }
 
 }

@@ -17,6 +17,7 @@ namespace SmartTrade.Services
     {
         public event Action? OnPostsChanged;
         public event Action? OnCartChanged;
+        public event Action? OnGiftsChanged;
         private List<PostDTO> _completePosts = new List<PostDTO>();
         private List<SimplePostDTO>? _simplePosts;
         public List<SimplePostDTO>? Posts => _simplePosts;
@@ -24,7 +25,7 @@ namespace SmartTrade.Services
         public List<CartItemDTO>? CartItems { get; set; } = new List<CartItemDTO>();
         public List<PurchaseDTO>? Purchases { get; set; }
         public List<WishDTO>? Wishes { get; set; }
-        public List<SimpleGiftDTO>? Gifts { get; set; } = new List<SimpleGiftDTO>(); 
+        public List<GiftListDTO>? GiftLists { get; set; }
 
         public async Task LoadCartItemsAsync()
         {
@@ -147,20 +148,51 @@ namespace SmartTrade.Services
             await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
         }
 
-        public async Task<int> AddGiftAsync(PostDTO post, OfferDTO offer, int quantity)
+        public void AddGiftList(string name, DateOnly? date, string consumerId)
         {
-            int index = Gifts.FindIndex(x => x.PostId == post.Id && x.OfferId == offer.Id);
-
-            if (index == -1)
+            var index = GiftLists.FindIndex(x => x.Name == name);
+            if (index != -1)
             {
-                CartItems.Add(new CartItemDTO(post, offer, quantity));
+                GiftLists[index].Name = name;
+                GiftLists[index].Date = date;
             }
-            else CartItems[index].Quantity += quantity;
+            else
+            {
+                GiftLists.Add(new GiftListDTO(name, date, consumerId, new List<GiftDTO>()));
+            }
+        }
 
-            OnCartChanged?.Invoke();
-            await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
+        public void RemoveGiftList(string listName)
+        {
+            int index = GiftLists.FindIndex(x => x.Name == listName);
+            if (index != -1) GiftLists.RemoveAt(index);
+        }
 
-            return index == -1 ? quantity : CartItems[index].Quantity;
+        public void LoadGiftLists(List<GiftListDTO> giftLists)
+        {
+            GiftLists = giftLists;
+        }
+
+        public void AddGift(int quantity, PostDTO post, OfferDTO offer, string giftListName)
+        {
+            int indexList = GiftLists.FindIndex(x => x.Name == giftListName);
+            int indexGift = GiftLists[indexList].Gifts.FindIndex(x => x.Offer.Id == offer.Id);
+
+            if (indexGift != -1)
+            {
+                GiftLists[indexList].Gifts[indexGift].Quantity = quantity;
+            }
+            else
+            {
+                GiftLists[indexGift].Gifts.Add(new GiftDTO(quantity, post, offer, giftListName));
+            }
+        }
+
+        public void RemoveGift(string GiftListName, int offerId)
+        {
+            var indexList = GiftLists.FindIndex(x => x.Name == GiftListName);
+            var indexGift = GiftLists[indexList].Gifts.FindIndex(x => x.Offer.Id == offerId);
+            if (indexGift != -1) GiftLists[indexList].Gifts.RemoveAt(indexGift);
         }
     }
 }

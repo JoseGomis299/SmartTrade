@@ -11,8 +11,8 @@ public partial class Consumer : User
         Alerts = new List<Alert>();
         WishList = new List<Wish>();
         Purchases = new List<Purchase>();
-        Gifts = new List<Gift>();
         ShoppingCart = new List<CartItem>();
+        GiftLists = new List<GiftList>();
     }
 
     public Consumer(string email, string password, string name, string lastNames, string dni, DateTime birthDate, Address billingAddress, Address address) : base(email, password, name, lastNames)
@@ -27,7 +27,7 @@ public partial class Consumer : User
         CreditCards = new List<CreditCardInfo>();
         Alerts = new List<Alert>();
         WishList = new List<Wish>();
-        Gifts = new List<Gift>();
+        GiftLists = new List<GiftList>();
         Purchases = new List<Purchase>();   
 
         Addresses.Add(address);
@@ -76,14 +76,53 @@ public partial class Consumer : User
         Purchases.Add(purchase);
     }
 
-    public void AddGift(Gift gift)
-    {
-        Gifts.Add(gift);
-    }
-
     public void RemoveFromCart(int OfferId)
     {
         var index = ((List<CartItem>)ShoppingCart).FindIndex(x => x.Offer.Id == OfferId);
         if (index != -1) ((List<CartItem>)ShoppingCart).RemoveAt(index);
+    }
+
+    public void AddGiftList(GiftList giftList)
+    {
+        var index = ((List<GiftList>)GiftLists).FindIndex(x => x.Name == giftList.Name);
+        if (index != -1) 
+        {
+            ((List<GiftList>)GiftLists)[index].Name = giftList.Name;
+            ((List<GiftList>)GiftLists)[index].Date = giftList.Date;
+        }
+        else 
+        {
+            GiftLists.Add(giftList);
+        }
+    }
+
+    public void RemoveGiftList(string listName)
+    {
+        var index = ((List<GiftList>)GiftLists).FindIndex(x => x.Name == listName);
+        if (index != -1) ((List<GiftList>)GiftLists).RemoveAt(index);
+    }
+
+    public void AddGift(string giftListName, Gift gift)
+    {
+        var indexList = ((List<GiftList>)GiftLists).FindIndex(x => x.Name == giftListName);
+        var gifts = ((List<GiftList>)GiftLists)[indexList].Gifts;
+        var indexGift = ((List<Gift>)gifts).FindIndex(x => x.Offer.Id == gift.Offer.Id);
+
+        if (indexGift != -1)
+        {
+            ((List<GiftList>)GiftLists)[indexList].Gifts.Add(gift);
+        }
+        else
+        {
+            ((List<Gift>)gifts)[indexGift].Quantity = gift.Quantity;
+        }
+    }
+
+    public void RemoveGift(string GiftListName, int offerId)
+    {
+        var indexList = ((List<GiftList>)GiftLists).FindIndex(x => x.Name == GiftListName);
+        var gifts = ((List<GiftList>)GiftLists)[indexList].Gifts;
+        var indexGift = ((List<Gift>)gifts).FindIndex(x => x.Offer.Id == offerId);
+        if (indexGift != -1) ((List<Gift>)gifts).RemoveAt(indexGift);
     }
 }

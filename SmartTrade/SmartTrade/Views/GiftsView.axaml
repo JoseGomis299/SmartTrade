@@ -13,14 +13,22 @@
     <ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="10">
             <TextBlock Classes="h1" HorizontalAlignment="Center" Text="GIFTS"/>
-			<Grid ColumnDefinitions="* auto">
-				<ComboBox Name="ComboBoxGiftList" ItemsSource="{Binding GiftListsNames}" Grid.Column="0" HorizontalAlignment="Center" Width="300" SelectedIndex="0" MaxDropDownHeight="100">
+			<Grid RowDefinitions="auto *" Width="300">
+				<ComboBox Name="ComboBoxGiftList" Margin="0 10" ItemsSource="{Binding GiftListsNames}" Grid.Row="0" HorizontalAlignment="Center" Width="300" SelectedIndex="{Binding ComboBoxIndex, Mode=TwoWay}" MaxDropDownHeight="100">
 				</ComboBox>
-				<Button Grid.Column="1" Background="Transparent" Width="40" Height="40" Margin="0 0 2 0" Name="EditButton">
-					<Image VerticalAlignment="Center" Stretch="Uniform" Name="EditImage" Width="40"></Image>
-				</Button>
+				<Grid ColumnDefinitions="100 * *" Grid.Row="1">
+					<Button Grid.Column="0" HorizontalAlignment="Center" Background="Transparent" Width="40" Height="40" Margin="0 0 2 0" Name="AddButton" IsVisible="{Binding AddButtonIsVisible, Mode=OneWay}">
+						<Image VerticalAlignment="Center" Name="AddImage" Width="40"></Image>
+					</Button>
+					<Button Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" Width="40" Height="40" Margin="0 0 2 0" Name="EditButton" IsVisible="{Binding EditButtonIsVisible, Mode=OneWay}">
+						<Image VerticalAlignment="Center" Name="EditImage" Width="40"></Image>
+					</Button>
+					<Button Grid.Column="2" HorizontalAlignment="Center" Background="Transparent" Width="40" Height="40" Margin="0 0 2 0" Name="RemoveButton" IsVisible="{Binding RemoveButtonIsVisible, Mode=OneWay}">
+						<Image VerticalAlignment="Center" Name="RemoveImage" Width="40"></Image>
+					</Button>
+				</Grid>				
 			</Grid>
-            <ItemsControl ItemsSource="{Binding Products}">
+            <ItemsControl ItemsSource="{Binding Gifts}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center"/>
@@ -32,7 +40,8 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <StackPanel HorizontalAlignment="Right" Margin=" 30 10" Spacing="2">
+			<TextBlock Name="NoElementsTextBlock" IsVisible="{Binding NoElementsIsVisible, Mode=OneWay}" Text ="{Binding NoElementsText, Mode=OneWay}" Classes="h1=" Width="300" TextAlignment="Center" HorizontalAlignment="Center" Margin="30"></TextBlock>
+            <StackPanel Name="CheckoutStackPanel" HorizontalAlignment="Right" Margin=" 30 10" Spacing="2">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Classes="h1" Text="TOTAL: "/>
                     <TextBlock Classes="h1" Foreground="#ff32c378" Text="{Binding Total, Mode=OneWay}"/>

@@ -9,10 +9,8 @@ public partial class Gift
     { 
     }
 
-    public Gift(string listName, DateOnly? date, int? quantity, Post? post, Offer? offer):this()
+    public Gift(int quantity, Post post, Offer offer)
     {
-        ListName = listName;
-        Date = date;
         Quantity = quantity;
         Post = post;
         Offer = offer;

@@ -98,12 +98,48 @@ public class UserController : ControllerBase
         service.RemoveFromCart(loggedId, id);
     }
 
-    [HttpPost("AddGift")]
+    [HttpPost("AddGiftList")]
+    public void AddGiftList([FromBody] SimpleGiftListDTO giftList)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        service.AddGiftList(loggedId, giftList);
+    }
+
+    [HttpDelete("RemoveGiftList")]
+    public void RemoveGiftList(string listName)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        service.RemoveGiftList(loggedId, listName);
+    }
+
+    [HttpGet("GetGiftLists")]
+    public List<GiftListDTO>? GetGiftLists()
+    {
+        ISmartTradeService service = new SmartTradeService();
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        return service.GetGiftLists(loggedId);
+    }
+
+    [HttpPut("AddGift")]
     public void AddGift([FromBody] SimpleGiftDTO gift)
     {
         ISmartTradeService service = new SmartTradeService();
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
 
         service.AddGift(loggedId, gift);
+    }
+
+    [HttpDelete("RemoveGift")]
+    public void RemoveGift([FromBody] SimpleGiftDTO gift)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+        service.RemoveGift(loggedId, gift);
     }
 }

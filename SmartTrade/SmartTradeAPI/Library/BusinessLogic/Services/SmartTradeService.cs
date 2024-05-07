@@ -568,15 +568,62 @@ public class SmartTradeService : ISmartTradeService
         }).ToList();
     }
 
-    public void AddGift(string consumerId, SimpleGiftDTO giftDTO)
-    {
-        Consumer? logged = _dal.GetById<Consumer>(consumerId);
-
-        var post = _dal.GetById<Post>(giftDTO.PostId);
-        var offer = _dal.GetById<Offer>(giftDTO.OfferId);
-
-        Gift gift = new Gift(giftDTO.ListName,giftDTO.Date,giftDTO.Quantity,post,offer);
-        logged.AddGift(gift);
+    public void AddGiftList(string consumerId, SimpleGiftListDTO giftListDTO) {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+        consumer.AddGiftList(new GiftList(giftListDTO.Name,giftListDTO.Date,consumerId));
         _dal.Commit();
     }
+
+    public void RemoveGiftList(string consumerId, string listName)
+    {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+        consumer.RemoveGiftList(listName);
+        _dal.Commit();
+    }
+
+    public List<GiftListDTO> GetGiftLists(string consumerId)
+    {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+
+        return consumer.GiftLists.AsQueryable().Select(gl => new GiftListDTO
+        {
+            Id = gl.Id,
+            Name = gl.Name,
+            Date = gl.Date,
+            Gifts = gl.Gifts.AsQueryable().Select(g => new GiftDTO
+            {
+                Offer = new OfferDTO
+                {
+                    Id = g.Offer.Id,
+                    Price = g.Offer.Price,
+                    ShippingCost = g.Offer.ShippingCost,
+                    Stock = g.Offer.Stock,
+                    Product = new ProductDTO
+                    {
+                        Id = g.Offer.Product.Id,
+                        Images = new List<byte[]>() { g.Offer.Product.Images.First().ImageSource }
+                    }
+                },
+                Post = GetPost(g.Post.Id),
+                Quantity = g.Quantity
+            }).ToList(),
+        }).ToList();
+    }
+
+    public void AddGift(string consumerId, SimpleGiftDTO giftDTO)
+    {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+        Post post = _dal.GetById<Post>(giftDTO.PostId);
+        Offer offer = _dal.GetById<Offer>(giftDTO.OfferId);
+
+        consumer.AddGift(giftDTO.GiftListName, new Gift(giftDTO.Quantity, post, offer));
+        _dal.Commit();
+    }
+
+    public void RemoveGift(string consumerId, SimpleGiftDTO giftDTO)
+    {
+        Consumer consumer = _dal.GetById<Consumer>(consumerId);
+        consumer.RemoveGift(giftDTO.GiftListName, giftDTO.OfferId);
+        _dal.Commit();
+    }    
 }

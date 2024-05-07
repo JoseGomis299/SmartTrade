@@ -115,20 +115,33 @@ public class UserClient : ApiClient
         await PerformApiInstructionAsync($"RemoveFromShoppingCart?id={offerId}", ApiInstruction.Delete);
     }
 
-    public async Task AddGiftAsync(string ListName, DateOnly? Date, int? Quantity, string? ConsumerEmail, int? PostId, int? OfferId)
+    public async Task AddGiftListAsync(SimpleGiftListDTO giftList)
     {
         if (Logged == null) return;
+        await PerformApiInstructionAsync($"AddGiftList", ApiInstruction.Post, giftList);
+    }
 
-        var registerData = new SimpleGiftDTO()
-        {
-            ListName = ListName,
-            Date = Date,
-            Quantity = Quantity,
-            ConsumerEmail = ConsumerEmail,
-            PostId = PostId,
-            OfferId = OfferId
-        };
+    public async Task RemoveGiftListAsync(string listName)
+    {
+        if (Logged == null) return;
+        await PerformApiInstructionAsync($"RemoveGiftList?id={listName}", ApiInstruction.Delete);
+    }
 
-        await PerformApiInstructionAsync("AddGift", ApiInstruction.Post, registerData);
+    public async Task<List<GiftListDTO>?> GetGiftListsAsync()
+    {
+        if (Logged == null) return null;
+        return JsonConvert.DeserializeObject<List<GiftListDTO>>(await PerformApiInstructionAsync($"GetGiftLists", ApiInstruction.Get));
+    }
+
+    public async Task AddGiftAsync(SimpleGiftDTO giftList)
+    {
+        if (Logged == null) return;
+        await PerformApiInstructionAsync($"AddGift", ApiInstruction.Put, giftList);
+    }
+
+    public async Task RemoveGiftAsync(SimpleGiftDTO giftList)
+    {
+        if (Logged == null) return;
+        await PerformApiInstructionAsync($"RemoveGift", ApiInstruction.Delete, giftList);
     }
 }

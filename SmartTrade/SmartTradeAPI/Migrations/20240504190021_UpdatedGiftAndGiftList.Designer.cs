@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTrade.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTrade.Persistence;
 namespace SmartTradeAPI.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240504190021_UpdatedGiftAndGiftList")]
+    partial class UpdatedGiftAndGiftList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,7 +174,10 @@ namespace SmartTradeAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GiftListId")
+                    b.Property<string>("ConsumerEmail")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("GiftListId")
                         .HasColumnType("int");
 
                     b.Property<int?>("OfferId")
@@ -184,6 +190,8 @@ namespace SmartTradeAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ConsumerEmail");
 
                     b.HasIndex("GiftListId");
 
@@ -203,7 +211,6 @@ namespace SmartTradeAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConsumerEmail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly?>("Date")
@@ -727,11 +734,13 @@ namespace SmartTradeAPI.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Gift", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.GiftList", "GiftList")
+                    b.HasOne("SmartTrade.Entities.Consumer", null)
                         .WithMany("Gifts")
-                        .HasForeignKey("GiftListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ConsumerEmail");
+
+                    b.HasOne("SmartTrade.Entities.GiftList", "GiftList")
+                        .WithMany()
+                        .HasForeignKey("GiftListId");
 
                     b.HasOne("SmartTrade.Entities.Offer", "Offer")
                         .WithMany()
@@ -750,11 +759,11 @@ namespace SmartTradeAPI.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.GiftList", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Consumer", null)
-                        .WithMany("GiftLists")
-                        .HasForeignKey("ConsumerEmail")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("SmartTrade.Entities.Consumer", "Consumer")
+                        .WithMany()
+                        .HasForeignKey("ConsumerEmail");
+
+                    b.Navigation("Consumer");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Image", b =>
@@ -896,11 +905,6 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("BillingAddress");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.GiftList", b =>
-                {
-                    b.Navigation("Gifts");
-                });
-
             modelBuilder.Entity("SmartTrade.Entities.Post", b =>
                 {
                     b.Navigation("Offers");
@@ -932,7 +936,7 @@ namespace SmartTradeAPI.Migrations
 
                     b.Navigation("CreditCards");
 
-                    b.Navigation("GiftLists");
+                    b.Navigation("Gifts");
 
                     b.Navigation("Notifications");
 

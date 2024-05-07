@@ -4,11 +4,13 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using DynamicData;
 using FuzzySharp;
 using Newtonsoft.Json;
 using SmartTrade.Entities;
 using SmartTradeDTOs;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SmartTrade.Services
 {
@@ -29,6 +31,18 @@ namespace SmartTrade.Services
             remove => _cache.OnCartChanged -= value;
         }
 
+        public event Action OnGiftsChanged
+        {
+            add => _cache.OnGiftsChanged += value;
+            remove => _cache.OnGiftsChanged -= value;
+        }
+
+        public event Action OnGiftListsChanged
+        {
+            add => _cache.OnGiftsChanged += value;
+            remove => _cache.OnGiftsChanged -= value;
+        }
+
         public UserType LoggedType
         {
             get
@@ -39,7 +53,8 @@ namespace SmartTrade.Services
         }
 
         public List<CartItemDTO>? CartItems => _cache.CartItems; 
-        public List<WishDTO>? WishList => _cache.Wishes; 
+        public List<WishDTO>? WishList => _cache.Wishes;
+        public List<GiftListDTO>? GiftLists => _cache.GiftLists;
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
         private SmartTradeBroker _broker;
@@ -74,6 +89,7 @@ namespace SmartTrade.Services
         {
             _broker.LogOut();
             await LoadCartItems();
+            _cache.GiftLists = null;
         }
 
         public async Task LogInAsync(string email, string password)
@@ -83,8 +99,7 @@ namespace SmartTrade.Services
             await LoadCartItems();
             _cache.Purchases = null;
             _cache.Wishes = await GetWishAsync();
-            _cache.Wishes = null;
-            _cache.Gifts = null;
+            await LoadGiftListsAsync();
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -286,16 +301,57 @@ namespace SmartTrade.Services
 
         #endregion
 
-        #region WishList
-        public async Task AddGiftAsync(PostDTO post, OfferDTO offer, int quantity = 1)
+        #region Gifts
+        public async Task AddGiftListAsync(string name, DateOnly? date)
         {
-            int count;
-            if (Logged != null) count = _cache.AddItemToCart(post, offer, quantity);
-            else count = await _cache.AddItemToCartAsync(post, offer, quantity);
-
-            await _broker.UserClient.AddToCartAsync(new SimpleCartItemDTO((int)post.Id, offer.Id, count));
+            if (Logged == null)
+            {
+                return;
+            }
+            _cache.AddGiftList(name, date, Logged.Email);
+            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(name, date, Logged.Email));
         }
 
+        public async Task RemoveGiftListAsync(string listName)
+        {
+            if (Logged == null)
+            {
+                return;
+            }
+            _cache.RemoveGiftList(listName);
+            await _broker.UserClient.RemoveGiftListAsync(listName);
+        }
+
+        public async Task LoadGiftListsAsync()
+        {
+            if (Logged == null)
+            {
+                return;
+            }
+
+            List<GiftListDTO> giftLists = await _broker.UserClient.GetGiftListsAsync(); ;
+            _cache.LoadGiftLists(giftLists);
+        }
+
+        public async Task AddGiftAsync(int quantity, PostDTO post, OfferDTO offer, string giftListName)
+        {
+            if (Logged == null)
+            {
+                return;
+            }
+            _cache.AddGift(quantity, post, offer, giftListName);
+            await _broker.UserClient.AddGiftAsync(new SimpleGiftDTO(quantity, (int)post.Id, (int)offer.Id, giftListName));
+        }
+        
+        public async Task RemoveGiftAsync(int quantity, int postId, int OfferId, string giftListName)
+        {
+            if (Logged == null)
+            {
+                return;
+            }
+            _cache.RemoveGift(giftListName, OfferId);
+            await _broker.UserClient.RemoveGiftAsync(new SimpleGiftDTO(quantity, postId, OfferId, giftListName));
+        }
         #endregion
 
         #region Product

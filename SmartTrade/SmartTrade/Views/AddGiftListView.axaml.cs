@@ -6,11 +6,11 @@ using System;
 
 namespace SmartTrade.Views
 {
-    public partial class EditGiftListView : UserControl
+    public partial class AddGiftListView : UserControl
     {
         private Popup _popup;
         private GiftsView GiftsView;
-        public EditGiftListView(GiftsView view)
+        public AddGiftListView(GiftsView view)
         {
             InitializeComponent();
 
@@ -25,7 +25,9 @@ namespace SmartTrade.Views
                 IsLightDismissEnabled = true
             };
         }
-        public EditGiftListView() { }
+
+        public AddGiftListView() { }
+
         private void TextBox_TextChanged(object? sender, TextChangedEventArgs e)
         {
             if (TextBoxName.Text == "")
@@ -40,8 +42,8 @@ namespace SmartTrade.Views
 
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
-            if (TextBoxName.Text == "") { return; }
-
+            if(TextBoxName.Text == "") { return; }
+            
             DateTime? dateTime = CalendarDate.SelectedDate;
             try
             {
@@ -54,7 +56,7 @@ namespace SmartTrade.Views
                     GiftsView.AddGiftList(TextBoxName.Text, null);
                 }
             }
-            catch (Exception ex) { TextBoxName.ErrorMessage.Text = ex.Message; }
+            catch(Exception ex) { TextBoxName.ErrorMessage.Text = ex.Message; }
 
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
 
@@ -64,6 +66,6 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
 
-
+        
     }
 }
