@@ -14,13 +14,13 @@
 	<Grid RowDefinitions="Auto Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
 		<StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Spacing="10" Margin="10 0 0 0">
 			<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">REGISTER AS A SELLER</TextBlock>
-			<controls:ST_TextBox LabelText="Name*" Text="{Binding Name, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxName"/>
-			<controls:ST_TextBox LabelText="Last Names*" Text="{Binding LastNames, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxLastNames"/>
-			<controls:ST_TextBox LabelText="CIF/DNI/NIE*" Text="{Binding CIF, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCIF"/>
+			<controls:ST_TextBox LabelText="Name*" OnlyLetters="True" Text="{Binding Name, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxName"/>
+			<controls:ST_TextBox LabelText="Last Names*" OnlyLetters="True" Text="{Binding LastNames, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxLastNames"/>
+			<controls:ST_TextBox LabelText="CIF/DNI/NIE*" ReplaceWithCaps="True" PatternRestriction="ABCDEFGHIJKMNÑLOPQRSTUVWXYZ1234567890" Text="{Binding CIF, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCIF"/>
 			<controls:ST_TextBox LabelText="Email*" Text="{Binding Email, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
 			<controls:ST_TextBoxPassword LabelText="Password*" PasswordText="•" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
 			<controls:ST_TextBox LabelText="Company*" Text="{Binding Company, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxCompany"/>
-			<controls:ST_TextBox LabelText="IBAN*" Text="{Binding IBAN, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxIBAN"/>
+			<controls:ST_TextBox LabelText="IBAN*" ReplaceWithCaps="True" PatternRestriction="ABCDEFGHIJKMNÑLOPQRSTUVWXYZ1234567890" Text="{Binding IBAN, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxIBAN"/>
             <Button Name="SignInButton" HorizontalAlignment="Center" Height="40" Width="200" Margin="0 30 0 0" Classes="Black">SIGN IN!</Button>
 		</StackPanel>
 		
