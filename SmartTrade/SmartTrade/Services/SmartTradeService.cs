@@ -94,6 +94,7 @@ namespace SmartTrade.Services;
         public async Task LogInAsync(string email, string password)
         {
             await _broker.UserClient.LogInAsync(email, password);
+            if (Logged == null) throw new Exception("Email or Password are incorrect");
 
             await LoadCartItems();
             _cache.Purchases = null;
@@ -341,10 +342,10 @@ namespace SmartTrade.Services;
                 return;
             }
 
-            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(newName, date.Value.ToDateTime(new TimeOnly()), Logged.Email, id));
+            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(newName, date?.ToDateTime(new TimeOnly()), Logged.Email, id));
         }
 
-    public async Task RemoveGiftListAsync(string listName)
+        public async Task RemoveGiftListAsync(string listName)
         {
             if (Logged == null)
             {

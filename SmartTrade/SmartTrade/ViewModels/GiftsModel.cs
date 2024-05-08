@@ -47,7 +47,7 @@ public class GiftsModel : ViewModelBase
                 Gifts.Add(new GiftItemModel(gift, this));
             }
         }
-        else ComboBoxIndex = 0;
+        else ComboBoxIndex = Math.Max(0, Math.Min(ComboBoxIndex, GiftLists.Count-1));
 
         if (GiftListsNames.Count == 0) { EditButtonIsVisible = false; RemoveButtonIsVisible = false; }
         else {
@@ -143,7 +143,7 @@ public class GiftsModel : ViewModelBase
     { 
         if(ComboBoxIndex == -1) { return; }
 
-        Service.RemoveGiftListAsync( GiftLists[ComboBoxIndex].Name);
+        Service.RemoveGiftListAsync(GiftLists[ComboBoxIndex].Name);
         UpdateView();
     }
 

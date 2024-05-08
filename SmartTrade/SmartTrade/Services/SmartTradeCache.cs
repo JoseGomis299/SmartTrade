@@ -159,6 +159,12 @@ namespace SmartTrade.Services
             {
                 GiftLists[index].Name = newName;
                 GiftLists[index].Date = date;
+
+                foreach (var gift in GiftLists[index].Gifts)
+                {
+                    gift.GiftListName = newName;
+                }
+                
                 return GiftLists[index].Id ?? -1;
             }
 
