@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SmartTrade.Services;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;

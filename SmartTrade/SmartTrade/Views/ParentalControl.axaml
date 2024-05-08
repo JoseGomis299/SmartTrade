@@ -10,9 +10,9 @@
 	<Design.DataContext>
 		<vm:ProfileModel/>
 	</Design.DataContext>
-  <StackPanel HorizontalAlignment="Center" Spacing="10">
+  <StackPanel HorizontalAlignment="Center" Spacing="10" Width="380">
 	  <TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">PARENTAL CONTROL</TextBlock>
-	  <controls:ST_TextBoxPassword PasswordText="•" LabelText="Password" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 50 15" Name="TextBoxPassword"/>
+	  <controls:ST_TextBoxPassword PasswordText="•" LabelText="Password" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 0 15" Name="TextBoxPassword"/>
 	  <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 		  <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="10 0 15 0" Classes="White" Name="CancelButton">Cancel</Button>
 		  <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="0 0 0 0" Classes="White" Name="AcceptButton">Accept</Button>

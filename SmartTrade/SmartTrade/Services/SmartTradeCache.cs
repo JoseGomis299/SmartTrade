@@ -15,6 +15,9 @@ namespace SmartTrade.Services
         public event Action? OnPostsChanged;
         public event Action? OnCartChanged;
         public event Action? OnGiftsChanged;
+        public event Action? OnNotificationsChanged;
+
+
         private List<PostDTO> _completePosts = new List<PostDTO>();
         private List<SimplePostDTO>? _simplePosts;
         public List<SimplePostDTO>? Posts => _simplePosts;
@@ -72,12 +75,14 @@ namespace SmartTrade.Services
             NotificationDTO? notification = GetNotification(notificationId);
          
             if (notification != null) Notifications.Remove(notification);
+            OnNotificationsChanged?.Invoke();
         }
 
         public void MarkNotificationAsVisited(int notificationId)
         {
             NotificationDTO? notification = GetNotification(notificationId);
             if (notification != null) notification.Visited = true;
+            OnNotificationsChanged?.Invoke();
         }
 
         private NotificationDTO? GetNotification(int notificationId)
@@ -158,6 +163,12 @@ namespace SmartTrade.Services
             {
                 GiftLists[index].Name = newName;
                 GiftLists[index].Date = date;
+
+                foreach (var gift in GiftLists[index].Gifts)
+                {
+                    gift.GiftListName = newName;
+                }
+                
                 return GiftLists[index].Id ?? -1;
             }
 
@@ -202,6 +213,12 @@ namespace SmartTrade.Services
             if (indexGift != -1) GiftLists[indexList].Gifts.RemoveAt(indexGift);
 
             OnGiftsChanged?.Invoke();
+        }
+
+        public void SetNotifications(List<NotificationDTO>? getNotificationsAsync)
+        {
+            Notifications = getNotificationsAsync;
+            OnNotificationsChanged?.Invoke();
         }
     }
 }

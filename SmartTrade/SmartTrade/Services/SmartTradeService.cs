@@ -31,6 +31,12 @@ namespace SmartTrade.Services;
             remove => _cache.OnGiftsChanged -= value;
         }
 
+        public event Action OnNotificationsChanged
+        {
+            add => _cache.OnNotificationsChanged += value;
+            remove => _cache.OnNotificationsChanged -= value;
+        }
+
         public UserType LoggedType
         {
             get
@@ -49,6 +55,7 @@ namespace SmartTrade.Services;
         public List<CartItemDTO>? CartItems => _cache.CartItems; 
         public List<WishDTO>? WishList => _cache.Wishes; 
         public List<AlertDTO>? Alerts => _cache.Alerts;
+        public List<NotificationDTO>? Notifications => _cache.Notifications;
         public List<GiftListDTO>? GiftLists => _cache.GiftLists;
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
@@ -94,6 +101,7 @@ namespace SmartTrade.Services;
         public async Task LogInAsync(string email, string password)
         {
             await _broker.UserClient.LogInAsync(email, password);
+            if (Logged == null) throw new Exception("Email or Password are incorrect");
 
             await LoadCartItems();
             _cache.Purchases = null;
@@ -225,7 +233,7 @@ namespace SmartTrade.Services;
         {
             if(_cache.Notifications != null) return _cache.Notifications;
 
-            _cache.Notifications = await _broker.NotificationClient.GetNotificationsAsync();
+            _cache.SetNotifications(await _broker.NotificationClient.GetNotificationsAsync());
             return _cache.Notifications;
         }
 
@@ -341,10 +349,10 @@ namespace SmartTrade.Services;
                 return;
             }
 
-            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(newName, date.Value.ToDateTime(new TimeOnly()), Logged.Email, id));
+            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(newName, date?.ToDateTime(new TimeOnly()), Logged.Email, id));
         }
 
-    public async Task RemoveGiftListAsync(string listName)
+        public async Task RemoveGiftListAsync(string listName)
         {
             if (Logged == null)
             {

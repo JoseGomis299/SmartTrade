@@ -50,6 +50,8 @@ namespace SmartTrade.Views
         }
         private void SetWishListButtonVisibility()
         {
+            WhisListButton.IsVisible = false;
+
             if (_model.LoggedType != UserType.Consumer)
             {
                 WhisListButton.IsVisible = false;
