@@ -74,7 +74,7 @@ namespace SmartTrade.Views
             WishListToggle.IsVisible = _model.Logged != null;
             SellerPanel.IsVisible = _model.Logged != null && _model.Logged.GetUserType() == UserType.Seller;
             AddToCartPanel.IsVisible = _model.Logged == null || _model.Logged.GetUserType() != UserType.Seller;
-            AddToGiftsButton.IsVisible = AddToCartPanel.IsVisible;
+            AddToGiftsButton.IsVisible = _model.Logged != null && _model.Logged.GetUserType() != UserType.Seller; ;
         }
 
         protected override void Refresh()

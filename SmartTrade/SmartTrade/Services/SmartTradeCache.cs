@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
 using SmartTradeDTOs;
-using static Java.Util.Jar.Attributes;
 
 namespace SmartTrade.Services
 {
