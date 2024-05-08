@@ -14,27 +14,27 @@
 	<Grid RowDefinitions="Auto Auto Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
 		<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="10 0 0 0">
 		<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">REGISTER AS A CONSUMER</TextBlock>
-		<controls:ST_TextBox LabelText="Name" Text="{Binding Name, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxName"/>
-		<controls:ST_TextBox LabelText="Last Names" Text="{Binding LastNames, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxLastNames"/>
-		<controls:ST_TextBox LabelText="DNI" Text="{Binding DNI, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDNI"/>
-		<controls:ST_TextBox LabelText="Email" Text="{Binding Email, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
-			<TextBlock Classes="h2" HorizontalAlignment="Center" Margin="0 0 100 0">Birth Date</TextBlock>
+		<controls:ST_TextBox LabelText="Name*" Text="{Binding Name, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxName"/>
+		<controls:ST_TextBox LabelText="Last Names*" Text="{Binding LastNames, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxLastNames"/>
+		<controls:ST_TextBox LabelText="DNI*" Text="{Binding DNI, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDNI"/>
+		<controls:ST_TextBox LabelText="Email*" Text="{Binding Email, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxEmail"/>
+			<TextBlock Classes="h2" HorizontalAlignment="Center" Margin="0 0 100 0">Birth Date*</TextBlock>
 			<CalendarDatePicker HorizontalAlignment="Center" VerticalAlignment="Center" SelectedDate="{Binding DateBirth, Mode=OneWayToSource}" Width="200" Name="TextBoxDateBirth"/>
 			<TextBlock Classes="Error" HorizontalAlignment="Center" Name="BirthDateError">Select a  correct date</TextBlock>
-			<controls:ST_TextBoxPassword LabelText="Password" PasswordText="•" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
+			<controls:ST_TextBoxPassword LabelText="Password*" PasswordText="•" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
 	</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Stretch" >
 			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378">
-				<TextBlock Margin="50 30 0 0" HorizontalAlignment="Left" Background="Transparent" Foreground="#32C378" FontSize="20" FontWeight="Bold" FontFamily="Inter">+Add Address</TextBlock>
+				<TextBlock Margin="50 30 0 0" HorizontalAlignment="Left" Background="Transparent" Foreground="#32C378" FontSize="20" FontWeight="Bold" FontFamily="Inter">Address</TextBlock>
 			</Border>
 		</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="10" Margin="10 85 0 0">
-			<controls:ST_TextBox LabelText="Province" Text="{Binding Province, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxProvince"/>
-			<controls:ST_TextBox LabelText="Municipality" Text="{Binding Municipality, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxMunicipality"/>
-			<controls:ST_TextBox LabelText="Postal Code" Text="{Binding PostalCode, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPostalCode"/>
-			<controls:ST_TextBox LabelText="Street" Text="{Binding Street, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxStreet"/>
-			<controls:ST_TextBox LabelText="Number" Text="{Binding Number, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxNumber"/>
-			<controls:ST_TextBox LabelText="Door" Text="{Binding Door, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDoor"/>
+			<controls:ST_TextBox LabelText="Province*" Text="{Binding Province, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxProvince"/>
+			<controls:ST_TextBox LabelText="Municipality*" Text="{Binding Municipality, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxMunicipality"/>
+			<controls:ST_TextBox LabelText="Postal Code*" Text="{Binding PostalCode, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPostalCode"/>
+			<controls:ST_TextBox LabelText="Street*" Text="{Binding Street, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxStreet"/>
+			<controls:ST_TextBox LabelText="Number*" Text="{Binding Number, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxNumber"/>
+			<controls:ST_TextBox LabelText="Door*" Text="{Binding Door, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxDoor"/>
 		</StackPanel>
 		<Rectangle Grid.Row="0" Width="400" Height="300" Fill="#32C378" HorizontalAlignment="Right"  Margin="0 250 -250 -210" ZIndex="-1" ClipToBounds="True" >
 			<Rectangle.RenderTransform>
@@ -43,7 +43,7 @@
 		</Rectangle>
 		<StackPanel Grid.Row="2" HorizontalAlignment="Stretch" >
 			<Border BorderThickness="0 0 0 1" BorderBrush="#32C378">
-				<TextBlock Margin="50 30 0 0" HorizontalAlignment="Left" Background="Transparent" Foreground="#32C378" FontSize="20" FontWeight="Bold" FontFamily="Inter">+Add payment method</TextBlock>
+				<TextBlock Margin="50 30 0 0" HorizontalAlignment="Left" Background="Transparent" Foreground="#32C378" FontSize="20" FontWeight="Bold" FontFamily="Inter">Payment methods</TextBlock>
 			</Border>
 		</StackPanel>
 		<StackPanel Grid.Row="2" HorizontalAlignment="Center" Spacing="10" Margin="10 105 0 0">
