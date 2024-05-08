@@ -31,6 +31,12 @@ namespace SmartTrade.Services;
             remove => _cache.OnGiftsChanged -= value;
         }
 
+        public event Action OnNotificationsChanged
+        {
+            add => _cache.OnNotificationsChanged += value;
+            remove => _cache.OnNotificationsChanged -= value;
+        }
+
         public UserType LoggedType
         {
             get
@@ -49,6 +55,7 @@ namespace SmartTrade.Services;
         public List<CartItemDTO>? CartItems => _cache.CartItems; 
         public List<WishDTO>? WishList => _cache.Wishes; 
         public List<AlertDTO>? Alerts => _cache.Alerts;
+        public List<NotificationDTO>? Notifications => _cache.Notifications;
         public List<GiftListDTO>? GiftLists => _cache.GiftLists;
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
@@ -226,7 +233,7 @@ namespace SmartTrade.Services;
         {
             if(_cache.Notifications != null) return _cache.Notifications;
 
-            _cache.Notifications = await _broker.NotificationClient.GetNotificationsAsync();
+            _cache.SetNotifications(await _broker.NotificationClient.GetNotificationsAsync());
             return _cache.Notifications;
         }
 

@@ -24,6 +24,7 @@ public partial class MainView : UserControl
     private Bitmap? _userImageSelected;
     private Bitmap? _homeImageSelected;
     private Bitmap? _alertImage;
+    private Bitmap? _alertSelectedImage;
 
     int _selectedButton = 0;
 
@@ -72,6 +73,7 @@ public partial class MainView : UserControl
         _userImageSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/UserSelected.png")));
         _homeImageSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/HomeSelected.png")));
         _alertImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
+        _alertSelectedImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
 
         HomeImage.Source = _homeImageSelected;
         UserImage.Source = _userImage;
@@ -110,6 +112,18 @@ public partial class MainView : UserControl
             CartItems.IsVisible = true;
             Menus.IsVisible = false;
             AddPostButton.IsVisible = false;
+        }
+    }
+
+    private void SetNotificationsImage()
+    {
+        if (_model.NotificationsCount > 0)
+        {
+            AlertImage.Source = _alertSelectedImage;
+        }
+        else
+        {
+            AlertImage.Source = _alertImage;
         }
     }
 
