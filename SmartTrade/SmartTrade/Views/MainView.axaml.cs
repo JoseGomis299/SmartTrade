@@ -43,29 +43,22 @@ public partial class MainView : UserControl
         SmartTradeNavigationManager.Instance.OnNavigate += HandleNavigation;
         SmartTradeNavigationManager.Instance.OnChangeNavigationStack += SelectButton;
         InitializeComponent();
+        Initialize();
+    }
 
+    private void Initialize()
+    {
         SmartTradeNavigationManager.Instance.Initialize(ViewContent, new ProductCatalog());
         SmartTradeNavigationManager.Instance.MainView = this;
 
+        InitializeSearchBar();
+        InitializeButtons();
+        InitializeImages();
+        SetButtonVisibility();
+    }
 
-        AutoCompleteBox.TextChanged += AutoCompleteBox_TextChanged;
-        AutoCompleteBox.KeyDown += AutoCompleteBox_KeyDown;
-
-        AutoCompleteBox.ItemsSource = _model.SearchAutoComplete;
-
-        SideBarButton.Click += SideBarButton_Click;
-        SideBar.PaneClosing += SideBar_PaneClosing;
-        ListBoxDepartments.SelectionChanged += ListBoxDepartments_SelectionChanged;
-        WishListButton.Click += OpenWishList;
-        GiftListButton.Click += OpenGiftList;
-       
-        AlertButton.Click += OnAlertButtonOnClick;
-
-        ProfileButton.Click += OnProfileButtonOnClick;
-        HomeButton.Click += OnHomeButtonOnClick;
-        ShoppingCartButton.Click += OnShoppingCartButtonOnClick;
-        AddPostButton.Click += (sender, e) =>  SmartTradeNavigationManager.Instance.NavigateTo(new RegisterPost());
-
+    private void InitializeImages()
+    {
         _homeImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Home.png")));
         _userImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/User.png")));
         _cartImage = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Cart.png")));
@@ -79,8 +72,27 @@ public partial class MainView : UserControl
         UserImage.Source = _userImage;
         CartImage.Source = _cartImage;
         AlertImage.Source = _alertImage;
+    }
 
-        SetButtonVisibility();
+    private void InitializeButtons()
+    {
+        SideBarButton.Click += SideBarButton_Click;
+        SideBar.PaneClosing += SideBar_PaneClosing;
+        ListBoxDepartments.SelectionChanged += ListBoxDepartments_SelectionChanged;
+        WishListButton.Click += OpenWishList;
+        GiftListButton.Click += OpenGiftList;
+        AlertButton.Click += OnAlertButtonOnClick;
+        ProfileButton.Click += OnProfileButtonOnClick;
+        HomeButton.Click += OnHomeButtonOnClick;
+        ShoppingCartButton.Click += OnShoppingCartButtonOnClick;
+        AddPostButton.Click += OnAddPostButtonOnClick;
+    }
+
+    private void InitializeSearchBar()
+    {
+        AutoCompleteBox.TextChanged += AutoCompleteBox_TextChanged;
+        AutoCompleteBox.KeyDown += AutoCompleteBox_KeyDown;
+        AutoCompleteBox.ItemsSource = _model.SearchAutoComplete;
     }
 
     private void SetButtonVisibility()
@@ -167,6 +179,11 @@ public partial class MainView : UserControl
     #endregion
 
     #region Buttons
+
+    private void OnAddPostButtonOnClick(object? sender, RoutedEventArgs e)
+    {
+        SmartTradeNavigationManager.Instance.NavigateTo(new RegisterPost());
+    }
 
     private void OnShoppingCartButtonOnClick(object? sender, RoutedEventArgs e)
     {
