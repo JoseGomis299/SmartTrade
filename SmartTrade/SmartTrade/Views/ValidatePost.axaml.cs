@@ -105,7 +105,7 @@ namespace SmartTrade.Views
 
             if (hasErrors) return;
 
-           await _model.ValidatePostAsync();
+           await _model.EditPostAsync();
         }
 
         private void ClearErrors()
