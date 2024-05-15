@@ -57,6 +57,7 @@ namespace SmartTrade.Services;
         public List<AlertDTO>? Alerts => _cache.Alerts;
         public List<NotificationDTO>? Notifications => _cache.Notifications;
         public List<GiftListDTO>? GiftLists => _cache.GiftLists;
+    public List<PurchaseDTO> Purchases => _cache.Purchases;
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
         private SmartTradeBroker _broker;
@@ -104,7 +105,7 @@ namespace SmartTrade.Services;
             if (Logged == null) throw new Exception("Email or Password are incorrect");
 
             await LoadCartItems();
-            _cache.Purchases = null;
+            _cache.Purchases = await GetPurchasesAsync() ?? new List<PurchaseDTO>();
             _cache.Notifications = await GetNotificationsAsync() ?? new List<NotificationDTO>();
             _cache.Alerts = await GetAlertsAsync() ?? new List<AlertDTO>();
             _cache.Wishes = await GetWishAsync() ?? new List<WishDTO>();
@@ -136,7 +137,11 @@ namespace SmartTrade.Services;
            await _broker.UserClient.AddBizumAsync(bizum);
         }
 
-        public async Task<List<PurchaseDTO>?> GetPurchases()
+        public async Task AddPurchaseAsync(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId)
+        {
+            await _broker.UserClient.AddPurchaseAsync(new PurchaseDTO(price,shippingPrice,productId,emailSeller,postId,offerId));
+        }
+        public async Task<List<PurchaseDTO>?> GetPurchasesAsync()
         {
             if(_cache.Purchases == null)
             {

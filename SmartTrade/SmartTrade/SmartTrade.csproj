@@ -43,8 +43,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\ST_OrderItem.axaml.cs">
+      <DependentUpon>ST_OrderItem.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AddGiftView.axaml.cs">
       <DependentUpon>AddGiftView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\OrderHistoryView.axaml.cs">
+      <DependentUpon>OrderHistoryView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Paypal.axaml.cs">
       <DependentUpon>Paypal.axaml</DependentUpon>

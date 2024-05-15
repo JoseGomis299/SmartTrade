@@ -73,22 +73,10 @@ public class UserClient : ApiClient
         await PerformApiInstructionAsync($"AddBizum?id={Logged.Email}", ApiInstruction.Post, bizum);
     }
 
-    public async Task AddPurchaseAsync(int idProduct, int idPost, string emailSeller, int precio, int precioEnvio, int idoffer)
+    public async Task AddPurchaseAsync(PurchaseDTO purchase)
     {
         if (Logged == null) return;
-
-        var registerData = new PurchaseDTO()
-        {
-            ProductId = idProduct,
-            PostId = idPost,
-            EmailSeller = emailSeller,
-            Price = precio,
-            ShippingPrice = precioEnvio,
-            OfferId = idoffer
-
-        };
-
-        await PerformApiInstructionAsync("AddPurchase", ApiInstruction.Post, registerData);
+        await PerformApiInstructionAsync("AddPurchase", ApiInstruction.Post, purchase);
     }
 
     public async Task<List<PurchaseDTO>?> GetPurchaseAsync()

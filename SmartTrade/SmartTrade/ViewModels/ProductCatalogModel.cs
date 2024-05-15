@@ -55,7 +55,8 @@ namespace SmartTrade.ViewModels
             Category categoryPost = post.Category;
             string productNamePost = post.ProductName;
             string sellerIdPost = post.SellerID;
-            List<PurchaseDTO> purchases = await Service.GetPurchases();
+
+            List<PurchaseDTO> purchases = await Service.GetPurchasesAsync();
             string titlePost = post.Title;
 
             if (purchases == null || purchases.Count == 0) { return false; }
