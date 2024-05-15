@@ -537,12 +537,15 @@ public class SmartTradeService : ISmartTradeService
     {
         Consumer? logged = _dal.GetById<Consumer>(userId);
 
-        var post = _dal.GetById<Post>(purchaseDTO.PostId);
         var seller = _dal.GetById<Seller>(purchaseDTO.EmailSeller);
-        var product = _dal.GetById<Product>(purchaseDTO.ProductId);
-        var offer = _dal.GetById<Offer>(purchaseDTO.OfferId);
+        var postDTO = purchaseDTO.Post;
+        var post = new Post(postDTO.Title, postDTO.Description, postDTO.Validated, seller);
 
-        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, seller, post, offer);
+        var product = _dal.GetById<Product>(purchaseDTO.ProductId);
+        var offerDTO = purchaseDTO.Offer;
+        var offer = new Offer(product,offerDTO.Price,offerDTO.ShippingCost,offerDTO.Stock);
+
+        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, purchaseDTO.Quantity, seller, post, offer, purchaseDTO.PurchaseDate, purchaseDTO.ExpectedDate);
         logged.AddPurchases(purchase);
         _dal.Commit();
     }
@@ -553,11 +556,21 @@ public class SmartTradeService : ISmartTradeService
         return (logged.Purchases.AsQueryable())
         .Select(p => new PurchaseDTO
         {
-            Image = p.PurchaseProduct.Images.First().ImageSource,
             ProductId = p.PurchaseProduct.Id,
-            PostId = p.PurchasePost.Id,
+            Post = GetPost(p.Post.Id),
             EmailSeller = p.PurchaseSeller.Email,
-            OfferId = p.PurchaseOffer.Id,
+            Offer = new OfferDTO
+            {
+                Id = p.Offer.Id,
+                Price = p.Offer.Price,
+                ShippingCost = p.Offer.ShippingCost,
+                Stock = p.Offer.Stock,
+                Product = new ProductDTO
+                {
+                    Id = p.Offer.Product.Id,
+                    Images = new List<byte[]>() { p.Offer.Product.Images.First().ImageSource }
+                }
+            },
             Price = p.Price,
             ShippingPrice = p.ShippingPrice
         }).ToList();

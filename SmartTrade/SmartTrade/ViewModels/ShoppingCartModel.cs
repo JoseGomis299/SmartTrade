@@ -51,4 +51,24 @@ public class ShoppingCartModel : ViewModelBase
     {
         Service.OnCartChanged -= Calculate;
     }
+
+    public async Task BuyItemsAsync()
+    {
+        if (Service.Logged == null)
+        {
+            SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), 2, 2, out _);
+            return;
+        }
+
+        foreach (var item in Products)
+        {
+            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity), int.Parse(item.EstimatedTime));
+            await Service.DeleteItemFromCartAsync(item.Offer.Id);
+        }
+
+        SmartTradeNavigationManager.Instance.MainView.ReinitializeHomeNextTime = true;
+        Products.Clear();
+        this.RaisePropertyChanged(nameof(Products));
+        Calculate();
+    }
 }

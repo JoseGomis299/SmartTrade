@@ -6,6 +6,7 @@ using SmartTradeDTOs;
 using SmartTrade.Entities;
 using System.Linq;
 using FuzzySharp;
+using SmartTradeAPI.Library.Persistence.DTOs;
 
 namespace SmartTrade.ViewModels
 {
@@ -55,17 +56,18 @@ namespace SmartTrade.ViewModels
             Category categoryPost = post.Category;
             string productNamePost = post.ProductName;
             string sellerIdPost = post.SellerID;
-            List<PurchaseDTO> purchases = await Service.GetPurchases();
+
+            List<PurchaseDTO> purchases = await Service.GetPurchasesAsync();
             string titlePost = post.Title;
 
             if (purchases == null || purchases.Count == 0) { return false; }
 
-            var purchasesToCompare = purchases.DistinctBy(x => x.PostId).TakeLast(3).ToList();
+            var purchasesToCompare = purchases.DistinctBy(x => x.Post.Id).TakeLast(3).ToList();
 
             foreach (var purchase in purchasesToCompare)
             {
                 float count = 0;
-                int? idPostPurchase = purchase.PostId;
+                int? idPostPurchase = purchase.Post.Id;
                 if (idPostPurchase.HasValue)
                 {
                     SimplePostDTO postPurchase = Service.Posts.First(x => x.Id == idPostPurchase);

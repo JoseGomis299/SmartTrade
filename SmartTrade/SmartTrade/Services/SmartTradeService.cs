@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FuzzySharp;
 using SmartTrade.Entities;
+using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services;
@@ -57,6 +58,7 @@ namespace SmartTrade.Services;
         public List<AlertDTO>? Alerts => _cache.Alerts;
         public List<NotificationDTO>? Notifications => _cache.Notifications;
         public List<GiftListDTO>? GiftLists => _cache.GiftLists;
+    public List<PurchaseDTO> Purchases => _cache.Purchases;
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
         private SmartTradeBroker _broker;
@@ -71,12 +73,9 @@ namespace SmartTrade.Services;
             _cache = new SmartTradeCache();
         }
 
-        public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity)
+        public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity, int estimatedDays)
         {
-            for (int i = 0; i < quantity; i++)
-            {
-                _cache.Purchases.Add(new PurchaseDTO(offer.Price, offer.ShippingCost, offer.Product.Id, post.SellerID, (int)post.Id, offer.Id));
-            }
+            _cache.Purchases.Add(new PurchaseDTO(offer.Price, offer.ShippingCost, quantity, offer.Product.Id, post.SellerID, post, offer, DateTime.Now, DateTime.Now.AddDays(estimatedDays)));
         }
 
         public async Task InitializeCacheAsync()
@@ -104,7 +103,7 @@ namespace SmartTrade.Services;
             if (Logged == null) throw new Exception("Email or Password are incorrect");
 
             await LoadCartItems();
-            _cache.Purchases = null;
+            _cache.Purchases = await GetPurchasesAsync() ?? new List<PurchaseDTO>();
             _cache.Notifications = await GetNotificationsAsync() ?? new List<NotificationDTO>();
             _cache.Alerts = await GetAlertsAsync() ?? new List<AlertDTO>();
             _cache.Wishes = await GetWishAsync() ?? new List<WishDTO>();
@@ -167,7 +166,12 @@ namespace SmartTrade.Services;
             (Logged as ConsumerDTO).PayPalAccounts.Add(paypal);
         }
 
-    public async Task<List<PurchaseDTO>?> GetPurchases()
+        public async Task AddPurchaseAsync(float price, float shippingPrice, int quantity, int productId, string emailSeller, PostDTO post, OfferDTO offer, int estimatedDays)
+        {
+            await _broker.UserClient.AddPurchaseAsync(new PurchaseDTO(price,shippingPrice,quantity,productId,emailSeller,post,offer,DateTime.Now,DateTime.Now.AddDays(estimatedDays)));
+        }
+
+        public async Task<List<PurchaseDTO>?> GetPurchasesAsync()
         {
             if(_cache.Purchases == null)
             {

@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
+using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services
@@ -24,7 +25,7 @@ namespace SmartTrade.Services
         public List<NotificationDTO>? Notifications { get; set; }
         public List<CartItemDTO>? CartItems { get; set; } = new List<CartItemDTO>();
         public List<PurchaseDTO>? Purchases { get; set; }
-        public List<WishDTO>? Wishes { get; set; }
+        public List<WishDTO>? Wishes { get; set; } = new List<WishDTO>();
         public List<GiftListDTO>? GiftLists { get; set; }
         public List<AlertDTO>? Alerts { get; set; }
 
@@ -184,8 +185,6 @@ namespace SmartTrade.Services
         public void LoadGiftLists(List<GiftListDTO> giftLists)
         {
             GiftLists = giftLists;
-
-
         }
 
         public int AddGift(int quantity, PostDTO post, OfferDTO offer, string giftListName)
@@ -213,6 +212,11 @@ namespace SmartTrade.Services
             if (indexGift != -1) GiftLists[indexList].Gifts.RemoveAt(indexGift);
 
             OnGiftsChanged?.Invoke();
+        }
+
+        public void AddPurchase(float price, float shippingPrice, int quantity, int productId, string emailSeller, PostDTO post, OfferDTO offer, DateTime purchaseDate, DateTime expectedDate)
+        {
+            Purchases.Add(new PurchaseDTO(price, shippingPrice, quantity, productId, emailSeller, post, offer, purchaseDate, expectedDate));
         }
 
         public void SetNotifications(List<NotificationDTO>? getNotificationsAsync)
