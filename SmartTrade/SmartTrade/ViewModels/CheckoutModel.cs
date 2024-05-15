@@ -99,7 +99,7 @@ public class CheckoutModel : ViewModelBase
 
         foreach (var item in CartItems)
         {
-            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity));
+            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity), int.Parse(item.EstimatedTime));
             await Service.DeleteItemFromCartAsync(item.Offer.Id);
         }
 
