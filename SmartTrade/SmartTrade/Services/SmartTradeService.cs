@@ -75,10 +75,7 @@ namespace SmartTrade.Services;
 
         public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity, int estimatedDays)
         {
-            for (int i = 0; i < quantity; i++)
-            {
-                _cache.Purchases.Add(new PurchaseDTO(offer.Price, offer.ShippingCost, offer.Product.Id, post.SellerID, (int)post.Id, offer.Id, DateTime.Now, DateTime.Now.AddDays(estimatedDays)));
-            }
+            _cache.Purchases.Add(new PurchaseDTO(offer.Price, offer.ShippingCost, quantity, offer.Product.Id, post.SellerID, post, offer, DateTime.Now, DateTime.Now.AddDays(estimatedDays)));
         }
 
         public async Task InitializeCacheAsync()
@@ -138,9 +135,9 @@ namespace SmartTrade.Services;
            await _broker.UserClient.AddBizumAsync(bizum);
         }
 
-        public async Task AddPurchaseAsync(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId, int estimatedDays)
+        public async Task AddPurchaseAsync(float price, float shippingPrice, int quantity, int productId, string emailSeller, PostDTO post, OfferDTO offer, int estimatedDays)
         {
-            await _broker.UserClient.AddPurchaseAsync(new PurchaseDTO(price,shippingPrice,productId,emailSeller,postId,offerId,DateTime.Now,DateTime.Now.AddDays(estimatedDays)));
+            await _broker.UserClient.AddPurchaseAsync(new PurchaseDTO(price,shippingPrice,quantity,productId,emailSeller,post,offer,DateTime.Now,DateTime.Now.AddDays(estimatedDays)));
         }
         public async Task<List<PurchaseDTO>?> GetPurchasesAsync()
         {

@@ -12,11 +12,18 @@ namespace SmartTrade.ViewModels;
 
 public class OrderHistoryModel : ViewModelBase
 {
-    public List<PurchaseDTO>? Purchases => Service.Purchases;
+    public ObservableCollection<PurchaseModel> Purchases { get; set; }
 
     public OrderHistoryModel()
     {
-        
+        Purchases = new ObservableCollection<PurchaseModel>();
+
+        foreach (var item in Service.Purchases)
+        {
+            Purchases.Add(new PurchaseModel(item, this));
+        }
+
+        //Service.OnCartChanged += Calculate;
     }
 
 }

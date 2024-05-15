@@ -214,9 +214,9 @@ namespace SmartTrade.Services
             OnGiftsChanged?.Invoke();
         }
 
-        public void AddPurchase(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId, DateTime purchaseDate, DateTime expectedDate)
+        public void AddPurchase(float price, float shippingPrice, int quantity, int productId, string emailSeller, PostDTO post, OfferDTO offer, DateTime purchaseDate, DateTime expectedDate)
         {
-            Purchases.Add(new PurchaseDTO(price, shippingPrice, productId, emailSeller, postId, offerId, purchaseDate, expectedDate));
+            Purchases.Add(new PurchaseDTO(price, shippingPrice, quantity, productId, emailSeller, post, offer, purchaseDate, expectedDate));
         }
 
         public void SetNotifications(List<NotificationDTO>? getNotificationsAsync)
