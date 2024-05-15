@@ -10,6 +10,14 @@
 	<Design.DataContext>
 		<vm:SendViewModel/>
 	</Design.DataContext>
-	
-	
+	<ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+		<StackPanel Margin="10">
+			<controls:ST_ProgessBar Margin="0 20"  Sections="Pending,Shipped,Delivered" SelectedSection="0"/>
+			<controls:ST_ProductSendView Margin="10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ShippingCost="{Binding ShippingCost}" ProductName="{Binding Name}"/>
+			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 50 0 20">Delivery address</TextBlock>
+			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DeliveryAdress, Mode=OneWay}" Margin="20 0 0 0"></TextBlock>
+			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 15 0 20">Facturation address:</TextBlock>
+			<TextBlock Classes="h3" HorizontalAlignment="Left" Margin="20 0 0 0">Facturation address:</TextBlock>
+		</StackPanel>
+	</ScrollViewer>		
 </UserControl>
