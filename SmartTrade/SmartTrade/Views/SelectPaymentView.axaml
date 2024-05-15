@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1500"
+             x:Class="SmartTrade.Views.SelectPaymentView"			 
+             xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+             x:DataType="vm:SelectPaymentMethodModel"
+             xmlns:controls="clr-namespace:SmartTrade.Controls">
+    <Design.DataContext>
+        <vm:SelectPaymentMethodModel/>
+    </Design.DataContext>
+    <ScrollViewer>
+        <StackPanel>
+            <controls:ST_ProgessBar Margin="0 20"  Sections="Order information, Delivery address, Payment method, Checkout window" SelectedSection="2"/>
+            <StackPanel Margin="20 0">
+                <TextBlock Classes="h1" FontSize="26" Text="Payment options"/>
+
+                <TextBlock Classes="h1" FontSize="21" Text="Credit card"/>
+                <ItemsControl Margin="10 10" ItemsSource="{Binding CreditCards}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" Spacing="10"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <CheckBox Command="{Binding ChangePaymentMethodCommand}" IsChecked="{Binding IsChecked}" Width="20" Height="20" CornerRadius="360"/>
+                                <StackPanel>
+                                    <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Name}" TextWrapping="Wrap"/>
+                                    <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Number}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Margin="0 20 0 10 " Classes="White"  CornerRadius="10" Width="150" HorizontalAlignment="Center" Content="Add credit card" Name="AddCreditCardButton"/>
+
+				<TextBlock Classes="h1" FontSize="21" Text="PayPal"/>
+                <ItemsControl Margin="10 10" ItemsSource="{Binding Paypals}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" Spacing="10"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <CheckBox Command="{Binding ChangePaymentMethodCommand}" IsChecked="{Binding IsChecked}" Width="20" Height="20" CornerRadius="360"/>
+                                <StackPanel>
+                                    <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Name}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Margin="0 20 0 10 " Classes="White"  CornerRadius="10" Width="150" HorizontalAlignment="Center" Content="Add Paypal" Name="AddPaypalButton"/>
+
+				<TextBlock Classes="h1" FontSize="21" Text="Bizum"/>
+                <ItemsControl Margin="10 10" ItemsSource="{Binding Bizums}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" Spacing="10"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <CheckBox Command="{Binding ChangePaymentMethodCommand}" IsChecked="{Binding IsChecked}" Width="20" Height="20" CornerRadius="360"/>
+                                <StackPanel>
+                                    <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Number}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Margin="0 20 0 30 " Classes="White"  CornerRadius="10" Width="150" HorizontalAlignment="Center" Content="Add Bizum" Name="AddBizumButton"/>
+			</StackPanel>
+            
+            <TextBlock Classes="Error" IsVisible="False" HorizontalAlignment="Center" Text="You must select a payment method" Margin="0 0 0 20" Name="SelectAPaymentMethodText"/>
+            <Grid Margin="20 0 20 20">
+                <Button Classes="Green"  HorizontalAlignment="Right" CornerRadius="10" Width="150" Content="Next" Name="NextButton"/>
+                <Button Classes="White"  CornerRadius="10" Width="150" Content="Back" Name="BackButton"/>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

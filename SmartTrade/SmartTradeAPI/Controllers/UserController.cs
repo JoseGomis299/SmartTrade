@@ -61,6 +61,15 @@ public class UserController : ControllerBase
 
         service.AddPurchase(loggedId, purchase);
     }
+
+    [HttpPut("AddAddress")]
+    public int AddAddress([FromBody] Address address)
+    {
+        ISmartTradeService service = new SmartTradeService();
+        string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
+
+       return service.AddAddress(loggedId, address);
+    }
     
     [HttpGet("GetPurchases")]
     public List<PurchaseDTO> GetPurchases()

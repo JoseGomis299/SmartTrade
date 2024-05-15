@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="1500"
+             x:Class="SmartTrade.Views.CheckOutView"			 
+             xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+             x:DataType="vm:CheckoutModel"
+             xmlns:controls="clr-namespace:SmartTrade.Controls">
+    <Design.DataContext>
+        <vm:CheckoutModel/>
+    </Design.DataContext>
+    <ScrollViewer>
+        <StackPanel>
+            <controls:ST_ProgessBar Margin="0 20"  Sections="Order information, Delivery address, Payment method, Checkout window" SelectedSection="3"/>
+            <StackPanel Margin="20 0">
+                <TextBlock Classes="h1" FontSize="26" Text="Order summary"/>
+                
+                <controls:ST_Carousel Title="Products:" DataSource="{Binding CartProducts, Mode=OneWay}"/>
+                
+                <TextBlock Classes="h1" FontSize="21" Text="Delivery address:"/>
+				<TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding DeliveryStreetAndNumber}" TextWrapping="Wrap"/>
+				<TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding DeliveryDoor}" TextWrapping="Wrap"/>
+                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding DeliveryProvinceAndCity}" TextWrapping="Wrap"/>
+
+                <TextBlock Classes="h1" FontSize="21" Text="Billing address:"/>
+                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding BillingStreetAndNumber}" TextWrapping="Wrap"/>
+                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding BillingDoor}" TextWrapping="Wrap"/>
+                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding BillingProvinceAndCity}" TextWrapping="Wrap"/>
+
+				<TextBlock Classes="h1" FontSize="21" Text="Payment method:"/>
+                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding PaymentMethodType}" TextWrapping="Wrap"/>
+                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding PaymentMethod}" TextWrapping="Wrap"/>
+			</StackPanel>
+            <StackPanel HorizontalAlignment="Right" Margin=" 30 10" Spacing="2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="h1" Text="TOTAL: "/>
+                    <TextBlock Classes="h1" Foreground="#ff32c378" Text="{Binding Total, Mode=OneWay}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="h2" Text="SUBTOTAL: "/>
+                    <TextBlock Classes="h2" Foreground="#ff32c378" Text="{Binding SubTotal, Mode=OneWay}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="h2" Text="SHIPPING: "/>
+                    <TextBlock Classes="h2" Foreground="#ff32c378" Text="{Binding ShippingCost, Mode=OneWay}"/>
+                </StackPanel>
+            </StackPanel>
+            <Grid Margin="20 0 20 20">
+                <Button Classes="Green"  HorizontalAlignment="Right" CornerRadius="10" Width="175" Content="Complete Order" Name="CompleteOrderButton"/>
+                <Button Classes="White"  CornerRadius="10" Width="150" Content="Back" Name="BackButton"/>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

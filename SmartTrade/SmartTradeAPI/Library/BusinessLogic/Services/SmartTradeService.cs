@@ -420,6 +420,17 @@ public class SmartTradeService : ISmartTradeService
         }).ToList();
     }
 
+    public int AddAddress(string? loggedId, Address address)
+    {
+        Consumer logged = _dal.GetById<Consumer>(loggedId);
+        address = new Address(address.Province, address.Street, address.City, address.PostalCode, address.Number,
+            address.Door);
+        logged.Addresses.Add(address);
+        _dal.Commit();
+
+        return address.Id;
+    }
+
     public void DeleteNotification(int id)
     {
         _dal.Delete<Notification>(_dal.GetById<Notification>(id));

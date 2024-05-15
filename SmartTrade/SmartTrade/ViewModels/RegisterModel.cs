@@ -120,7 +120,7 @@ namespace SmartTrade.ViewModels
             if (_Paypalemail != null && _Paypalpassword != null)
             {
                 PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
-                await Service.AddPaypalAsync(paypalData, PaypalEmail);
+                await Service.AddPaypalAsync(paypalData);
             }
             if(CreditCardCVV != null && CreditCardName !=null && CreditCardNumber !=null && CreditCardExpiryDate != null)
             {

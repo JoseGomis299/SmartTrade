@@ -43,14 +43,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\PopUps\AddBizumPopup.axaml.cs">
-      <DependentUpon>AddBizumPopup.axaml</DependentUpon>
+    <Compile Update="Views\PopUps\AddAddress - Copia %282%29.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Views\PopUps\AddCreditCardPopup.axaml.cs">
-      <DependentUpon>AddCreditCardPopup.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\PopUps\AddPaypalPopup.axaml.cs">
-      <DependentUpon>AddPaypalPopup.axaml</DependentUpon>
+    <Compile Update="Views\PopUps\AddAddress - Copia.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\PopUps\AddGiftView.axaml.cs">
       <DependentUpon>AddGiftView.axaml</DependentUpon>

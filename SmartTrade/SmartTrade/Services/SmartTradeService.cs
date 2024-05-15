@@ -121,22 +121,53 @@ namespace SmartTrade.Services;
             await _broker.UserClient.RegisterSellerAsync(email, password, name, lastnames, dni, companyName, iban);
         }
 
-        public async Task AddPaypalAsync(PayPalInfo paypalinfo, string loggedID)
+        public async Task AddPaypalAsync(PayPalInfo paypalinfo)
         {
-            await _broker.UserClient.AddPaypalAsync(paypalinfo, loggedID);
+            await _broker.UserClient.AddPaypalAsync(paypalinfo);
+            AddPaypalLocal(paypalinfo);
         }
 
         public async Task AddCreditCardAsync(CreditCardInfo creditCard)
         {
             await _broker.UserClient.AddCreditCardAsync(creditCard);
+            AddCreditCardLocal(creditCard);
         }
 
         public async Task AddBizumAsync(BizumInfo bizum)
         {
            await _broker.UserClient.AddBizumAsync(bizum);
+           AddBizumLocal(bizum);
         }
 
-        public async Task<List<PurchaseDTO>?> GetPurchases()
+        public async Task AddAddressAsync(Address address)
+        {
+            int addressId = await _broker.UserClient.AddAddressAsync(address);
+            address.Id = addressId;
+
+            (Logged as ConsumerDTO).Addresses.Add(address);
+        }
+
+        public void AddBillingAddressLocal(Address address)
+        {
+            (Logged as ConsumerDTO).Addresses.Add(address);
+        }
+
+        public void AddBizumLocal(BizumInfo bizum)
+        {
+            (Logged as ConsumerDTO).BizumAccounts.Add(bizum);
+        }
+
+        public void AddCreditCardLocal(CreditCardInfo creditCard)
+        {
+            (Logged as ConsumerDTO).CreditCards.Add(creditCard);
+        }
+
+        public void AddPaypalLocal(PayPalInfo paypal)
+        {
+            (Logged as ConsumerDTO).PayPalAccounts.Add(paypal);
+        }
+
+    public async Task<List<PurchaseDTO>?> GetPurchases()
         {
             if(_cache.Purchases == null)
             {

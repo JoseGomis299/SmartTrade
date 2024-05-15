@@ -55,10 +55,10 @@ public class UserClient : ApiClient
         await Broker.SetLoggedAsync(await PerformApiInstructionAsync("RegisterSeller", ApiInstruction.Post, registerData));
     }
 
-    public async Task AddPaypalAsync(PayPalInfo paypalinfo, string loggedID)
+    public async Task AddPaypalAsync(PayPalInfo paypalinfo)
     {
         if(Logged == null) return;
-        await PerformApiInstructionAsync($"AddPaypal?id={loggedID}", ApiInstruction.Post, paypalinfo);
+        await PerformApiInstructionAsync($"AddPaypal?id={Logged.Email}", ApiInstruction.Post, paypalinfo);
     }
 
     public async Task AddCreditCardAsync(CreditCardInfo creditCard)
@@ -143,5 +143,11 @@ public class UserClient : ApiClient
     {
         if (Logged == null) return;
         await PerformApiInstructionAsync($"RemoveGift", ApiInstruction.Put, giftList);
+    }
+
+    public async Task<int> AddAddressAsync(Address address)
+    {
+        if (Logged == null) return -1;
+        return int.Parse(await PerformApiInstructionAsync($"AddAddress", ApiInstruction.Put, address));
     }
 }
