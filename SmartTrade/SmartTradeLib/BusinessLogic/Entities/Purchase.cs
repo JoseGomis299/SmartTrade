@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,19 +10,20 @@ namespace SmartTrade.Entities
 {
     public partial class Purchase
     {
-        protected Purchase()
+        public Purchase()
         {
         }
 
-        protected Purchase(Product? product, int price, Seller seller, Post? post, int precioEnvio, Offer? offer) : this()
+        public Purchase(Product? product, float price, float shippingPrice, Seller seller, Post? post, Offer? purchaseOffer, DateTime purchaseDate, DateTime expectedDate) : this()
         {
             PurchaseProduct = product;
             Price = price;
+            ShippingPrice = shippingPrice;
             PurchaseSeller = seller;
             PurchasePost = post;
-            PrecioEnvio = precioEnvio;
-            PurchaseOffer = offer;
+            PurchaseOffer = purchaseOffer;
+            PurchaseDate = purchaseDate;
+            ExpectedDate = expectedDate;
         }
-
     }
 }

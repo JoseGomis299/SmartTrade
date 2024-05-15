@@ -531,7 +531,7 @@ public class SmartTradeService : ISmartTradeService
         var product = _dal.GetById<Product>(purchaseDTO.ProductId);
         var offer = _dal.GetById<Offer>(purchaseDTO.OfferId);
 
-        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, seller, post, offer);
+        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, seller, post, offer, purchaseDTO.PurchaseDate, purchaseDTO.ExpectedDate);
         logged.AddPurchases(purchase);
         _dal.Commit();
     }
@@ -542,7 +542,6 @@ public class SmartTradeService : ISmartTradeService
         return (logged.Purchases.AsQueryable())
         .Select(p => new PurchaseDTO
         {
-            Image = p.PurchaseProduct.Images.First().ImageSource,
             ProductId = p.PurchaseProduct.Id,
             PostId = p.PurchasePost.Id,
             EmailSeller = p.PurchaseSeller.Email,

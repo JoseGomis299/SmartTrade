@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
+using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services
@@ -213,9 +214,9 @@ namespace SmartTrade.Services
             OnGiftsChanged?.Invoke();
         }
 
-        public void AddPurchase(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId)
+        public void AddPurchase(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId, DateTime purchaseDate, DateTime expectedDate)
         {
-            Purchases.Add(new PurchaseDTO(price, shippingPrice, productId, emailSeller, postId, offerId));
+            Purchases.Add(new PurchaseDTO(price, shippingPrice, productId, emailSeller, postId, offerId, purchaseDate, expectedDate));
         }
 
         public void SetNotifications(List<NotificationDTO>? getNotificationsAsync)

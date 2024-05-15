@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FuzzySharp;
 using SmartTrade.Entities;
+using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services;
@@ -72,11 +73,11 @@ namespace SmartTrade.Services;
             _cache = new SmartTradeCache();
         }
 
-        public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity)
+        public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity, int estimatedDays)
         {
             for (int i = 0; i < quantity; i++)
             {
-                _cache.Purchases.Add(new PurchaseDTO(offer.Price, offer.ShippingCost, offer.Product.Id, post.SellerID, (int)post.Id, offer.Id));
+                _cache.Purchases.Add(new PurchaseDTO(offer.Price, offer.ShippingCost, offer.Product.Id, post.SellerID, (int)post.Id, offer.Id, DateTime.Now, DateTime.Now.AddDays(estimatedDays)));
             }
         }
 
@@ -137,9 +138,9 @@ namespace SmartTrade.Services;
            await _broker.UserClient.AddBizumAsync(bizum);
         }
 
-        public async Task AddPurchaseAsync(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId)
+        public async Task AddPurchaseAsync(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId, int estimatedDays)
         {
-            await _broker.UserClient.AddPurchaseAsync(new PurchaseDTO(price,shippingPrice,productId,emailSeller,postId,offerId));
+            await _broker.UserClient.AddPurchaseAsync(new PurchaseDTO(price,shippingPrice,productId,emailSeller,postId,offerId,DateTime.Now,DateTime.Now.AddDays(estimatedDays)));
         }
         public async Task<List<PurchaseDTO>?> GetPurchasesAsync()
         {

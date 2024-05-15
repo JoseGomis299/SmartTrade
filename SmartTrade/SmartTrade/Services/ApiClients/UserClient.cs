@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
 using HarfBuzzSharp;
+using SmartTradeAPI.Library.Persistence.DTOs;
 
 namespace SmartTrade.Services.ApiClients;
 

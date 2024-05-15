@@ -60,7 +60,7 @@ public class ShoppingCartModel : ViewModelBase
 
         foreach (var item in Products)
         {
-            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity));
+            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity), int.Parse(item.EstimatedTime));
             await Service.DeleteItemFromCartAsync(item.Offer.Id);
         }
 

@@ -6,6 +6,7 @@ using SmartTradeDTOs;
 using SmartTrade.Entities;
 using System.Linq;
 using FuzzySharp;
+using SmartTradeAPI.Library.Persistence.DTOs;
 
 namespace SmartTrade.ViewModels
 {

@@ -14,5 +14,7 @@ namespace SmartTrade.Entities
         public virtual Post? PurchasePost { get; set; }
         public virtual Seller? PurchaseSeller { get; set; }
         public virtual Offer? PurchaseOffer { get; set;}
+        public DateTime PurchaseDate { get; set; }
+        public DateTime ExpectedDate { get; set; }
     }
 }

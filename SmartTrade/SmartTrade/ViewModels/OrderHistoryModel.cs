@@ -6,6 +6,7 @@ using ReactiveUI;
 using System;
 using DynamicData;
 using System.Linq;
+using SmartTradeAPI.Library.Persistence.DTOs;
 
 namespace SmartTrade.ViewModels;
 

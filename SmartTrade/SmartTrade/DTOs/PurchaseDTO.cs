@@ -1,11 +1,7 @@
 ﻿using SmartTrade.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SmartTradeDTOs
+namespace SmartTradeAPI.Library.Persistence.DTOs
 {
     public class PurchaseDTO
     {
@@ -15,12 +11,12 @@ namespace SmartTradeDTOs
         public string? EmailSeller { get; set; }
         public int? PostId { get; set; }
         public int? OfferId { get; set; }
+        public DateTime PurchaseDate { get; set; }
+        public DateTime ExpectedDate { get; set; }
 
-        public PurchaseDTO()
-        {
-        }
-
-        public PurchaseDTO(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId)
+        public PurchaseDTO(){}
+        
+        public PurchaseDTO(float price, float shippingPrice, int productId, string emailSeller, int postId, int offerId, DateTime purchaseDate, DateTime expectedDate)
         {
             Price = price;
             ShippingPrice = shippingPrice;
@@ -28,6 +24,8 @@ namespace SmartTradeDTOs
             EmailSeller = emailSeller;
             PostId = postId;
             OfferId = offerId;
+            PurchaseDate = purchaseDate;
+            ExpectedDate = expectedDate;
         }
     }
 }
