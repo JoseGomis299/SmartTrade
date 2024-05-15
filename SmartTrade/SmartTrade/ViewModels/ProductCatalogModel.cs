@@ -107,8 +107,10 @@ namespace SmartTrade.ViewModels
             return score;
         }
 
-        public async void UpdateProducts(IEnumerable<ProductModel> list)
+        public async void UpdateProducts(IEnumerable<ProductModel> list, int? category)
         {
+            if(category != null) Filtering((Category)category);
+            
             OtherProducts.Clear();
             RecommendedProducts.Clear();
             RelatedProducts.Clear();
@@ -131,35 +133,10 @@ namespace SmartTrade.ViewModels
 
         public override void SortByCategory(int? category)
         {
-            if (category == null)
-            {
-                UpdateProducts(OriginalProducts);
-            }
-            else
-            {
-                switch (category)
-                {
-
-                    case 0:
-                        this.Filtering(Category.Toy); break;
-
-
-                    case 1:
-                        this.Filtering(Category.Nutrition); break;
-
-
-                    case 2:
-                        this.Filtering(Category.Clothing); break;
-
-
-                    case 3:
-                        this.Filtering(Category.Book); break;
-
-                }
-            }
+            UpdateProducts(OriginalProducts, category);
         }
 
-        public void Filtering(Category category)
+        private void Filtering(Category category)
         {
             List<ProductModel> FilteredProducts = new List<ProductModel>();
             foreach (var product in OriginalProducts)
@@ -168,39 +145,6 @@ namespace SmartTrade.ViewModels
                 {
                     FilteredProducts.Add(product);
                 }
-            }
-
-            UpdateProducts(FilteredProducts);
-        }
-
-        public bool ParentalControlerChecker(DateTime BirthDate)
-        {
-            DateTime currentDate = DateTime.Now;
-            int totalDays = currentDate.Day - BirthDate.Day;
-            int totalMonths = currentDate.Month - BirthDate.Month;
-            int totalYears = currentDate.Year - BirthDate.Year;
-            if (totalDays < 0)
-            {
-                totalDays += DateTime.DaysInMonth(BirthDate.Year, BirthDate.Month);
-                totalMonths--;
-            }
-            if (totalMonths < 0)
-            {
-                totalMonths += 12;
-                totalYears--;
-            }
-            int age = totalYears;
-            if (totalMonths > 0 || totalDays > 0)
-            {
-                age++;
-            }
-            if (age >= 18)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
     }

@@ -43,8 +43,11 @@ public partial class MainView : UserControl
         SmartTradeNavigationManager.Instance.OnNavigate += HandleNavigation;
         SmartTradeNavigationManager.Instance.OnChangeNavigationStack += SelectButton;
         InitializeComponent();
+
         Initialize();
     }
+
+    #region Initialization
 
     private void Initialize()
     {
@@ -138,6 +141,9 @@ public partial class MainView : UserControl
             AlertImage.Source = _alertImage;
         }
     }
+
+    #endregion
+
 
     #region SideBar
     private void SideBarButton_Click(object? sender, RoutedEventArgs e)
@@ -428,7 +434,7 @@ public partial class MainView : UserControl
 
             _searchModel = (SearchResultModel)searchResult.DataContext;
             if(_currentCategory != null)
-                _searchModel.SortByCategory(_currentCategory);
+                _searchModel?.SortByCategory(_currentCategory);
 
             StopLoading(loadingScreen);
         }

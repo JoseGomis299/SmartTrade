@@ -112,6 +112,15 @@ namespace SmartTrade.Controls
         public static readonly StyledProperty<string?> CountProperty =
             AvaloniaProperty.Register<ST_Product, string?>(nameof(Count));
 
+        public string? EstimatedTime
+        {
+            get => GetValue(EstimatedTimeProperty);
+            set => SetValue(EstimatedTimeProperty, value);
+        }
+
+        public static readonly StyledProperty<string?> EstimatedTimeProperty =
+            AvaloniaProperty.Register<ST_Product, string?>(nameof(EstimatedTime));
+
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             if (change.Property == ProductNameProperty)

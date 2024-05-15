@@ -18,6 +18,8 @@ public class CartItemModel : ViewModelBase
     public Bitmap? Image { get; set; }
     public PostDTO Post { get; set; }
     public OfferDTO Offer { get; set; }
+    public string? EstimatedTime { get; }
+
     private int _quantity;
 
     public string? Quantity
@@ -52,6 +54,7 @@ public class CartItemModel : ViewModelBase
         ShippingCost = itemDto.Offer.ShippingCost + "€";
         Image = itemDto.Offer.Product.Images[0].ToBitmap();
         Quantity = itemDto.Quantity.ToString();
+        EstimatedTime = itemDto.EstimatedShippingDays + " days";
 
         OnQuantityChanged += async (prev, quantity) => await AddItemToCartAsync(prev, quantity);
     }
