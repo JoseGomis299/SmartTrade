@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FuzzySharp;
@@ -75,10 +76,13 @@ namespace SmartTrade.Services;
 
         public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity, int estimatedDays)
         {
-            _cache.Purchases.Add(new PurchaseDTO(offer.Price, offer.ShippingCost, quantity, offer.Product.Id, post.SellerID, post, offer, DateTime.Now, DateTime.Now.AddDays(estimatedDays)));
+            PurchaseDTO purchase = new PurchaseDTO(offer.Price, offer.ShippingCost, quantity, offer.Product.Id, post.SellerID, post, offer, DateTime.Now, DateTime.Now.AddDays(estimatedDays));
+             
+            _cache.Purchases.Add(purchase);
+            await _broker.UserClient.AddPurchaseAsync(purchase);
         }
 
-        public async Task InitializeCacheAsync()
+    public async Task InitializeCacheAsync()
         {
             await LoadCartItems();
         }
@@ -171,11 +175,6 @@ throw new Exception("Email or Password are incorrect");            }
         public void AddPaypalLocal(PayPalInfo paypal)
         {
             (Logged as ConsumerDTO).PayPalAccounts.Add(paypal);
-        }
-
-        public async Task AddPurchaseAsync(float price, float shippingPrice, int quantity, int productId, string emailSeller, PostDTO post, OfferDTO offer, int estimatedDays)
-        {
-            await _broker.UserClient.AddPurchaseAsync(new PurchaseDTO(price,shippingPrice,quantity,productId,emailSeller,post,offer,DateTime.Now,DateTime.Now.AddDays(estimatedDays)));
         }
 
         public async Task<List<PurchaseDTO>?> GetPurchasesAsync()

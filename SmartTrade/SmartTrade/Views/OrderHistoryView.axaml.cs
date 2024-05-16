@@ -13,7 +13,7 @@ namespace SmartTrade.Views
     {
         public OrderHistoryView()
         {
-            DataContext = new OrderHistoryModel();
+            //DataContext = new OrderHistoryModel();
             InitializeComponent();
         }
 

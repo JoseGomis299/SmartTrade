@@ -7,8 +7,8 @@ using System.Windows.Input;
 using SmartTrade.Entities;
 using SmartTradeDTOs;
 using static System.Net.Mime.MediaTypeNames;
-using static Android.Graphics.ColorSpace;
-using Android.Locations;
+//using static Android.Graphics.ColorSpace;
+//using Android.Locations;
 using Address = SmartTrade.Entities.Address;
 
 namespace SmartTrade.ViewModels;

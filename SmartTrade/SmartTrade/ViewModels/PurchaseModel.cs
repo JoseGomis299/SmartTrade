@@ -12,50 +12,55 @@ namespace SmartTrade.ViewModels;
 
 public class PurchaseModel : ViewModelBase
 {
-    public string? Name { get; set; }
-    public string? Price { get; set; }
-    public string? ShippingCost { get; set; }
-    public Bitmap? Image { get; set; }
+    public string Name { get; set; }
+    public string Price { get; set; }
+    public string ShippingCost { get; set; }
+    public Bitmap Image { get; set; }
     public PostDTO Post { get; set; }
     public OfferDTO Offer { get; set; }
-    public string? EstimatedTime { get; set; }
-    public string? Quantity { get; set; }
+    public string Quantity { get; set; }
+    public string DeliveryState { get; set; }
+    public DateTime PurchaseDate { get; set; }
+    public DateTime EstimatedDate { get; set; }
 
     public ICommand OpenProductCommand { get; }
 
     public PurchaseModel(PurchaseDTO purchaseDTO, OrderHistoryModel OrderHistoryModel)
     {
-        /*Post = purchaseDTO.Post;
+        Post = purchaseDTO.Post;
         Offer = purchaseDTO.Offer;
 
         OpenProductCommand = ReactiveCommand.Create(OpenProduct);
-        DeleteItemCommand = ReactiveCommand.CreateFromTask( async () =>
-        {
-            OrderrHistoryModel.Products.Remove(this);
-            await Service.DeleteItemFromCartAsync(purchaseDTO.Offer.Id);
-        });
-
 
         Name = purchaseDTO.Post.Title;
         Price = purchaseDTO.Offer.Price + "€";
         ShippingCost = purchaseDTO.Offer.ShippingCost + "€";
         Image = purchaseDTO.Offer.Product.Images[0].ToBitmap();
         Quantity = purchaseDTO.Quantity.ToString();
-        EstimatedTime = purchaseDTO.EstimatedShippingDays + " days";
-
-        OnQuantityChanged += async (prev, quantity) => await AddItemToCartAsync(prev, quantity);*/
+        PurchaseDate = purchaseDTO.PurchaseDate;
+        DeliveryState = CalculateState();
     }
 
     private void OpenProduct()
     {
-        var view = new ProductView(Post);
+        //Cambiar para la vista de seguimiento
+        var view = new SendView();
         SmartTradeNavigationManager.Instance.NavigateTo(view);
-        ((ProductViewModel)view.DataContext).LoadProductsAsync();
     }
 
-    private async Task AddItemToCartAsync(int previousQuantity, int quantity)
+    public string CalculateState()
     {
-        if (previousQuantity != 0)
-            await Service.AddItemToCartAsync(Post, Offer, quantity - previousQuantity);
+        if (DateTime.Now.CompareTo(EstimatedDate) >= 0) { return "Received"; }
+
+        int daysSincePurchase = DateTime.Now.DayOfYear - PurchaseDate.DayOfYear;
+        
+        if (daysSincePurchase <= 2)
+        {
+            return "Pending Shipping";
+        }
+        else
+        {
+            return "Shipped";
+        }
     }
 }
