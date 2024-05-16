@@ -9,15 +9,13 @@ using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
 
-public class CartItemModel : ViewModelBase
+public class CartItemModel : ProductModel
 {
     private event Action<int, int> OnQuantityChanged;
-    public string? Name { get; set; }
-    public string? Price { get; set; }
-    public string? ShippingCost { get; set; }
-    public Bitmap? Image { get; set; }
-    public PostDTO Post { get; set; }
+    public new PostDTO Post { get; set; }
     public OfferDTO Offer { get; set; }
+    public string? EstimatedTime { get; }
+
     private int _quantity;
 
     public string? Quantity
@@ -34,12 +32,28 @@ public class CartItemModel : ViewModelBase
     public ICommand OpenProductCommand { get; }
     public ICommand DeleteItemCommand { get; }
 
+    public CartItemModel(CartItemDTO itemDto)
+    {
+        Post = itemDto.Post;
+        Offer = itemDto.Offer;
+
+        OpenProductCommand = ReactiveCommand.CreateFromTask(OpenProduct);
+        Name = itemDto.Post.Title;
+        Price = itemDto.Offer.Price + "€";
+        ShippingCost = itemDto.Offer.ShippingCost + "€";
+        Image = itemDto.Offer.Product.Images[0].ToBitmap();
+        Quantity = itemDto.Quantity.ToString();
+        EstimatedTime = itemDto.EstimatedShippingDays + " days";
+
+        OnQuantityChanged += async (prev, quantity) => await AddItemToCartAsync(prev, quantity);
+    }
+
     public CartItemModel(CartItemDTO itemDto, ShoppingCartModel shoppingCartModel)
     {
         Post = itemDto.Post;
         Offer = itemDto.Offer;
 
-        OpenProductCommand = ReactiveCommand.Create(OpenProduct);
+        OpenProductCommand = ReactiveCommand.CreateFromTask(OpenProduct);
         DeleteItemCommand = ReactiveCommand.CreateFromTask( async () =>
         {
             shoppingCartModel.Products.Remove(this);
@@ -52,13 +66,14 @@ public class CartItemModel : ViewModelBase
         ShippingCost = itemDto.Offer.ShippingCost + "€";
         Image = itemDto.Offer.Product.Images[0].ToBitmap();
         Quantity = itemDto.Quantity.ToString();
+        EstimatedTime = itemDto.EstimatedShippingDays + " days";
 
         OnQuantityChanged += async (prev, quantity) => await AddItemToCartAsync(prev, quantity);
     }
 
-    private void OpenProduct()
+    private async Task OpenProduct()
     {
-        var view = new ProductView(Post);
+        var view = new ProductView(await Service.GetPostAsync((int) Post.Id));
         SmartTradeNavigationManager.Instance.NavigateTo(view);
         ((ProductViewModel)view.DataContext).LoadProductsAsync();
     }

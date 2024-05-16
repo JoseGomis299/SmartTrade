@@ -22,6 +22,12 @@ public class ProductModel : ViewModelBase
     public ICommand OpenProductCommand { get; }
     public ICommand EditProductCommand { get; }
 
+    public ProductModel()
+    {
+        OpenProductCommand = ReactiveCommand.CreateFromTask(OpenProduct);
+        EditProductCommand = ReactiveCommand.CreateFromTask(EditProduct);
+    }
+
     public ProductModel(SimplePostDTO post)
     {
         Post = post;

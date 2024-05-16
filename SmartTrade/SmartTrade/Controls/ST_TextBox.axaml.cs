@@ -26,6 +26,11 @@ namespace SmartTrade.Controls
 
         private void OnTextBoxOnTextChanged(object? sender, TextChangedEventArgs e)
         {
+            if (ReplaceWithCaps && TextBox.Text != null)
+            {
+                TextBox.Text = TextBox.Text.ToUpper();
+            }
+
             Restrictor?.ApplyRestrictions();
         }
 
@@ -166,6 +171,12 @@ namespace SmartTrade.Controls
             set => SetValue(PatternRestrictionProperty, value);
         }
 
+        public bool ReplaceWithCaps
+        {
+            get => GetValue(ReplaceWithCapsProperty);
+            set => SetValue(ReplaceWithCapsProperty, value);
+        }
+
         private void SetRestrictors()
         {
             TextBox.TextChanged -= OnTextBoxOnTextChanged;
@@ -181,7 +192,7 @@ namespace SmartTrade.Controls
             }
             else if (OnlyLetters)
             {
-                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutLetterRestriction().Build();
+                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutLetterRestriction().WithoutPatterRestriction(" ").Build();
             }else if (!string.IsNullOrEmpty(PatternRestriction))
             {
                 Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutPatterRestriction(PatternRestriction).Build();
@@ -192,6 +203,7 @@ namespace SmartTrade.Controls
         {
             if (change.Property == OnlyPositiveDoubleProperty || change.Property == OnlyPositiveIntProperty || change.Property == PatternRestrictionProperty || change.Property == OnlyLettersProperty)
                 SetRestrictors();
+
             base.OnPropertyChanged(change);
         }
 
@@ -203,6 +215,9 @@ namespace SmartTrade.Controls
 
         public static readonly StyledProperty<string> PatternRestrictionProperty =
             AvaloniaProperty.Register<ST_TextBox, string>(nameof(PatternRestriction), defaultValue: "");
+
+        public static readonly StyledProperty<bool> ReplaceWithCapsProperty =
+            AvaloniaProperty.Register<ST_TextBox, bool>(nameof(ReplaceWithCaps), defaultValue: false);
 
         public static readonly StyledProperty<bool> OnlyLettersProperty =
             AvaloniaProperty.Register<ST_TextBox, bool>(nameof(OnlyLetters), defaultValue: false);

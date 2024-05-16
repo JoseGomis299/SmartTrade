@@ -73,4 +73,13 @@ public class MainViewModel : ViewModelBase
         get => _buttonsVisible;
         set => this.RaiseAndSetIfChanged(ref _buttonsVisible, value);
     }
+
+    public int NotificationsCount
+    {
+        get
+        {
+            if (Service.Notifications == null) return 0;
+            return Service.Notifications.Count(x => !x.Visited);
+        }
+    }
 }

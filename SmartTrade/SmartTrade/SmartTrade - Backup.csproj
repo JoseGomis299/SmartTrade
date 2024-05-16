@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <None Remove="Assets\addToCart.png" />
+    <None Remove="Assets\AlertSelected.png" />
+    <None Remove="Assets\bizum.png" />
+    <None Remove="Assets\Edit.png" />
+    <None Remove="Assets\paypal.png" />
+    <None Remove="Assets\Share.png" />
+    <None Remove="Assets\SmartTradeIcon.ico" />
+    <None Remove="Assets\visibilityON.png" />
+    <None Remove="Assets\wishListHeart.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+    <PackageReference Include="FluentAvalonia.ProgressRing" Version="1.69.2" />
+    <PackageReference Include="FuzzySharp" Version="2.0.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.5.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\packs\Microsoft.Android.Ref.34\34.0.79\ref\net8.0\Mono.Android.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\PopUps\AddAddress - Copia %282%29.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\AddAddress - Copia.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\AddGiftView.axaml.cs">
+      <DependentUpon>AddGiftView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\AddAddress.axaml.cs">
+      <DependentUpon>AddAddress.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CheckOutView.axaml.cs">
+      <DependentUpon>CheckOutView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SelectPaymentView.axaml.cs">
+      <DependentUpon>SelectPaymentView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SelectAddressView.axaml.cs">
+      <DependentUpon>SelectAddressView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\Paypal.axaml.cs">
+      <DependentUpon>Paypal.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ProductView.axaml.cs">
+      <DependentUpon>ProductView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\GiftsView.axaml.cs">
+      <DependentUpon>GiftsView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\EditGiftListView.axaml.cs">
+      <DependentUpon>EditGiftListView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>

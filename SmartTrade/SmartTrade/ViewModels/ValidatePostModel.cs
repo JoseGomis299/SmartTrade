@@ -33,7 +33,7 @@ public class ValidatePostModel : PostModificationModel
         }
     }
 
-    public async Task ValidatePostAsync()
+    public async Task EditPostAsync()
     {
         PostDTO postDto = CreatePostInfo(Post);
         postDto.Validated = Logged.IsAdmin;

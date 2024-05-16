@@ -427,20 +427,29 @@ namespace SmartTradeAPI.Migrations
                     b.Property<string>("ConsumerEmail")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("ExpectedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("OfferId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
+
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int?>("PurchaseOfferId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PurchasePostId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("PurchaseProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("PurchaseSellerEmail")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<float>("ShippingPrice")
                         .HasColumnType("real");
@@ -449,9 +458,9 @@ namespace SmartTradeAPI.Migrations
 
                     b.HasIndex("ConsumerEmail");
 
-                    b.HasIndex("PurchaseOfferId");
+                    b.HasIndex("OfferId");
 
-                    b.HasIndex("PurchasePostId");
+                    b.HasIndex("PostId");
 
                     b.HasIndex("PurchaseProductId");
 
@@ -839,13 +848,13 @@ namespace SmartTradeAPI.Migrations
                         .WithMany("Purchases")
                         .HasForeignKey("ConsumerEmail");
 
-                    b.HasOne("SmartTrade.Entities.Offer", "PurchaseOffer")
+                    b.HasOne("SmartTrade.Entities.Offer", "Offer")
                         .WithMany()
-                        .HasForeignKey("PurchaseOfferId");
+                        .HasForeignKey("OfferId");
 
-                    b.HasOne("SmartTrade.Entities.Post", "PurchasePost")
+                    b.HasOne("SmartTrade.Entities.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PurchasePostId");
+                        .HasForeignKey("PostId");
 
                     b.HasOne("SmartTrade.Entities.Product", "PurchaseProduct")
                         .WithMany()
@@ -855,9 +864,9 @@ namespace SmartTradeAPI.Migrations
                         .WithMany()
                         .HasForeignKey("PurchaseSellerEmail");
 
-                    b.Navigation("PurchaseOffer");
+                    b.Navigation("Offer");
 
-                    b.Navigation("PurchasePost");
+                    b.Navigation("Post");
 
                     b.Navigation("PurchaseProduct");
 

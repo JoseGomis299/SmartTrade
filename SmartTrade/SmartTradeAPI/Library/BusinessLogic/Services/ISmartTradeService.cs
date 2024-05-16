@@ -58,5 +58,6 @@ namespace SmartTrade.BusinessLogic
         public void AddGift(string consumerId, SimpleGiftDTO giftDTO);
         public void RemoveGift(string consumerId, SimpleGiftDTO giftDTO);
         public List<AlertDTO> GetAlerts(string loggedId);
+        public int AddAddress(string? loggedId, Address address);
     }
 }

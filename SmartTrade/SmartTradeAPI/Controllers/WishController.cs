@@ -8,26 +8,25 @@ namespace SmartTradeAPI.Controllers;
 [Route("SmartTradeAPI/Wish")]
 public class WishController : ControllerBase
 {
+    private readonly ISmartTradeService _service = new SmartTradeService();
+
     [HttpPost("CreateWish")]
     public int CreateWish(int id)
     {
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
-        ISmartTradeService service = new SmartTradeService();
-        return service.CreateWish(loggedId, id);
+        return _service.CreateWish(loggedId, id);
     }
 
     [HttpDelete("DeleteWish")]
     public void DeleteWish(int id)
     {
-        SmartTradeService service = new();
-        service.DeleteWish(id);
+        _service.DeleteWish(id);
     }
 
     [HttpGet("GetWishList")]
     public List<WishDTO> GetWishList()
     {
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
-        ISmartTradeService service = new SmartTradeService();
-        return service.GetWishList(loggedId);
+        return _service.GetWishList(loggedId);
     }
 }

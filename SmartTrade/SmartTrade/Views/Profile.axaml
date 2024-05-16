@@ -21,6 +21,99 @@
 				</DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
+        <!--Payment Methods-->
+        <StackPanel Margin="20 0" Name="PaymentMethodsPanel">
+            <TextBlock Classes="h1" FontSize="26" Text="Payment Methods"/>
+
+		    <TextBlock Classes="h1" FontSize="21" Text="Credit card"/>
+		    <ItemsControl Margin="10 10" ItemsSource="{Binding CreditCards}">
+			    <ItemsControl.ItemsPanel>
+				    <ItemsPanelTemplate>
+					    <StackPanel Orientation="Vertical" Spacing="10"/>
+				    </ItemsPanelTemplate>
+			    </ItemsControl.ItemsPanel>
+			    <ItemsControl.ItemTemplate>
+				    <DataTemplate>
+					    <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="•" TextWrapping="Wrap"/>
+							<StackPanel>
+							    <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Name}" TextWrapping="Wrap"/>
+							    <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Number}" TextWrapping="Wrap"/>
+						    </StackPanel>
+					    </StackPanel>
+				    </DataTemplate>
+			    </ItemsControl.ItemTemplate>
+		    </ItemsControl>
+		    <Button Margin="0 20 0 10 " Classes="White"  CornerRadius="10" Width="150" HorizontalAlignment="Center" Content="Add credit card" Name="AddCreditCardButton"/>
+
+		    <TextBlock Classes="h1" FontSize="21" Text="PayPal"/>
+		    <ItemsControl Margin="10 10" ItemsSource="{Binding Paypals}">
+			    <ItemsControl.ItemsPanel>
+				    <ItemsPanelTemplate>
+					    <StackPanel Orientation="Vertical" Spacing="10"/>
+				    </ItemsPanelTemplate>
+			    </ItemsControl.ItemsPanel>
+			    <ItemsControl.ItemTemplate>
+				    <DataTemplate>
+					    <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="•" TextWrapping="Wrap"/>
+							<StackPanel>
+							    <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Name}" TextWrapping="Wrap"/>
+						    </StackPanel>
+					    </StackPanel>
+				    </DataTemplate>
+			    </ItemsControl.ItemTemplate>
+		    </ItemsControl>
+		    <Button Margin="0 20 0 10 " Classes="White"  CornerRadius="10" Width="150" HorizontalAlignment="Center" Content="Add Paypal" Name="AddPaypalButton"/>
+
+		    <TextBlock Classes="h1" FontSize="21" Text="Bizum"/>
+		    <ItemsControl Margin="10 10" ItemsSource="{Binding Bizums}">
+			    <ItemsControl.ItemsPanel>
+				    <ItemsPanelTemplate>
+					    <StackPanel Orientation="Vertical" Spacing="10"/>
+				    </ItemsPanelTemplate>
+			    </ItemsControl.ItemsPanel>
+			    <ItemsControl.ItemTemplate>
+				    <DataTemplate>
+					    <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="•" TextWrapping="Wrap"/>
+							<StackPanel>
+							    <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Number}" TextWrapping="Wrap"/>
+						    </StackPanel>
+					    </StackPanel>
+				    </DataTemplate>
+			    </ItemsControl.ItemTemplate>
+		    </ItemsControl>
+		    <Button Margin="0 20 0 30 " Classes="White"  CornerRadius="10" Width="150" HorizontalAlignment="Center" Content="Add Bizum" Name="AddBizumButton"/>
+	    </StackPanel>
+
+        <!--Addresses-->
+		<StackPanel Margin="20 0" Name="AddressesPanel">
+            <TextBlock Classes="h1" FontSize="26" Text="Your addresses"/>
+
+            <ItemsControl Margin="10 10" ItemsSource="{Binding Addresses}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" Spacing="10"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="•" TextWrapping="Wrap"/>
+							<StackPanel>
+                                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Dir1}" TextWrapping="Wrap"/>
+                                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Dir2}"/>
+                                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Dir3}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Margin="0 20 0 30 " Classes="White"  CornerRadius="10" Width="150" HorizontalAlignment="Center" Content="Add address" Name="AddAddressButton"/>
+		</StackPanel>
+
         <Button HorizontalAlignment="Center" Margin="0 10" Classes="Green" Width="200" Name="AddPostButton">POST A PRODUCT</Button>
         <Button HorizontalAlignment="Center" Margin="0 10" Classes="Green" Width="100" Name="WhisListButton">WhisList</Button>
 		<ToggleButton HorizontalAlignment="Center" Margin="0 10" Classes="Green" Width="180" Name="ParentalToggleButton">Parental Control</ToggleButton>

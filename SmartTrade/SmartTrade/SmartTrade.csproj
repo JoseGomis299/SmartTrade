@@ -43,8 +43,41 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\PopUps\PurchaseCompletedPopup.axaml.cs">
+      <DependentUpon>PurchaseCompletedPopup.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\AddBizumPopup.axaml.cs">
+      <DependentUpon>AddBizumPopup.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\AddCreditCardPopup.axaml.cs">
+      <DependentUpon>AddCreditCardPopup.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\AddPaypalPopup.axaml.cs">
+      <DependentUpon>AddPaypalPopup.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\AddGiftView.axaml.cs">
+      <DependentUpon>AddGiftView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\AddAddress.axaml.cs">
+      <DependentUpon>AddAddress.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CheckOutView.axaml.cs">
+      <DependentUpon>CheckOutView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SelectPaymentView.axaml.cs">
+      <DependentUpon>SelectPaymentView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SelectAddressView.axaml.cs">
+      <DependentUpon>SelectAddressView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\ST_OrderItem.axaml.cs">
+      <DependentUpon>ST_OrderItem.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AddGiftView.axaml.cs">
       <DependentUpon>AddGiftView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\OrderHistoryView.axaml.cs">
+      <DependentUpon>OrderHistoryView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Paypal.axaml.cs">
       <DependentUpon>Paypal.axaml</DependentUpon>

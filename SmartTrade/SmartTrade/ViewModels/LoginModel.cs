@@ -26,14 +26,7 @@ namespace SmartTrade.ViewModels
 
         public async Task Login(string email, string password)
         {
-            try
-            {
-                await Service.LogInAsync(email, password);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Email or Password are incorrect");
-            }
+            await Service.LogInAsync(email, password);
         }
     }
 }

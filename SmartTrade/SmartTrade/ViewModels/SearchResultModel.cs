@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Media.Imaging;
-using DynamicData.Binding;
-using ReactiveUI;
-using SmartTrade.Views;
 using SmartTrade.Entities;
 
 namespace SmartTrade.ViewModels
@@ -87,25 +75,7 @@ namespace SmartTrade.ViewModels
             }
             else
             {
-                switch (category)
-                {
-
-                    case 0:
-                        this.Filtering(Category.Toy); break;
-
-
-                    case 1:
-                        this.Filtering(Category.Nutrition); break;
-
-
-                    case 2:
-                        this.Filtering(Category.Clothing); break;
-
-
-                    case 3:
-                        this.Filtering(Category.Book); break;
-
-                }
+                Filtering((Category) category);
             }
         }
 

@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SmartTrade.Services;
+using ReactiveUI;
+using SmartTrade.Entities;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
 
 public class ProfileModel : ViewModelBase
 {
+    public ObservableCollection<PaymentMethodModel> CreditCards { get; set; } = new ObservableCollection<PaymentMethodModel>();
+    public ObservableCollection<PaymentMethodModel> Paypals { get; set; } = new ObservableCollection<PaymentMethodModel>();
+    public ObservableCollection<PaymentMethodModel> Bizums { get; set; } = new ObservableCollection<PaymentMethodModel>();
+    public ObservableCollection<AddressModel> Addresses { get; set; } = new ObservableCollection<AddressModel>();
+
     public ObservableCollection<string> ProfileData { get; set; }
     public UserType LoggedType => Service.LoggedType;
 
-    public UserDTO User
-    {
-        get
-        {
-            return Service.Logged;
-        }
-    }
+    public UserDTO User => Service.Logged;
 
     public bool IsParentalControlEnabled { get; set; }
     public string Password { get; set; }
@@ -30,6 +28,8 @@ public class ProfileModel : ViewModelBase
         SetProfileData(Service.Logged);
         IsParentalControlEnabled = Service.IsParentalControlEnabled;
 
+        UpdatePaymentMethods();
+        UpdateAddresses();
     }
     public void UpdateParentalControlStatus()
     {
@@ -37,15 +37,84 @@ public class ProfileModel : ViewModelBase
         SmartTradeNavigationManager.Instance.MainView.ReinitializeHomeNextTime = true;
     }
 
-    public DateTime getBirth(UserDTO? user)
+    private void UpdatePaymentMethods()
     {
-        try { 
-            ConsumerDTO consumer = (ConsumerDTO)user;
-            return consumer.BirthDate;
+        CreditCards.Clear();
+        Paypals.Clear();
+        Bizums.Clear();
+
+        foreach (var creditCard in (Service.Logged as ConsumerDTO).CreditCards)
+        {
+            CreditCards.Add(new PaymentMethodModel(creditCard));
         }
-        catch { throw new Exception("Not Consumer");}
-        
+
+        foreach (var paypal in (Service.Logged as ConsumerDTO).PayPalAccounts)
+        {
+            Paypals.Add(new PaymentMethodModel(paypal));
+        }
+
+        foreach (var bizum in (Service.Logged as ConsumerDTO).BizumAccounts)
+        {
+            Bizums.Add(new PaymentMethodModel(bizum));
+        }
+
+        this.RaisePropertyChanged(nameof(CreditCards));
+        this.RaisePropertyChanged(nameof(Paypals));
+        this.RaisePropertyChanged(nameof(Bizums));
     }
+
+    public async Task AddBizumAsync(BizumInfo bizum, bool? save)
+    {
+        if (save == true)
+        {
+            await Service.AddBizumAsync(bizum);
+        }
+        else Service.AddBizumLocal(bizum);
+
+        UpdatePaymentMethods();
+    }
+
+    public async Task AddCreditCardAsync(CreditCardInfo creditCard, bool? save)
+    {
+        if (save == true)
+        {
+            await Service.AddCreditCardAsync(creditCard);
+        }
+        else Service.AddCreditCardLocal(creditCard);
+
+        UpdatePaymentMethods();
+    }
+
+    public async Task AddPaypalAsync(PayPalInfo paypal, bool? save)
+    {
+        if (save == true)
+        {
+            await Service.AddPaypalAsync(paypal);
+        }
+        else Service.AddPaypalLocal(paypal);
+
+        UpdatePaymentMethods();
+    }
+
+    private void UpdateAddresses()
+    {
+        Addresses.Clear();
+
+        foreach (var address in (Service.Logged as ConsumerDTO).Addresses)
+        {
+            Addresses.Add(new AddressModel(address));
+        }
+    }
+
+    public async Task AddAddressAsync(Address address, bool? save)
+    {
+        if (save == true)
+            await Service.AddAddressAsync(address);
+        else
+            Service.AddBillingAddressLocal(address);
+        UpdateAddresses();
+    }
+
     public void SetProfileData(UserDTO? user)
     {
         ProfileData.Clear();

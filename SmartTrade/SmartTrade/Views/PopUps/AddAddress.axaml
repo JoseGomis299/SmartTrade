@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="393" d:DesignHeight="500"
+             x:Class="SmartTrade.Views.AddAddress"
+             xmlns:vm="clr-namespace:SmartTrade.ViewModels"
+             xmlns:controls="clr-namespace:SmartTrade.Controls">
+  <StackPanel HorizontalAlignment="Center" Spacing="10">
+      <TextBlock Classes="h1" Text="Add an address" HorizontalAlignment="Center"/>
+      <controls:ST_TextBox LabelText="Province" OnlyLetters="True" TextHeight="40" Name="TextBoxProvince"/>
+      <controls:ST_TextBox LabelText="Municipality" OnlyLetters="True" TextHeight="40" Name="TextBoxMunicipality"/>
+      <controls:ST_TextBox LabelText="Postal Code" OnlyPositiveInt="True"  TextHeight="40" Name="TextBoxPostalCode" TextWidth="120"/>
+      <controls:ST_TextBox LabelText="Street" TextHeight="40" Name="TextBoxStreet"/>
+      <controls:ST_TextBox LabelText="Number" OnlyPositiveInt="True" TextHeight="40" Name="TextBoxNumber" TextWidth="70"/>
+      <controls:ST_TextBox LabelText="Door" TextHeight="40" Name="TextBoxDoor"/>
+      <CheckBox HorizontalAlignment="Center" Content="Save for next purchases" Margin="0 0  0 10" IsChecked="True" Name="SaveCheckBox"/>
+	  <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+		  <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="10 0 15 0" Classes="White" Name="CancelButton">Cancel</Button>
+		  <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="0 0 0 0" Classes="Green" Name="AcceptButton">Accept</Button>
+	 </StackPanel>
+  </StackPanel>
+</UserControl>

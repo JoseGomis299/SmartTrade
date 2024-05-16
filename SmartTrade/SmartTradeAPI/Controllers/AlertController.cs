@@ -9,44 +9,39 @@ namespace SmartTradeAPI.Controllers;
 [Route("SmartTradeAPI/Alert")]
 public class AlertController : ControllerBase
 {
+    private readonly ISmartTradeService _service = new SmartTradeService();
+
     [HttpPost("CreateAlert")]
     public int CreateAlert(string productName)
     {
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
-        ISmartTradeService service = new SmartTradeService();
-        return service.CreateAlert(loggedId, productName);
+        return _service.CreateAlert(loggedId, productName);
     }
 
     [HttpDelete("DeleteAlert")]
     public void DeleteAlert(int id)
     {
-        SmartTradeService service = new();
-        service.DeleteAlert(id);
+        _service.DeleteAlert(id);
     }
 
     [HttpDelete("DeleteAlertByProductName")]
     public void DeleteAlert(string productName)
     {
-        ISmartTradeService service = new SmartTradeService();
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
-
-        service.DeleteAlert(productName, loggedId);
+        _service.DeleteAlert(productName, loggedId);
     }
 
     [HttpGet("GetAlertByProductName")]
     public AlertDTO GetAlertByProductName(string productName)
     {
-        ISmartTradeService service = new SmartTradeService();
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
-
-        return service.GetAlert(productName, loggedId);
+        return _service.GetAlert(productName, loggedId);
     }
 
     [HttpGet("GetUserAlerts")]
     public List<AlertDTO> GetUserAlerts()
     {
-        ISmartTradeService service = new SmartTradeService();
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
-        return service.GetAlerts(loggedId);
+        return _service.GetAlerts(loggedId);
     }
 }

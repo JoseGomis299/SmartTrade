@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FuzzySharp;
 using SmartTrade.Entities;
+using SmartTrade.Helpers;
+using SmartTrade.Views;
+using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services;
@@ -31,6 +35,12 @@ namespace SmartTrade.Services;
             remove => _cache.OnGiftsChanged -= value;
         }
 
+        public event Action OnNotificationsChanged
+        {
+            add => _cache.OnNotificationsChanged += value;
+            remove => _cache.OnNotificationsChanged -= value;
+        }
+
         public UserType LoggedType
         {
             get
@@ -49,7 +59,9 @@ namespace SmartTrade.Services;
         public List<CartItemDTO>? CartItems => _cache.CartItems; 
         public List<WishDTO>? WishList => _cache.Wishes; 
         public List<AlertDTO>? Alerts => _cache.Alerts;
+        public List<NotificationDTO>? Notifications => _cache.Notifications;
         public List<GiftListDTO>? GiftLists => _cache.GiftLists;
+        public List<PurchaseDTO> Purchases => _cache.Purchases;
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
         private SmartTradeBroker _broker;
@@ -64,15 +76,15 @@ namespace SmartTrade.Services;
             _cache = new SmartTradeCache();
         }
 
-        public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity)
+        public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity, int estimatedDays)
         {
-            for (int i = 0; i < quantity; i++)
-            {
-                _cache.Purchases.Add(new PurchaseDTO(offer.Price, offer.ShippingCost, offer.Product.Id, post.SellerID, (int)post.Id, offer.Id));
-            }
+            PurchaseDTO purchase = new PurchaseDTO(offer.Price, offer.ShippingCost, quantity, offer.Product.Id, post.SellerID, post, offer, DateTime.Now, DateTime.Now.AddDays(estimatedDays));
+             
+            _cache.Purchases.Add(purchase);
+            await _broker.UserClient.AddPurchaseAsync(purchase);
         }
 
-        public async Task InitializeCacheAsync()
+    public async Task InitializeCacheAsync()
         {
             await LoadCartItems();
         }
@@ -93,14 +105,23 @@ namespace SmartTrade.Services;
 
         public async Task LogInAsync(string email, string password)
         {
+            int loadingScreen = LoadingScreenManager.Instance.StartLoading();
             await _broker.UserClient.LogInAsync(email, password);
 
+            if (Logged == null)
+            {
+                LoadingScreenManager.Instance.StopLoading(loadingScreen);
+                throw new Exception("Email or Password are incorrect");
+            }
+            
             await LoadCartItems();
-            _cache.Purchases = null;
+            _cache.Purchases = await GetPurchasesAsync() ?? new List<PurchaseDTO>();
             _cache.Notifications = await GetNotificationsAsync() ?? new List<NotificationDTO>();
             _cache.Alerts = await GetAlertsAsync() ?? new List<AlertDTO>();
             _cache.Wishes = await GetWishAsync() ?? new List<WishDTO>();
             _cache.GiftLists = await LoadGiftListsAsync() ?? new List<GiftListDTO>();
+            
+            LoadingScreenManager.Instance.StopLoading(loadingScreen);
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)
@@ -113,22 +134,53 @@ namespace SmartTrade.Services;
             await _broker.UserClient.RegisterSellerAsync(email, password, name, lastnames, dni, companyName, iban);
         }
 
-        public async Task AddPaypalAsync(PayPalInfo paypalinfo, string loggedID)
+        public async Task AddPaypalAsync(PayPalInfo paypalinfo)
         {
-            await _broker.UserClient.AddPaypalAsync(paypalinfo, loggedID);
+            await _broker.UserClient.AddPaypalAsync(paypalinfo);
+            AddPaypalLocal(paypalinfo);
         }
 
         public async Task AddCreditCardAsync(CreditCardInfo creditCard)
         {
             await _broker.UserClient.AddCreditCardAsync(creditCard);
+            AddCreditCardLocal(creditCard);
         }
 
         public async Task AddBizumAsync(BizumInfo bizum)
         {
            await _broker.UserClient.AddBizumAsync(bizum);
+           AddBizumLocal(bizum);
         }
 
-        public async Task<List<PurchaseDTO>?> GetPurchases()
+        public async Task AddAddressAsync(Address address)
+        {
+            int addressId = await _broker.UserClient.AddAddressAsync(address);
+            address.Id = addressId;
+
+            (Logged as ConsumerDTO).Addresses.Add(address);
+        }
+
+        public void AddBillingAddressLocal(Address address)
+        {
+            (Logged as ConsumerDTO).Addresses.Add(address);
+        }
+
+        public void AddBizumLocal(BizumInfo bizum)
+        {
+            (Logged as ConsumerDTO).BizumAccounts.Add(bizum);
+        }
+
+        public void AddCreditCardLocal(CreditCardInfo creditCard)
+        {
+            (Logged as ConsumerDTO).CreditCards.Add(creditCard);
+        }
+
+        public void AddPaypalLocal(PayPalInfo paypal)
+        {
+            (Logged as ConsumerDTO).PayPalAccounts.Add(paypal);
+        }
+
+        public async Task<List<PurchaseDTO>?> GetPurchasesAsync()
         {
             if(_cache.Purchases == null)
             {
@@ -157,7 +209,7 @@ namespace SmartTrade.Services;
         }
         private async Task LoadCartItems()
         {
-            await _cache.LoadCartItemsAsync();
+            if(Logged == null) await _cache.LoadCartItemsAsync();
             var guestItems = new List<CartItemDTO>(_cache.CartItems);
             var userItems = await _broker.UserClient.GetShoppingCartAsync();
 
@@ -225,7 +277,7 @@ namespace SmartTrade.Services;
         {
             if(_cache.Notifications != null) return _cache.Notifications;
 
-            _cache.Notifications = await _broker.NotificationClient.GetNotificationsAsync();
+            _cache.SetNotifications(await _broker.NotificationClient.GetNotificationsAsync());
             return _cache.Notifications;
         }
 
@@ -300,7 +352,10 @@ namespace SmartTrade.Services;
         
         public async Task<List<WishDTO>?> GetWishAsync()
         {
-            return await _broker.WishClient.GetWishAsync(); 
+            if(WishList != null) return WishList;
+
+             _cache.Wishes = await _broker.WishClient.GetWishAsync(); 
+             return WishList;
         }
 
         public async Task DeleteWishFromPostAsync(int id)
@@ -341,10 +396,10 @@ namespace SmartTrade.Services;
                 return;
             }
 
-            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(newName, date.Value.ToDateTime(new TimeOnly()), Logged.Email, id));
+            await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(newName, date?.ToDateTime(new TimeOnly()), Logged.Email, id));
         }
 
-    public async Task RemoveGiftListAsync(string listName)
+        public async Task RemoveGiftListAsync(string listName)
         {
             if (Logged == null)
             {
@@ -360,8 +415,7 @@ namespace SmartTrade.Services;
             {
                 return null;
             }
-
-            return await _broker.UserClient.GetGiftListsAsync(); 
+            return _cache.GiftLists ??= new List<GiftListDTO>();
         }
 
         public List<String> GetGiftListNames()

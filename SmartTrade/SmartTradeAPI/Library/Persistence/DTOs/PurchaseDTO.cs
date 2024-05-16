@@ -1,4 +1,5 @@
 ﻿using SmartTrade.Entities;
+using SmartTradeDTOs;
 
 namespace SmartTradeAPI.Library.Persistence.DTOs
 {
@@ -6,22 +7,27 @@ namespace SmartTradeAPI.Library.Persistence.DTOs
     {
         public float Price { get; set; }
         public float ShippingPrice { get; set; }
-        public byte[] Image { get; set; }
+        public int Quantity { get; set; }
         public int? ProductId { get; set; }
         public string? EmailSeller { get; set; }
-        public int? PostId { get; set; }
-        public int? OfferId { get; set; }
+        public PostDTO Post { get; set; }
+        public OfferDTO Offer { get; set; }
+        public DateTime PurchaseDate { get; set; }
+        public DateTime ExpectedDate { get; set; }
 
         public PurchaseDTO(){}
         
-        public PurchaseDTO(int? idproduct, int? postId, string? emailseller, int? idOffer, float precio, float precioEnvio)
+        public PurchaseDTO(float price, float shippingPrice, int quantity, int productId, string emailSeller, PostDTO postId, OfferDTO offerId, DateTime purchaseDate, DateTime expectedDate)
         {
-            Price = precio;
-            ShippingPrice = precioEnvio;
-            ProductId = idproduct;
-            EmailSeller = emailseller;
-            PostId = postId;
-            OfferId = idOffer;
+            Price = price;
+            ShippingPrice = shippingPrice;
+            Quantity = quantity;
+            ProductId = productId;
+            EmailSeller = emailSeller;
+            Post = postId;
+            Offer = offerId;
+            PurchaseDate = purchaseDate;
+            ExpectedDate = expectedDate;
         }
     }
 }

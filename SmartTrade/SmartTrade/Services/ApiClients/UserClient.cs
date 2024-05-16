@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SmartTradeDTOs;
 using SmartTrade.Entities;
 using HarfBuzzSharp;
+using SmartTradeAPI.Library.Persistence.DTOs;
 
 namespace SmartTrade.Services.ApiClients;
 
@@ -55,40 +56,28 @@ public class UserClient : ApiClient
         await Broker.SetLoggedAsync(await PerformApiInstructionAsync("RegisterSeller", ApiInstruction.Post, registerData));
     }
 
-    public async Task AddPaypalAsync(PayPalInfo paypalinfo, string loggedID)
+    public async Task AddPaypalAsync(PayPalInfo paypalinfo)
     {
         if(Logged == null) return;
-        await PerformApiInstructionAsync($"AddPaypal?id={loggedID}", ApiInstruction.Post, paypalinfo);
+        await PerformApiInstructionAsync($"AddPaypal", ApiInstruction.Post, paypalinfo);
     }
 
     public async Task AddCreditCardAsync(CreditCardInfo creditCard)
     {
         if (Logged == null) return;
-        await PerformApiInstructionAsync($"AddCreditCard?id={Logged.Email}", ApiInstruction.Post, creditCard);
+        await PerformApiInstructionAsync($"AddCreditCard", ApiInstruction.Post, creditCard);
     }
 
     public async Task AddBizumAsync(BizumInfo bizum)
     {
         if (Logged == null) return;
-        await PerformApiInstructionAsync($"AddBizum?id={Logged.Email}", ApiInstruction.Post, bizum);
+        await PerformApiInstructionAsync($"AddBizum", ApiInstruction.Post, bizum);
     }
 
-    public async Task AddPurchaseAsync(int idProduct, int idPost, string emailSeller, int precio, int precioEnvio, int idoffer)
+    public async Task AddPurchaseAsync(PurchaseDTO purchase)
     {
         if (Logged == null) return;
-
-        var registerData = new PurchaseDTO()
-        {
-            ProductId = idProduct,
-            PostId = idPost,
-            EmailSeller = emailSeller,
-            Price = precio,
-            ShippingPrice = precioEnvio,
-            OfferId = idoffer
-
-        };
-
-        await PerformApiInstructionAsync("AddPurchase", ApiInstruction.Post, registerData);
+        await PerformApiInstructionAsync("AddPurchase", ApiInstruction.Post, purchase);
     }
 
     public async Task<List<PurchaseDTO>?> GetPurchaseAsync()
@@ -143,5 +132,11 @@ public class UserClient : ApiClient
     {
         if (Logged == null) return;
         await PerformApiInstructionAsync($"RemoveGift", ApiInstruction.Put, giftList);
+    }
+
+    public async Task<int> AddAddressAsync(Address address)
+    {
+        if (Logged == null) return -1;
+        return int.Parse(await PerformApiInstructionAsync($"AddAddress", ApiInstruction.Put, address));
     }
 }

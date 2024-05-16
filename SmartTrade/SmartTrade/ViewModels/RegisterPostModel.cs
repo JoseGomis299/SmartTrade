@@ -1,6 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Newtonsoft.Json;
-using SmartTrade.Services;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels

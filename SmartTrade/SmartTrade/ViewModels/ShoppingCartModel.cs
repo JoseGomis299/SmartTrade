@@ -1,7 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using ReactiveUI;
 using SmartTrade.Views;
+using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
 
@@ -11,6 +13,8 @@ public class ShoppingCartModel : ViewModelBase
     public string? SubTotal { get; set; }
     public string? Total { get; set; }
     public ObservableCollection<CartItemModel> Products { get; set; }
+    public UserType UserType => Service.LoggedType;
+    public event Action onCartChanged; 
     public ShoppingCartModel()
     {
         Products = new ObservableCollection<CartItemModel>();
@@ -43,30 +47,12 @@ public class ShoppingCartModel : ViewModelBase
         this.RaisePropertyChanged(nameof(SubTotal));
         this.RaisePropertyChanged(nameof(ShippingCost));
         this.RaisePropertyChanged(nameof(Total));
+
+        onCartChanged?.Invoke();
     }
 
     public void UnSubscribeFromCartNotifications()
     {
         Service.OnCartChanged -= Calculate;
-    }
-
-    public async Task BuyItemsAsync()
-    {
-        if (Service.Logged == null)
-        {
-            SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), 2, 2, out _);
-            return;
-        }
-
-        foreach (var item in Products)
-        {
-            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity));
-            await Service.DeleteItemFromCartAsync(item.Offer.Id);
-        }
-
-        SmartTradeNavigationManager.Instance.MainView.ReinitializeHomeNextTime = true;
-        Products.Clear();
-        this.RaisePropertyChanged(nameof(Products));
-        Calculate();
     }
 }

@@ -420,6 +420,17 @@ public class SmartTradeService : ISmartTradeService
         }).ToList();
     }
 
+    public int AddAddress(string? loggedId, Address address)
+    {
+        Consumer logged = _dal.GetById<Consumer>(loggedId);
+        address = new Address(address.Province, address.Street, address.City, address.PostalCode, address.Number,
+            address.Door);
+        logged.Addresses.Add(address);
+        _dal.Commit();
+
+        return address.Id;
+    }
+
     public void DeleteNotification(int id)
     {
         _dal.Delete<Notification>(_dal.GetById<Notification>(id));
@@ -526,12 +537,15 @@ public class SmartTradeService : ISmartTradeService
     {
         Consumer? logged = _dal.GetById<Consumer>(userId);
 
-        var post = _dal.GetById<Post>(purchaseDTO.PostId);
         var seller = _dal.GetById<Seller>(purchaseDTO.EmailSeller);
-        var product = _dal.GetById<Product>(purchaseDTO.ProductId);
-        var offer = _dal.GetById<Offer>(purchaseDTO.OfferId);
+        var postDTO = purchaseDTO.Post;
+        var post = _dal.GetById<Post>(postDTO.Id);
 
-        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, seller, post, offer);
+        var product = _dal.GetById<Product>(purchaseDTO.ProductId);
+        var offerDTO = purchaseDTO.Offer;
+        var offer = _dal.GetById<Offer>(offerDTO.Id);
+
+        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, purchaseDTO.Quantity, seller, post, offer, purchaseDTO.PurchaseDate, purchaseDTO.ExpectedDate);
         logged.AddPurchases(purchase);
         _dal.Commit();
     }
@@ -542,11 +556,21 @@ public class SmartTradeService : ISmartTradeService
         return (logged.Purchases.AsQueryable())
         .Select(p => new PurchaseDTO
         {
-            Image = p.PurchaseProduct.Images.First().ImageSource,
             ProductId = p.PurchaseProduct.Id,
-            PostId = p.PurchasePost.Id,
+            Post = GetPost(p.Post.Id),
             EmailSeller = p.PurchaseSeller.Email,
-            OfferId = p.PurchaseOffer.Id,
+            Offer = new OfferDTO
+            {
+                Id = p.Offer.Id,
+                Price = p.Offer.Price,
+                ShippingCost = p.Offer.ShippingCost,
+                Stock = p.Offer.Stock,
+                Product = new ProductDTO
+                {
+                    Id = p.Offer.Product.Id,
+                    Images = new List<byte[]>() { p.Offer.Product.Images.First().ImageSource }
+                }
+            },
             Price = p.Price,
             ShippingPrice = p.ShippingPrice
         }).ToList();
