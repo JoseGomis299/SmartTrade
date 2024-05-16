@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using ReactiveUI;
 using SmartTrade.Views;
@@ -13,6 +14,7 @@ public class ShoppingCartModel : ViewModelBase
     public string? Total { get; set; }
     public ObservableCollection<CartItemModel> Products { get; set; }
     public UserType UserType => Service.LoggedType;
+    public event Action onCartChanged; 
     public ShoppingCartModel()
     {
         Products = new ObservableCollection<CartItemModel>();
@@ -45,6 +47,8 @@ public class ShoppingCartModel : ViewModelBase
         this.RaisePropertyChanged(nameof(SubTotal));
         this.RaisePropertyChanged(nameof(ShippingCost));
         this.RaisePropertyChanged(nameof(Total));
+
+        onCartChanged?.Invoke();
     }
 
     public void UnSubscribeFromCartNotifications()

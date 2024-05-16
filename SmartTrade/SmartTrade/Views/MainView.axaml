@@ -12,7 +12,7 @@
   </Design.DataContext>
 	<Grid>
 		<!--Overlay-->
-        <Border Name="Overlay" IsVisible="False" ZIndex="10">
+        <Border Name="Overlay" IsVisible="False"  ZIndex="10">
             <Border.Background>
                 <SolidColorBrush Color="#000000" Opacity="0.5"/>
             </Border.Background>
@@ -21,11 +21,13 @@
 			</Border>
 		</Border>
 
-        <!--Main View-->
+
+		<!--Main View-->
+
         <SplitView Name="SideBar" IsPaneOpen="False" OpenPaneLength="150" DisplayMode="Overlay" PanePlacement="Left">
 			<SplitView.Pane>
 				<!--SideBar-->
-				<StackPanel Background="#32C378">
+				<StackPanel Background="#32C378" >
                     <StackPanel Name="Menus">
                         <TextBlock Classes="h1" Text="Menus" Margin="0 50 0 0" HorizontalAlignment="Center"/>
                         <Button Name="WishListButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White" CornerRadius="0">Wish List</Button>
@@ -41,10 +43,11 @@
 				</StackPanel>
 			</SplitView.Pane>
 			<SplitView.Content>
-				<Border Name="DarkenBorder" Background="Transparent">
+				<Grid>
+                    <Border Name="DarkenBorder" Background="Transparent" Opacity="0.7" ZIndex="8" IsHitTestVisible="False"/>
+					<Grid RowDefinitions="Auto * Auto" ZIndex="0">
 
-					<Grid RowDefinitions="Auto * Auto">
-						<!--SearchBar-->
+                        <!--SearchBar-->
 						<Border Name="SearchBar" Grid.Row="0" BorderBrush="#0A413E" BorderThickness="0 0 0 1">
 							<Grid Height="70" ColumnDefinitions="Auto * Auto" VerticalAlignment="Center">
 								<Button Name="SideBarButton" Classes="DarkHover" CornerRadius="15" Grid.Column="0" Margin="10" Background="#32c378" Width="50" Height="50">
@@ -68,34 +71,34 @@
 						</StackPanel>
 
 						<!--Content-->
-						<ContentControl Grid.Row="1" Name="ViewContent"></ContentControl>
+						<ContentControl ZIndex="0" Grid.Row="1" Name="ViewContent"></ContentControl>
 
 						<!--Buttons-->
-						<Border Name="BottomBar" Grid.Row="2" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
+						<Border ZIndex="0" Name="BottomBar" Grid.Row="2" BorderBrush="#0A413E" BorderThickness="0 1 0 0">
 							<Grid Height="70" ColumnDefinitions="* * *" VerticalAlignment="Center">
 								<Button Grid.Column="0" HorizontalAlignment="Left" Background="Transparent" Margin=" 25 0" Width="60" Height="60" Name="HomeButton">
 									<Image Stretch="Uniform" Width="80" Name="HomeImage"></Image>
 								</Button>
 								<Grid Grid.Column="1">
 									<Border  Name="CartItems" ZIndex="1" CornerRadius="20" Background="#ff32c378" Width="25" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="28 5">
-                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Classes="h2" Foreground="White" Text="{Binding CartItems, Mode=OneWay}"/>
+										<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Classes="h2" Foreground="White" Text="{Binding CartItems, Mode=OneWay}"/>
 									</Border>
 									<Button HorizontalAlignment="Center" Background="Transparent" Width="60" Height="60" Name="ShoppingCartButton">
-                                        <Image Stretch="Uniform" Name="CartImage" Width="80"></Image>
-                                    </Button>
-                                    <Button HorizontalAlignment="Center" Classes="Green" Width="60" Height="60" Name="AddPostButton">
+										<Image Stretch="Uniform" Name="CartImage" Width="80"></Image>
+									</Button>
+									<Button HorizontalAlignment="Center" Classes="Green" Width="60" Height="60" Name="AddPostButton">
 										<TextBlock Classes="h1" Foreground="White" VerticalAlignment="Center" FontSize="40">+</TextBlock>
-                                    </Button>
-                                </Grid>
+									</Button>
+								</Grid>
 								<Button Grid.Column="2" HorizontalAlignment="Right" Background="Transparent" Margin="25 0" Width="60" Height="60" Name="ProfileButton">
 									<Image Stretch="Uniform"  Name="UserImage" Width="80"></Image>
 								</Button>
 							</Grid>
 						</Border>
-
 					</Grid>
-				</Border>
+				</Grid>
+					
 			</SplitView.Content>
 		</SplitView>
-    </Grid>
+	</Grid>
 </UserControl>

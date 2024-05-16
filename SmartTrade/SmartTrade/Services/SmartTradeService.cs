@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using FuzzySharp;
 using SmartTrade.Entities;
+using SmartTrade.Helpers;
+using SmartTrade.Views;
 using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
@@ -103,22 +105,23 @@ namespace SmartTrade.Services;
 
         public async Task LogInAsync(string email, string password)
         {
-            try
-            {
-                await _broker.UserClient.LogInAsync(email, password);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-throw new Exception("Email or Password are incorrect");            }
-            if (Logged == null) throw new Exception("Email or Password are incorrect");
+            int loadingScreen = LoadingScreenManager.Instance.StartLoading();
+            await _broker.UserClient.LogInAsync(email, password);
 
+            if (Logged == null)
+            {
+                LoadingScreenManager.Instance.StopLoading(loadingScreen);
+                throw new Exception("Email or Password are incorrect");
+            }
+            
             await LoadCartItems();
             _cache.Purchases = await GetPurchasesAsync() ?? new List<PurchaseDTO>();
             _cache.Notifications = await GetNotificationsAsync() ?? new List<NotificationDTO>();
             _cache.Alerts = await GetAlertsAsync() ?? new List<AlertDTO>();
             _cache.Wishes = await GetWishAsync() ?? new List<WishDTO>();
             _cache.GiftLists = await LoadGiftListsAsync() ?? new List<GiftListDTO>();
+            
+            LoadingScreenManager.Instance.StopLoading(loadingScreen);
         }
 
         public async Task RegisterConsumerAsync(string email, string password, string name, string lastnames, string dni, DateTime dateBirth, Address billingAddress, Address consumerAddress)

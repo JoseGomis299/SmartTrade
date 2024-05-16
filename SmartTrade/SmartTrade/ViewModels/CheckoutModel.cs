@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using SmartTrade.Entities;
 using SmartTrade.Views;
 using System.Threading.Tasks;
+using SmartTrade.Helpers;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
@@ -80,9 +81,9 @@ public class CheckoutModel : ViewModelBase
             shippingCost += float.Parse(item.ShippingCost.Substring(0, item.ShippingCost.Length - 1));
         }
 
-        SubTotal = subTotal + "€";
-        ShippingCost = shippingCost + "€";
-        Total = (subTotal + shippingCost) + "€";
+        SubTotal = subTotal + "â‚¬";
+        ShippingCost = shippingCost + "â‚¬";
+        Total = (subTotal + shippingCost) + "â‚¬";
 
         this.RaisePropertyChanged(nameof(SubTotal));
         this.RaisePropertyChanged(nameof(ShippingCost));
@@ -91,7 +92,7 @@ public class CheckoutModel : ViewModelBase
 
     public async Task CompleteOrder()
     {
-        int currentlyLoading = SmartTradeNavigationManager.Instance.MainView.StartLoading();
+        int currentlyLoading = LoadingScreenManager.Instance.StartLoading();
 
         if (Service.Logged == null)
         {
@@ -105,7 +106,7 @@ public class CheckoutModel : ViewModelBase
             await Service.DeleteItemFromCartAsync(item.Offer.Id);
         }
 
-        SmartTradeNavigationManager.Instance.MainView.StopLoading(currentlyLoading);
+        LoadingScreenManager.Instance.StopLoading(currentlyLoading);
         SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new PurchaseCompletedPopup());
     }
 }

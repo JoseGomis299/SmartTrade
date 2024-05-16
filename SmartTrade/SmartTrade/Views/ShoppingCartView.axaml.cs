@@ -17,6 +17,12 @@ namespace SmartTrade.Views
             CheckOutButton.Click += BuyItems;
             SmartTradeNavigationManager.Instance.OnChangeNavigationStack += ClearReferences;
 
+            _model.onCartChanged += UpdateView;
+            UpdateView();
+        }
+
+        private void UpdateView()
+        {
             if (_model.Products.IsNullOrEmpty())
             {
                 PricePannel.IsVisible = false;
@@ -37,14 +43,12 @@ namespace SmartTrade.Views
             DataContext = null;
         }
 
-        private async void BuyItems(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void BuyItems(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             if(_model.UserType == UserType.Consumer) 
                 SmartTradeNavigationManager.Instance.NavigateTo(new SelectAddressView());
             else
                 SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), 2, 2, out _);
-
-            // await ((ShoppingCartModel)DataContext).BuyItemsAsync();
         }
     }
 }

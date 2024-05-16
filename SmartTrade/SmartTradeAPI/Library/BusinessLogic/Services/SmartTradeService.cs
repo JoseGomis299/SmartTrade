@@ -539,11 +539,11 @@ public class SmartTradeService : ISmartTradeService
 
         var seller = _dal.GetById<Seller>(purchaseDTO.EmailSeller);
         var postDTO = purchaseDTO.Post;
-        var post = new Post(postDTO.Title, postDTO.Description, postDTO.Validated, seller);
+        var post = _dal.GetById<Post>(postDTO.Id);
 
         var product = _dal.GetById<Product>(purchaseDTO.ProductId);
         var offerDTO = purchaseDTO.Offer;
-        var offer = new Offer(product,offerDTO.Price,offerDTO.ShippingCost,offerDTO.Stock);
+        var offer = _dal.GetById<Offer>(offerDTO.Id);
 
         Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, purchaseDTO.Quantity, seller, post, offer, purchaseDTO.PurchaseDate, purchaseDTO.ExpectedDate);
         logged.AddPurchases(purchase);

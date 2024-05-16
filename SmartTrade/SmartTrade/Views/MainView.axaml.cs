@@ -6,6 +6,7 @@ using SmartTrade.ViewModels;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System.Threading.Tasks;
+using SmartTrade.Helpers;
 using SmartTrade.Services;
 using SmartTradeDTOs;
 
@@ -26,17 +27,14 @@ public partial class MainView : UserControl
     private Bitmap? _alertImage;
     private Bitmap? _alertSelectedImage;
 
-    int _selectedButton = 0;
+    public int SelectedButton = 0;
 
-    bool _isLoadingHome = false;
-    bool _isLoadingCart = false;
-    bool _isLoadingUser = false;
-    
     private int? _currentCategory;
+    private readonly LoadingScreenManager _loadingScreenManager;
 
     public bool ShowingPopUp { get; set; }
     public bool ReinitializeHomeNextTime { get; set; }
-
+    
     public MainView()
     {
         DataContext = _model = new MainViewModel();
@@ -45,6 +43,7 @@ public partial class MainView : UserControl
         InitializeComponent();
 
         Initialize();
+        _loadingScreenManager = LoadingScreenManager.Instance;
     }
 
     #region Initialization
@@ -193,15 +192,15 @@ public partial class MainView : UserControl
 
     private void OnShoppingCartButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        if (_isLoadingCart)
+        if (_loadingScreenManager.IsLoadingCart)
         {
-            SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 1, out _);
-            ShowLoadingScreen();
+            SmartTradeNavigationManager.Instance.NavigateWithButton(null, SelectedButton, 1, out _);
+            _loadingScreenManager.ShowLoadingScreen();
             return;
         }
 
-        HideLoadingScreen();
-        SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), _selectedButton, 1, out _, true);
+        _loadingScreenManager.HideLoadingScreen();
+        SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), SelectedButton, 1, out _, true);
     }
 
     private async void OnHomeButtonOnClick(object? sender, RoutedEventArgs e)
@@ -216,29 +215,29 @@ public partial class MainView : UserControl
 
     private void OnProfileButtonOnClick(object? sender, RoutedEventArgs e)
     {
-        if (_isLoadingUser)
+        if (_loadingScreenManager.IsLoadingUser)
         {
-            SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 2, out _);
-            ShowLoadingScreen();
+            SmartTradeNavigationManager.Instance.NavigateWithButton(null, SelectedButton, 2, out _);
+            _loadingScreenManager.ShowLoadingScreen();
             return;
         }
 
-        HideLoadingScreen();
+        _loadingScreenManager.HideLoadingScreen();
         if (_model.LoggedType == UserType.None)
-            SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), _selectedButton, 2, out _);
-        else SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Profile), _selectedButton, 2, out _);
+            SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), SelectedButton, 2, out _);
+        else SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Profile), SelectedButton, 2, out _);
     }
 
     public async Task ShowCatalogAsync()
     {
-        if (_isLoadingHome)
+        if (_loadingScreenManager.IsLoadingHome)
         {
-            SmartTradeNavigationManager.Instance.NavigateWithButton(null, _selectedButton, 0, out _);
-            ShowLoadingScreen();
+            SmartTradeNavigationManager.Instance.NavigateWithButton(null, SelectedButton, 0, out _);
+            _loadingScreenManager.ShowLoadingScreen();
             return;
         }
 
-        HideLoadingScreen();
+        _loadingScreenManager.HideLoadingScreen();
         if (_model.LoggedType == UserType.None)
         {
             await NavigateTo(typeof(ProductCatalog));
@@ -261,15 +260,15 @@ public partial class MainView : UserControl
 
         async Task NavigateTo(Type catalogType)
         {
-            if (_selectedButton != 0 || (_selectedButton == 0 && SmartTradeNavigationManager.Instance.Navigator.CurrentView.GetType() != catalogType))
+            if (SelectedButton != 0 || (SelectedButton == 0 && SmartTradeNavigationManager.Instance.Navigator.CurrentView.GetType() != catalogType))
             {
-                SmartTradeNavigationManager.Instance.NavigateWithButton(catalogType, _selectedButton, 0, out _);
+                SmartTradeNavigationManager.Instance.NavigateWithButton(catalogType, SelectedButton, 0, out _);
                 return;
             }
 
-            if (SmartTradeNavigationManager.Instance.NavigateWithButton(catalogType, _selectedButton, 0, out var catalog, true))
+            if (SmartTradeNavigationManager.Instance.NavigateWithButton(catalogType, SelectedButton, 0, out var catalog, true))
             {
-                int loadingScreen = StartLoading();
+                int loadingScreen = _loadingScreenManager.StartLoading();
                 var model = (CatalogModel)catalog.DataContext;
                 await model.LoadProductsAsync();
                 _catalogModel = model;
@@ -277,8 +276,8 @@ public partial class MainView : UserControl
                 if (_currentCategory != null)
                     _catalogModel.SortByCategory(_currentCategory); 
 
-                if (_selectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
-                StopLoading(loadingScreen);
+                if (SelectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
+                _loadingScreenManager.StopLoading(loadingScreen);
             }
         }
     }
@@ -289,7 +288,7 @@ public partial class MainView : UserControl
         UserImage.Source = _userImage;
         CartImage.Source = _cartImage;
 
-        _selectedButton = i;
+        SelectedButton = i;
 
         if (i == 0) HomeImage.Source = _homeImageSelected;
         else if (i == 1) CartImage.Source = _cartImageSelected;
@@ -317,7 +316,7 @@ public partial class MainView : UserControl
             return;
         }
 
-        if (_selectedButton == 2)
+        if (SelectedButton == 2)
         {
             SearchBar.IsVisible = false;
             return;
@@ -332,48 +331,10 @@ public partial class MainView : UserControl
 
     }
 
-    public int StartLoading()
-    {
-        ShowLoadingScreen();
-
-        if (_selectedButton == 0)  
-            _isLoadingHome = true;
-        else if(_selectedButton == 1)
-            _isLoadingCart = true;
-        else if(_selectedButton == 2)
-            _isLoadingUser = true;
-
-        return _selectedButton;
-    }
-
-    private void ShowLoadingScreen()
-    {
-        Loading.IsVisible = true;
-        ViewContent.IsVisible = false;
-    }
-
-    private void HideLoadingScreen()
-    {
-        Loading.IsVisible = false;
-        ViewContent.IsVisible = true;
-    }
-
-    public void StopLoading(int i)
-    {
-        if (i == 0)
-            _isLoadingHome = false;
-        else if (i == 1)
-            _isLoadingCart = false;
-        else if (i == 2)
-            _isLoadingUser = false;
-
-        HideLoadingScreen();
-    }
-
     public async Task ShowCatalogReinitializingAsync()
     {
         SetButtonVisibility();
-        HideLoadingScreen();
+        _loadingScreenManager.HideLoadingScreen();
 
         if (_model.LoggedType == UserType.Seller)
         {
@@ -392,7 +353,7 @@ public partial class MainView : UserControl
         async Task NavigateTo(UserControl catalog)
         {
             SmartTradeNavigationManager.Instance.ReInitializeNavigation(catalog);
-            int loadingScreen = StartLoading();
+            int loadingScreen = _loadingScreenManager.StartLoading();
             var model = (CatalogModel)catalog.DataContext;
             await model.LoadProductsAsync();
             _catalogModel = model;
@@ -400,8 +361,8 @@ public partial class MainView : UserControl
             if(_currentCategory != null)
                 _catalogModel.SortByCategory(_currentCategory);
 
-            if (_selectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
-            StopLoading(loadingScreen);
+            if (SelectedButton == 0) SmartTradeNavigationManager.Instance.NavigateToWithoutSaving(catalog);
+            _loadingScreenManager.StopLoading(loadingScreen);
         }
     }
 
@@ -427,16 +388,16 @@ public partial class MainView : UserControl
 
         if (e.Key.Equals(Key.Enter))
         {
-            int loadingScreen = StartLoading();
+            int loadingScreen = _loadingScreenManager.StartLoading();
             SearchResult searchResult = new SearchResult(_model.FindProducts());
-            if(_selectedButton ==  loadingScreen) SmartTradeNavigationManager.Instance.NavigateToOverriding(searchResult);
+            if(SelectedButton ==  loadingScreen) SmartTradeNavigationManager.Instance.NavigateToOverriding(searchResult);
             else SmartTradeNavigationManager.Instance.AddToStack(searchResult, loadingScreen);
 
             _searchModel = (SearchResultModel)searchResult.DataContext;
             if(_currentCategory != null)
                 _searchModel?.SortByCategory(_currentCategory);
 
-            StopLoading(loadingScreen);
+            _loadingScreenManager.StopLoading(loadingScreen);
         }
     }
 
