@@ -13,20 +13,20 @@
     <ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="10">
             <TextBlock Classes="h1" HorizontalAlignment="Center" Text="YOUR ORDERS"/>
-			<!--
-			//<ItemsControl ItemsSource="{Binding Purchases}">
-            //    <ItemsControl.ItemsPanel>
-            //        <ItemsPanelTemplate>
-            //            <StackPanel Orientation="Vertical" HorizontalAlignment="Center"/>
-            //        </ItemsPanelTemplate>
-            //    </ItemsControl.ItemsPanel>
-            //    <ItemsControl.ItemTemplate>
-            //        <DataTemplate>
-            //            <controls:ST_CartProduct Margin="10 0" Command="{Binding OpenProductCommand}" DeleteElement="{Binding DeleteItemCommand}" Image="{Binding Image}" Price="{Binding Price}" ShippingCost="{Binding ShippingCost}" ProductName="{Binding Name}" Count="{Binding Quantity, Mode=TwoWay}"/>
-            //        </DataTemplate>
-            //    </ItemsControl.ItemTemplate>
-            //</ItemsControl>
-			-->
+			
+			<ItemsControl ItemsSource="{Binding Purchases}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ST_OrderItem Margin="10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ShippingCost="{Binding ShippingCost}" ProductName="{Binding Name}" Count="{Binding Quantity, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+			
         </StackPanel>
     </ScrollViewer>
 </UserControl>

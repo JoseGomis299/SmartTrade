@@ -19,17 +19,8 @@ namespace SmartTrade.Controls
             set => SetValue(CommandProperty, value);
         }
 
-        public ICommand DeleteElement
-        {
-            get => GetValue(DeleteElementProperty);
-            set => SetValue(DeleteElementProperty, value);
-        }
-
         public static readonly StyledProperty<ICommand> CommandProperty =
             AvaloniaProperty.Register<ST_Product, ICommand>(nameof(Command));
-
-        public static readonly StyledProperty<ICommand> DeleteElementProperty =
-           AvaloniaProperty.Register<ST_Product, ICommand>(nameof(DeleteElement));
 
         public string? Price
         {
@@ -76,20 +67,13 @@ namespace SmartTrade.Controls
         public static readonly StyledProperty<string?> CountProperty =
             AvaloniaProperty.Register<ST_Product, string?>(nameof(Count));
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        public string? DeliveryState
         {
-            if (change.Property == ProductNameProperty)
-            {
-                if (ProductName.IsNullOrEmpty())
-                {
-                    ProductNameTextBlock.IsVisible = false;
-                }
-                else
-                {
-                    ProductNameTextBlock.IsVisible = true;
-                }
-            }
-            base.OnPropertyChanged(change);
+            get => GetValue(DeliveryStateProperty);
+            set => SetValue(DeliveryStateProperty, value);
         }
+
+        public static readonly StyledProperty<string?> DeliveryStateProperty =
+            AvaloniaProperty.Register<ST_Product, string?>(nameof(DeliveryState));
     }
 }
