@@ -22,7 +22,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <controls:ST_OrderItem Margin="10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ShippingCost="{Binding ShippingCost}" ProductName="{Binding Name}" Count="{Binding Quantity, Mode=TwoWay}"/>
+                        <controls:ST_OrderItem Margin="10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" Price="{Binding Price}" ShippingCost="{Binding ShippingCost}" ProductName="{Binding Name}" Count="{Binding Quantity, Mode=TwoWay}" DeliveryState="{Binding DeliveryState}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

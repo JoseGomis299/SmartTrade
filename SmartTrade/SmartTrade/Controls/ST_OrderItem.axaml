@@ -18,7 +18,7 @@
                 <TextBlock Name="ShippingCostTextBlock" Classes="h2" Foreground="#A5DFB7" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ShippingCost, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
                 <Image Stretch="Uniform" Source="../Assets/Delivery.png" Width="25" VerticalAlignment="Center"/>
             </StackPanel>
-			<TextBlock Name="ProductDeliveryStateTextBlock" Classes="h2" Foreground="#0A413E" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DeliveryState, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
+			<TextBlock Name="DeliveryStateTextBlock" Classes="h2" Foreground="#0A413E" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DeliveryState, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 				<TextBlock Margin="5 0" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Count, Mode=TwoWay}" Classes="h2" VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 			</StackPanel>

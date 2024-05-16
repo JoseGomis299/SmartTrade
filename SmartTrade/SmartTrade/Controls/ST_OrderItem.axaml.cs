@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Microsoft.IdentityModel.Tokens;
+using SmartTrade.Controls;
 
 namespace SmartTrade.Controls
 {
