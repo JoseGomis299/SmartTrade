@@ -6,17 +6,22 @@ using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 using System;
 using SmartTrade.Entities;
+using System.Text.RegularExpressions;
 
 namespace SmartTrade.Views
 {
     public partial class AddBizumPopup : UserControl
     {
         public Action<bool?> onAccept;
+        private bool _hasErrors;
+
         public AddBizumPopup()
         {
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
+
+            NumberTextBox.TextBox.TextChanged += CheckNumber;
         }
 
         private void CancelButton_Click(object? sender, RoutedEventArgs e)
@@ -26,6 +31,8 @@ namespace SmartTrade.Views
 
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
+            if (_hasErrors) return;
+
             onAccept?.Invoke(SaveCheckBox.IsChecked);
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
@@ -34,6 +41,22 @@ namespace SmartTrade.Views
         {
             return new BizumInfo(NumberTextBox.Text);
         }
+
+        private void CheckNumber(object? sender, TextChangedEventArgs e)
+        {
+            string pattern = @"^[0-9]{9}$";
+            if (!Regex.IsMatch(NumberTextBox.Text, pattern))
+            {
+                NumberTextBox.ErrorText = "Invalid telephone number.";
+                _hasErrors = true;
+            }
+            else
+            {
+                NumberTextBox.ErrorText = "";
+                _hasErrors = false;
+            }
+        }
+
     }
 }
 

@@ -7,6 +7,8 @@ namespace SmartTrade.Restrictors
     public class TextBoxRestrictor : IRestrictor
     {
         public bool AllowNegative { get; set; }
+        public int MaxLength { get; set; }
+
         private readonly List<Func<bool>> _restrictions;
         private readonly TextBox _textBox;
 
@@ -47,7 +49,7 @@ namespace SmartTrade.Restrictors
                 }
             }
 
-            if (removeLastChar)
+            if (removeLastChar || Text.Length > MaxLength)
             {
                 Text = Text.Remove(Text.Length - 1);
             }

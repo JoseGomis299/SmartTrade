@@ -4,17 +4,17 @@ namespace SmartTrade.Entities;
 
 public class CreditCardInfo
 {
-    public string CreditCardNumber { get; set; }
-    public DateTime CreditCardExpiryDate { get; set; }
-    public string CreditCardCvv { get; set; }
-    public string CreditCardName { get; set; }
+    public string CardNumber { get; set; }
+    public DateTime ExpirationDate { get; set; }
+    public string CVV { get; set; }
+    public string CardHolder { get; set; }
 
     public CreditCardInfo(string creditCardNumber, DateTime creditCardExpiryDate, string creditCardCVV, string creditCardName)
     {
-        this.CreditCardNumber = creditCardNumber;
-        this.CreditCardExpiryDate = creditCardExpiryDate;
-        this.CreditCardCvv = creditCardCVV;
-        this.CreditCardName = creditCardName;
+        this.CardNumber = creditCardNumber;
+        this.ExpirationDate = creditCardExpiryDate;
+        this.CVV = creditCardCVV;
+        this.CardHolder = creditCardName;
     }
 
     

@@ -9,13 +9,13 @@
   <StackPanel HorizontalAlignment="Center" Spacing="0">
       <TextBlock Classes="h1" Text="Add a credit card" HorizontalAlignment="Center"/>
 	  <controls:ST_TextBox OnlyLetters="True" LabelText="Titular Name" TextHeight="40" Margin="0 22 50 10" Name="NameTextBox"/>
-      <controls:ST_TextBox PatternRestriction="0123456789" LabelText="Number" TextHeight="40" Margin="0 0 50 10" Name="NumberTextBox"/>
-      <controls:ST_TextBox PatternRestriction="0123456789/" LabelText="Expiry date" TextWidth="10" TextHeight="40" Margin="0 0 50 10" WaterMark="03/25" Name="ExpiryDateTextBox"/>
-      <controls:ST_TextBox PatternRestriction="0123456789" LabelText="CVV" TextWidth="10" TextHeight="40" Margin="0 0 50 20" Name="CvvTextBox" WaterMark=" 123"/>
+      <controls:ST_TextBox  PatternRestriction="0123456789" MaxLength="16" LabelText="Number" TextHeight="40" Margin="0 0 50 10" Name="NumberTextBox"/>
+      <controls:ST_TextBox  PatternRestriction="0123456789/" MaxLength="5" LabelText="Expiry date" TextWidth="10" TextHeight="40" Margin="0 0 50 10" WaterMark="03/25" Name="ExpiryDateTextBox"/>
+      <controls:ST_TextBox  PatternRestriction="0123456789" MaxLength="3" LabelText="CVV" TextWidth="10" TextHeight="40" Margin="0 0 50 20" Name="CvvTextBox" WaterMark=" 123"/>
       <CheckBox HorizontalAlignment="Center" Content="Save for next purchases" Margin="0 0  0 20" Name="SaveCheckBox" IsChecked="True"/>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
           <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="10 0 15 0" Classes="White" Name="CancelButton">Cancel</Button>
-          <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="0 0 0 0" Classes="White" Name="AcceptButton">Accept</Button>
+          <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="0 0 0 0" Classes="Green" Name="AcceptButton">Accept</Button>
       </StackPanel>
   </StackPanel>
 </UserControl>

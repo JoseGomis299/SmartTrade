@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -177,31 +178,42 @@ namespace SmartTrade.Controls
             set => SetValue(ReplaceWithCapsProperty, value);
         }
 
+        public int MaxLength
+        {
+            get => GetValue(MaxLengthProperty);
+            set => SetValue(MaxLengthProperty, value);
+        }
+
         private void SetRestrictors()
         {
             TextBox.TextChanged -= OnTextBoxOnTextChanged;
             TextBox.TextChanged += OnTextBoxOnTextChanged;
 
+            int maxLength = MaxLength == 0 ? Int32.MaxValue : MaxLength;
+
             if (OnlyPositiveInt)
             {
-                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutIntRestriction().WithPositiveRestriction().Build();
+                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutIntRestriction().WithPositiveRestriction().WithLengthRestriction(maxLength).Build();
             }
             else if (OnlyPositiveDouble)
             {
-                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutDoubleRestriction().WithPositiveRestriction().Build();
+                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutDoubleRestriction().WithPositiveRestriction().WithLengthRestriction(maxLength).Build();
             }
             else if (OnlyLetters)
             {
-                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutLetterRestriction().WithoutPatterRestriction(" ").Build();
+                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutLetterRestriction().WithoutPatterRestriction(" ").WithLengthRestriction(maxLength).Build();
             }else if (!string.IsNullOrEmpty(PatternRestriction))
             {
-                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutPatterRestriction(PatternRestriction).Build();
+                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithoutPatterRestriction(PatternRestriction).WithLengthRestriction(maxLength).Build();
+            }else if (MaxLength > 0)
+            {
+                Restrictor = new TextBoxRestrictorBuilder(MyTextBox).WithLengthRestriction(maxLength).Build();
             }
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
-            if (change.Property == OnlyPositiveDoubleProperty || change.Property == OnlyPositiveIntProperty || change.Property == PatternRestrictionProperty || change.Property == OnlyLettersProperty)
+            if (change.Property == OnlyPositiveDoubleProperty || change.Property == OnlyPositiveIntProperty || change.Property == PatternRestrictionProperty || change.Property == OnlyLettersProperty || change.Property == MaxLengthProperty)
                 SetRestrictors();
 
             base.OnPropertyChanged(change);
@@ -233,5 +245,8 @@ namespace SmartTrade.Controls
 
         public static readonly StyledProperty<string?> PasswordTextProperty =
             AvaloniaProperty.Register<ST_TextBox, string?>(nameof(PasswordText), defaultValue: "");
+
+        public static readonly StyledProperty<int> MaxLengthProperty =
+            AvaloniaProperty.Register<ST_TextBox, int>(nameof(MaxLength), defaultValue: 0);
     }
 }

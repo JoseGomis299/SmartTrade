@@ -141,14 +141,14 @@ public class PaymentMethodModel : ReactiveObject
 
     public PaymentMethodModel(CreditCardInfo creditCard)
     {
-        Name = creditCard.CreditCardName;
-        Number = creditCard.CreditCardNumber;
+        Name = creditCard.CardHolder;
+        Number = creditCard.CardNumber;
     }
 
     public PaymentMethodModel(CreditCardInfo creditCard, SelectPaymentMethodModel selectPaymentMethodModel)
     {
-        Name = creditCard.CreditCardName;
-        Number = creditCard.CreditCardNumber;
+        Name = creditCard.CardHolder;
+        Number = creditCard.CardNumber;
 
         ChangePaymentMethodCommand = ReactiveCommand.Create(() =>
         {
