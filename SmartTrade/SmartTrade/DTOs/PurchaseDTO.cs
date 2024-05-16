@@ -2,7 +2,7 @@
 using SmartTradeDTOs;
 using System;
 
-namespace SmartTradeAPI.Library.Persistence.DTOs
+namespace SmartTradeDTOs
 {
     public class PurchaseDTO
     {

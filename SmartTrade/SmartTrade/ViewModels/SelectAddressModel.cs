@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using ReactiveUI;
@@ -17,6 +18,7 @@ public class SelectAddressModel : ViewModelBase
 {
     public ObservableCollection<AddressModel> Addresses { get; set; }
     public ObservableCollection<AddressModel> BillingAddresses { get; set; }
+    private List<Address> _tempAddresses;
 
     public Address SelectedAddress
     {
@@ -45,16 +47,9 @@ public class SelectAddressModel : ViewModelBase
     {
         Addresses = new ObservableCollection<AddressModel>();
         BillingAddresses = new ObservableCollection<AddressModel>();
+        _tempAddresses = new List<Address>();
 
-        if (Service.Logged != null)
-        {
-            UpdateAddresses();
-
-            Addresses[0].SetChecked(true);
-            BillingAddresses[0].SetChecked(true);
-            SelectedAddress = (Service.Logged as ConsumerDTO).Addresses[0];
-            SelectedBillingAddress = (Service.Logged as ConsumerDTO).Addresses[0];
-        }
+        UpdateAddresses();
     }
 
     private void UpdateAddresses()
@@ -67,14 +62,25 @@ public class SelectAddressModel : ViewModelBase
             Addresses.Add(new AddressModel(address, this, false));
             BillingAddresses.Add(new AddressModel(address, this, true));
         }
+
+        foreach (var address in _tempAddresses)
+        {
+            Addresses.Add(new AddressModel(address, this, false));
+            BillingAddresses.Add(new AddressModel(address, this, true));
+        }
+
+        Addresses[0].SetChecked(true);
+        BillingAddresses[0].SetChecked(true);
+        SelectedAddress = (Service.Logged as ConsumerDTO).Addresses[0];
+        SelectedBillingAddress = (Service.Logged as ConsumerDTO).Addresses[0];
     }
 
     public async Task AddAddressAsync(Address address, bool? save)
     {
         if (save == true)
             await Service.AddAddressAsync(address);
-        else 
-            Service.AddBillingAddressLocal(address);
+        else _tempAddresses.Add(address);
+
         UpdateAddresses();
     }
 }

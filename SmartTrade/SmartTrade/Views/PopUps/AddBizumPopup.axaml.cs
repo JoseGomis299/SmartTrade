@@ -22,6 +22,11 @@ namespace SmartTrade.Views
             CancelButton.Click += CancelButton_Click;
 
             NumberTextBox.TextBox.TextChanged += CheckNumber;
+
+            if (SmartTradeNavigationManager.Instance.CurrentStack == 2)
+            {
+                SaveCheckBox.IsVisible = false;
+            }
         }
 
         private void CancelButton_Click(object? sender, RoutedEventArgs e)

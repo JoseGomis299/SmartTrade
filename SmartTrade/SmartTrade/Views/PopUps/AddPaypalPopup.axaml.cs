@@ -21,6 +21,11 @@ namespace SmartTrade.Views
             CancelButton.Click += CancelButton_Click;
 
             EmailTextBox.TextBox.TextChanged += CheckEmail;
+
+            if (SmartTradeNavigationManager.Instance.CurrentStack == 2)
+            {
+                SaveCheckBox.IsVisible = false;
+            }
         }
 
         private void CancelButton_Click(object? sender, RoutedEventArgs e)

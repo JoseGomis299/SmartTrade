@@ -25,6 +25,11 @@ namespace SmartTrade.Views
             ExpiryDateTextBox.TextBox.TextChanged += CheckErrors;
             NumberTextBox.TextBox.TextChanged += CheckErrors;
             CvvTextBox.TextBox.TextChanged += CheckErrors;
+
+            if (SmartTradeNavigationManager.Instance.CurrentStack == 2)
+            {
+                SaveCheckBox.IsVisible = false;
+            }
         }
 
         private void CancelButton_Click(object? sender, RoutedEventArgs e)

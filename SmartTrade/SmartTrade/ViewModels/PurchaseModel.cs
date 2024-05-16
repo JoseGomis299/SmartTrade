@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
-using SmartTrade.Entities;
 using SmartTrade.Views;
-using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FuzzySharp;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
-using SmartTrade.Views;
-using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services;
@@ -83,12 +80,11 @@ namespace SmartTrade.Services;
             _cache.Purchases.Add(purchase);
             await _broker.UserClient.AddPurchaseAsync(purchase);
         }
-
-    public async Task InitializeCacheAsync()
+        
+        public async Task InitializeCacheAsync()
         {
             await LoadCartItems();
         }
-
 
         #region User
 
@@ -137,19 +133,19 @@ namespace SmartTrade.Services;
         public async Task AddPaypalAsync(PayPalInfo paypalinfo)
         {
             await _broker.UserClient.AddPaypalAsync(paypalinfo);
-            AddPaypalLocal(paypalinfo);
+            (Logged as ConsumerDTO).PayPalAccounts.Add(paypalinfo);
         }
 
         public async Task AddCreditCardAsync(CreditCardInfo creditCard)
         {
             await _broker.UserClient.AddCreditCardAsync(creditCard);
-            AddCreditCardLocal(creditCard);
+            (Logged as ConsumerDTO).CreditCards.Add(creditCard);
         }
 
         public async Task AddBizumAsync(BizumInfo bizum)
         {
            await _broker.UserClient.AddBizumAsync(bizum);
-           AddBizumLocal(bizum);
+           (Logged as ConsumerDTO).BizumAccounts.Add(bizum);
         }
 
         public async Task AddAddressAsync(Address address)
@@ -158,26 +154,6 @@ namespace SmartTrade.Services;
             address.Id = addressId;
 
             (Logged as ConsumerDTO).Addresses.Add(address);
-        }
-
-        public void AddBillingAddressLocal(Address address)
-        {
-            (Logged as ConsumerDTO).Addresses.Add(address);
-        }
-
-        public void AddBizumLocal(BizumInfo bizum)
-        {
-            (Logged as ConsumerDTO).BizumAccounts.Add(bizum);
-        }
-
-        public void AddCreditCardLocal(CreditCardInfo creditCard)
-        {
-            (Logged as ConsumerDTO).CreditCards.Add(creditCard);
-        }
-
-        public void AddPaypalLocal(PayPalInfo paypal)
-        {
-            (Logged as ConsumerDTO).PayPalAccounts.Add(paypal);
         }
 
         public async Task<List<PurchaseDTO>?> GetPurchasesAsync()

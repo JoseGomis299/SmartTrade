@@ -28,6 +28,12 @@ namespace SmartTrade.Views
             _selectedBillingAddress = selectedBillingAddress;
         }
 
+        public void SelectAddresses(Address selectedAddress, Address selectedBillingAddress)
+        {
+            _selectedAddress = selectedAddress;
+            _selectedBillingAddress = selectedBillingAddress;
+        }
+
         private void AddBizum(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             AddBizumPopup popup = new AddBizumPopup();
@@ -75,7 +81,7 @@ namespace SmartTrade.Views
 
         private void Back(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            SmartTradeNavigationManager.Instance.NavigateTo(new SelectAddressView());
+            SmartTradeNavigationManager.Instance.NavigateTo(typeof(SelectAddressView));
         }
     }
 }

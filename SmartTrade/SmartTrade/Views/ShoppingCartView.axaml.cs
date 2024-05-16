@@ -46,7 +46,7 @@ namespace SmartTrade.Views
         private void BuyItems(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             if(_model.UserType == UserType.Consumer) 
-                SmartTradeNavigationManager.Instance.NavigateTo(new SelectAddressView());
+                SmartTradeNavigationManager.Instance.NavigateTo(typeof(SelectAddressView));
             else
                 SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), 2, 2, out _);
         }

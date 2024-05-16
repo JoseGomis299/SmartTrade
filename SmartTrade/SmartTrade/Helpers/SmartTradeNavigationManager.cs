@@ -81,6 +81,7 @@ public class SmartTradeNavigationManager : NavigationManager
         if (targetView.GetType() == typeof(ProductCatalog) || targetView.GetType() == typeof(SellerCatalog) || targetView.GetType() == typeof(AdminCatalog))
         {
             HomeCommands.Clear();
+            CartCommands.Clear();
             UserCommands.Clear();
 
             CurrentStack = 0;

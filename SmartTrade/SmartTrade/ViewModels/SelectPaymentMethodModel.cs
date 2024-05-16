@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,6 +14,9 @@ public class SelectPaymentMethodModel : ViewModelBase
     public ObservableCollection<PaymentMethodModel> CreditCards { get; set; }
     public ObservableCollection<PaymentMethodModel> Paypals { get; set; }
     public ObservableCollection<PaymentMethodModel> Bizums { get; set; }
+    private List<BizumInfo> _tempBizums;
+    private List<CreditCardInfo> _tempCreditCards;
+    private List<PayPalInfo> _tempPaypals;
 
     public PaymentMethodModel? SelectedCreditCard
     {
@@ -53,6 +57,10 @@ public class SelectPaymentMethodModel : ViewModelBase
         CreditCards = new ObservableCollection<PaymentMethodModel>();
         Paypals = new ObservableCollection<PaymentMethodModel>();
         Bizums = new ObservableCollection<PaymentMethodModel>();
+        
+        _tempBizums = new List<BizumInfo>();
+        _tempCreditCards = new List<CreditCardInfo>();
+        _tempPaypals = new List<PayPalInfo>();
 
         if (Service.Logged != null)
         {
@@ -81,6 +89,21 @@ public class SelectPaymentMethodModel : ViewModelBase
             Bizums.Add(new PaymentMethodModel(bizum, this));
         }
 
+        foreach (var bizum in _tempBizums)
+        {
+            Bizums.Add(new PaymentMethodModel(bizum, this));
+        }
+
+        foreach (var creditCard in _tempCreditCards)
+        {
+            CreditCards.Add(new PaymentMethodModel(creditCard, this));
+        }
+
+        foreach (var paypal in _tempPaypals)
+        {
+            Paypals.Add(new PaymentMethodModel(paypal, this));
+        }
+
         this.RaisePropertyChanged(nameof(CreditCards));
         this.RaisePropertyChanged(nameof(Paypals));
         this.RaisePropertyChanged(nameof(Bizums));
@@ -92,7 +115,7 @@ public class SelectPaymentMethodModel : ViewModelBase
         {
             await Service.AddBizumAsync(bizum);
         }
-        else Service.AddBizumLocal(bizum);
+        else _tempBizums.Add(bizum);
 
         UpdatePaymentMethods();
     }
@@ -103,7 +126,7 @@ public class SelectPaymentMethodModel : ViewModelBase
         {
             await Service.AddCreditCardAsync(creditCard);
         }
-        else Service.AddCreditCardLocal(creditCard);
+        else _tempCreditCards.Add(creditCard);
 
         UpdatePaymentMethods();
     }
@@ -114,7 +137,7 @@ public class SelectPaymentMethodModel : ViewModelBase
         {
             await Service.AddPaypalAsync(paypal);
         }
-        else Service.AddPaypalLocal(paypal);
+        else _tempPaypals.Add(paypal);
 
         UpdatePaymentMethods();
     }

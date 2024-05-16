@@ -4,9 +4,6 @@ using Newtonsoft.Json;
 using SmartTrade.Entities;
 using SmartTrade.Persistence;
 using Microsoft.EntityFrameworkCore;
-using SmartTradeAPI.Library.Persistence.DTOs;
-using Microsoft.Extensions.Hosting;
-using System.ComponentModel.DataAnnotations;
 using SmartTradeAPI.Helpers;
 
 namespace SmartTrade.BusinessLogic;
