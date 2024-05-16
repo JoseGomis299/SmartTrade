@@ -23,7 +23,6 @@ public class OrderHistoryModel : ViewModelBase
             Purchases.Add(new PurchaseModel(item, this));
         }
 
-        //Service.OnCartChanged += Calculate;
     }
 
 }
