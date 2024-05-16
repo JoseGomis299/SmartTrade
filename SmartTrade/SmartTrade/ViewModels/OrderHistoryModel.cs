@@ -18,11 +18,13 @@ public class OrderHistoryModel : ViewModelBase
     {
         Purchases = new ObservableCollection<PurchaseModel>();
 
+        if (Service.Purchases == null) { return; }
+
         foreach (var item in Service.Purchases)
         {
             Purchases.Add(new PurchaseModel(item, this));
         }
-
+        
     }
 
 }
