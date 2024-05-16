@@ -519,11 +519,7 @@ public class SmartTradeService : ISmartTradeService
                 Price = c.Offer.Price,
                 ShippingCost = c.Offer.ShippingCost,
                 Stock = c.Offer.Stock,
-                Product = new ProductDTO
-                {
-                    Id = c.Offer.Product.Id,
-                    Images = new List<byte[]>(){ c.Offer.Product.Images.First().ImageSource }
-                }
+                Product = new ProductDTO(c.Offer.Product, new List<byte[]>() { c.Offer.Product.Images.First().ImageSource })
             },
             Post = GetPost(c.Post.Id),
             Quantity = c.Quantity

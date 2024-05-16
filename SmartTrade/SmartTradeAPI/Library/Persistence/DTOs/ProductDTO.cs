@@ -19,4 +19,12 @@ public class ProductDTO
         Differentiators = product.GetDifferentiations();
         Info = product.GetInfo();
     }
+    public ProductDTO(Product product, List<byte[]> images)
+    {
+        Id = product.Id;
+        Images = images;
+        Attributes = product.GetAttributes();
+        Differentiators = product.GetDifferentiations();
+        Info = product.GetInfo();
+    }
 }
