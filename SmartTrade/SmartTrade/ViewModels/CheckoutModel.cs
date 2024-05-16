@@ -91,6 +91,8 @@ public class CheckoutModel : ViewModelBase
 
     public async Task CompleteOrder()
     {
+        int currentlyLoading = SmartTradeNavigationManager.Instance.MainView.StartLoading();
+
         if (Service.Logged == null)
         {
             SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), 2, 2, out _);
@@ -99,13 +101,11 @@ public class CheckoutModel : ViewModelBase
 
         foreach (var item in CartItems)
         {
-            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity), int.Parse(item.EstimatedTime));
+            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity), int.Parse(item.EstimatedTime.Substring(0, item.EstimatedTime.Length - 5)));
             await Service.DeleteItemFromCartAsync(item.Offer.Id);
         }
 
-        SmartTradeNavigationManager.Instance.MainView.ReinitializeHomeNextTime = true;
-        CartItems.Clear();
-        this.RaisePropertyChanged(nameof(CartItems));
-        Calculate();
+        SmartTradeNavigationManager.Instance.MainView.StopLoading(currentlyLoading);
+        SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new PurchaseCompletedPopup());
     }
 }

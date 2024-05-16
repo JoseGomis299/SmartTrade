@@ -11,7 +11,7 @@
                 <Image Stretch="UniformToFill" Name="ProductImage" Source="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Image, Mode=OneWay}"></Image>
             </Border>
         </Button>
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0" Grid.Column="1">
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 60 0 0" Grid.Column="1">
 			<TextBlock Name="ProductNameTextBlock" Classes="h2" Foreground="#A5DFB7" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ProductName, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 			<TextBlock Name="PriceTextBlock" Classes="h1" Foreground="#ff32c378" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Price, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
             <StackPanel Orientation="Horizontal" Spacing="5">

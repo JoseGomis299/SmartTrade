@@ -28,9 +28,66 @@ namespace SmartTrade.Views
             }
             else { AddPostButton.IsVisible = false; }
 
+            SetFieldsVisibility();
+           
+            ParentalToggleButton.IsChecked = _model.IsParentalControlEnabled;
+
+            AddBizumButton.Click += AddBizum;
+            AddCreditCardButton.Click += AddCreditCard;
+            AddPaypalButton.Click += AddPaypal;
+            AddAddressButton.Click += AddAddress;
+        }
+
+        private void SetFieldsVisibility()
+        {
             SetWishListButtonVisibility();
             SetParentalToggleButtonVisibility();
-            ParentalToggleButton.IsChecked = _model.IsParentalControlEnabled;
+            PaymentMethodsPanel.IsVisible = _model.LoggedType == UserType.Consumer;
+            AddressesPanel.IsVisible = _model.LoggedType == UserType.Consumer;
+        }
+
+        private void AddBizum(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            AddBizumPopup popup = new AddBizumPopup();
+            popup.onAccept = async (save) =>
+            {
+                await _model.AddBizumAsync(popup.GetBizum(), save);
+            };
+
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(popup);
+        }
+
+        private void AddCreditCard(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            AddCreditCardPopup popup = new AddCreditCardPopup();
+            popup.onAccept = async (save) =>
+            {
+                await _model.AddCreditCardAsync(popup.GetCreditCard(), save);
+            };
+
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(popup);
+        }
+
+        private void AddPaypal(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            AddPaypalPopup popup = new AddPaypalPopup();
+            popup.onAccept = async (save) =>
+            {
+                await _model.AddPaypalAsync(popup.GetPaypal(), save);
+            };
+
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(popup);
+        }
+
+        private void AddAddress(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            AddAddress popup = new AddAddress();
+            popup.onAccept = async (save) =>
+            {
+                await _model.AddAddressAsync(popup.GetAddress(), save);
+            };
+
+            SmartTradeNavigationManager.Instance.MainView.ShowPopUp(popup);
         }
 
         private void ParentalToggleButton_Click(object? sender, RoutedEventArgs e)

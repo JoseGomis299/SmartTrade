@@ -89,6 +89,13 @@ public class AddressModel : ViewModelBase
     public bool IsChecked { get; set; }
 
 
+    public AddressModel(Address address)
+    {
+        Dir1 = address.Street + " " + address.Number;
+        Dir2 = "Door " + address.Door;
+        Dir3 = $"{address.Province}, {address.City} {address.PostalCode}";
+    }
+
     public AddressModel(Address address, SelectAddressModel model, bool isBillingAddress)
     {
         Dir1 = address.Street + " " + address.Number;

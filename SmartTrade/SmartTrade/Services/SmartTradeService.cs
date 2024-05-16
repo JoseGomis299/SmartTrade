@@ -58,7 +58,7 @@ namespace SmartTrade.Services;
         public List<AlertDTO>? Alerts => _cache.Alerts;
         public List<NotificationDTO>? Notifications => _cache.Notifications;
         public List<GiftListDTO>? GiftLists => _cache.GiftLists;
-    public List<PurchaseDTO> Purchases => _cache.Purchases;
+        public List<PurchaseDTO> Purchases => _cache.Purchases;
         public int CartItemsCount => CartItems.Sum(item => item.Quantity);
 
         private SmartTradeBroker _broker;
@@ -99,7 +99,14 @@ namespace SmartTrade.Services;
 
         public async Task LogInAsync(string email, string password)
         {
-            await _broker.UserClient.LogInAsync(email, password);
+            try
+            {
+                await _broker.UserClient.LogInAsync(email, password);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+throw new Exception("Email or Password are incorrect");            }
             if (Logged == null) throw new Exception("Email or Password are incorrect");
 
             await LoadCartItems();
@@ -200,7 +207,7 @@ namespace SmartTrade.Services;
         }
         private async Task LoadCartItems()
         {
-            await _cache.LoadCartItemsAsync();
+            if(Logged == null) await _cache.LoadCartItemsAsync();
             var guestItems = new List<CartItemDTO>(_cache.CartItems);
             var userItems = await _broker.UserClient.GetShoppingCartAsync();
 
@@ -343,7 +350,10 @@ namespace SmartTrade.Services;
         
         public async Task<List<WishDTO>?> GetWishAsync()
         {
-            return await _broker.WishClient.GetWishAsync(); 
+            if(WishList != null) return WishList;
+
+             _cache.Wishes = await _broker.WishClient.GetWishAsync(); 
+             return WishList;
         }
 
         public async Task DeleteWishFromPostAsync(int id)
@@ -403,8 +413,7 @@ namespace SmartTrade.Services;
             {
                 return null;
             }
-
-            return await _broker.UserClient.GetGiftListsAsync(); 
+            return _cache.GiftLists ??= new List<GiftListDTO>();
         }
 
         public List<String> GetGiftListNames()

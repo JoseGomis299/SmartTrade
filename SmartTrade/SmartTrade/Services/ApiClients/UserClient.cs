@@ -59,19 +59,19 @@ public class UserClient : ApiClient
     public async Task AddPaypalAsync(PayPalInfo paypalinfo)
     {
         if(Logged == null) return;
-        await PerformApiInstructionAsync($"AddPaypal?id={Logged.Email}", ApiInstruction.Post, paypalinfo);
+        await PerformApiInstructionAsync($"AddPaypal", ApiInstruction.Post, paypalinfo);
     }
 
     public async Task AddCreditCardAsync(CreditCardInfo creditCard)
     {
         if (Logged == null) return;
-        await PerformApiInstructionAsync($"AddCreditCard?id={Logged.Email}", ApiInstruction.Post, creditCard);
+        await PerformApiInstructionAsync($"AddCreditCard", ApiInstruction.Post, creditCard);
     }
 
     public async Task AddBizumAsync(BizumInfo bizum)
     {
         if (Logged == null) return;
-        await PerformApiInstructionAsync($"AddBizum?id={Logged.Email}", ApiInstruction.Post, bizum);
+        await PerformApiInstructionAsync($"AddBizum", ApiInstruction.Post, bizum);
     }
 
     public async Task AddPurchaseAsync(PurchaseDTO purchase)

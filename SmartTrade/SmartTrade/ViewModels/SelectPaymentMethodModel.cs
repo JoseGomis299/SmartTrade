@@ -139,6 +139,12 @@ public class PaymentMethodModel : ReactiveObject
 
     public ICommand ChangePaymentMethodCommand { get; set; }
 
+    public PaymentMethodModel(CreditCardInfo creditCard)
+    {
+        Name = creditCard.CreditCardName;
+        Number = creditCard.CreditCardNumber;
+    }
+
     public PaymentMethodModel(CreditCardInfo creditCard, SelectPaymentMethodModel selectPaymentMethodModel)
     {
         Name = creditCard.CreditCardName;
@@ -151,7 +157,12 @@ public class PaymentMethodModel : ReactiveObject
             IsChecked = true;
             selectPaymentMethodModel.SelectedCreditCard = this;
         });
+    }
 
+    public PaymentMethodModel(PayPalInfo paypal)
+    {
+        Name = paypal.Email;
+        Number = "";
     }
 
     public PaymentMethodModel(PayPalInfo paypal, SelectPaymentMethodModel selectPaymentMethodModel)
@@ -166,6 +177,12 @@ public class PaymentMethodModel : ReactiveObject
             IsChecked = true;
             selectPaymentMethodModel.SelectedPaypal = this;
         });
+    }
+
+    public PaymentMethodModel(BizumInfo bizum)
+    {
+        Name = "";
+        Number = bizum.TelephonNumber;
     }
 
     public PaymentMethodModel(BizumInfo bizum, SelectPaymentMethodModel selectPaymentMethodModel)

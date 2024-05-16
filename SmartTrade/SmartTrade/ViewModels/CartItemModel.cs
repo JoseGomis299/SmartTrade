@@ -37,7 +37,7 @@ public class CartItemModel : ProductModel
         Post = itemDto.Post;
         Offer = itemDto.Offer;
 
-        OpenProductCommand = ReactiveCommand.Create(OpenProduct);
+        OpenProductCommand = ReactiveCommand.CreateFromTask(OpenProduct);
         Name = itemDto.Post.Title;
         Price = itemDto.Offer.Price + "€";
         ShippingCost = itemDto.Offer.ShippingCost + "€";
@@ -53,7 +53,7 @@ public class CartItemModel : ProductModel
         Post = itemDto.Post;
         Offer = itemDto.Offer;
 
-        OpenProductCommand = ReactiveCommand.Create(OpenProduct);
+        OpenProductCommand = ReactiveCommand.CreateFromTask(OpenProduct);
         DeleteItemCommand = ReactiveCommand.CreateFromTask( async () =>
         {
             shoppingCartModel.Products.Remove(this);
@@ -71,9 +71,9 @@ public class CartItemModel : ProductModel
         OnQuantityChanged += async (prev, quantity) => await AddItemToCartAsync(prev, quantity);
     }
 
-    private void OpenProduct()
+    private async Task OpenProduct()
     {
-        var view = new ProductView(Post);
+        var view = new ProductView(await Service.GetPostAsync((int) Post.Id));
         SmartTradeNavigationManager.Instance.NavigateTo(view);
         ((ProductViewModel)view.DataContext).LoadProductsAsync();
     }

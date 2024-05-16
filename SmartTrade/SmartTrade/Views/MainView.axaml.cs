@@ -332,7 +332,7 @@ public partial class MainView : UserControl
 
     }
 
-    private int StartLoading()
+    public int StartLoading()
     {
         ShowLoadingScreen();
 
@@ -358,7 +358,7 @@ public partial class MainView : UserControl
         ViewContent.IsVisible = true;
     }
 
-    private void StopLoading(int i)
+    public void StopLoading(int i)
     {
         if (i == 0)
             _isLoadingHome = false;
