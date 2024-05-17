@@ -565,7 +565,10 @@ public class SmartTradeService : ISmartTradeService
                 }
             },
             Price = p.Price,
-            ShippingPrice = p.ShippingPrice
+            ShippingPrice = p.ShippingPrice,
+            ExpectedDate = p.ExpectedDate,
+            PurchaseDate = p.PurchaseDate,
+            Quantity = p.Quantity
         }).ToList();
     }
 

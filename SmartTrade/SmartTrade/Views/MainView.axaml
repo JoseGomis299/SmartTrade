@@ -30,6 +30,7 @@
 				<StackPanel Background="#32C378" >
                     <StackPanel Name="Menus">
                         <TextBlock Classes="h1" Text="Menus" Margin="0 50 0 0" HorizontalAlignment="Center"/>
+                        <Button Name="OrdersButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White" CornerRadius="0">Your orders</Button>
                         <Button Name="WishListButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White" CornerRadius="0">Wish List</Button>
                         <Button Name="GiftListButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White" CornerRadius="0">Gifts</Button>
                     </StackPanel>
