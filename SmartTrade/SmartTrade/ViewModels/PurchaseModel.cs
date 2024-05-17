@@ -33,7 +33,7 @@ public class PurchaseModel : ViewModelBase
         Price = purchaseDTO.Offer.Price + "€";
         ShippingCost = purchaseDTO.Offer.ShippingCost + "€";
         Image = purchaseDTO.Offer.Product.Images[0].ToBitmap();
-        Quantity = purchaseDTO.Quantity.ToString();
+        Quantity = "Quantity: " + purchaseDTO.Quantity.ToString();
         PurchaseDate = purchaseDTO.PurchaseDate;
         DeliveryState = CalculateState();
     }

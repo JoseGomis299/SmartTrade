@@ -81,6 +81,7 @@ public partial class MainView : UserControl
         SideBarButton.Click += SideBarButton_Click;
         SideBar.PaneClosing += SideBar_PaneClosing;
         ListBoxDepartments.SelectionChanged += ListBoxDepartments_SelectionChanged;
+        OrdersButton.Click += OpenOrders;
         WishListButton.Click += OpenWishList;
         GiftListButton.Click += OpenGiftList;
         AlertButton.Click += OnAlertButtonOnClick;
@@ -88,6 +89,12 @@ public partial class MainView : UserControl
         HomeButton.Click += OnHomeButtonOnClick;
         ShoppingCartButton.Click += OnShoppingCartButtonOnClick;
         AddPostButton.Click += OnAddPostButtonOnClick;
+    }
+
+    private void OpenOrders(object? sender, RoutedEventArgs e)
+    {
+        var view = new OrderHistoryView();
+        SmartTradeNavigationManager.Instance.NavigateTo(view);
     }
 
     private void InitializeSearchBar()
