@@ -14,6 +14,7 @@ namespace SmartTrade.Views
     {
         public Action<bool?> onAccept;
         private bool _hasErrors;
+        private bool _start = true;
 
         public AddBizumPopup()
         {
@@ -49,15 +50,32 @@ namespace SmartTrade.Views
 
         private void CheckNumber(object? sender, TextChangedEventArgs e)
         {
+            if (_start)
+            {
+                _start = false;
+                AcceptButton.IsEnabled = false;
+                return;
+            }
+
+            if (NumberTextBox.TextBox.Text.IsNullOrEmpty())
+            {
+                NumberTextBox.ErrorText = "Please enter a telephone number.";
+                AcceptButton.IsEnabled = false;
+                _hasErrors = true;
+                return;
+            }
+
             string pattern = @"^[0-9]{9}$";
             if (!Regex.IsMatch(NumberTextBox.Text, pattern))
             {
                 NumberTextBox.ErrorText = "Invalid telephone number.";
+                AcceptButton.IsEnabled = false;
                 _hasErrors = true;
             }
             else
             {
                 NumberTextBox.ErrorText = "";
+                AcceptButton.IsEnabled = true;
                 _hasErrors = false;
             }
         }

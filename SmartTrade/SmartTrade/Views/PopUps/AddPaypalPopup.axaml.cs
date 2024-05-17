@@ -14,13 +14,15 @@ namespace SmartTrade.Views
         public Action<bool?> onAccept;
 
         private bool _hasErrors;
+        private int _start = 2;
         public AddPaypalPopup()
         {
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
 
-            EmailTextBox.TextBox.TextChanged += CheckEmail;
+            EmailTextBox.TextBox.TextChanged += CheckErrors;
+            PasswordTextBox.TextBox.TextChanged += CheckErrors;
 
             if (SmartTradeNavigationManager.Instance.CurrentStack == 2)
             {
@@ -46,18 +48,45 @@ namespace SmartTrade.Views
             return new PayPalInfo(EmailTextBox.Text, PasswordTextBox.Text);
         }
 
-        private void CheckEmail(object? sender, TextChangedEventArgs e)
+        private void CheckErrors(object? sender, TextChangedEventArgs e)
+        {
+            if (--_start >= 0)
+            {
+                AcceptButton.IsEnabled = false;
+                return;
+            }
+            _hasErrors = false | CheckEmail();
+            _hasErrors |= CheckPassword();
+
+            AcceptButton.IsEnabled = !_hasErrors;
+        }
+
+        private bool CheckEmail()
         {
             string pattern = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
             if (!System.Text.RegularExpressions.Regex.IsMatch(EmailTextBox.Text, pattern))
             {
                 EmailTextBox.ErrorText = "Invalid email.";
-                _hasErrors = true;
+                return true;
             }
             else
             {
                 EmailTextBox.ErrorText = "";
-                _hasErrors = false;
+                return false;
+            }
+        }
+
+        private bool CheckPassword()
+        {
+            if (PasswordTextBox.Text.IsNullOrEmpty())
+            {
+                PasswordTextBox.ErrorText = "Please input a password.";
+                return true;
+            }
+            else
+            {
+                PasswordTextBox.ErrorText = "";
+                return false;
             }
         }
     }
