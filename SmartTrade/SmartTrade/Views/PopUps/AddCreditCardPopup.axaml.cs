@@ -15,6 +15,7 @@ namespace SmartTrade.Views
     {
         public Action<bool?> onAccept;
         private bool _hasErrors;
+        private int _start = 4;
 
         public AddCreditCardPopup()
         {
@@ -22,6 +23,7 @@ namespace SmartTrade.Views
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
 
+            NameTextBox.TextBox.TextChanged += CheckErrors;
             ExpiryDateTextBox.TextBox.TextChanged += CheckErrors;
             NumberTextBox.TextBox.TextChanged += CheckErrors;
             CvvTextBox.TextBox.TextChanged += CheckErrors;
@@ -56,13 +58,27 @@ namespace SmartTrade.Views
 
         private void CheckErrors(object? sender, TextChangedEventArgs e)
         {
-            _hasErrors &= CheckExpiryDate();
-            _hasErrors &= CheckNumber();
-            _hasErrors &= CheckCvv();
+            if (--_start >= 0)
+            {
+                AcceptButton.IsEnabled = false;
+                return;
+            }
+            _hasErrors = false | CheckExpiryDate();
+            _hasErrors |= CheckNumber();
+            _hasErrors |= CheckCvv();
+            _hasErrors |= CheckName();
+
+            AcceptButton.IsEnabled = !_hasErrors;
         }
 
         private bool CheckExpiryDate()
         {
+            if (ExpiryDateTextBox.Text.IsNullOrEmpty())
+            {
+                ExpiryDateTextBox.ErrorText = "Please input an expiry date.";
+                return true;
+            }
+            
             string pattern = @"^(0[1-9]|1[0-2])\/[0-9]{2}$";
             if (!Regex.IsMatch(ExpiryDateTextBox.Text, pattern))
             {
@@ -76,6 +92,12 @@ namespace SmartTrade.Views
 
         private bool CheckNumber()
         {
+            if (NumberTextBox.Text.IsNullOrEmpty())
+            {
+                NumberTextBox.ErrorText = "Please input a credit card number.";
+                return true;
+            }
+
             string pattern = @"^[0-9]{16}$";
             if (!Regex.IsMatch(NumberTextBox.Text, pattern))
             {
@@ -89,6 +111,12 @@ namespace SmartTrade.Views
 
         private bool CheckCvv()
         {
+            if (CvvTextBox.TextBox.Text.IsNullOrEmpty())
+            {
+                CvvTextBox.ErrorText = "Please input the CVV.";
+                return true;
+            }
+
             string pattern = @"^[0-9]{3}$";
             if (!Regex.IsMatch(CvvTextBox.Text, pattern))
             {
@@ -100,7 +128,17 @@ namespace SmartTrade.Views
             return false;
         }
 
+        private bool CheckName()
+        {
+            if (NameTextBox.Text.IsNullOrEmpty())
+            {
+                NameTextBox.ErrorText = "Please input a name";
+                return true;
+            }
 
+            NameTextBox.ErrorText = "";
+            return false;
+        }
     }
 }
 

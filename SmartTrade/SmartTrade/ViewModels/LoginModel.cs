@@ -15,15 +15,6 @@ namespace SmartTrade.ViewModels
         public string? Password { get; set; }
         public UserDTO Logged => Service.Logged;
 
-        public void ValidarEmail()
-        {
-            string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
-            if (!Regex.IsMatch(Email, pattern))
-            {
-                throw new ArgumentException("Invalid email. Please enter a valid email");
-            }
-        }
-
         public async Task Login(string email, string password)
         {
             await Service.LogInAsync(email, password);

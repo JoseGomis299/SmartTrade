@@ -11,12 +11,14 @@ namespace SmartTrade.Views
     {
         public event Action<string[]> DatosPasados;
         private RegisterModel? _model;
-
+        private bool _hasErrors;
+        private int _start = 2;
+        
         public Paypal() 
         {
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
-           
+            
             CancelButton.Click += CancelButton_Click;
         }
         public Paypal(RegisterModel model, Action onAccept)
@@ -27,65 +29,65 @@ namespace SmartTrade.Views
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
             AcceptButton.Click += (sender, e) => onAccept();
-        }
 
-       
+            TextBoxEmail.TextBox.TextChanged += CheckErrors;
+            TextBoxPassword.TextBox.TextChanged += CheckErrors;
+        }
 
         private void CancelButton_Click(object? sender, RoutedEventArgs e)
         {
+            _model.PaypalEmail = "";
+            _model.PaypalPassword = "";
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
-            string email = "";
-            string password = "";
-            _model.PaypalEmail = email;
-            _model.PaypalPassword = password;
         }
 
-        private void ClearErrors()
-        {
-            TextBoxEmail.ErrorText = "";
-            TextBoxPassword.ErrorText = "";
-        }
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
+            _model.PaypalEmail = TextBoxEmail.TextBox.Text;
+            _model.PaypalPassword = TextBoxPassword.TextBox.Text;
+            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
+        }
 
-            ClearErrors();
-            bool hasErrors = false;
+        private void CheckErrors(object? sender, TextChangedEventArgs e)
+        {
+            if (--_start >= 0)
+            {
+                AcceptButton.IsEnabled = false;
+                return;
+            }
+            _hasErrors = false | CheckEmail();
+            _hasErrors |= CheckPassword();
 
-            if (_model.PaypalEmail.IsNullOrEmpty())
-            {
-                TextBoxEmail.BringIntoView();
-                TextBoxEmail.Focus();
-                TextBoxEmail.ErrorText = "Email cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.PaypalPassword.IsNullOrEmpty())
-            {
-                TextBoxPassword.BringIntoView();
-                TextBoxPassword.Focus();
-                TextBoxPassword.ErrorText = "Password cannot be empty";
-                hasErrors = true;
-            }
-            try 
-            {
-                if (hasErrors) return;
-                SmartTradeNavigationManager.Instance.MainView.HidePopUp();
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("Incorrect password"))
-                {
-                    TextBoxPassword.BringIntoView();
-                    TextBoxPassword.ErrorText = ex.Message;
-                }
+            AcceptButton.IsEnabled = !_hasErrors;
+        }
 
-                if (ex.Message.Contains("Unregistered user"))
-                {
-                    TextBoxPassword.BringIntoView();
-                    TextBoxEmail.ErrorText =ex.Message;
-                }
+        private bool CheckEmail()
+        {
+            string pattern = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
+            if (!System.Text.RegularExpressions.Regex.IsMatch(TextBoxEmail.Text, pattern))
+            {
+                TextBoxEmail.ErrorText = "Invalid email.";
+                return true;
+            }
+            else
+            {
+                TextBoxEmail.ErrorText = "";
+                return false;
             }
         }
 
-        
+        private bool CheckPassword()
+        {
+            if (TextBoxPassword.Text.IsNullOrEmpty())
+            {
+                TextBoxPassword.ErrorText = "Please input a password.";
+                return true;
+            }
+            else
+            {
+                TextBoxPassword.ErrorText = "";
+                return false;
+            }
+        }
     }
 }

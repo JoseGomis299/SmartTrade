@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SmartTradeDTOs;
 using SmartTrade.Services;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SmartTrade.ViewModels
 {
@@ -35,8 +36,8 @@ namespace SmartTrade.ViewModels
             }
         }
 
-        public string _Paypalemail;
-        public string _Paypalpassword;
+        private string _Paypalemail;
+        private string _Paypalpassword;
 
         public string PaypalPassword
         {
@@ -117,17 +118,17 @@ namespace SmartTrade.ViewModels
                 throw new ArgumentException("Wrong phone number. Only digits are allowed");
             }
 
-            if (_Paypalemail != null && _Paypalpassword != null)
+            if (!_Paypalemail.IsNullOrEmpty() && !_Paypalpassword.IsNullOrEmpty())
             {
                 PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
                 await Service.AddPaypalAsync(paypalData);
             }
-            if(CreditCardCVV != null && CreditCardName !=null && CreditCardNumber !=null && CreditCardExpiryDate != null)
+            if(!CreditCardCVV.IsNullOrEmpty() && !CreditCardName.IsNullOrEmpty() && !CreditCardNumber.IsNullOrEmpty() && CreditCardExpiryDate.IsNullOrEmpty())
             {
                 CreditCardInfo creditCard = new CreditCardInfo(CreditCardNumber,ConvertExpiryDate(),CreditCardCVV,CreditCardName);
                 await Service.AddCreditCardAsync(creditCard);
             }
-            if (BizumNumber != null)
+            if (BizumNumber.IsNullOrEmpty())
             {
                 BizumInfo bizum = new BizumInfo(BizumNumber);
                 await Service.AddBizumAsync(bizum);

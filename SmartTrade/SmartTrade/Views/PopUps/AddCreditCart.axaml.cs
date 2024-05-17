@@ -5,13 +5,15 @@ using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SmartTrade.Views
 {
     public partial class AddCreditCart : UserControl
     {
         private RegisterModel? _model;
-
+        private bool _hasErrors;
+        private int _start = 4;
         public AddCreditCart()
         {
             InitializeComponent();
@@ -24,9 +26,14 @@ namespace SmartTrade.Views
 
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
-            AcceptButton.Click += (sender, e) => onAccept();
-            
+            AcceptButton.Click += (sender, e) => onAccept(); 
             CancelButton.Click += CancelButton_Click;
+
+
+            TextBoxName.TextBox.TextChanged += CheckErrors;
+            TextBoxExpiryDate.TextBox.TextChanged += CheckErrors;
+            TextBoxNumber.TextBox.TextChanged += CheckErrors;
+            TextBoxCVV.TextBox.TextChanged += CheckErrors;
         }
         private void CancelButton_Click(object? sender, RoutedEventArgs e)
         {
@@ -36,103 +43,98 @@ namespace SmartTrade.Views
             _model.CreditCardCVV = "";
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
-
-        private void ClearErrors()
-        {
-            TextBoxName.ErrorText = "";
-            TextBoxNumber.ErrorText = "";
-            TextBoxExpiryDate.ErrorText = "";
-            TextBoxCVV.ErrorText = "";
-
-        }
+        
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
-            
-
-
-            ClearErrors();
-            bool hasErrors = false;
-
-            if (_model.CreditCardName.IsNullOrEmpty())
-            {
-                TextBoxName.BringIntoView();
-                TextBoxName.Focus();
-                TextBoxName.ErrorText = "Name cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.CreditCardNumber.IsNullOrEmpty())
-            {
-                TextBoxNumber.BringIntoView();
-                TextBoxNumber.Focus();
-                TextBoxNumber.ErrorText = "Number cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.CreditCardExpiryDate.IsNullOrEmpty())
-            {
-                TextBoxExpiryDate.BringIntoView();
-                TextBoxExpiryDate.Focus();
-                TextBoxExpiryDate.ErrorText = "Expiry Date cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.CreditCardCVV.IsNullOrEmpty())
-            {
-                TextBoxCVV.BringIntoView();
-                TextBoxCVV.Focus();
-                TextBoxCVV.ErrorText = "CVV cannot be empty";
-                hasErrors = true;
-            }
-            try
-            {
-                if (hasErrors) return;
-                _model.ValidarCVV();
-                _model.ValidarNumeroTarjeta();
-                SmartTradeNavigationManager.Instance.MainView.HidePopUp();
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("Wrong number card. Only digits are allowed"))
-                {
-                    TextBoxNumber.BringIntoView();
-                    TextBoxNumber.ErrorText = ex.Message;
-                }
-
-                if (ex.Message.Contains("Wrong cvv. Only digits are allowed"))
-                {
-                    TextBoxCVV.BringIntoView();
-                    TextBoxCVV.ErrorText = ex.Message;
-                }
-                if (ex.Message.Contains("Incorrect format"))
-                {
-                    TextBoxExpiryDate.BringIntoView();
-                    TextBoxExpiryDate.ErrorText = ex.Message;
-                }
-            }
+            _model.CreditCardName = TextBoxName.TextBox.Text;
+            _model.CreditCardNumber = TextBoxNumber.TextBox.Text;
+            _model.CreditCardExpiryDate = TextBoxExpiryDate.TextBox.Text;
+            _model.CreditCardCVV = TextBoxCVV.TextBox.Text;
+            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
-        private void DateTextBox_TextInput(object sender, TextInputEventArgs e)
-        {
-            var textBox = (TextBox)sender;
-            var text = textBox.Text;
-            var caretIndex = textBox.CaretIndex;
 
-            if (!char.IsDigit(e.Text[0]))
+        private void CheckErrors(object? sender, TextChangedEventArgs e)
+        {
+            if (--_start >= 0)
             {
-                e.Handled = true;
+                AcceptButton.IsEnabled = false;
                 return;
             }
-            text = new string(text.Where(c => char.IsDigit(c)).ToArray());
+            _hasErrors = false | CheckExpiryDate();
+            _hasErrors |= CheckNumber();
+            _hasErrors |= CheckCvv();
+            _hasErrors |= CheckName();
 
-            text = text.PadRight(4, '0');
+            AcceptButton.IsEnabled = !_hasErrors;
+        }
 
-            if (text.Length >= 2)
+        private bool CheckExpiryDate()
+        {
+            if (TextBoxExpiryDate.Text.IsNullOrEmpty())
             {
-                text = text.Insert(2, "/");
+                TextBoxExpiryDate.ErrorText = "Please input an expiry date.";
+                return true;
             }
 
-            textBox.Text = text;
+            string pattern = @"^(0[1-9]|1[0-2])\/[0-9]{2}$";
+            if (!Regex.IsMatch(TextBoxExpiryDate.Text, pattern))
+            {
+                TextBoxExpiryDate.ErrorText = "Invalid expiry date.";
+                return true;
+            }
 
-            textBox.CaretIndex = Math.Min(caretIndex + 1, text.Length);
+            TextBoxExpiryDate.ErrorText = "";
+            return false;
+        }
 
-            e.Handled = true;
+        private bool CheckNumber()
+        {
+            if (TextBoxNumber.Text.IsNullOrEmpty())
+            {
+                TextBoxNumber.ErrorText = "Please input a credit card number.";
+                return true;
+            }
+
+            string pattern = @"^[0-9]{16}$";
+            if (!Regex.IsMatch(TextBoxNumber.Text, pattern))
+            {
+                TextBoxNumber.ErrorText = "Invalid credit card number. Write at least 16 numbers.";
+                return true;
+            }
+
+            TextBoxNumber.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckCvv()
+        {
+            if (TextBoxCVV.TextBox.Text.IsNullOrEmpty())
+            {
+                TextBoxCVV.ErrorText = "Please input the CVV.";
+                return true;
+            }
+
+            string pattern = @"^[0-9]{3}$";
+            if (!Regex.IsMatch(TextBoxCVV.Text, pattern))
+            {
+                TextBoxCVV.ErrorText = "Invalid CVV. Write ar least 3 numbers";
+                return true;
+            }
+
+            TextBoxCVV.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckName()
+        {
+            if (TextBoxName.Text.IsNullOrEmpty())
+            {
+                TextBoxName.ErrorText = "Please input a name";
+                return true;
+            }
+
+            TextBoxName.ErrorText = "";
+            return false;
         }
     }
 }
