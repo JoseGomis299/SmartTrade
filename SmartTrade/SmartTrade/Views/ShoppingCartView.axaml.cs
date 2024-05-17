@@ -15,7 +15,7 @@ namespace SmartTrade.Views
             InitializeComponent();
 
             CheckOutButton.Click += BuyItems;
-            SmartTradeNavigationManager.Instance.OnChangeNavigationStack += ClearReferences;
+            EventBus.Subscribe<int>(this, "OnChangeNavigationStack", ClearReferences);
 
             _model.onCartChanged += UpdateView;
             UpdateView();
@@ -39,7 +39,7 @@ namespace SmartTrade.Views
         {
             _model.UnSubscribeFromCartNotifications();
             CheckOutButton.Click -= BuyItems;
-            SmartTradeNavigationManager.Instance.OnChangeNavigationStack -= ClearReferences;
+            EventBus.UnsubscribeFromAllEvents(this);
             DataContext = null;
         }
 

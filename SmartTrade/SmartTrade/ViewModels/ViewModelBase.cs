@@ -12,6 +12,6 @@ public class ViewModelBase : ReactiveObject
 
     public ViewModelBase()
     {
-     
+        _ = Service;
     }
 }

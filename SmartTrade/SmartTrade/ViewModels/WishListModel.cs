@@ -16,6 +16,7 @@ namespace SmartTrade.ViewModels
         public WishListModel()
         {
             ProductsInWishList = new ObservableCollection<WishModel>();
+
             LoadWishList();
         }
 

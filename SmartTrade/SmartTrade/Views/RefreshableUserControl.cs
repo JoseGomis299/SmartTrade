@@ -14,10 +14,10 @@ namespace SmartTrade.Views
 
         public RefreshableUserControl()
         {
-            SmartTradeNavigationManager.Instance.OnChangeNavigationStack += SetStack;
+            EventBus.Subscribe<int>(this, "OnChangeNavigationStack", SetStack);
 
-            SmartTradeNavigationManager.Instance.OnNavigate += Refresh;
-            SmartTradeNavigationManager.Instance.OnNavigate += RefreshAsync;
+            EventBus.Subscribe<Type>(this, "OnNavigate", Refresh);
+            EventBus.Subscribe<Type>(this, "OnNavigate", RefreshAsync);
 
             _currentStack = SmartTradeNavigationManager.Instance.CurrentStack;
         }
@@ -66,9 +66,7 @@ namespace SmartTrade.Views
 
         protected virtual void Dispose()
         {
-            SmartTradeNavigationManager.Instance.OnNavigate -= Refresh;
-            SmartTradeNavigationManager.Instance.OnNavigate -= RefreshAsync;
-            SmartTradeNavigationManager.Instance.OnChangeNavigationStack -= SetStack;
+            EventBus.UnsubscribeFromAllEvents(this);
         }
 
         private void SetStack(int stack)

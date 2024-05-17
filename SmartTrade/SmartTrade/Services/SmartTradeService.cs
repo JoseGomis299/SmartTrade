@@ -14,30 +14,6 @@ namespace SmartTrade.Services;
         public List<SimplePostDTO>? Posts => _cache.Posts;
         public UserDTO? Logged => _broker.Logged;
 
-        public event Action OnPostsChanged
-        {
-            add => _cache.OnPostsChanged += value;
-            remove => _cache.OnPostsChanged -= value;
-        }
-
-        public event Action OnCartChanged
-        {
-            add => _cache.OnCartChanged += value;
-            remove => _cache.OnCartChanged -= value;
-        }
-
-        public event Action OnGiftsChanged
-        {
-            add => _cache.OnGiftsChanged += value;
-            remove => _cache.OnGiftsChanged -= value;
-        }
-
-        public event Action OnNotificationsChanged
-        {
-            add => _cache.OnNotificationsChanged += value;
-            remove => _cache.OnNotificationsChanged -= value;
-        }
-
         public UserType LoggedType
         {
             get

@@ -6,6 +6,7 @@ using ReactiveUI;
 using System;
 using DynamicData;
 using System.Linq;
+using SmartTrade.Services;
 
 namespace SmartTrade.ViewModels;
 
@@ -29,7 +30,7 @@ public class GiftsModel : ViewModelBase
         Gifts = new ObservableCollection<GiftItemModel>();
         GiftListsNames = new ObservableCollection<string>();
 
-        Service.OnGiftsChanged += Calculate;
+        EventBus.Subscribe(this, "OnGiftsChanged", Calculate);
     }
 
     public void UpdateView(int selectedIndex)
@@ -156,6 +157,6 @@ public class GiftsModel : ViewModelBase
 
     public void Dispose()
     {
-        Service.OnGiftsChanged -= Calculate;
+        EventBus.UnsubscribeFromAllEvents(this);
     }
 }

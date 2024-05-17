@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using ReactiveUI;
+using SmartTrade.Services;
 using SmartTrade.Views;
 using SmartTradeDTOs;
 
@@ -24,7 +25,7 @@ public class ShoppingCartModel : ViewModelBase
             Products.Add(new CartItemModel(item, this));
         }
 
-        Service.OnCartChanged += Calculate;
+        EventBus.Subscribe(this, "OnCartChanged", Calculate);
         Calculate();
     }
 
@@ -53,6 +54,6 @@ public class ShoppingCartModel : ViewModelBase
 
     public void UnSubscribeFromCartNotifications()
     {
-        Service.OnCartChanged -= Calculate;
+        EventBus.UnsubscribeFromAllEvents(this);
     }
 }

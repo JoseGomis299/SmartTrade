@@ -38,8 +38,6 @@ public partial class MainView : UserControl
     public MainView()
     {
         DataContext = _model = new MainViewModel();
-        SmartTradeNavigationManager.Instance.OnNavigate += HandleNavigation;
-        SmartTradeNavigationManager.Instance.OnChangeNavigationStack += SelectButton;
         InitializeComponent();
 
         Initialize();
@@ -50,8 +48,12 @@ public partial class MainView : UserControl
 
     private void Initialize()
     {
-        SmartTradeNavigationManager.Instance.Initialize(ViewContent, new ProductCatalog());
-        SmartTradeNavigationManager.Instance.MainView = this;
+        SmartTradeNavigationManager navigationManager = SmartTradeNavigationManager.Instance;
+        EventBus.Subscribe<Type>(this, "OnNavigate", HandleNavigation);
+        EventBus.Subscribe<int>(this, "OnChangeNavigationStack", SelectButton);
+
+        navigationManager.Initialize(ViewContent, new ProductCatalog());
+        navigationManager.MainView = this;
 
         InitializeSearchBar();
         InitializeButtons();
