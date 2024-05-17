@@ -4,6 +4,8 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
+using SmartTrade.Services;
+using SmartTrade.ViewModels;
 
 namespace SmartTrade.Views
 {
@@ -16,6 +18,11 @@ namespace SmartTrade.Views
         public SendView()
         {
             InitializeComponent();
+        }
+
+        public SendView(PurchaseModel purchase)
+        {
+            InitializeComponent();
 
             RatingStar1.Click += Star1Click;
             RatingStar2.Click += Star2Click;
@@ -26,6 +33,25 @@ namespace SmartTrade.Views
 
             _starSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Star.png")));
             _starVoid = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/VoidStar.png")));
+
+            SetVoidStars();
+            _rating = 0;
+
+            if (purchase.CalculateState() != "Received")
+            {
+                RatingPanel.IsVisible = false;
+            }
+        }
+
+        #region Rating
+
+        private void SetVoidStars()
+        {
+            Star1.Source = _starVoid;
+            Star2.Source = _starVoid;
+            Star3.Source = _starVoid;
+            Star4.Source = _starVoid;
+            Star5.Source = _starVoid;
         }
 
         private void Star1Click(object? sender, RoutedEventArgs e)
@@ -127,5 +153,7 @@ namespace SmartTrade.Views
                 _rating = 4;
             }
         }
+
+        #endregion
     }
 }

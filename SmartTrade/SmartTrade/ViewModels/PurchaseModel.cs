@@ -42,7 +42,7 @@ public class PurchaseModel : ViewModelBase
     private void OpenProduct()
     {
         //Cambiar para la vista de seguimiento
-        var view = new SendView();
+        var view = new SendView(this);
         SmartTradeNavigationManager.Instance.NavigateTo(view);
     }
 
