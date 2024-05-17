@@ -218,9 +218,14 @@ namespace SmartTrade.Services;
         public async Task<List<SimplePostDTO>?> RefreshPostsAsync()
         {
             var posts = await _broker.PostClient.GetPostsAsync();
-            
-            if(IsParentalControlEnabled) posts = posts.Where(x => x.MinimumAge < 18).ToList();
+
+            if (IsParentalControlEnabled)
+            {
+                posts = posts.Where(x => x.MinimumAge < 18).ToList();
+                _cache.Purchases = _cache.Purchases.Where(x => posts.Exists(y => y.Id == x.Post.Id)).ToList();
+            }
             _cache.SetPosts(posts);
+
             return posts;
         }
 
