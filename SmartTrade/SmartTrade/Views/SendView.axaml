@@ -18,24 +18,29 @@
 			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DeliveryAdress, Mode=OneWay}" Margin="20 0 0 0"></TextBlock>
 			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 15 0 20">Facturation address:</TextBlock>
 			<TextBlock Classes="h3" HorizontalAlignment="Left" Margin="20 0 0 0">Facturation address:</TextBlock>
-			<Slider Name="RatingSlider" Maximum="5" MaxWidth="150" Margin="-150 20 0 0" ></Slider>
-			<Grid ColumnDefinitions="* * * * *" MaxWidth="200" HorizontalAlignment="Left" Margin="15 0 0 0">
-				<ToggleButton Grid.Column="0" IsChecked="{Binding Star1Selected}" BorderThickness="0" Width="25" Name="RatingStar1">
-					<Image Source="../Assets/VoidStar.png" Width="25" Name="Star1"/>
-                </ToggleButton>
-                <ToggleButton Grid.Column="1" IsChecked="{Binding Star2Selected}" BorderThickness="0" Width="25" Name="RatingStar2">
-                    <Image Source="../Assets/VoidStar.png" Width="25" Name="Star2"/>
-                </ToggleButton>
-                <ToggleButton Grid.Column="2" IsChecked="{Binding Star3Selected}" BorderThickness="0"  Width="25" Name="RatingStar3">
-                    <Image Source="../Assets/VoidStar.png" Width="25" Name="Star3"/>
-                </ToggleButton>
-                <ToggleButton Grid.Column="3" IsChecked="{Binding Star4Selected}" BorderThickness="0" Width="25" Name="RatingStar4">
-                    <Image Source="../Assets/VoidStar.png" Width="25" Name="Star4"/>
-                </ToggleButton>
-                <ToggleButton Grid.Column="4" IsChecked="{Binding Star5Selected}" BorderThickness="0" Width="25" Name="RatingStar5">
-                    <Image Source="../Assets/VoidStar.png" Width="25" Name="Star5"/>
-                </ToggleButton> 
-            </Grid>
+			<StackPanel Name="RatingPanel">
+                <Border BorderThickness="1" BorderBrush="Black" Padding="4" Margin="20 30 0 0" Width="150" CornerRadius="50" HorizontalAlignment="Left">
+                    <Grid ColumnDefinitions="* * * * *" MaxWidth="200" HorizontalAlignment="Left">
+				        <Button Grid.Column="0" BorderThickness="0" Width="30" Name="RatingStar1">
+					        <Image Source="../Assets/VoidStar.png" Width="25" Name="Star1"/>
+                        </Button>
+                        <Button Grid.Column="1" BorderThickness="0" Width="30" Name="RatingStar2">
+                            <Image Source="../Assets/VoidStar.png" Width="25" Name="Star2"/>
+                        </Button>
+                        <Button Grid.Column="2" BorderThickness="0"  Width="30" Name="RatingStar3">
+                            <Image Source="../Assets/VoidStar.png" Width="25" Name="Star3"/>
+                        </Button>
+                        <Button Grid.Column="3" BorderThickness="0" Width="30" Name="RatingStar4">
+                            <Image Source="../Assets/VoidStar.png" Width="25" Name="Star4"/>
+                        </Button>
+                        <Button Grid.Column="4" BorderThickness="0" Width="30" Name="RatingStar5">
+                            <Image Source="../Assets/VoidStar.png" Width="25" Name="Star5"/>
+                        </Button> 
+                    </Grid>
+                </Border>
+                <TextBox Text="{Binding Province, Mode=OneWayToSource}" Margin="20 10" CornerRadius="12" Height="200" MaxHeight="400"/>
+                <Button Classes="Green" Content="Upload Rating" CornerRadius="10" HorizontalAlignment="Right" Margin="20 0" Name="UploadRatingButton"/>
+            </StackPanel>
         </StackPanel>
 	</ScrollViewer>		
 </UserControl>

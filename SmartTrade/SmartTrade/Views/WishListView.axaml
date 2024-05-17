@@ -11,7 +11,6 @@
     <Design.DataContext>
         <vm:WishListModel/>
     </Design.DataContext>
-    <StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Margin="10">
                 <TextBlock Classes="h1" HorizontalAlignment="Center" Text="WISHLIST"/>
@@ -27,8 +26,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                <Button Content="+ Share list through email" HorizontalAlignment="Right" Margin="10" Classes="Green" Name="ShareWishListButton"/>
             </StackPanel>
         </ScrollViewer>
-        <Button Content="+ Share list through email" HorizontalAlignment="Right" Margin="10" Classes="Green" Name="ShareWishListButton"/>
-    </StackPanel>
 </UserControl>

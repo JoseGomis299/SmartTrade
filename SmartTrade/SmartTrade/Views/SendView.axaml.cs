@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
@@ -29,7 +30,7 @@ namespace SmartTrade.Views
 
         private void Star1Click(object? sender, RoutedEventArgs e)
         {
-            if ((bool)!RatingStar1.IsChecked)
+            if (Star1.Source == _starVoid || Star2.Source == _starSelected)
             {
                 Star1.Source = _starSelected;
                 Star2.Source = _starVoid;
@@ -41,13 +42,15 @@ namespace SmartTrade.Views
             }
             else
             {
-                return;
+                Star1.Source = _starVoid;
+
+                _rating = 0;
             }
         }
 
         private void Star2Click(object? sender, RoutedEventArgs e)
         {
-            if ((bool)!RatingStar2.IsChecked)
+            if (Star2.Source == _starVoid || Star3.Source == _starSelected)
             {
                 Star1.Source = _starSelected;
                 Star2.Source = _starSelected;
@@ -59,13 +62,15 @@ namespace SmartTrade.Views
             }
             else
             {
-                return;
+                Star2.Source = _starVoid;
+
+                _rating = 1;
             }
         }
 
         private void Star3Click(object? sender, RoutedEventArgs e)
         {
-            if ((bool)!RatingStar3.IsChecked)
+            if (Star3.Source == _starVoid || Star4.Source == _starSelected)
             {
                 Star1.Source = _starSelected;
                 Star2.Source = _starSelected;
@@ -77,13 +82,15 @@ namespace SmartTrade.Views
             }
             else
             {
-                return;
+                Star3.Source = _starVoid;
+
+                _rating = 2;
             }
         }
 
         private void Star4Click(object? sender, RoutedEventArgs e)
         {
-            if ((bool)!RatingStar4.IsChecked)
+            if (Star4.Source == _starVoid || Star5.Source == _starSelected)
             {
                 Star1.Source = _starSelected;
                 Star2.Source = _starSelected;
@@ -95,13 +102,15 @@ namespace SmartTrade.Views
             }
             else
             {
-                return;
+                Star4.Source = _starVoid;
+
+                _rating = 3;
             }
         }
 
         private void Star5Click(object? sender, RoutedEventArgs e)
         {
-            if ((bool)!RatingStar5.IsChecked)
+            if (Star5.Source == _starVoid)
             {
                 Star1.Source = _starSelected;
                 Star2.Source = _starSelected;
@@ -113,7 +122,9 @@ namespace SmartTrade.Views
             }
             else
             {
-                return;
+                Star5.Source = _starVoid;
+
+                _rating = 4;
             }
         }
     }
