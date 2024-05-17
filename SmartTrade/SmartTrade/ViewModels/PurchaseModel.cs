@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
-using SmartTrade.Entities;
 using SmartTrade.Views;
-using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
@@ -36,9 +33,10 @@ public class PurchaseModel : ViewModelBase
         Price = purchaseDTO.Offer.Price + "€";
         ShippingCost = purchaseDTO.Offer.ShippingCost + "€";
         Image = purchaseDTO.Offer.Product.Images[0].ToBitmap();
-        Quantity = purchaseDTO.Quantity.ToString();
+        Quantity = "Quantity: " + purchaseDTO.Quantity.ToString();
         PurchaseDate = purchaseDTO.PurchaseDate;
-        DeliveryState = CalculateState();
+        EstimatedDate = purchaseDTO.ExpectedDate;
+        DeliveryState = "Delivery state: " + CalculateState();
     }
 
     private void OpenProduct()

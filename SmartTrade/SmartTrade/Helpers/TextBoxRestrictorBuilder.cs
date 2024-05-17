@@ -92,16 +92,7 @@ public class TextBoxRestrictorBuilder
 
     public TextBoxRestrictorBuilder WithLengthRestriction(int length)
     {
-        _textBoxRestrictor.AddRestriction(() =>
-        {
-            if (_textBoxRestrictor.Text.Length > length)
-            {
-                return true;
-            }
-
-            return false;
-        });
-
+       _textBoxRestrictor.MaxLength = length;
         return this;
     }
 
@@ -120,7 +111,7 @@ public class TextBoxRestrictorBuilder
         return this;
     }
 
-    public TextBoxRestrictorBuilder WithoutSymbolRestrictiona()
+    public TextBoxRestrictorBuilder WithoutSymbolRestriction()
     {
         _textBoxRestrictor.AddRestriction(() =>
         {

@@ -1,7 +1,7 @@
 ﻿using SmartTrade.Entities;
 using SmartTradeDTOs;
 
-namespace SmartTradeAPI.Library.Persistence.DTOs
+namespace SmartTradeDTOs
 {
     public class PurchaseDTO
     {

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using SmartTrade.Navigation;
+using SmartTrade.Services;
 using SmartTrade.Views;
 
 namespace SmartTrade;
 
 public class SmartTradeNavigationManager : NavigationManager
 {
-    public event Action<int> OnChangeNavigationStack;
-
     protected Stack<ICommand> HomeCommands = new();
     protected Stack<ICommand> UserCommands = new();
     protected Stack<ICommand> CartCommands = new();
@@ -20,7 +19,10 @@ public class SmartTradeNavigationManager : NavigationManager
     public MainView MainView { get; set; }
     public int CurrentStack { get; private set; }
 
-    private SmartTradeNavigationManager() { }
+    private SmartTradeNavigationManager()
+    {
+        EventBus.RegisterEvent("OnChangeNavigationStack");
+    }
 
     public override void Initialize(ContentControl mainView, ContentControl targetView)
     {
@@ -36,17 +38,17 @@ public class SmartTradeNavigationManager : NavigationManager
         if (targetButton == 0)
         {
             Commands = HomeCommands;
-            OnChangeNavigationStack?.Invoke(0);
+            EventBus.Publish("OnChangeNavigationStack", 0);
         }
         else if (targetButton == 2)
         {
             Commands = UserCommands;
-            OnChangeNavigationStack?.Invoke(2);
+            EventBus.Publish("OnChangeNavigationStack", 2);
         }
         else if (targetButton == 1)
         {
             Commands = CartCommands;
-            OnChangeNavigationStack?.Invoke(1);
+            EventBus.Publish("OnChangeNavigationStack", 1);
         }
 
         CurrentStack = targetButton;
@@ -81,11 +83,12 @@ public class SmartTradeNavigationManager : NavigationManager
         if (targetView.GetType() == typeof(ProductCatalog) || targetView.GetType() == typeof(SellerCatalog) || targetView.GetType() == typeof(AdminCatalog))
         {
             HomeCommands.Clear();
+            CartCommands.Clear();
             UserCommands.Clear();
 
             CurrentStack = 0;
             Commands = HomeCommands;
-            OnChangeNavigationStack?.Invoke(0);
+            EventBus.Publish("OnChangeNavigationStack", 0);
         }
         else {
             throw new InvalidOperationException("You can only go to a Catalog or Login when reinitializing");

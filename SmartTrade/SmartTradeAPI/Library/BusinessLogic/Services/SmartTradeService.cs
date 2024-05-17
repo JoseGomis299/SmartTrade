@@ -4,9 +4,6 @@ using Newtonsoft.Json;
 using SmartTrade.Entities;
 using SmartTrade.Persistence;
 using Microsoft.EntityFrameworkCore;
-using SmartTradeAPI.Library.Persistence.DTOs;
-using Microsoft.Extensions.Hosting;
-using System.ComponentModel.DataAnnotations;
 using SmartTradeAPI.Helpers;
 
 namespace SmartTrade.BusinessLogic;
@@ -522,11 +519,7 @@ public class SmartTradeService : ISmartTradeService
                 Price = c.Offer.Price,
                 ShippingCost = c.Offer.ShippingCost,
                 Stock = c.Offer.Stock,
-                Product = new ProductDTO
-                {
-                    Id = c.Offer.Product.Id,
-                    Images = new List<byte[]>(){ c.Offer.Product.Images.First().ImageSource }
-                }
+                Product = new ProductDTO(c.Offer.Product, new List<byte[]>() { c.Offer.Product.Images.First().ImageSource })
             },
             Post = GetPost(c.Post.Id),
             Quantity = c.Quantity
@@ -572,7 +565,10 @@ public class SmartTradeService : ISmartTradeService
                 }
             },
             Price = p.Price,
-            ShippingPrice = p.ShippingPrice
+            ShippingPrice = p.ShippingPrice,
+            ExpectedDate = p.ExpectedDate,
+            PurchaseDate = p.PurchaseDate,
+            Quantity = p.Quantity
         }).ToList();
     }
 

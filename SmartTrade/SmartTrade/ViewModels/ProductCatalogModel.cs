@@ -6,7 +6,6 @@ using SmartTradeDTOs;
 using SmartTrade.Entities;
 using System.Linq;
 using FuzzySharp;
-using SmartTradeAPI.Library.Persistence.DTOs;
 
 namespace SmartTrade.ViewModels
 {
@@ -38,7 +37,7 @@ namespace SmartTrade.ViewModels
                 {
                     RecommendedProducts.Add(new ProductModel(post));
                 }
-                else if (await IsRelated(post))
+                else if (Service.Logged != null && await IsRelated(post))
                 { 
                     RelatedProducts.Add(new ProductModel(post));
                 }

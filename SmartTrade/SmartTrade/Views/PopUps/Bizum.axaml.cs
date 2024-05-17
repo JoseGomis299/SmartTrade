@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using Microsoft.IdentityModel.Tokens;
 using SmartTrade.ViewModels;
 using System;
+using System.Text.RegularExpressions;
 
 namespace SmartTrade.Views
 {
@@ -12,12 +13,15 @@ namespace SmartTrade.Views
     {
         private RegisterModel? _model;
         private Popup _popup;
+        private bool _hasErrors;
+        private bool _start = true;
 
         public Bizum()
         {
             InitializeComponent();
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
+
             _popup = new Popup
             {
                 Child = this,
@@ -33,6 +37,9 @@ namespace SmartTrade.Views
             AcceptButton.Click += AcceptButton_Click;
             AcceptButton.Click += (sender, e) => onAccept();
             CancelButton.Click += CancelButton_Click;
+
+            TextBoxNumber.TextBox.TextChanged += CheckNumber;
+
             _popup = new Popup
             {
                 Child = this,
@@ -40,45 +47,51 @@ namespace SmartTrade.Views
             };
         }
 
-        private void ClearErrors()
-        {
-            TextBoxNumber.ErrorText = "";
-        }
-
         private void CancelButton_Click(object? sender, RoutedEventArgs e)
         {
-            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
             _model.BizumNumber = "";
+            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
+            
+            
         }
 
         private void AcceptButton_Click(object? sender, RoutedEventArgs e)
         {
-            string number = TextBoxNumber.Text;
-            ClearErrors();
-            bool hasErrors = false;
+            _model.BizumNumber = TextBoxNumber.TextBox.Name;
+            SmartTradeNavigationManager.Instance.MainView.HidePopUp();
+        }
 
-            if (_model.BizumNumber.IsNullOrEmpty())
+        private void CheckNumber(object? sender, TextChangedEventArgs e)
+        {
+            if (_start)
             {
-                TextBoxNumber.BringIntoView();
-                TextBoxNumber.Focus();
-                TextBoxNumber.ErrorText = "Telephone cannot be empty";
-                hasErrors = true;
+                _start = false;
+                AcceptButton.IsEnabled = false;
+                return;
             }
-            try
+
+            if (TextBoxNumber.TextBox.Text.IsNullOrEmpty())
             {
-                if (hasErrors) return;
-                _model.ValidarTelefono();
-                SmartTradeNavigationManager.Instance.MainView.HidePopUp();
+                TextBoxNumber.ErrorText = "Please enter a telephone number.";
+                AcceptButton.IsEnabled = false;
+                _hasErrors = true;
+                return;
             }
-            catch (Exception ex)
+
+            string pattern = @"^[0-9]{9}$";
+            if (!Regex.IsMatch(TextBoxNumber.Text, pattern))
             {
-                TextBoxNumber.BringIntoView();
-                TextBoxNumber.ErrorText = ex.Message;
+                TextBoxNumber.ErrorText = "Invalid telephone number.";
+                AcceptButton.IsEnabled = false;
+                _hasErrors = true;
+            }
+            else
+            {
+                TextBoxNumber.ErrorText = "";
+                AcceptButton.IsEnabled = true;
+                _hasErrors = false;
             }
         }
-        //private void CancelButton_Click(object? sender, RoutedEventArgs e)
-
-       
     }
 }
 

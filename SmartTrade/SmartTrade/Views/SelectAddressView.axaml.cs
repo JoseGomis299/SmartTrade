@@ -6,6 +6,7 @@ namespace SmartTrade.Views
     public partial class SelectAddressView : UserControl
     {
         private SelectAddressModel _model;
+        private SelectPaymentView? _nextView;
 
         public SelectAddressView()
         {
@@ -30,7 +31,10 @@ namespace SmartTrade.Views
 
         private void Next(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            SmartTradeNavigationManager.Instance.NavigateTo(new SelectPaymentView(_model.SelectedAddress, _model.SelectedBillingAddress));
+            _nextView ??= new SelectPaymentView(_model.SelectedAddress, _model.SelectedBillingAddress);
+            _nextView.SelectAddresses(_model.SelectedAddress, _model.SelectedBillingAddress);
+
+            SmartTradeNavigationManager.Instance.NavigateTo(_nextView);
         }
 
         private void Back(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

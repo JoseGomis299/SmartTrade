@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
 using SmartTrade.Navigation;
+using SmartTrade.Services;
 using SmartTrade.Views;
 
 namespace SmartTrade;
 
 public class NavigationManager
 {
-    public event Action<Type> OnNavigate;
-
     public Navigator? Navigator;
     protected Stack<ICommand> Commands = new();
 
     protected static NavigationManager _instance;
     public static NavigationManager Instance => _instance ??= new NavigationManager();
 
-    protected NavigationManager() { }
+    protected NavigationManager()
+    {
+        EventBus.RegisterEvent("OnNavigate");
+    }
 
     public virtual void Initialize(ContentControl mainView, ContentControl targetView)
     {
@@ -25,7 +27,7 @@ public class NavigationManager
         ICommand command = new NavigateToCommand(Navigator, targetView);
         command.Execute();
 
-        OnNavigate?.Invoke(targetView.GetType());
+        EventBus.Publish("OnNavigate", targetView.GetType());
     }
 
     public virtual void NavigateTo(Type targetViewType) 
@@ -37,7 +39,7 @@ public class NavigationManager
         Commands.Push(command);
         command.Execute();
 
-        OnNavigate?.Invoke(targetViewType);
+        EventBus.Publish("OnNavigate", targetViewType);
     }
 
     public virtual void NavigateTo(ContentControl targetView)
@@ -49,7 +51,7 @@ public class NavigationManager
         Commands.Push(command);
         command.Execute();
 
-        OnNavigate?.Invoke(targetView.GetType());
+        EventBus.Publish("OnNavigate", targetView.GetType());
     }
 
     public virtual void NavigateToWithoutSaving(ContentControl targetView)
@@ -60,7 +62,7 @@ public class NavigationManager
         ICommand command = new NavigateToCommand(Navigator, targetView);
         command.Execute();
 
-        OnNavigate?.Invoke(targetView.GetType());
+        EventBus.Publish("OnNavigate", targetView.GetType());
     }
 
     public virtual void NavigateToOverriding(ContentControl targetView)
@@ -77,7 +79,7 @@ public class NavigationManager
         Commands.Push(command);
         command.Execute();
 
-        OnNavigate?.Invoke(targetView.GetType());
+        EventBus.Publish("OnNavigate", targetView.GetType());
     }
 
     public virtual bool NavigateBack()
@@ -87,13 +89,13 @@ public class NavigationManager
             var command = Commands.Pop();
             command.UnExecute();
 
-            OnNavigate?.Invoke(Navigator.CurrentView.GetType());
+            EventBus.Publish("OnNavigate", Navigator.CurrentView.GetType());
             return true;
         }
 
         return false;
     }
 
-    protected void InvokeOnNavigate(Type viewType) => OnNavigate?.Invoke(viewType);
+    protected void InvokeOnNavigate(Type viewType) => EventBus.Publish("OnNavigate", viewType);
 
 }

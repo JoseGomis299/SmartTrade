@@ -1,5 +1,4 @@
 ﻿using SmartTrade.Entities;
-using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.BusinessLogic

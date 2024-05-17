@@ -63,36 +63,21 @@ public class ProfileModel : ViewModelBase
         this.RaisePropertyChanged(nameof(Bizums));
     }
 
-    public async Task AddBizumAsync(BizumInfo bizum, bool? save)
+    public async Task AddBizumAsync(BizumInfo bizum)
     {
-        if (save == true)
-        {
-            await Service.AddBizumAsync(bizum);
-        }
-        else Service.AddBizumLocal(bizum);
-
+        await Service.AddBizumAsync(bizum);
         UpdatePaymentMethods();
     }
 
-    public async Task AddCreditCardAsync(CreditCardInfo creditCard, bool? save)
+    public async Task AddCreditCardAsync(CreditCardInfo creditCard)
     {
-        if (save == true)
-        {
-            await Service.AddCreditCardAsync(creditCard);
-        }
-        else Service.AddCreditCardLocal(creditCard);
-
+        await Service.AddCreditCardAsync(creditCard);
         UpdatePaymentMethods();
     }
 
-    public async Task AddPaypalAsync(PayPalInfo paypal, bool? save)
+    public async Task AddPaypalAsync(PayPalInfo paypal)
     {
-        if (save == true)
-        {
-            await Service.AddPaypalAsync(paypal);
-        }
-        else Service.AddPaypalLocal(paypal);
-
+        await Service.AddPaypalAsync(paypal);
         UpdatePaymentMethods();
     }
 
@@ -106,12 +91,9 @@ public class ProfileModel : ViewModelBase
         }
     }
 
-    public async Task AddAddressAsync(Address address, bool? save)
+    public async Task AddAddressAsync(Address address)
     {
-        if (save == true)
-            await Service.AddAddressAsync(address);
-        else
-            Service.AddBillingAddressLocal(address);
+        await Service.AddAddressAsync(address);
         UpdateAddresses();
     }
 

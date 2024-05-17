@@ -15,7 +15,7 @@ namespace SmartTrade.Views
             InitializeComponent();
 
             CheckOutButton.Click += BuyItems;
-            SmartTradeNavigationManager.Instance.OnChangeNavigationStack += ClearReferences;
+            EventBus.Subscribe<int>(this, "OnChangeNavigationStack", ClearReferences);
 
             _model.onCartChanged += UpdateView;
             UpdateView();
@@ -39,14 +39,14 @@ namespace SmartTrade.Views
         {
             _model.UnSubscribeFromCartNotifications();
             CheckOutButton.Click -= BuyItems;
-            SmartTradeNavigationManager.Instance.OnChangeNavigationStack -= ClearReferences;
+            EventBus.UnsubscribeFromAllEvents(this);
             DataContext = null;
         }
 
         private void BuyItems(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             if(_model.UserType == UserType.Consumer) 
-                SmartTradeNavigationManager.Instance.NavigateTo(new SelectAddressView());
+                SmartTradeNavigationManager.Instance.NavigateTo(typeof(SelectAddressView));
             else
                 SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(Login), 2, 2, out _);
         }

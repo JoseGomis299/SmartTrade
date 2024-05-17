@@ -27,7 +27,7 @@ public class MainViewModel : ViewModelBase
     {
         SearchAutoComplete = new ObservableCollection<string>();
 
-        Service.OnCartChanged += OnServiceOnOnCartChanged;
+        EventBus.Subscribe(this, "OnCartChanged", OnServiceOnOnCartChanged);
         OnServiceOnOnCartChanged();
     }
 
@@ -47,14 +47,16 @@ public class MainViewModel : ViewModelBase
             SearchAutoComplete.Add(name);
         }
 
-        Service.OnPostsChanged += () =>
+        EventBus.Subscribe(this, "OnPostsChanged", InitializeSearchBar);
+    }
+
+    private void InitializeSearchBar()
+    {
+        SearchAutoComplete.Clear();
+        foreach (var name in Service.Posts.Select(x => x.Title))
         {
-            SearchAutoComplete.Clear();
-            foreach (var name in Service.Posts.Select(x => x.Title))
-            {
-                SearchAutoComplete.Add(name);
-            }
-        };
+            SearchAutoComplete.Add(name);
+        }
     }
 
     public List<SimplePostDTO>? FindProducts()

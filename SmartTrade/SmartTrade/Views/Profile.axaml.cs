@@ -51,7 +51,7 @@ namespace SmartTrade.Views
             AddBizumPopup popup = new AddBizumPopup();
             popup.onAccept = async (save) =>
             {
-                await _model.AddBizumAsync(popup.GetBizum(), save);
+                await _model.AddBizumAsync(popup.GetBizum());
             };
 
             SmartTradeNavigationManager.Instance.MainView.ShowPopUp(popup);
@@ -62,7 +62,7 @@ namespace SmartTrade.Views
             AddCreditCardPopup popup = new AddCreditCardPopup();
             popup.onAccept = async (save) =>
             {
-                await _model.AddCreditCardAsync(popup.GetCreditCard(), save);
+                await _model.AddCreditCardAsync(popup.GetCreditCard());
             };
 
             SmartTradeNavigationManager.Instance.MainView.ShowPopUp(popup);
@@ -73,7 +73,7 @@ namespace SmartTrade.Views
             AddPaypalPopup popup = new AddPaypalPopup();
             popup.onAccept = async (save) =>
             {
-                await _model.AddPaypalAsync(popup.GetPaypal(), save);
+                await _model.AddPaypalAsync(popup.GetPaypal());
             };
 
             SmartTradeNavigationManager.Instance.MainView.ShowPopUp(popup);
@@ -84,7 +84,7 @@ namespace SmartTrade.Views
             AddAddress popup = new AddAddress();
             popup.onAccept = async (save) =>
             {
-                await _model.AddAddressAsync(popup.GetAddress(), save);
+                await _model.AddAddressAsync(popup.GetAddress());
             };
 
             SmartTradeNavigationManager.Instance.MainView.ShowPopUp(popup);

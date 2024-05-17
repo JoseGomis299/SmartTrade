@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FuzzySharp;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
-using SmartTrade.Views;
-using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services;
@@ -16,30 +13,6 @@ namespace SmartTrade.Services;
     {
         public List<SimplePostDTO>? Posts => _cache.Posts;
         public UserDTO? Logged => _broker.Logged;
-
-        public event Action OnPostsChanged
-        {
-            add => _cache.OnPostsChanged += value;
-            remove => _cache.OnPostsChanged -= value;
-        }
-
-        public event Action OnCartChanged
-        {
-            add => _cache.OnCartChanged += value;
-            remove => _cache.OnCartChanged -= value;
-        }
-
-        public event Action OnGiftsChanged
-        {
-            add => _cache.OnGiftsChanged += value;
-            remove => _cache.OnGiftsChanged -= value;
-        }
-
-        public event Action OnNotificationsChanged
-        {
-            add => _cache.OnNotificationsChanged += value;
-            remove => _cache.OnNotificationsChanged -= value;
-        }
 
         public UserType LoggedType
         {
@@ -83,12 +56,11 @@ namespace SmartTrade.Services;
             _cache.Purchases.Add(purchase);
             await _broker.UserClient.AddPurchaseAsync(purchase);
         }
-
-    public async Task InitializeCacheAsync()
+        
+        public async Task InitializeCacheAsync()
         {
             await LoadCartItems();
         }
-
 
         #region User
 
@@ -137,19 +109,19 @@ namespace SmartTrade.Services;
         public async Task AddPaypalAsync(PayPalInfo paypalinfo)
         {
             await _broker.UserClient.AddPaypalAsync(paypalinfo);
-            AddPaypalLocal(paypalinfo);
+            (Logged as ConsumerDTO).PayPalAccounts.Add(paypalinfo);
         }
 
         public async Task AddCreditCardAsync(CreditCardInfo creditCard)
         {
             await _broker.UserClient.AddCreditCardAsync(creditCard);
-            AddCreditCardLocal(creditCard);
+            (Logged as ConsumerDTO).CreditCards.Add(creditCard);
         }
 
         public async Task AddBizumAsync(BizumInfo bizum)
         {
            await _broker.UserClient.AddBizumAsync(bizum);
-           AddBizumLocal(bizum);
+           (Logged as ConsumerDTO).BizumAccounts.Add(bizum);
         }
 
         public async Task AddAddressAsync(Address address)
@@ -158,26 +130,6 @@ namespace SmartTrade.Services;
             address.Id = addressId;
 
             (Logged as ConsumerDTO).Addresses.Add(address);
-        }
-
-        public void AddBillingAddressLocal(Address address)
-        {
-            (Logged as ConsumerDTO).Addresses.Add(address);
-        }
-
-        public void AddBizumLocal(BizumInfo bizum)
-        {
-            (Logged as ConsumerDTO).BizumAccounts.Add(bizum);
-        }
-
-        public void AddCreditCardLocal(CreditCardInfo creditCard)
-        {
-            (Logged as ConsumerDTO).CreditCards.Add(creditCard);
-        }
-
-        public void AddPaypalLocal(PayPalInfo paypal)
-        {
-            (Logged as ConsumerDTO).PayPalAccounts.Add(paypal);
         }
 
         public async Task<List<PurchaseDTO>?> GetPurchasesAsync()
@@ -242,9 +194,14 @@ namespace SmartTrade.Services;
         public async Task<List<SimplePostDTO>?> RefreshPostsAsync()
         {
             var posts = await _broker.PostClient.GetPostsAsync();
-            
-            if(IsParentalControlEnabled) posts = posts.Where(x => x.MinimumAge < 18).ToList();
+
+            if (IsParentalControlEnabled)
+            {
+                posts = posts.Where(x => x.MinimumAge < 18).ToList();
+                _cache.Purchases = _cache.Purchases.Where(x => posts.Exists(y => y.Id == x.Post.Id)).ToList();
+            }
             _cache.SetPosts(posts);
+
             return posts;
         }
 

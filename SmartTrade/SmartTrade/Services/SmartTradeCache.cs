@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using SmartTrade.Entities;
 using SmartTrade.Helpers;
-using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.Services
 {
     public class SmartTradeCache
     {
-        public event Action? OnPostsChanged;
-        public event Action? OnCartChanged;
-        public event Action? OnGiftsChanged;
-        public event Action? OnNotificationsChanged;
-
-
         private List<PostDTO> _completePosts = new List<PostDTO>();
         private List<SimplePostDTO>? _simplePosts;
         public List<SimplePostDTO>? Posts => _simplePosts;
@@ -29,23 +19,31 @@ namespace SmartTrade.Services
         public List<GiftListDTO>? GiftLists { get; set; }
         public List<AlertDTO>? Alerts { get; set; }
 
+        public SmartTradeCache()
+        {
+            EventBus.RegisterEvent("OnCartChanged");
+            EventBus.RegisterEvent("OnPostsChanged");
+            EventBus.RegisterEvent("OnGiftsChanged");
+            EventBus.RegisterEvent("OnNotificationsChanged");
+        }
+
         public async Task LoadCartItemsAsync()
         {
             CartItems = await JSONsaving.ReadFromJsonFileAsync<List<CartItemDTO>>("ShoppingCartItems") ?? new List<CartItemDTO>();
             await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
 
-            OnCartChanged?.Invoke();
+            EventBus.Publish("OnCartChanged");
         }
         public void LoadCartItems(List<CartItemDTO> items)
         {
             CartItems = items;
-            OnCartChanged?.Invoke();
+            EventBus.Publish("OnCartChanged");
         }
 
         public void SetPosts(List<SimplePostDTO>? posts)
         {
             _simplePosts = posts;
-            OnPostsChanged?.Invoke();
+            EventBus.Publish("OnPostsChanged");
         }
 
         public PostDTO? GetPost(int postId)
@@ -76,14 +74,14 @@ namespace SmartTrade.Services
             NotificationDTO? notification = GetNotification(notificationId);
          
             if (notification != null) Notifications.Remove(notification);
-            OnNotificationsChanged?.Invoke();
+            EventBus.Publish("OnNotificationsChanged");
         }
 
         public void MarkNotificationAsVisited(int notificationId)
         {
             NotificationDTO? notification = GetNotification(notificationId);
             if (notification != null) notification.Visited = true;
-            OnNotificationsChanged?.Invoke();
+            EventBus.Publish("OnNotificationsChanged");
         }
 
         private NotificationDTO? GetNotification(int notificationId)
@@ -114,7 +112,7 @@ namespace SmartTrade.Services
             }
             else CartItems[index].Quantity += quantity;
 
-            OnCartChanged?.Invoke();
+            EventBus.Publish("OnCartChanged");
             await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
 
             return index == -1 ? quantity : CartItems[index].Quantity;
@@ -130,7 +128,7 @@ namespace SmartTrade.Services
             }
             else CartItems[index].Quantity += quantity;
 
-            OnCartChanged?.Invoke();
+            EventBus.Publish("OnCartChanged");
 
             return index == -1 ? quantity : CartItems[index].Quantity;
         }
@@ -140,7 +138,7 @@ namespace SmartTrade.Services
             int index = CartItems.FindIndex(x=> x.Offer.Id == offerId);
             if (index != -1) CartItems.RemoveAt(index);
 
-            OnCartChanged?.Invoke();
+            EventBus.Publish("OnCartChanged");
         }
 
         public async Task DeleteItemFromCartAsync(int offerId)
@@ -148,7 +146,7 @@ namespace SmartTrade.Services
             int index = CartItems.FindIndex(x => x.Offer.Id == offerId);
             if (index != -1) CartItems.RemoveAt(index);
 
-            OnCartChanged?.Invoke();
+            EventBus.Publish("OnCartChanged");
             await JSONsaving.WriteToJsonFileAsync(CartItems, "ShoppingCartItems");
         }
 
@@ -201,7 +199,7 @@ namespace SmartTrade.Services
                 GiftLists[indexList].Gifts.Add(new GiftDTO(quantity, post, offer, giftListName));
             }
 
-            OnGiftsChanged?.Invoke();
+            EventBus.Publish("OnGiftsChanged");
             return indexGift == -1 ? quantity : GiftLists[indexList].Gifts[indexGift].Quantity;
         }
 
@@ -211,7 +209,7 @@ namespace SmartTrade.Services
             var indexGift = GiftLists[indexList].Gifts.FindIndex(x => x.Offer.Id == offerId);
             if (indexGift != -1) GiftLists[indexList].Gifts.RemoveAt(indexGift);
 
-            OnGiftsChanged?.Invoke();
+            EventBus.Publish("OnGiftsChanged");
         }
 
         public void AddPurchase(float price, float shippingPrice, int quantity, int productId, string emailSeller, PostDTO post, OfferDTO offer, DateTime purchaseDate, DateTime expectedDate)
@@ -222,7 +220,7 @@ namespace SmartTrade.Services
         public void SetNotifications(List<NotificationDTO>? getNotificationsAsync)
         {
             Notifications = getNotificationsAsync;
-            OnNotificationsChanged?.Invoke();
+            EventBus.Publish("OnGiftsChanged");
         }
     }
 }
