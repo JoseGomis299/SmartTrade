@@ -18,6 +18,24 @@
 			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DeliveryAdress, Mode=OneWay}" Margin="20 0 0 0"></TextBlock>
 			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 15 0 20">Facturation address:</TextBlock>
 			<TextBlock Classes="h3" HorizontalAlignment="Left" Margin="20 0 0 0">Facturation address:</TextBlock>
-		</StackPanel>
+			<Slider Name="RatingSlider" Maximum="5" MaxWidth="150" Margin="-150 20 0 0" ></Slider>
+			<Grid ColumnDefinitions="* * * * *" MaxWidth="200" HorizontalAlignment="Left" Margin="15 0 0 0">
+				<ToggleButton Grid.Column="0" IsChecked="{Binding Star1Selected}" BorderThickness="0" Width="25" Name="RatingStar1">
+					<Image Source="../Assets/VoidStar.png" Width="25" Name="Star1"/>
+                </ToggleButton>
+                <ToggleButton Grid.Column="1" IsChecked="{Binding Star2Selected}" BorderThickness="0" Width="25" Name="RatingStar2">
+                    <Image Source="../Assets/VoidStar.png" Width="25" Name="Star2"/>
+                </ToggleButton>
+                <ToggleButton Grid.Column="2" IsChecked="{Binding Star3Selected}" BorderThickness="0"  Width="25" Name="RatingStar3">
+                    <Image Source="../Assets/VoidStar.png" Width="25" Name="Star3"/>
+                </ToggleButton>
+                <ToggleButton Grid.Column="3" IsChecked="{Binding Star4Selected}" BorderThickness="0" Width="25" Name="RatingStar4">
+                    <Image Source="../Assets/VoidStar.png" Width="25" Name="Star4"/>
+                </ToggleButton>
+                <ToggleButton Grid.Column="4" IsChecked="{Binding Star5Selected}" BorderThickness="0" Width="25" Name="RatingStar5">
+                    <Image Source="../Assets/VoidStar.png" Width="25" Name="Star5"/>
+                </ToggleButton> 
+            </Grid>
+        </StackPanel>
 	</ScrollViewer>		
 </UserControl>
