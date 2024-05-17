@@ -35,7 +35,8 @@ public class PurchaseModel : ViewModelBase
         Image = purchaseDTO.Offer.Product.Images[0].ToBitmap();
         Quantity = "Quantity: " + purchaseDTO.Quantity.ToString();
         PurchaseDate = purchaseDTO.PurchaseDate;
-        DeliveryState = CalculateState();
+        EstimatedDate = purchaseDTO.ExpectedDate;
+        DeliveryState = "Delivery state: " + CalculateState();
     }
 
     private void OpenProduct()
