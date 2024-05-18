@@ -676,5 +676,36 @@ public class SmartTradeService : ISmartTradeService
         Consumer consumer = _dal.GetById<Consumer>(consumerId);
         consumer.RemoveGift(giftDTO.GiftListName, giftDTO.OfferId);
         _dal.Commit();
-    }    
+    }
+
+    public void AddRating(int points, string description, string consumerId, int postId)
+    {
+        var post = _dal.GetById<Post>(postId);
+        var user = _dal.GetById<Consumer>(consumerId);
+        var rating = new Rating(points, description, user, post);
+        post.AddRating(rating);
+        _dal.Commit();
+    }
+
+    public List<RatingDTO> GetRatings(int postId)
+    {
+        return _dal.GetAll<Rating>().AsQueryable().Where(x => x.Post.Id == postId).Select(x => new RatingDTO()
+        {
+            Id = x.Id,
+            Points = x.Points,
+            Description = x.Description,
+            Post = new SimplePostDTO(new PostDTO(x.Post)),
+            UserId = x.User.Email
+        }).ToList();
+    }
+
+    public void DeleteRating(int ratingId)
+    {
+        Rating rating = _dal.GetById<Rating>(ratingId);
+        rating.Post.Ratings.Remove(rating);
+
+        _dal.Delete<Rating>(rating);
+
+        _dal.Commit();
+    }
 }
