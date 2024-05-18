@@ -17,6 +17,7 @@ namespace SmartTrade.Views
 
         public SendView()
         {
+            DataContext = _model = new SendViewModel();
             InitializeComponent();
         }
 
