@@ -51,6 +51,16 @@ namespace SmartTrade.Controls
         public static readonly StyledProperty<string?> ProductNameProperty =
             AvaloniaProperty.Register<ST_Product, string?>(nameof(ProductName));
 
+        public string? ArrivedDate
+        {
+            get => GetValue(ArrivedDateProperty);
+            set => SetValue(ArrivedDateProperty, value);
+        }
+        
+        public static readonly StyledProperty<string?> ArrivedDateProperty =
+           AvaloniaProperty.Register<ST_Product, string?>(nameof(ArrivedDate));
+
+
         public Bitmap? Image
         {
             get => GetValue(ImageProperty);
@@ -72,8 +82,20 @@ namespace SmartTrade.Controls
                 {
                     ProductNameTextBlock.IsVisible = true;
                 }
+                if (ArrivedDate.IsNullOrEmpty())
+                {
+                    ArrivedOnTextBlock.IsVisible = false;
+                    ArrivedOn.IsVisible = false;
+                }
+                else
+                {
+                    ArrivedOnTextBlock.IsVisible = true;
+                    ArrivedOn.IsVisible = true;
+                }
             }
             base.OnPropertyChanged(change);
         }
+
+
     }
 }

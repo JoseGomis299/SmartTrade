@@ -14,6 +14,7 @@ namespace SmartTrade.Views
         private Bitmap? _starSelected { get; set; }
         private Bitmap? _starVoid { get; set; }
         private int _rating;
+        private SendViewModel _model;
 
         public SendView()
         {
@@ -29,6 +30,8 @@ namespace SmartTrade.Views
             RatingStar3.Click += Star3Click;
             RatingStar4.Click += Star4Click;
             RatingStar5.Click += Star5Click;
+
+            DataContext = _model = new SendViewModel(purchase);
 
 
             _starSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Star.png")));

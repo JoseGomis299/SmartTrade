@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
 using SmartTrade.Views;
+using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
@@ -19,6 +20,7 @@ public class PurchaseModel : ViewModelBase
     public string DeliveryState { get; set; }
     public DateTime PurchaseDate { get; set; }
     public DateTime EstimatedDate { get; set; }
+    public int DeliveryStateInt { get; set; }
 
     public ICommand OpenProductCommand { get; }
 
@@ -37,6 +39,7 @@ public class PurchaseModel : ViewModelBase
         PurchaseDate = purchaseDTO.PurchaseDate;
         EstimatedDate = purchaseDTO.ExpectedDate;
         DeliveryState = "Delivery state: " + CalculateState();
+        DeliveryStateInt = CalculateStateInt();
     }
 
     private void OpenProduct()
@@ -59,6 +62,22 @@ public class PurchaseModel : ViewModelBase
         else
         {
             return "Shipped";
+        }
+    }
+
+    public int CalculateStateInt()
+    {
+        if (DateTime.Now.CompareTo(EstimatedDate) >= 0) { return 2; }
+
+        int daysSincePurchase = DateTime.Now.DayOfYear - PurchaseDate.DayOfYear;
+
+        if (daysSincePurchase <= 2)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
         }
     }
 }
