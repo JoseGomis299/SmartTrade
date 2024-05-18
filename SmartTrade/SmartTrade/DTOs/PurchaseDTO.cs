@@ -13,12 +13,14 @@ namespace SmartTradeDTOs
         public string? EmailSeller { get; set; }
         public PostDTO Post { get; set; }
         public OfferDTO Offer { get; set; }
+        public Address DeliveryAddress { get; set; }
+        public Address BillingAddress { get; set; }
         public DateTime PurchaseDate { get; set; }
         public DateTime ExpectedDate { get; set; }
 
         public PurchaseDTO(){}
         
-        public PurchaseDTO(float price, float shippingPrice, int quantity, int productId, string emailSeller, PostDTO postId, OfferDTO offerId, DateTime purchaseDate, DateTime expectedDate)
+        public PurchaseDTO(float price, float shippingPrice, int quantity, int productId, string emailSeller, PostDTO postId, OfferDTO offerId, DateTime purchaseDate, DateTime expectedDate, Address deliveryAddress, Address billingAddress)
         {
             Price = price;
             ShippingPrice = shippingPrice;
@@ -29,6 +31,8 @@ namespace SmartTradeDTOs
             Offer = offerId;
             PurchaseDate = purchaseDate;
             ExpectedDate = expectedDate;
+            DeliveryAddress = deliveryAddress;
+            BillingAddress = billingAddress;
         }
     }
 }

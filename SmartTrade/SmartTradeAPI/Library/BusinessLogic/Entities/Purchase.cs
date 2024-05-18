@@ -14,7 +14,7 @@ namespace SmartTrade.Entities
         {
         }
 
-        public Purchase(Product? product, float price, float shippingPrice, int quantity, Seller seller, Post? post, Offer? purchaseOffer, DateTime purchaseDate, DateTime expectedDate) : this()
+        public Purchase(Product? product, float price, float shippingPrice, int quantity, Seller seller, Post? post, Offer? purchaseOffer, DateTime purchaseDate, DateTime expectedDate, Address deliveryAddress, Address billingAddress) : this()
         {
             PurchaseProduct = product;
             Price = price;
@@ -25,6 +25,8 @@ namespace SmartTrade.Entities
             Offer = purchaseOffer;
             PurchaseDate = purchaseDate;
             ExpectedDate = expectedDate;
+            DeliveryAddress = deliveryAddress;
+            BillingAddress = billingAddress;
         }
     }
 }

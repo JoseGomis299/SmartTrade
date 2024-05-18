@@ -25,6 +25,9 @@ public class CheckoutModel : ViewModelBase
     public string? SubTotal { get; private set; }
     public string? Total { get; private set; }
 
+    private Address _billingAddress;
+    private Address _deliveryAddress;
+
     public CheckoutModel()
     {
         CartItems = new List<CartItemModel>();
@@ -50,6 +53,9 @@ public class CheckoutModel : ViewModelBase
 
     public CheckoutModel(Address selectedAddress, Address selectedBillingAddress, PaymentMethodModel bizum, PaymentMethodModel creditCard, PaymentMethodModel paypal) : this()
     {
+        _deliveryAddress = selectedAddress;
+        _billingAddress = selectedBillingAddress;
+
         DeliveryStreetAndNumber = selectedAddress.Street + ", " + selectedAddress.Number;
         DeliveryDoor = "Door " + selectedAddress.Door;
         DeliveryProvinceAndCity = selectedAddress.Province + ", " + selectedAddress.City + " " + selectedAddress.PostalCode;
@@ -102,7 +108,7 @@ public class CheckoutModel : ViewModelBase
 
         foreach (var item in CartItems)
         {
-            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity), int.Parse(item.EstimatedTime.Substring(0, item.EstimatedTime.Length - 5)));
+            await Service.BuyItemAsync(item.Post, item.Offer, int.Parse(item.Quantity), int.Parse(item.EstimatedTime.Substring(0, item.EstimatedTime.Length - 5)), _deliveryAddress, _billingAddress);
             await Service.DeleteItemFromCartAsync(item.Offer.Id);
         }
 
