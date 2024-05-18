@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTrade.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTrade.Persistence;
 namespace SmartTradeAPI.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240518120110_RatingsAdded")]
+    partial class RatingsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -424,14 +427,8 @@ namespace SmartTradeAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BillingAddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConsumerEmail")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("DeliveryAddressId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("ExpectedDate")
                         .HasColumnType("datetime2");
@@ -462,11 +459,7 @@ namespace SmartTradeAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BillingAddressId");
-
                     b.HasIndex("ConsumerEmail");
-
-                    b.HasIndex("DeliveryAddressId");
 
                     b.HasIndex("OfferId");
 
@@ -885,17 +878,9 @@ namespace SmartTradeAPI.Migrations
 
             modelBuilder.Entity("SmartTrade.Entities.Purchase", b =>
                 {
-                    b.HasOne("SmartTrade.Entities.Address", "BillingAddress")
-                        .WithMany()
-                        .HasForeignKey("BillingAddressId");
-
                     b.HasOne("SmartTrade.Entities.Consumer", null)
                         .WithMany("Purchases")
                         .HasForeignKey("ConsumerEmail");
-
-                    b.HasOne("SmartTrade.Entities.Address", "DeliveryAddress")
-                        .WithMany()
-                        .HasForeignKey("DeliveryAddressId");
 
                     b.HasOne("SmartTrade.Entities.Offer", "Offer")
                         .WithMany()
@@ -912,10 +897,6 @@ namespace SmartTradeAPI.Migrations
                     b.HasOne("SmartTrade.Entities.Seller", "PurchaseSeller")
                         .WithMany()
                         .HasForeignKey("PurchaseSellerEmail");
-
-                    b.Navigation("BillingAddress");
-
-                    b.Navigation("DeliveryAddress");
 
                     b.Navigation("Offer");
 

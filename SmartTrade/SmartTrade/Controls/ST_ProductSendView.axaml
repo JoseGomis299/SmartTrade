@@ -18,7 +18,7 @@
 			</StackPanel>
 			<TextBlock Name="ProductNameTextBlock" Classes="h2" Foreground="#A5DFB7" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ProductName, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 		</StackPanel>
-		<TextBlock Grid.Column="1" Classes="h2" VerticalAlignment="Center" FontSize="16" Margin="-40 60 0 0">Arrived on:</TextBlock>
-		<TextBlock Grid.Column="1" Classes="h2" VerticalAlignment="Center" FontSize="16" Margin="-40 110 0 0">FechaLlegada</TextBlock>
+		<TextBlock Grid.Column="1" Classes="h2" Name="ArrivedOnTextBlock" VerticalAlignment="Center" FontSize="16" Margin="-40 60 0 0">Arrived on:</TextBlock>
+		<TextBlock Grid.Column="1" Classes="h2" VerticalAlignment="Center" Name="ArrivedOn" FontSize="16" Margin="-40 110 0 0" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ArrivedDate, Mode=OneWay}"></TextBlock>
 	</Grid>
 </UserControl>
