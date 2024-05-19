@@ -409,11 +409,32 @@ namespace SmartTrade.Services;
             _cache.RemoveGift(giftListName, OfferId);
             await _broker.UserClient.RemoveGiftAsync(new SimpleGiftDTO(quantity, postId, OfferId, giftListName));
         }
-        #endregion
+    #endregion
 
-        #region Product
+    #region Product
 
 
-        #endregion
+    #endregion
 
-    }
+        #region Ratings
+
+        public async Task CreateRatingAsync(PostDTO post, int points, string description)
+        {
+            await _broker.RatingClient.CreateRatingAsync((int)post.Id, points, description);
+        }
+
+        public async Task DeleteRatingAsync(int ratingId)
+        {
+            await _broker.RatingClient.DeleteRatingAsync(ratingId);
+        }
+
+        public async Task<List<RatingDTO>?> GetRatingAsync(int postId)
+        {
+            List<RatingDTO> RatingList = new List<RatingDTO>();
+            RatingList = await _broker.RatingClient.GetRatingListAsync(postId);
+            return RatingList;
+        }
+
+
+    #endregion
+}

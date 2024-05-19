@@ -24,6 +24,11 @@ namespace SmartTrade.ViewModels
 
         public PostDTO Post { get; set; }
 
+        public SendViewModel()
+        {
+
+        }
+
         public SendViewModel(PurchaseModel purchase)
         {
             

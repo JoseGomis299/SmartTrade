@@ -15,6 +15,7 @@ public class SmartTradeBroker
     public NotificationClient NotificationClient;
     public AlertClient AlertClient;
     public WishClient WishClient;
+    public RatingClient RatingClient;
 
     public UserDTO? Logged { get; set; }
 
@@ -25,6 +26,7 @@ public class SmartTradeBroker
         NotificationClient = new NotificationClient(this);
         AlertClient = new AlertClient(this);
         WishClient = new WishClient(this);
+        RatingClient = new RatingClient(this);
     }
 
     public void LogOut()

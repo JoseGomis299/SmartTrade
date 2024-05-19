@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
+using Microsoft.IdentityModel.Tokens;
 using SmartTrade.Services;
 using SmartTrade.ViewModels;
 
@@ -15,6 +16,7 @@ namespace SmartTrade.Views
         private Bitmap? _starVoid { get; set; }
         private int _rating;
         private SendViewModel _model;
+        private PurchaseModel _purchase;
 
         public SendView()
         {
@@ -23,6 +25,8 @@ namespace SmartTrade.Views
 
         public SendView(PurchaseModel purchase)
         {
+            _purchase = purchase;
+
             InitializeComponent();
 
             RatingStar1.Click += Star1Click;
@@ -30,6 +34,7 @@ namespace SmartTrade.Views
             RatingStar3.Click += Star3Click;
             RatingStar4.Click += Star4Click;
             RatingStar5.Click += Star5Click;
+            UploadRatingButton.Click += UploadRating;
 
             DataContext = _model = new SendViewModel(purchase);
 
@@ -40,11 +45,12 @@ namespace SmartTrade.Views
             SetVoidStars();
             _rating = 0;
 
-            if (purchase.CalculateState() != "Received")
-            {
-                RatingPanel.IsVisible = false;
-            }
+            //if (purchase.CalculateState() != "Received")
+            //{
+            //    RatingPanel.IsVisible = false;
+            //}
         }
+
 
         #region Rating
 
@@ -154,6 +160,17 @@ namespace SmartTrade.Views
                 Star5.Source = _starVoid;
 
                 _rating = 4;
+            }
+        }
+
+        private void UploadRating(object? sender, RoutedEventArgs e)
+        {
+            if (_rating == 0 || !Review.Text.IsNullOrEmpty())
+            {
+                SmartTradeService.Instance.CreateRatingAsync(_purchase.Post, _rating, Review.Text);
+
+                SetVoidStars();
+                Review.Text = "";
             }
         }
 

@@ -38,7 +38,7 @@
                         </Button> 
                     </Grid>
                 </Border>
-                <TextBox Text="{Binding Province, Mode=OneWayToSource}" Margin="20 10" CornerRadius="12" Height="200" MaxHeight="400"/>
+                <TextBox Margin="20 10" CornerRadius="12" Height="200" MaxHeight="400" Name="Review"/>
                 <Button Classes="Green" Content="Upload Rating" CornerRadius="10" HorizontalAlignment="Right" Margin="20 0" Name="UploadRatingButton"/>
             </StackPanel>
         </StackPanel>
