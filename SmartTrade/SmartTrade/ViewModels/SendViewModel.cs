@@ -34,6 +34,7 @@ namespace SmartTrade.ViewModels
             Image = purchase.Image;
             Post = purchase.Post;
             DeliveryState = purchase.DeliveryStateInt;
+            
 
         }
 

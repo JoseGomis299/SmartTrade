@@ -21,6 +21,7 @@ public class PurchaseModel : ViewModelBase
     public DateTime PurchaseDate { get; set; }
     public DateTime EstimatedDate { get; set; }
     public int DeliveryStateInt { get; set; }
+    public string DeliveryAddress { get; set; }
 
     public ICommand OpenProductCommand { get; }
 
