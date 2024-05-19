@@ -74,6 +74,7 @@ namespace SmartTrade.Controls
         {
             if (change.Property == ProductNameProperty)
             {
+
                 if (ProductName.IsNullOrEmpty())
                 {
                     ProductNameTextBlock.IsVisible = false;

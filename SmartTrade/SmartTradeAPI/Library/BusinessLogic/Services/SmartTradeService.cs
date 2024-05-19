@@ -538,7 +538,7 @@ public class SmartTradeService : ISmartTradeService
         var offerDTO = purchaseDTO.Offer;
         var offer = _dal.GetById<Offer>(offerDTO.Id);
 
-        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, purchaseDTO.Quantity, seller, post, offer, purchaseDTO.PurchaseDate, purchaseDTO.ExpectedDate);
+        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, purchaseDTO.Quantity, seller, post, offer, purchaseDTO.PurchaseDate, purchaseDTO.ExpectedDate, purchaseDTO.DeliveryAddress, purchaseDTO.BillingAddress);
         logged.AddPurchases(purchase);
         _dal.Commit();
     }
@@ -568,7 +568,9 @@ public class SmartTradeService : ISmartTradeService
             ShippingPrice = p.ShippingPrice,
             ExpectedDate = p.ExpectedDate,
             PurchaseDate = p.PurchaseDate,
-            Quantity = p.Quantity
+            Quantity = p.Quantity,
+            BillingAddress = p.BillingAddress,
+            DeliveryAddress = p.DeliveryAddress
         }).ToList();
     }
 

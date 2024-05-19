@@ -49,9 +49,9 @@ namespace SmartTrade.Services;
             _cache = new SmartTradeCache();
         }
 
-        public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity, int estimatedDays)
+        public async Task BuyItemAsync(PostDTO post, OfferDTO offer, int quantity, int estimatedDays, Address deliveryAddress, Address billingAddress)
         {
-            PurchaseDTO purchase = new PurchaseDTO(offer.Price, offer.ShippingCost, quantity, offer.Product.Id, post.SellerID, post, offer, DateTime.Now, DateTime.Now.AddDays(estimatedDays));
+            PurchaseDTO purchase = new PurchaseDTO(offer.Price, offer.ShippingCost, quantity, offer.Product.Id, post.SellerID, post, offer, DateTime.Now, DateTime.Now.AddDays(estimatedDays), deliveryAddress, billingAddress);
              
             _cache.Purchases.Add(purchase);
             await _broker.UserClient.AddPurchaseAsync(purchase);

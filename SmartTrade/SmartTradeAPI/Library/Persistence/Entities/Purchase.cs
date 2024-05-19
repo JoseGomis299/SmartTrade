@@ -17,5 +17,7 @@ namespace SmartTrade.Entities
         public virtual Offer? Offer { get; set;}
         public DateTime PurchaseDate { get; set; }
         public DateTime ExpectedDate { get; set; }
+        public virtual Address? DeliveryAddress { get; set; }
+        public virtual Address? BillingAddress { get; set; }
     }
 }

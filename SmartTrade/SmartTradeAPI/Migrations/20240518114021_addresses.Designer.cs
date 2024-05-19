@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartTrade.Persistence;
 
@@ -11,9 +12,11 @@ using SmartTrade.Persistence;
 namespace SmartTradeAPI.Migrations
 {
     [DbContext(typeof(SmartTradeContext))]
-    partial class SmartTradeContextModelSnapshot : ModelSnapshot
+    [Migration("20240518114021_addresses")]
+    partial class addresses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -479,37 +482,6 @@ namespace SmartTradeAPI.Migrations
                     b.ToTable("Purchases");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Rating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserEmail");
-
-                    b.ToTable("Rating");
-                });
-
             modelBuilder.Entity("SmartTrade.Entities.User", b =>
                 {
                     b.Property<string>("Email")
@@ -926,25 +898,6 @@ namespace SmartTradeAPI.Migrations
                     b.Navigation("PurchaseSeller");
                 });
 
-            modelBuilder.Entity("SmartTrade.Entities.Rating", b =>
-                {
-                    b.HasOne("SmartTrade.Entities.Post", "Post")
-                        .WithMany("Ratings")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SmartTrade.Entities.Consumer", "User")
-                        .WithMany()
-                        .HasForeignKey("UserEmail")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SmartTrade.Entities.Wish", b =>
                 {
                     b.HasOne("SmartTrade.Entities.Post", "Post")
@@ -983,8 +936,6 @@ namespace SmartTradeAPI.Migrations
             modelBuilder.Entity("SmartTrade.Entities.Post", b =>
                 {
                     b.Navigation("Offers");
-
-                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("SmartTrade.Entities.Product", b =>
