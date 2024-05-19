@@ -2,8 +2,8 @@
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
+using SmartTrade.Entities;
 using SmartTrade.Views;
-using SmartTradeAPI.Library.Persistence.DTOs;
 using SmartTradeDTOs;
 
 namespace SmartTrade.ViewModels;
@@ -21,7 +21,8 @@ public class PurchaseModel : ViewModelBase
     public DateTime PurchaseDate { get; set; }
     public DateTime EstimatedDate { get; set; }
     public int DeliveryStateInt { get; set; }
-    public string DeliveryAddress { get; set; }
+    public Address DeliveryAddress { get; set; }
+    public Address FacturationAddress { get; set; }
 
     public ICommand OpenProductCommand { get; }
 
@@ -41,6 +42,8 @@ public class PurchaseModel : ViewModelBase
         EstimatedDate = purchaseDTO.ExpectedDate;
         DeliveryState = "Delivery state: " + CalculateState();
         DeliveryStateInt = CalculateStateInt();
+        DeliveryAddress = purchaseDTO.DeliveryAddress;
+        FacturationAddress = purchaseDTO.BillingAddress;
     }
 
     private void OpenProduct()

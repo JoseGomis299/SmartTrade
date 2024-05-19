@@ -74,14 +74,7 @@ namespace SmartTrade.Controls
         {
             if (change.Property == ProductNameProperty)
             {
-                if (ProductName.IsNullOrEmpty())
-                {
-                    ProductNameTextBlock.IsVisible = false;
-                }
-                else
-                {
-                    ProductNameTextBlock.IsVisible = true;
-                }
+
                 if (ArrivedDate.IsNullOrEmpty())
                 {
                     ArrivedOnTextBlock.IsVisible = false;

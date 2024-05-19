@@ -15,10 +15,13 @@
 			<controls:ST_ProgessBar Margin="0 20"  Sections="Pending,Shipped,Delivered" SelectedSection="{Binding DeliveryState}"/>
 			<controls:ST_ProductSendView Margin="10 0" Command="{Binding OpenProductCommand}" Image="{Binding Image}" ArrivedDate="{Binding ArrivedDate}" Price="{Binding Price}" ShippingCost="{Binding ShippingCost}" ProductName="{Binding Name}"/>
 			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 50 0 20">Delivery address</TextBlock>
-			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding DeliveryAddress, Mode=OneWayToSource}" Margin="20 0 0 0"></TextBlock>
+			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding DeliveryStreet, Mode=OneWayToSource}" Margin="20 0 0 0"></TextBlock>
+			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding DeliveryDoor, Mode=OneWayToSource}" Margin="20 0 0 0"></TextBlock>
+			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding DeliveryMunicipality, Mode=OneWayToSource}" Margin="20 0 0 0"></TextBlock>
 			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 15 0 20">Facturation address:</TextBlock>
-			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding FacturationAddress, Mode=OneWayToSource}" Margin="20 0 0 0"></TextBlock>
-			<StackPanel Name="RatingPanel">
+			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding FacturationStreet, Mode=OneWayToSource}" Margin="20 0 0 0"></TextBlock>
+			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding FacturationDoor, Mode=OneWayToSource}" Margin="20 0 0 0"></TextBlock>
+			<TextBlock Classes="h3" HorizontalAlignment="Left" Text="{Binding FacturationMunicipality, Mode=OneWayToSource}" Margin="20 0 0 0"></TextBlock>			<StackPanel Name="RatingPanel">
                 <Border BorderThickness="1" BorderBrush="Black" Padding="4" Margin="20 30 0 0" Width="150" CornerRadius="50" HorizontalAlignment="Left">
                     <Grid ColumnDefinitions="* * * * *" MaxWidth="200" HorizontalAlignment="Left">
 				        <Button Grid.Column="0" BorderThickness="0" Width="30" Name="RatingStar1">
