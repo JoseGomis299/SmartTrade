@@ -17,7 +17,7 @@ namespace SmartTrade.ViewModels
         public string? ShippingCost { get; set; }
         public Bitmap? Image { get; set; }
         public ICommand OpenProductCommand { get; }
-        public string ArrivedDate { get; set; }
+        public string? ArrivedDate { get; set; }
         public Address DeliveryAddress { get; set; }
         public Address FacturationAddress { get; set; }
         public int? DeliveryState { get; set; }
