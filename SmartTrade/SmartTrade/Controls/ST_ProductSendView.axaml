@@ -11,12 +11,12 @@
 			</Border>
 		</Button>
 		<StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0" Grid.Column="1">
+			<TextBlock Name="ProductNameTextBlock" Classes="h2" Foreground="#A5DFB7" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ProductName, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 			<TextBlock Name="PriceTextBlock" Classes="h1" Foreground="#ff32c378" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Price, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 			<StackPanel Orientation="Horizontal" Spacing="5">
 				<TextBlock Name="ShippingCostTextBlock" Classes="h2" Foreground="#A5DFB7" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ShippingCost, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 				<Image Stretch="Uniform" Source="../Assets/Delivery.png" Width ="25" VerticalAlignment="Center"/>
 			</StackPanel>
-			<TextBlock Name="ProductNameTextBlock" Classes="h2" Foreground="#A5DFB7" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ProductName, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
 		</StackPanel>
 		<TextBlock Grid.Column="1" Classes="h2" Name="ArrivedOnTextBlock" VerticalAlignment="Center" FontSize="16" Margin="-40 60 0 0">Arrived on:</TextBlock>
 		<TextBlock Grid.Column="1" Classes="h2" VerticalAlignment="Center" Name="ArrivedOn" FontSize="16" Margin="-40 110 0 0" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ArrivedDate, Mode=OneWay}"></TextBlock>
