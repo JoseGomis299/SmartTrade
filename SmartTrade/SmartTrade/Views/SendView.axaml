@@ -14,11 +14,11 @@
 		<StackPanel Margin="10">
 			<controls:ST_ProgessBar Margin="0 20"  Sections="Pending Shipping,Shipped,Delivered" SelectedSection="{Binding DeliveryState}"/>
 			<controls:ST_ProductSendView ProductName="{Binding Name}" Command="{Binding OpenProductCommand}" Image="{Binding Image}" ArrivedDate="{Binding ArrivedDate}" Price="{Binding Price}" ShippingCost="{Binding ShippingCost}"/>
-			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 0 0 20">Delivery address</TextBlock>
-			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding DeliveryStreet}" Margin="20 0 0 0"></TextBlock>
+			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 0 0 8">Delivery address</TextBlock>
+			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding DeliveryStreet}" Margin="20 0 0 0">hola</TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding DeliveryDoor}" Margin="20 0 0 0"></TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding DeliveryMunicipality}" Margin="20 0 0 0"></TextBlock>
-			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 15 0 20">Facturation address:</TextBlock>
+			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 15 0 8">Facturation address:</TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding FacturationStreet}" Margin="20 0 0 0"></TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding FacturationDoor}" Margin="20 0 0 0"></TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding FacturationMunicipality}" Margin="20 0 0 0"></TextBlock>			<StackPanel Name="RatingPanel">
