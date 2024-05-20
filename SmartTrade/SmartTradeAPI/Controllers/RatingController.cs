@@ -11,10 +11,10 @@ public class RatingController : ControllerBase
     private readonly ISmartTradeService _service = new SmartTradeService();
 
     [HttpPost("CreateRating")]
-    public void CreateRating(int postId, int points, string descrption)
+    public void CreateRating([FromBody] RatingDTO rating)
     {
         string? loggedId = Request.Headers.FirstOrDefault(x => x.Key == "Logged").Value;
-        _service.AddRating(points, descrption ,loggedId, postId);
+        _service.AddRating(rating.Points, rating.Description ,loggedId, rating.PostId);
     }
 
     [HttpDelete("DeleteRating")]

@@ -538,7 +538,25 @@ public class SmartTradeService : ISmartTradeService
         var offerDTO = purchaseDTO.Offer;
         var offer = _dal.GetById<Offer>(offerDTO.Id);
 
-        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, purchaseDTO.Quantity, seller, post, offer, purchaseDTO.PurchaseDate, purchaseDTO.ExpectedDate, purchaseDTO.DeliveryAddress, purchaseDTO.BillingAddress);
+        Address deliveryAddress = new Address(purchaseDTO.DeliveryAddress.Province, purchaseDTO.DeliveryAddress.Street, purchaseDTO.DeliveryAddress.City, purchaseDTO.DeliveryAddress.PostalCode, purchaseDTO.DeliveryAddress.Number, purchaseDTO.DeliveryAddress.Door);
+        Address billingAddress = new Address(purchaseDTO.BillingAddress.Province, purchaseDTO.BillingAddress.Street, purchaseDTO.BillingAddress.City, purchaseDTO.BillingAddress.PostalCode, purchaseDTO.BillingAddress.Number, purchaseDTO.BillingAddress.Door);
+
+        Address? deliveryAddressDB = _dal.GetAll<Address>().AsQueryable().FirstOrDefault(x => x.Id == purchaseDTO.DeliveryAddress.Id);
+        Address? billingAddressDB = _dal.GetAll<Address>().AsQueryable().FirstOrDefault(x => x.Id == purchaseDTO.BillingAddress.Id);
+
+        if (deliveryAddressDB != null)
+        {
+            deliveryAddress = deliveryAddressDB;
+        }
+        else _dal.Insert<Address>(deliveryAddress);
+
+        if (billingAddressDB != null)
+        {
+            billingAddress = billingAddressDB;
+        }
+        else _dal.Insert<Address>(billingAddress);
+        
+        Purchase purchase = new Purchase(product, purchaseDTO.Price, purchaseDTO.ShippingPrice, purchaseDTO.Quantity, seller, post, offer, purchaseDTO.PurchaseDate, purchaseDTO.ExpectedDate, deliveryAddress,billingAddress);
         logged.AddPurchases(purchase);
         _dal.Commit();
     }
@@ -684,6 +702,16 @@ public class SmartTradeService : ISmartTradeService
     {
         var post = _dal.GetById<Post>(postId);
         var user = _dal.GetById<Consumer>(consumerId);
+
+        Rating? ratingBd = _dal.GetWhere<Rating>(x => x.Post.Id == postId && x.User.Email == consumerId).FirstOrDefault();
+        if (ratingBd != null)
+        {
+            ratingBd.Points = points;
+            ratingBd.Description = description;
+            _dal.Commit();
+            return;
+        }
+
         var rating = new Rating(points, description, user, post);
         post.AddRating(rating);
         _dal.Commit();
@@ -696,7 +724,7 @@ public class SmartTradeService : ISmartTradeService
             Id = x.Id,
             Points = x.Points,
             Description = x.Description,
-            Post = new SimplePostDTO(new PostDTO(x.Post)),
+            PostId = x.Post.Id,
             UserId = x.User.Email
         }).ToList();
     }

@@ -420,7 +420,7 @@ namespace SmartTrade.Services;
 
         public async Task CreateRatingAsync(PostDTO post, int points, string description)
         {
-            await _broker.RatingClient.CreateRatingAsync((int)post.Id, points, description);
+            await _broker.RatingClient.CreateRatingAsync(new RatingDTO(post, Logged.Email, points, description));
         }
 
         public async Task DeleteRatingAsync(int ratingId)

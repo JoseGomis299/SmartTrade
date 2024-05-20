@@ -9,9 +9,9 @@ public class RatingClient : ApiClient
 {
     public RatingClient(SmartTradeBroker broker) : base(broker, "Rating") { }
 
-    public async Task<int> CreateRatingAsync(int postId, int points, string description)
+    public async Task<int> CreateRatingAsync(RatingDTO ratingDTO)
     {
-        return int.Parse(await PerformApiInstructionAsync($"CreateRating?id={postId}?points={points}?description={description}", ApiInstruction.Post, new()));
+        return int.Parse(await PerformApiInstructionAsync($"CreateRating", ApiInstruction.Post, ratingDTO));
     }
 
     public async Task DeleteRatingAsync(int ratingId)

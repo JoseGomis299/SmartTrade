@@ -59,14 +59,7 @@ public class PurchaseModel : ViewModelBase
 
         int daysSincePurchase = DateTime.Now.DayOfYear - PurchaseDate.DayOfYear;
         
-        if (daysSincePurchase <= 2)
-        {
-            return "Pending Shipping";
-        }
-        else
-        {
-            return "Shipped";
-        }
+        return daysSincePurchase <= 2 ? "Pending Shipping" : "Shipped";
     }
 
     public int CalculateStateInt()
@@ -75,13 +68,6 @@ public class PurchaseModel : ViewModelBase
 
         int daysSincePurchase = DateTime.Now.DayOfYear - PurchaseDate.DayOfYear;
 
-        if (daysSincePurchase <= 2)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
+        return daysSincePurchase <= 2 ? 0 : 1;
     }
 }
