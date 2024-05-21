@@ -12,7 +12,7 @@
 	  <CheckBox HorizontalAlignment="Center" Content="Save for next purchases" Margin="0 0  0 10" IsChecked="True" Name="SaveCheckBox"/>
 	  <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
           <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="10 0 15 0" Classes="White" Name="CancelButton">Cancel</Button>
-          <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="0 0 0 0" Classes="White" Name="AcceptButton">Accept</Button>
+          <Button HorizontalAlignment="Center" Height="40" Width="100" Margin="0 0 0 0" Classes="Green" Name="AcceptButton">Accept</Button>
       </StackPanel>
   </StackPanel>
 </UserControl>

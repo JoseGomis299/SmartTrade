@@ -57,7 +57,7 @@ namespace SmartTrade.Views
                 return;
             }
 
-            await ProductView.AddGift(GiftListNames[ComboBoxGiftList.SelectedIndex]);
+            await ProductView.AddGiftPopup(GiftListNames[ComboBoxGiftList.SelectedIndex]);
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
         private void CancelButton_Click(object? sender, RoutedEventArgs e)

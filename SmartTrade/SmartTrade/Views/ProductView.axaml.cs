@@ -144,9 +144,15 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), 1, 1, out _, true);
         }
 
-        public async Task AddGift(string giftListName)
+        private async Task AddGift(string giftListName)
         {
             await _model.AddGiftAsync(giftListName);
+        }
+
+        public async Task AddGiftPopup(string giftListName)
+        {
+            await this.AddGift(giftListName);
+            SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(GiftsView), 1, 1, out _, true);
         }
 
         private void AddToGiftsButtonOnClick(object? sender, RoutedEventArgs e)
