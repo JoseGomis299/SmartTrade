@@ -35,6 +35,7 @@ public class PostModificationModel : ViewModelBase
     public string? EcologicPrint { get; set; }
     public string? ReducePrint { get; set; }
     public ObservableCollection<Stock> Stocks { get; } = new ObservableCollection<Stock>();
+    public UserDTO Logged => Service.Logged;
 
     private Category _category;
 

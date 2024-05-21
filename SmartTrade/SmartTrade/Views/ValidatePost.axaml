@@ -44,10 +44,10 @@
 
 									<!--<Button HorizontalAlignment="Right" Margin="5 0" Foreground="#0A413E" Command="{Binding RemoveFromStock}">X</Button>-->
 
-									<Grid ColumnDefinitions="Auto Auto"  RowDefinitions="* *" HorizontalAlignment="Center">
-										<controls:ST_TextBox Margin="-60 0 10 10" IsEnabled="False" Grid.Row="0" Grid.Column="0" LabelText="Stock" Width="200" TextWidth="10" TextHeight="10" OnlyPositiveInt="True" Text="{Binding StockQuantity, Mode=OneWay}" WaterMark="100"/>
-										<controls:ST_TextBox Margin="-50 0 0 10" IsEnabled="False" Grid.Row="0" Grid.Column="1" LabelText="Price (€)"  Width="200" TextWidth="10" TextHeight="10" OnlyPositiveDouble="True" Text="{Binding Price, Mode=OneWay}" WaterMark="10"/>
-										<controls:ST_TextBox Margin="-75 0 0 10" IsEnabled="False" Grid.Row="1" Grid.Column="1" LabelText="Shipping cost (€)" TextWidth="10" TextHeight="10" OnlyPositiveDouble="True" Text="{Binding ShippingCost, Mode=OneWay}" LabelWidth="150" WaterMark="2"/>
+									<Grid ColumnDefinitions="Auto Auto"  RowDefinitions="* *" HorizontalAlignment="Center" Margin="0 10 0 0">
+										<controls:ST_TextBox Margin="-60 0 10 10" IsEnabled="{Binding EnableEditing}" Grid.Row="0" Grid.Column="0" LabelText="Stock" Width="200" TextWidth="10" TextHeight="10" OnlyPositiveInt="True" Text="{Binding StockQuantity, Mode=OneWay}" WaterMark="100"/>
+										<controls:ST_TextBox Margin="-50 0 0 10" IsEnabled="{Binding EnableEditing}" Grid.Row="0" Grid.Column="1" LabelText="Price (€)"  Width="200" TextWidth="10" TextHeight="10" OnlyPositiveDouble="True" Text="{Binding Price, Mode=OneWay}" WaterMark="10"/>
+										<controls:ST_TextBox Margin="-75 0 0 10" IsEnabled="{Binding EnableEditing}" Grid.Row="1" Grid.Column="1" LabelText="Shipping cost (€)" TextWidth="10" TextHeight="10" OnlyPositiveDouble="True" Text="{Binding ShippingCost, Mode=OneWay}" LabelWidth="150" WaterMark="2"/>
 									</Grid>
 
 									<Button HorizontalAlignment="Center" Height="40" Width="200" Classes="White" Command="{Binding AddImagesCommand}">+ Add Image</Button>
