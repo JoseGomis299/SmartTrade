@@ -83,7 +83,7 @@ namespace SmartTrade.Views
 
         //        _model.OriginalSearchedProducts.Clear();
         //        _model.SearchedProducts.Clear();
-        //        _model.LoadProductsAsync().ForEach(post =>
+        //        _model.LoadProducts().ForEach(post =>
         //        {
         //            _model.OriginalSearchedProducts.Add(new ProductModel(post));
         //            _model.SearchedProducts.Add(new ProductModel(post));

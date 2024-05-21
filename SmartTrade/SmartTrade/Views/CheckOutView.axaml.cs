@@ -12,9 +12,9 @@ namespace SmartTrade.Views
             InitializeComponent();
         }
 
-        public CheckOutView(Address selectedAddress, Address selectedBillingAddress, PaymentMethodModel bizum, PaymentMethodModel creditCard, PaymentMethodModel paypal)
+        public CheckOutView(CheckOutData data)
         {
-            DataContext = new CheckoutModel(selectedAddress, selectedBillingAddress, bizum, creditCard, paypal);
+            DataContext = new CheckoutModel(data);
             InitializeComponent();
 
             BackButton.Click += Back;

@@ -222,5 +222,11 @@ namespace SmartTrade.Services
             Notifications = getNotificationsAsync;
             EventBus.Publish("OnGiftsChanged");
         }
+
+        public void ClearPostCache()
+        {
+            _completePosts.Clear();
+            _simplePosts?.Clear();
+        }
     }
 }

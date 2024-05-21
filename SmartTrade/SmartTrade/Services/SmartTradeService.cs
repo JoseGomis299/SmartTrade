@@ -87,12 +87,15 @@ namespace SmartTrade.Services;
             }
             
             await LoadCartItems();
-            _cache.Purchases = await GetPurchasesAsync() ?? new List<PurchaseDTO>();
-            _cache.Notifications = await GetNotificationsAsync() ?? new List<NotificationDTO>();
-            _cache.Alerts = await GetAlertsAsync() ?? new List<AlertDTO>();
-            _cache.Wishes = await GetWishAsync() ?? new List<WishDTO>();
-            _cache.GiftLists = await LoadGiftListsAsync() ?? new List<GiftListDTO>();
-            
+            if (LoggedType == UserType.Consumer)
+            {
+                _cache.Purchases = await GetPurchasesAsync() ?? new List<PurchaseDTO>();
+                _cache.Notifications = await GetNotificationsAsync() ?? new List<NotificationDTO>();
+                _cache.Alerts = await GetAlertsAsync() ?? new List<AlertDTO>();
+                _cache.Wishes = await GetWishAsync() ?? new List<WishDTO>();
+                _cache.GiftLists = await LoadGiftListsAsync() ?? new List<GiftListDTO>();
+            }
+
             LoadingScreenManager.Instance.StopLoading(loadingScreen);
         }
 
@@ -437,4 +440,9 @@ namespace SmartTrade.Services;
 
 
     #endregion
-}
+
+        public void ClearPostCache()
+        {
+            _cache.ClearPostCache();
+        }
+    }

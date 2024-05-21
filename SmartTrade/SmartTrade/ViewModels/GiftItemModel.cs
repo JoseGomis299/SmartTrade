@@ -16,6 +16,7 @@ public class GiftItemModel : ViewModelBase
     public string? GiftListName { get; set; }
     public string? Price { get; set; }
     public string? ShippingCost { get; set; }
+    public string? EstimatedTime { get; }
     public Bitmap? Image { get; set; }
     public PostDTO Post { get; set; }
     public OfferDTO Offer { get; set; }
@@ -64,7 +65,7 @@ public class GiftItemModel : ViewModelBase
     {
         var view = new ProductView(Post);
         SmartTradeNavigationManager.Instance.NavigateTo(view);
-        ((ProductViewModel)view.DataContext).LoadProductsAsync();
+        ((ProductViewModel)view.DataContext).LoadProducts();
     }
 
     private async Task AddGiftAsync(int previousQuantity, int quantity)

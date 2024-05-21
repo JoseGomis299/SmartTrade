@@ -81,7 +81,8 @@ namespace SmartTrade.Views
         }
 
         private void SetStars()
-        {
+        {   
+            if(_post.AveragePoints == null) return;
             switch (_post.AveragePoints)
             {
                 case 0:
@@ -116,9 +117,13 @@ namespace SmartTrade.Views
 
         protected override void Refresh()
         {
+            if (_model.Logged is null || _model.Logged.IsConsumer)
+            {
+                SetAlertImage();
+                SetWishListImage();
+            }
+
             SetToggleVisibility();
-            SetAlertImage();
-            SetWishListImageAsync();
             SetEcoImage();
             SetImageNavigationButtonsVisibility();
         }
@@ -181,9 +186,15 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(ShoppingCartView), 1, 1, out _, true);
         }
 
-        public async Task AddGift(string giftListName)
+        private async Task AddGift(string giftListName)
         {
             await _model.AddGiftAsync(giftListName);
+        }
+
+        public async Task AddGiftPopup(string giftListName)
+        {
+            await this.AddGift(giftListName);
+            SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(GiftsView), 1, 1, out _, true);
         }
 
         private void AddToGiftsButtonOnClick(object? sender, RoutedEventArgs e)
@@ -244,7 +255,7 @@ namespace SmartTrade.Views
             }
         }
 
-        private void SetWishListImageAsync()
+        private void SetWishListImage()
         {
             if (_model.Logged == null || !(_model.IsPostInWishes(_post)))
             {
@@ -292,6 +303,7 @@ namespace SmartTrade.Views
             if (_model.Logged == null || _model.Logged.GetUserType() != UserType.Consumer)
             {
                 AlertToggle.IsVisible = false;
+                WishListToggle.IsVisible = false;
             }
         }
     }

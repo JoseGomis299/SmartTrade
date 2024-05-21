@@ -18,6 +18,7 @@ public class Stock
     public string? StockQuantity { get; set; }
     public string? Price { get; set; }
     public string? ShippingCost { get; set; }
+    public bool EnableEditing { get; set; }
     public ObservableCollection<ImageSource> Images { get; set; } = new();
     public ObservableCollection<CategoryAttribute> CategoryAttributes { get; set; } = new();
 
@@ -41,7 +42,7 @@ public class Stock
         StockQuantity = offer.Stock.ToString();
         Price = offer.Price.ToString();
         ShippingCost = offer.ShippingCost.ToString();
-
+        EnableEditing = _model.Logged.IsSeller;
 
         foreach (var attribute in (model.Post.Category.GetAttributes()))
         {
@@ -74,6 +75,7 @@ public class Stock
         StockQuantity = "0";
         Price = "0";
         ShippingCost = "0";
+        EnableEditing = true;
 
         foreach (var attribute in category.GetAttributes())
         {
@@ -94,6 +96,7 @@ public class Stock
         StockQuantity = other.StockQuantity;
         Price = other.Price;
         ShippingCost = other.ShippingCost;
+        EnableEditing = other.EnableEditing;
 
         Images.Clear();
         foreach (var image in other.Images)

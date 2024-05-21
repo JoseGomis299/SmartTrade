@@ -7,9 +7,7 @@ namespace SmartTrade.Views
     public partial class SelectPaymentView : UserControl
     {
         private SelectPaymentMethodModel _model;
-        private Address _selectedAddress;
-        private Address _selectedBillingAddress;
-
+        private CheckOutData _checkOutData;
         public SelectPaymentView()
         {
             DataContext = _model = new SelectPaymentMethodModel();
@@ -22,16 +20,9 @@ namespace SmartTrade.Views
             BackButton.Click += Back;
         }
 
-        public SelectPaymentView(Address selectedAddress, Address selectedBillingAddress) : this()
-        {
-            _selectedAddress = selectedAddress;
-            _selectedBillingAddress = selectedBillingAddress;
-        }
-
         public void SelectAddresses(Address selectedAddress, Address selectedBillingAddress)
         {
-            _selectedAddress = selectedAddress;
-            _selectedBillingAddress = selectedBillingAddress;
+            _checkOutData = new CheckOutData(selectedAddress, selectedBillingAddress);
         }
 
         private void AddBizum(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -76,12 +67,27 @@ namespace SmartTrade.Views
             }
             
             SelectAPaymentMethodText.IsVisible = false;
-            SmartTradeNavigationManager.Instance.NavigateTo(new CheckOutView(_selectedAddress, _selectedBillingAddress, _model.SelectedBizum, _model.SelectedCreditCard, _model.SelectedPaypal));
+
+            _checkOutData.PaymentMethod = _model.SelectedPaymentMethod;
+            SmartTradeNavigationManager.Instance.NavigateTo(new CheckOutView(_checkOutData));
         }
 
         private void Back(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             SmartTradeNavigationManager.Instance.NavigateTo(typeof(SelectAddressView));
+        }
+    }
+
+    public class CheckOutData
+    {
+        public Address DeliveryAddress { get; set; }
+        public Address BillingAddress { get; set; }
+        public PaymentMethodModel PaymentMethod { get; set; }
+
+        public CheckOutData(Address deliveryAddress, Address billingAddress)
+        {
+            DeliveryAddress = deliveryAddress;
+            BillingAddress = billingAddress;
         }
     }
 }
