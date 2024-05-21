@@ -51,25 +51,25 @@ public class CheckoutModel : ViewModelBase
         this.RaisePropertyChanged(nameof(CartProducts));
     }
 
-    public CheckoutModel(Address selectedAddress, Address selectedBillingAddress, PaymentMethodModel bizum, PaymentMethodModel creditCard, PaymentMethodModel paypal) : this()
+    public CheckoutModel(CheckOutData data) : this()
     {
-        _deliveryAddress = selectedAddress;
-        _billingAddress = selectedBillingAddress;
+        _deliveryAddress = data.DeliveryAddress;
+        _billingAddress = data.BillingAddress;
 
-        DeliveryStreetAndNumber = selectedAddress.Street + ", " + selectedAddress.Number;
-        DeliveryDoor = "Door " + selectedAddress.Door;
-        DeliveryProvinceAndCity = selectedAddress.Province + ", " + selectedAddress.City + " " + selectedAddress.PostalCode;
+        DeliveryStreetAndNumber = data.DeliveryAddress.Street + ", " + data.DeliveryAddress.Number;
+        DeliveryDoor = "Door " + data.DeliveryAddress.Door;
+        DeliveryProvinceAndCity = data.DeliveryAddress.Province + ", " + data.DeliveryAddress.City + " " + data.DeliveryAddress.PostalCode;
 
-        BillingStreetAndNumber = selectedBillingAddress.Street + ", " + selectedBillingAddress.Number;
-        BillingDoor = "Door " + selectedBillingAddress.Door;
-        BillingProvinceAndCity = selectedBillingAddress.Province + ", " + selectedBillingAddress.City + " " + selectedBillingAddress.PostalCode;
+        BillingStreetAndNumber = data.BillingAddress.Street + ", " + data.BillingAddress.Number;
+        BillingDoor = "Door " + data.BillingAddress.Door;
+        BillingProvinceAndCity = data.BillingAddress.Province + ", " + data.BillingAddress.City + " " + data.BillingAddress.PostalCode;
 
-        PaymentMethodType = creditCard != null ? "Credit Card" : paypal != null ? "Paypal" : bizum != null ? "Bizum" : "";
+        PaymentMethodType =data.PaymentMethod.Type;
         PaymentMethod = PaymentMethodType switch
         {
-            "Credit Card" => $"{creditCard.Name}\n{creditCard.Number}",
-            "Paypal" => $"{paypal.Name}",
-            "Bizum" => $"{bizum.Number}",
+            "Credit Card" => $"{data.PaymentMethod.Name}\n{data.PaymentMethod.Number}",
+            "Paypal" => $"{data.PaymentMethod.Name}",
+            "Bizum" => $"{data.PaymentMethod.Number}",
         };
 
         Calculate();

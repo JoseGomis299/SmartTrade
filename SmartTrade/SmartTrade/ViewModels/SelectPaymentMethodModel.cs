@@ -48,6 +48,25 @@ public class SelectPaymentMethodModel : ViewModelBase
         }
     }
 
+    public PaymentMethodModel SelectedPaymentMethod
+    {
+        get
+        {
+            if (SelectedCreditCard != null)
+            {
+                return SelectedCreditCard;
+            }
+            else if (SelectedPaypal != null)
+            {
+                return SelectedPaypal;
+            }
+            else
+            {
+                return SelectedBizum;
+            }
+        }
+    }
+
     private PaymentMethodModel? _selectedCreditCard;
     private PaymentMethodModel? _selectedPaypal;
     private PaymentMethodModel? _selectedBizum;
@@ -145,8 +164,9 @@ public class SelectPaymentMethodModel : ViewModelBase
 
 public class PaymentMethodModel : ReactiveObject
 {
-    public string Name { get; set; }
-    public string Number { get; set; }
+    public string Name { get; private set; }
+    public string Number { get; private set; }
+    public string Type { get; private set; }
 
     private bool _isChecked;
 
@@ -166,12 +186,14 @@ public class PaymentMethodModel : ReactiveObject
     {
         Name = creditCard.CardHolder;
         Number = creditCard.CardNumber;
+        Type = "Credit Card";
     }
 
     public PaymentMethodModel(CreditCardInfo creditCard, SelectPaymentMethodModel selectPaymentMethodModel)
     {
         Name = creditCard.CardHolder;
         Number = creditCard.CardNumber;
+        Type = "Credit Card";
 
         ChangePaymentMethodCommand = ReactiveCommand.Create(() =>
         {
@@ -186,12 +208,14 @@ public class PaymentMethodModel : ReactiveObject
     {
         Name = paypal.Email;
         Number = "";
+        Type = "Paypal";
     }
 
     public PaymentMethodModel(PayPalInfo paypal, SelectPaymentMethodModel selectPaymentMethodModel)
     {
         Name = paypal.Email;
         Number = "";
+        Type = "Paypal";
 
         ChangePaymentMethodCommand = ReactiveCommand.Create(() =>
         {
@@ -206,12 +230,14 @@ public class PaymentMethodModel : ReactiveObject
     {
         Name = "";
         Number = bizum.TelephonNumber;
+        Type = "Bizum";
     }
 
     public PaymentMethodModel(BizumInfo bizum, SelectPaymentMethodModel selectPaymentMethodModel)
     {
         Name = "";
         Number = bizum.TelephonNumber;
+        Type = "Bizum";
 
         ChangePaymentMethodCommand = ReactiveCommand.Create(() =>
         {
