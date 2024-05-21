@@ -8,9 +8,9 @@ using SmartTrade.ViewModels;
 
 namespace SmartTrade.Controls;
 
-public partial class ST_WrapPanel : UserControl
+public partial class ST_WrapPanelEdit : UserControl
 {
-    public ST_WrapPanel()
+    public ST_WrapPanelEdit()
     {
         LeftProducts = new ObservableCollection<ProductModel>();
         RightProducts = new ObservableCollection<ProductModel>();

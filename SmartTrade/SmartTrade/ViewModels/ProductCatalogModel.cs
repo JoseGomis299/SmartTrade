@@ -37,7 +37,7 @@ namespace SmartTrade.ViewModels
                 {
                     RecommendedProducts.Add(new ProductModel(post));
                 }
-                else if (Service.Logged != null && await IsRelated(post))
+                else if (Service.Logged != null && IsRelated(post))
                 { 
                     RelatedProducts.Add(new ProductModel(post));
                 }
@@ -50,13 +50,13 @@ namespace SmartTrade.ViewModels
             return int.TryParse(post.EcologicPrint, out int ecologicPrint) && ecologicPrint < 10;
         }
 
-        public async Task<bool> IsRelated(SimplePostDTO post)
+        public bool IsRelated(SimplePostDTO post)
         {
             Category categoryPost = post.Category;
             string productNamePost = post.ProductName;
             string sellerIdPost = post.SellerID;
 
-            List<PurchaseDTO> purchases = await Service.GetPurchasesAsync();
+            List<PurchaseDTO> purchases = Service.Purchases;
             string titlePost = post.Title;
 
             if (purchases == null || purchases.Count == 0) { return false; }
@@ -107,9 +107,9 @@ namespace SmartTrade.ViewModels
             return score;
         }
 
-        public async void UpdateProducts(IEnumerable<ProductModel> list, int? category)
+        public void UpdateProducts(IEnumerable<ProductModel> list, int? category)
         {
-            if(category != null) Filtering((Category)category);
+            if(category != null) list = Filtering((Category)category);
             
             OtherProducts.Clear();
             RecommendedProducts.Clear();
@@ -123,7 +123,7 @@ namespace SmartTrade.ViewModels
                 {
                     RecommendedProducts.Add(product);
                 }
-                else if (await IsRelated(post))
+                else if (IsRelated(post))
                 { 
                     RelatedProducts.Add(product);
                 }
@@ -136,7 +136,7 @@ namespace SmartTrade.ViewModels
             UpdateProducts(OriginalProducts, category);
         }
 
-        private void Filtering(Category category)
+        private List<ProductModel> Filtering(Category category)
         {
             List<ProductModel> FilteredProducts = new List<ProductModel>();
             foreach (var product in OriginalProducts)
@@ -146,6 +146,8 @@ namespace SmartTrade.ViewModels
                     FilteredProducts.Add(product);
                 }
             }
+
+            return FilteredProducts;
         }
     }
 

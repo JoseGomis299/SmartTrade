@@ -24,7 +24,7 @@
 				<Button Width="30" Content="+" Classes="White" Name="AddButton"/>
 			</StackPanel>
             <StackPanel Margin="0 20 0 0">
-                <TextBlock Classes="h2" Text="You will receive it in:" TextWrapping="Wrap" Width="215"/>
+                <TextBlock Classes="h2" Text="You will receive it in:" TextWrapping="Wrap" Width="215" Name="ReceiveTextBlock"/>
                 <TextBlock Classes="h2" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=EstimatedTime, Mode=OneWay}" TextWrapping="Wrap"  Width="215"/>
 			</StackPanel>
 		</StackPanel>

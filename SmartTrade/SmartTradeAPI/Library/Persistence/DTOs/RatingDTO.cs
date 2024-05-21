@@ -8,7 +8,7 @@ public class RatingDTO
     public int Points { get; set; }
     public string Description { get; set; }
     public string UserId { get; set; }
-    public SimplePostDTO Post { get; set; }
+    public int PostId { get; set; }
 
     public RatingDTO()
     {
@@ -21,6 +21,6 @@ public class RatingDTO
         Points = rating.Points;
         Description = rating.Description;
         UserId = rating.User.Email;
-        Post = new SimplePostDTO(new PostDTO(rating.Post));
+        PostId = rating.Post.Id;
     }
 }

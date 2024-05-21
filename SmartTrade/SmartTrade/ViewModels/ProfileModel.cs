@@ -26,10 +26,13 @@ public class ProfileModel : ViewModelBase
     {
         ProfileData = new ObservableCollection<string>();
         SetProfileData(Service.Logged);
-        IsParentalControlEnabled = Service.IsParentalControlEnabled;
 
-        UpdatePaymentMethods();
-        UpdateAddresses();
+        if (Service.LoggedType == UserType.Consumer)
+        {
+            IsParentalControlEnabled = Service.IsParentalControlEnabled;
+            UpdatePaymentMethods();
+            UpdateAddresses();
+        }
     }
     public void UpdateParentalControlStatus()
     {

@@ -18,16 +18,6 @@ namespace SmartTrade.Views
             LogoutButton.Click += LogOut;
             WhisListButton.Click += WishListButton_Click;
 
-            if (_model.LoggedType == UserType.Seller)
-            {
-                AddPostButton.IsVisible = true;
-                AddPostButton.Click += (sender, args) =>
-                {
-                    SmartTradeNavigationManager.Instance.NavigateTo(new RegisterPost());
-                };
-            }
-            else { AddPostButton.IsVisible = false; }
-
             SetFieldsVisibility();
            
             ParentalToggleButton.IsChecked = _model.IsParentalControlEnabled;
@@ -119,7 +109,7 @@ namespace SmartTrade.Views
         {
             if (_model.LoggedType != UserType.Consumer)
             {
-                WhisListButton.IsVisible = false;
+                ParentalToggleButton.IsVisible = false;
             }
         }
 

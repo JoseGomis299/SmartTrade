@@ -49,12 +49,12 @@ namespace SmartTrade.ViewModels
             DeliveryState = purchase.DeliveryStateInt;
             DeliveryAddress = purchase.DeliveryAddress;
             FacturationAddress =purchase.FacturationAddress;
-            DeliveryStreet = DeliveryAddress.Street + DeliveryAddress.Number + "Street";
-            DeliveryDoor = "Number" + DeliveryAddress.Door;
+            DeliveryStreet = DeliveryAddress.Street + DeliveryAddress.Number + " Street";
+            DeliveryDoor = "Number " + DeliveryAddress.Door;
             DeliveryMunicipality = DeliveryAddress.City + "," + DeliveryAddress.PostalCode;
-            FacturationStreet = FacturationAddress.Street + FacturationAddress.Number + "Street";
-            FacturationDoor = "Number" + FacturationAddress.Door;
-            FacturationMunicipality = FacturationAddress.City + "," + FacturationAddress.PostalCode;
+            FacturationStreet = FacturationAddress.Street + FacturationAddress.Number + " Street";
+            FacturationDoor = "Number " + FacturationAddress.Door;
+            FacturationMunicipality = FacturationAddress.City + ", " + FacturationAddress.PostalCode;
             if (DeliveryState == 2) ArrivedDate = purchase.EstimatedDate.ToString();
         }
 
@@ -62,7 +62,7 @@ namespace SmartTrade.ViewModels
         {
             var view = new ProductView(await Service.GetPostAsync((int)Post.Id));
             SmartTradeNavigationManager.Instance.NavigateTo(view);
-            ((ProductViewModel)view.DataContext).LoadProductsAsync();
+            ((ProductViewModel)view.DataContext).LoadProducts();
         }
     }
 }

@@ -84,4 +84,9 @@ public class MainViewModel : ViewModelBase
             return Service.Notifications.Count(x => !x.Visited);
         }
     }
+
+    public void ClearPostCache()
+    {
+        Service.ClearPostCache();
+    }
 }

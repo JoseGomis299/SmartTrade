@@ -19,6 +19,8 @@ public class PostDTO
     public List<OfferDTO> Offers { get; set; }
     public string? SellerCompanyName { get; set; }
     public List<RatingDTO> Ratings { get; set; }
+    public int? NumRatings { get; set; }
+    public int? AveragePoints { get; set; }
 
     public PostDTO()
     {
@@ -44,5 +46,20 @@ public class PostDTO
         SellerID = post.Seller.Email;
         Offers = post.Offers.Select(offer => new OfferDTO(offer)).ToList();
         SellerCompanyName = post.Seller.CompanyName;
+        NumRatings = Ratings.Count();
+        AveragePoints = GetAveragePoints();
+    }
+
+    private int GetAveragePoints()
+    {
+        int averagePoints = 0;
+        int aux = 0;
+        foreach (var rating in Ratings)
+        {
+            aux += rating.Points;
+        }
+
+        averagePoints = (int)(aux / NumRatings);
+        return averagePoints;
     }
 }

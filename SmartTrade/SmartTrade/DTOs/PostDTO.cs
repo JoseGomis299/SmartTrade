@@ -19,5 +19,7 @@ public class PostDTO
     public string? SellerID { get; set; }
     public List<OfferDTO> Offers { get; set; }
     public string? SellerCompanyName { get; set; }
-
+    public List<RatingDTO> Ratings { get; set; }
+    public int? NumRatings { get; set; }
+    public int? AveragePoints { get; set; }
 }

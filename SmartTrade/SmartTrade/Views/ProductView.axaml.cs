@@ -21,6 +21,7 @@ namespace SmartTrade.Views
         private PostDTO _post;
         private Bitmap? _isEco;
         private Bitmap? _isNotEco;
+        private Bitmap? _starSelected; 
 
         private bool _isAlertActivated;
         private bool _isWishActivated;
@@ -43,6 +44,7 @@ namespace SmartTrade.Views
             _isEco = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/IconoSostenible.png")));
             _isNotEco = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/IconoNOSostenible.png")));
             _wishListDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/WishListHeart.png")));
+            _starSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Star.png")));
             AlertImage.Source = _alertDeactivated;
             WishListImage.Source = _wishListDeactivated;
             EcoImage.Source = _isNotEco;
@@ -74,14 +76,54 @@ namespace SmartTrade.Views
             WishListToggle.IsVisible = _model.Logged != null;
             SellerPanel.IsVisible = _model.Logged != null && _model.Logged.GetUserType() == UserType.Seller;
             AddToCartPanel.IsVisible = _model.Logged == null || _model.Logged.GetUserType() != UserType.Seller;
-            AddToGiftsButton.IsVisible = _model.Logged != null && _model.Logged.GetUserType() != UserType.Seller; ;
+            AddToGiftsButton.IsVisible = _model.Logged != null && _model.Logged.GetUserType() != UserType.Seller;
+            SetStars();
+        }
+
+        private void SetStars()
+        {   
+            if(_post.AveragePoints == null) return;
+            switch (_post.AveragePoints)
+            {
+                case 0:
+                    break;
+                case 1:
+                    Star1.Source = _starSelected;
+                    break;
+                case 2:
+                    Star1.Source = _starSelected;
+                    Star2.Source = _starSelected;
+                    break;
+                case 3:
+                    Star1.Source = _starSelected;
+                    Star2.Source = _starSelected;
+                    Star3.Source = _starSelected;
+                    break;
+                case 4:
+                    Star1.Source = _starSelected;
+                    Star2.Source = _starSelected;
+                    Star3.Source = _starSelected;
+                    Star4.Source = _starSelected;
+                    break;
+                case 5:
+                    Star1.Source = _starSelected;
+                    Star2.Source = _starSelected;
+                    Star3.Source = _starSelected;
+                    Star4.Source = _starSelected;
+                    Star5.Source = _starSelected;
+                    break;
+            }
         }
 
         protected override void Refresh()
         {
+            if (_model.Logged is null || _model.Logged.IsConsumer)
+            {
+                SetAlertImage();
+                SetWishListImage();
+            }
+
             SetToggleVisibility();
-            SetAlertImage();
-            SetWishListImageAsync();
             SetEcoImage();
             SetImageNavigationButtonsVisibility();
         }
@@ -213,7 +255,7 @@ namespace SmartTrade.Views
             }
         }
 
-        private void SetWishListImageAsync()
+        private void SetWishListImage()
         {
             if (_model.Logged == null || !(_model.IsPostInWishes(_post)))
             {
@@ -261,6 +303,7 @@ namespace SmartTrade.Views
             if (_model.Logged == null || _model.Logged.GetUserType() != UserType.Consumer)
             {
                 AlertToggle.IsVisible = false;
+                WishListToggle.IsVisible = false;
             }
         }
     }

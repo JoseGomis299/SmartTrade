@@ -31,7 +31,7 @@ namespace SmartTrade.Views
 
         private void Next(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            _nextView ??= new SelectPaymentView(_model.SelectedAddress, _model.SelectedBillingAddress);
+            _nextView ??= new SelectPaymentView();
             _nextView.SelectAddresses(_model.SelectedAddress, _model.SelectedBillingAddress);
 
             SmartTradeNavigationManager.Instance.NavigateTo(_nextView);
