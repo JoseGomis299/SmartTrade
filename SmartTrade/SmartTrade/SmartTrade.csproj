@@ -43,6 +43,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\ST_WrapPanelEdit.axaml.cs">
+      <DependentUpon>ST_WrapPanelEdit.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\PopUps\PurchaseCompletedPopup.axaml.cs">
       <DependentUpon>PurchaseCompletedPopup.axaml</DependentUpon>
     </Compile>

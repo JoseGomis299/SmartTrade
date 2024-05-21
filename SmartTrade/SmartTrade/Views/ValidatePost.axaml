@@ -42,7 +42,7 @@
 							<Border BorderThickness="0 0 0 1" BorderBrush="#32C378">
 								<StackPanel HorizontalAlignment="Stretch">
 
-									<Button HorizontalAlignment="Right" Margin="5 0" Foreground="#0A413E" Command="{Binding RemoveFromStock}">X</Button>
+									<!--<Button HorizontalAlignment="Right" Margin="5 0" Foreground="#0A413E" Command="{Binding RemoveFromStock}">X</Button>-->
 
 									<Grid ColumnDefinitions="Auto Auto"  RowDefinitions="* *" HorizontalAlignment="Center">
 										<controls:ST_TextBox Margin="-60 0 10 10" IsEnabled="False" Grid.Row="0" Grid.Column="0" LabelText="Stock" Width="200" TextWidth="10" TextHeight="10" OnlyPositiveInt="True" Text="{Binding StockQuantity, Mode=OneWay}" WaterMark="100"/>

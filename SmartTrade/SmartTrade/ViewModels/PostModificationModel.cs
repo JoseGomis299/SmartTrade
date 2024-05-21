@@ -122,6 +122,9 @@ public class PostModificationModel : ViewModelBase
             Offers = new List<OfferDTO>(),
             SellerCompanyName = post != null? post.SellerCompanyName : "",
             Id = post?.Id,
+            Ratings = post?.Ratings ?? new List<RatingDTO>(),
+            NumRatings = post?.NumRatings ?? 0,
+            AveragePoints = post?.AveragePoints ?? 0
         };
 
         for (int i = 0; i < stocks.Count; i++)

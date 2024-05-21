@@ -16,6 +16,7 @@ public class GiftItemModel : ViewModelBase
     public string? GiftListName { get; set; }
     public string? Price { get; set; }
     public string? ShippingCost { get; set; }
+    public string? EstimatedTime { get; }
     public Bitmap? Image { get; set; }
     public PostDTO Post { get; set; }
     public OfferDTO Offer { get; set; }

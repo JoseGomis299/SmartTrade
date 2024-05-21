@@ -47,6 +47,15 @@ namespace SmartTrade.Controls
                     SubtractButton.IsEnabled = false;
                 }
             }
+
+            if (EstimatedTime.IsNullOrEmpty())
+            {
+                ReceiveTextBlock.IsVisible = false;
+            }
+            else
+            {
+                ReceiveTextBlock.IsVisible = true;
+            }
         }
 
         public ICommand Command
@@ -132,6 +141,18 @@ namespace SmartTrade.Controls
                 else
                 {
                     ProductNameTextBlock.IsVisible = true;
+                }
+            }
+
+            if (change.Property == EstimatedTimeProperty)
+            {
+                if (EstimatedTime.IsNullOrEmpty())
+                {
+                    ReceiveTextBlock.IsVisible = false;
+                }
+                else
+                {
+                    ReceiveTextBlock.IsVisible = true;
                 }
             }
             base.OnPropertyChanged(change);

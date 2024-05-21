@@ -36,10 +36,10 @@
                     </StackPanel>
                     <TextBlock Classes="h1" Text="Categories" Margin="0 40 0 0" HorizontalAlignment="Center"/>
                     <ListBox Name="ListBoxDepartments" SelectionMode="Toggle" HorizontalAlignment="Center" Margin="0 5 0 0" Background="Transparent">
-                        <ListBoxItem Name="ToysButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Toys</ListBoxItem>
                         <ListBoxItem Name="NutritionButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Nutrition</ListBoxItem>
                         <ListBoxItem Name="ClothingButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Clothing</ListBoxItem>
-                        <ListBoxItem Name="BooksButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Books</ListBoxItem>
+						<ListBoxItem Name="ToysButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Toys</ListBoxItem>
+						<ListBoxItem Name="BooksButton" BorderThickness="0" Width="150" Background="#26915A" Foreground="White">Books</ListBoxItem>
                     </ListBox>
 				</StackPanel>
 			</SplitView.Pane>

@@ -364,6 +364,7 @@ public partial class MainView : UserControl
             SmartTradeNavigationManager.Instance.ReInitializeNavigation(catalog);
             int loadingScreen = _loadingScreenManager.StartLoading();
             var model = (CatalogModel)catalog.DataContext;
+            _model.ClearPostCache();
             await model.LoadProductsAsync();
             _catalogModel = model;
 
