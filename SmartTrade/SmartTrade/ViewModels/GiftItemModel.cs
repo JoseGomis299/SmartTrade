@@ -64,7 +64,7 @@ public class GiftItemModel : ViewModelBase
     {
         var view = new ProductView(Post);
         SmartTradeNavigationManager.Instance.NavigateTo(view);
-        ((ProductViewModel)view.DataContext).LoadProductsAsync();
+        ((ProductViewModel)view.DataContext).LoadProducts();
     }
 
     private async Task AddGiftAsync(int previousQuantity, int quantity)

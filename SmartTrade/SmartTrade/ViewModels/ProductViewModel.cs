@@ -112,7 +112,7 @@ namespace SmartTrade.ViewModels
         //    }
         //}
 
-        public async Task LoadProductsAsync()
+        public void LoadProducts()
         {
             IEnumerable<SimplePostDTO>? posts = Service.Posts;
 
@@ -172,24 +172,24 @@ namespace SmartTrade.ViewModels
         }
     
 
-    private float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
-    {
-        float similarity = Fuzz.PartialTokenSortRatio(productNamePost, namePurchase);
-        float scoreIncrement = MathF.Max(0, (similarity - threshold)) / (100 - threshold);
-        return scoreIncrement;
-    }
+        private float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
+        {
+            float similarity = Fuzz.PartialTokenSortRatio(productNamePost, namePurchase);
+            float scoreIncrement = MathF.Max(0, (similarity - threshold)) / (100 - threshold);
+            return scoreIncrement;
+        }
 
-    private float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
-    {
-        float score = 0;
+        private float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
+        {
+            float score = 0;
 
-        if (categoryPost.Equals(categoryPurchase)) score += 1f;
-       // if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.3f;
+            if (categoryPost.Equals(categoryPurchase)) score += 1f;
+           // if (sellerIdPost.Equals(emailSellerPurchase)) score += 0.3f;
 
-        return score;
-    }
+            return score;
+        }
 
-    public void LoadData(OfferDTO offer)
+        public void LoadData(OfferDTO offer)
         {
             Images.Clear();
 
