@@ -54,6 +54,10 @@ namespace SmartTrade.ViewModels
 
         public UserDTO? Logged => Service.Logged;
 
+        private Bitmap? _starSelected { get; set; }
+        public string? NumRatings { get; set; }
+        public string? AverageRating { get; set; }
+
         public ProductViewModel()
         {
             OtherSellers = new ObservableCollection<ProductModel>();
@@ -83,6 +87,23 @@ namespace SmartTrade.ViewModels
             Title = post.Title;
             Seller = "Vendido por: " + post.SellerCompanyName;
             Description = post.Description;
+            if (post.NumRatings.HasValue)
+            {
+                NumRatings = post.NumRatings.ToString();
+            }
+            else
+            {
+                NumRatings = "0";
+            }
+            if (post.AveragePoints.HasValue)
+            {
+                AverageRating = post.AveragePoints.ToString() + "/5";
+            }
+            else
+            {
+                AverageRating = "0/5";
+            }
+            
 
             LoadData(post.Offers[0]);
 
