@@ -1,4 +1,5 @@
-﻿using SmartTrade.Entities;
+﻿using Microsoft.IdentityModel.Tokens;
+using SmartTrade.Entities;
 
 namespace SmartTradeDTOs;
 
@@ -46,8 +47,19 @@ public class PostDTO
         SellerID = post.Seller.Email;
         Offers = post.Offers.Select(offer => new OfferDTO(offer)).ToList();
         SellerCompanyName = post.Seller.CompanyName;
-        NumRatings = Ratings.Count();
-        AveragePoints = GetAveragePoints();
+
+        if (!post.Ratings.IsNullOrEmpty())
+        {
+            Ratings = post.Ratings.Select(rating => new RatingDTO(rating)).ToList();
+            NumRatings = Ratings.Count();
+            AveragePoints = GetAveragePoints();
+        }
+        else
+        {
+            Ratings = new List<RatingDTO>();
+            NumRatings = 0;
+            AveragePoints = 0;
+        }
     }
 
     private int GetAveragePoints()

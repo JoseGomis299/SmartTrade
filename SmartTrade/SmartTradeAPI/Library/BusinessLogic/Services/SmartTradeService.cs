@@ -725,7 +725,8 @@ public class SmartTradeService : ISmartTradeService
             Points = x.Points,
             Description = x.Description,
             PostId = x.Post.Id,
-            UserId = x.User.Email
+            UserId = x.User.Email,
+            UserNickname = x.User.Name + " " + x.User.LastNames
         }).ToList();
     }
 

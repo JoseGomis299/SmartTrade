@@ -19,7 +19,30 @@ public class PostDTO
     public string? SellerID { get; set; }
     public List<OfferDTO> Offers { get; set; }
     public string? SellerCompanyName { get; set; }
-    public List<RatingDTO> Ratings { get; set; }
-    public int? NumRatings { get; set; }
-    public int? AveragePoints { get; set; }
+    public List<RatingDTO> Ratings { get; set; } = new();
+    public int? NumRatings { get; set; } = 0;
+    public int? AveragePoints { get; set; } = 0;
+
+    public void AddRating(RatingDTO rating)
+    {
+        Ratings.Add(rating);
+        NumRatings++;
+        AveragePoints = GetAveragePoints();
+    }
+
+    public void AddRating(RatingDTO rating, int i)
+    {
+        Ratings[i] = rating;
+        AveragePoints = GetAveragePoints();
+    }
+
+    private int GetAveragePoints()
+    {
+        int sum = 0;
+        foreach (var rating in Ratings)
+        {
+            sum += rating.Points;
+        }
+        return sum / (int)NumRatings;
+    }
 }

@@ -6,6 +6,7 @@ public class RatingDTO
     public int Points { get; set; }
     public string Description { get; set; }
     public string UserId { get; set; }
+    public string UserNickname { get; set; }
     public int PostId { get; set; }
 
     public RatingDTO()
@@ -13,11 +14,12 @@ public class RatingDTO
 
     }
 
-    public RatingDTO(PostDTO post, string consumerId, int points, string description)
+    public RatingDTO(PostDTO post, ConsumerDTO user, int points, string description)
     {
         Points = points;
         Description = description;
-        UserId = consumerId;
+        UserId = user.Email;
         PostId = (int) post.Id;
+        UserNickname = user.Name + " " + user.LastNames;
     }
 }
