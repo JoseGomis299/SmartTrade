@@ -1,7 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SmartTrade",
+    "\\SmartTrade\\DBTest",
+    "\\SmartTrade\\SmartTrade",
+    "\\SmartTrade\\SmartTradeAPI",
+    "\\SmartTrade\\SmartTradeAPI\\Controllers",
+    "\\SmartTrade\\SmartTradeApp",
+    "\\SmartTrade\\SmartTrade\\ViewModels"
   ],
-  "SelectedNode": "\\SmartTrade.sln",
+  "SelectedNode": "\\SmartTrade\\SmartTrade\\ViewModels\\ProductCatalogModel.cs",
   "PreviewInSolutionExplorer": false
 }
