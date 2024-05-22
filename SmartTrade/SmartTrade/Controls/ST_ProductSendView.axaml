@@ -18,7 +18,7 @@
 				<Image Stretch="Uniform" Source="../Assets/Delivery.png" Width ="25" VerticalAlignment="Center"/>
 			</StackPanel>
 		</StackPanel>
-		<TextBlock Grid.Column="1" Classes="h2" Name="ArrivedOnTextBlock" VerticalAlignment="Center" FontSize="16" Margin="-40 110 0 0">Arrived on:</TextBlock>
-		<TextBlock Grid.Column="1" Classes="h2" VerticalAlignment="Center" Name="ArrivedOn" FontSize="16" Margin="-30 110 0 0" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ArrivedDate, Mode=OneWay}"></TextBlock>
+		<TextBlock Grid.Column="1" Classes="h2" Name="ArrivedOnTextBlock" VerticalAlignment="Center" FontSize="16" Margin="10 110 0 0">Arrive on:</TextBlock>
+		<TextBlock Grid.Column="1" Classes="h2" VerticalAlignment="Center" Name="ArrivedOn" FontSize="16" Margin="15 145 0 0" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ArrivedDate, Mode=OneWay}" TextWrapping="Wrap"/>
 	</Grid>
 </UserControl>

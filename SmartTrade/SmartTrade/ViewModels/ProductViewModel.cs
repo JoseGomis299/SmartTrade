@@ -30,6 +30,8 @@ namespace SmartTrade.ViewModels
         public ObservableCollection<ProductModel> RelatedProducts { get; set; }
         public ObservableCollection<Bitmap> Images { get; set; }
         public ObservableCollection<AttributeModel> Attributes { get; set; }
+        public ObservableCollection<RatingModel> Ratings { get; set; }
+
         public string? Price {  get; set; }
         public string? ShippingCost {  get; set; }
         public string? Title {  get; set; }
@@ -65,6 +67,7 @@ namespace SmartTrade.ViewModels
             RelatedProducts = new ObservableCollection<ProductModel>();
             Images = new ObservableCollection<Bitmap>();
             Attributes = new ObservableCollection<AttributeModel>();
+            Ratings = new ObservableCollection<RatingModel>();
 
             _alertActivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/AlertSelected.png")));
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
@@ -83,6 +86,7 @@ namespace SmartTrade.ViewModels
             RelatedProducts = new ObservableCollection<ProductModel>();
             Images = new ObservableCollection<Bitmap>();
             Attributes = new ObservableCollection<AttributeModel>();
+            Ratings = new ObservableCollection<RatingModel>();
 
             Title = post.Title;
             Seller = "Vendido por: " + post.SellerCompanyName;
@@ -118,6 +122,17 @@ namespace SmartTrade.ViewModels
             _alertDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Alert.png")));
 
             Quantity = "1";
+
+            if (post.Ratings != null)
+            {
+                foreach (var rating in post.Ratings)
+                {
+                    Ratings.Add(new RatingModel(rating));
+                }
+
+                this.RaisePropertyChanged(nameof(Ratings));
+            }
+
             //SetAlertImage();
         }
 

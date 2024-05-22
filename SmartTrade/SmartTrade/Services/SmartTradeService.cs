@@ -455,7 +455,18 @@ namespace SmartTrade.Services;
 
         public async Task CreateRatingAsync(PostDTO post, int points, string description)
         {
-            await _broker.RatingClient.CreateRatingAsync(new RatingDTO(post, Logged.Email, points, description));
+            PostDTO? cachedPost = _cache.GetPost((int)post.Id);
+            if (cachedPost != null)
+            {
+                int index = cachedPost.Ratings.FindIndex(x => x.UserId == Logged.Email);
+
+                if (index == -1)
+                {
+                    cachedPost.AddRating(new RatingDTO(post, (ConsumerDTO)Logged, points, description));
+                }
+                else cachedPost.AddRating(new RatingDTO(post, (ConsumerDTO)Logged, points, description), index);
+            }
+            await _broker.RatingClient.CreateRatingAsync(new RatingDTO(post, (ConsumerDTO)Logged, points, description));
         }
 
         public async Task DeleteRatingAsync(int ratingId)

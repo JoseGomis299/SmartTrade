@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SmartTrade.Controls.ST_Rating">
+    <StackPanel Name="Panel" Orientation="Vertical" Margin="10" MaxWidth="390">
+        <TextBlock Classes="h1" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=User, Mode=OneWay}"></TextBlock>
+
+        <StackPanel Orientation="Horizontal" Spacing="10" Name="RatingPanel" Margin="0 10 0 10">
+            <Border BorderThickness="1" BorderBrush="Black" Padding="4" Margin="0 0 0 0" Width="150" CornerRadius="50" HorizontalAlignment="Left">
+                <Grid ColumnDefinitions="* * * * *" MaxWidth="200" HorizontalAlignment="Left">
+                    <Image Grid.Column="0" Source="../Assets/VoidStar.png" Width="25" Name="Star1" Margin="3 0 0 0"/>
+                    <Image Grid.Column="1" Source="../Assets/VoidStar.png" Width="25" Name="Star2" Margin="2 0 0 0"/>
+                    <Image Grid.Column="2" Source="../Assets/VoidStar.png" Width="25" Name="Star3" Margin="2 0 0 0"/>
+                    <Image Grid.Column="3" Source="../Assets/VoidStar.png" Width="25" Name="Star4" Margin="2 0 0 0"/>
+                    <Image Grid.Column="4" Source="../Assets/VoidStar.png" Width="25" Name="Star5" Margin="2 0 3 0"/>
+                </Grid>
+            </Border>
+                <TextBlock Classes="h1" FontSize="16" Margin="0 0 5 0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Points, Mode=OneWay}"></TextBlock>
+        </StackPanel>
+        <TextBlock Classes="h2" Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Description, Mode=OneWay}" TextWrapping="Wrap"></TextBlock>
+    </StackPanel>
+</UserControl>

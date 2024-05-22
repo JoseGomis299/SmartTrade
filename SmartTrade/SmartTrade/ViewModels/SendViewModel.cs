@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
@@ -55,7 +56,7 @@ namespace SmartTrade.ViewModels
             FacturationStreet = FacturationAddress.Street + FacturationAddress.Number + " Street";
             FacturationDoor = "Number " + FacturationAddress.Door;
             FacturationMunicipality = FacturationAddress.City + ", " + FacturationAddress.PostalCode;
-            if (DeliveryState == 2) ArrivedDate = purchase.EstimatedDate.ToString();
+            ArrivedDate = DateOnly.FromDateTime(purchase.EstimatedDate).ToString();
         }
 
         private async Task OpenProduct()

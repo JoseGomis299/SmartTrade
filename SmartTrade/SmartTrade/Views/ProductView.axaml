@@ -11,7 +11,7 @@
 		<vm:ProductViewModel/>
 	</Design.DataContext>
 	<ScrollViewer  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
-		<Grid RowDefinitions="auto auto *" Margin="0 10 0 0">
+		<Grid RowDefinitions="auto auto * *" Margin="0 10 0 0">
 			<StackPanel Grid.Row="0">
 				<Grid>
                     <Carousel ZIndex="0" ItemsSource="{Binding Images, Mode=OneWay}" Name="ImageCarousel"  Height="300">
@@ -85,7 +85,7 @@
                             <Image Grid.Column="4" Source="../Assets/VoidStar.png" Width="25" Name="Star5" Margin="2 0 3 0"/>
                         </Grid>
                     </Border>
-					<StackPanel Margin="0 5 0 0">
+					<StackPanel Margin="0 5 0 0" VerticalAlignment="Center">
 						<TextBlock FontSize="16" FontFamily="Inter" FontWeight="Bold" Foreground="#ff32c378" Margin="0 0 0 0" Text="{Binding NumRatings, Mode=OneWay}"></TextBlock>
 						<TextBlock Classes="h1" FontSize="16" Margin="0 -4 0 0" HorizontalAlignment="Center" Text="{Binding AverageRating, Mode=OneWay}"></TextBlock>
 					</StackPanel>
@@ -111,6 +111,18 @@
 				<controls:ST_Carousel Title="Same seller products" DataSource="{Binding SameSellerProducts, Mode=OneWay}"></controls:ST_Carousel>
 				<controls:ST_Carousel Title="Related products" DataSource="{Binding RelatedProducts, Mode=OneWay}"></controls:ST_Carousel>
 			</StackPanel>
+
+			<StackPanel Grid.Row="3">
+				<ItemsControl ItemsSource="{Binding Ratings}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Border BorderBrush="#0A413E" BorderThickness="0 1">
+                                <controls:ST_Rating Description="{Binding Description, Mode=OneWay}" Rating="{Binding Rating, Mode=OneWay}" User="{Binding User, Mode=OneWay}"/>
+							</Border>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+            </StackPanel>
 		</Grid>
 	</ScrollViewer>
 </UserControl>

@@ -83,17 +83,8 @@ namespace SmartTrade.Controls
                 {
                     ProductNameTextBlock.IsVisible = true;
                 }
-                if (ArrivedDate.IsNullOrEmpty())
-                {
-                    ArrivedOnTextBlock.IsVisible = false;
-                    ArrivedOn.IsVisible = false;
-                }
-                else
-                {
-                    ArrivedOnTextBlock.IsVisible = true;
-                    ArrivedOn.IsVisible = true;
-                }
             }
+         
             base.OnPropertyChanged(change);
         }
 

@@ -25,6 +25,7 @@ namespace SmartTrade.Views
 
         public SendView(PurchaseModel purchase)
         {
+            DataContext = _model = new SendViewModel(purchase);
             _purchase = purchase;
 
             InitializeComponent();
@@ -36,7 +37,6 @@ namespace SmartTrade.Views
             RatingStar5.Click += Star5Click;
             UploadRatingButton.Click += UploadRating;
 
-            DataContext = _model = new SendViewModel(purchase);
 
 
             _starSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Star.png")));
@@ -45,10 +45,10 @@ namespace SmartTrade.Views
             SetVoidStars();
             _rating = 0;
 
-            //if (purchase.CalculateState() != "Received")
-            //{
-            //    RatingPanel.IsVisible = false;
-            //}
+            if (purchase.CalculateState() != "Received")
+            {
+                RatingPanel.IsVisible = false;
+            }
         }
 
 
