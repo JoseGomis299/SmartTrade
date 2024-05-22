@@ -106,13 +106,13 @@ namespace SmartTrade.Views
                 return true;
             }
 
-            if(TextBoxProvince.TextBox.Text.Length != 5)
+            if(TextBoxPostalCode.TextBox.Text.Length != 5)
             {
-                TextBoxProvince.ErrorText = "Invalid postal code. Write at least 5 numbers";
+                TextBoxPostalCode.ErrorText = "Invalid postal code. Write at least 5 numbers";
                 return true;
             }
 
-            TextBoxProvince.ErrorText = "";
+            TextBoxPostalCode.ErrorText = "";
             return false;
         }
 
@@ -124,7 +124,7 @@ namespace SmartTrade.Views
                 return true;
             }
 
-            TextBoxProvince.ErrorText = "";
+            TextBoxNumber.ErrorText = "";
             return false;
         }
 

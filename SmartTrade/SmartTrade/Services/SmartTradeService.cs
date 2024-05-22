@@ -114,19 +114,43 @@ namespace SmartTrade.Services;
             await _broker.UserClient.AddPaypalAsync(paypalinfo);
             (Logged as ConsumerDTO).PayPalAccounts.Add(paypalinfo);
         }
+    /*
+        public async Task DeletePaypalAsync(int addressId)
+        {
+            await _broker.UserClient.DeletePaypalAsync(addressId);
 
+            int addressPaypal = (Logged as ConsumerDTO).PayPalAccounts.FindIndex(a => a.Id == addressId);
+            (Logged as ConsumerDTO).Addresses.RemoveAt(addressPaypal);
+        }
+    */
         public async Task AddCreditCardAsync(CreditCardInfo creditCard)
         {
             await _broker.UserClient.AddCreditCardAsync(creditCard);
             (Logged as ConsumerDTO).CreditCards.Add(creditCard);
         }
+    /*
+        public async Task DeleteCreditCardAsync(int addressId)
+        {
+            await _broker.UserClient.DeleteCreditCardAsync(addressId);
 
+            int creditCardIndex = (Logged as ConsumerDTO).Addresses.FindIndex(a => a.Id == addressId);
+            (Logged as ConsumerDTO).CreditCards.RemoveAt(creditCardIndex);
+        }
+        */
         public async Task AddBizumAsync(BizumInfo bizum)
         {
            await _broker.UserClient.AddBizumAsync(bizum);
            (Logged as ConsumerDTO).BizumAccounts.Add(bizum);
         }
+    /*
+        public async Task DeleteBizumAsync(int addressId)
+        {
+            await _broker.UserClient.DeleteBizumAsync(addressId);
 
+            int addressIndex = (Logged as ConsumerDTO).Addresses.FindIndex(a => a.Id == addressId);
+            (Logged as ConsumerDTO).Addresses.RemoveAt(addressIndex);
+        }
+    */
         public async Task AddAddressAsync(Address address)
         {
             int addressId = await _broker.UserClient.AddAddressAsync(address);
@@ -134,7 +158,15 @@ namespace SmartTrade.Services;
 
             (Logged as ConsumerDTO).Addresses.Add(address);
         }
+    /*
+        public async Task DeleteAddressAsync(int addressId)
+        {
+            await _broker.UserClient.DeleteAddressAsync(addressId);
 
+            int addressIndex = (Logged as ConsumerDTO).Addresses.FindIndex(a => a.Id == addressId);
+            (Logged as ConsumerDTO).Addresses.RemoveAt(addressIndex);
+        }
+    */
         public async Task<List<PurchaseDTO>?> GetPurchasesAsync()
         {
             if(_cache.Purchases == null)

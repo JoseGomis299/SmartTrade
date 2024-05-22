@@ -13,7 +13,7 @@ namespace SmartTrade.Views
     public partial class SellerRegister : UserControl
     {
         private SellerRegisterModel _model;
-
+        
         public SellerRegister()
         {
             InitializeComponent();

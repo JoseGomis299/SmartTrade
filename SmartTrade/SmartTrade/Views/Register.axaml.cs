@@ -8,6 +8,14 @@ using System.Linq;
 using SmartTrade.ViewModels;
 using Splat;
 using Microsoft.IdentityModel.Tokens;
+using Avalonia.VisualTree;
+using System.Net;
+using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
+using Avalonia.LogicalTree;
+using Avalonia.Controls.Templates;
+using System.Reflection;
+using Avalonia.Controls.Primitives;
 
 namespace SmartTrade.Views
 {
@@ -15,6 +23,10 @@ namespace SmartTrade.Views
     {
       
         private RegisterModel _model;
+        private bool _hasErrors;
+        private int _startUserInfo = 6;
+        private int _startAddressInfo = 6;
+        private int _start = 12;
 
         public Register()
         {
@@ -34,6 +46,29 @@ namespace SmartTrade.Views
             Paypaladd.IsVisible = false;
             Bizumadd.IsVisible = false;
             CreditCardadd.IsVisible = false;
+
+            TextBoxName.TextBox.TextChanged += CheckUserErrors;
+            TextBoxLastNames.TextBox.TextChanged += CheckUserErrors;
+            TextBoxDNI.TextBox.TextChanged += CheckUserErrors;
+            TextBoxEmail.TextBox.TextChanged += CheckUserErrors;
+            TextBoxDateBirth.TemplateApplied += SetComponentsCalendarDatePicker;
+            TextBoxPassword.TextBox.TextChanged += CheckUserErrors;
+
+            TextBoxProvince.TextBox.TextChanged += CheckAddressErrors;
+            TextBoxMunicipality.TextBox.TextChanged += CheckAddressErrors;
+            TextBoxPostalCode.TextBox.TextChanged += CheckAddressErrors;
+            TextBoxStreet.TextBox.TextChanged += CheckAddressErrors;
+            TextBoxNumber.TextBox.TextChanged += CheckAddressErrors;
+            TextBoxDoor.TextBox.TextChanged += CheckAddressErrors;
+        }
+
+        private void SetComponentsCalendarDatePicker(object? sender, Avalonia.Controls.Primitives.TemplateAppliedEventArgs e)
+        {
+            var textBoxField = sender.GetType().GetField("_textBox", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            TextBox textBox = (TextBox) textBoxField.GetValue(sender);
+            textBox.TextChanged += CheckUserErrors;
+
+            TextBoxDateBirth.BlackoutDates.Add(new CalendarDateRange(DateTime.Today, DateTime.MaxValue));
         }
 
         public void CreditCardAdded()
@@ -91,143 +126,222 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.NavigateTo(new SellerRegister());
         }
 
-        private void ClearErrors()
-        {
-            TextBoxName.ErrorText = "";
-            TextBoxEmail.ErrorText = "";
-            TextBoxLastNames.ErrorText = "";
-            TextBoxPassword.ErrorText = "";
-            TextBoxDNI.ErrorText = "";
-            TextBoxNumber.ErrorText = "";
-            TextBoxProvince.ErrorText = "";
-            TextBoxPostalCode.ErrorText = "";
-            TextBoxMunicipality.ErrorText = "";
-            TextBoxStreet.ErrorText = "";
-            TextBoxDoor.ErrorText = "";
-            BirthDateError.IsVisible = false;
+        #region ErrorChecking
 
+        private void CheckUserErrors(object? sender, TextChangedEventArgs e)
+        {
+            if (--_start >= 0)
+            {
+                SignInButton.IsEnabled = false;
+                return;
+            }
+            _hasErrors = false | CheckName();
+            _hasErrors |= CheckLastName();
+            _hasErrors |= CheckDNI();
+            _hasErrors |= CheckEmail();
+            _hasErrors |= CheckBirthDate();
+            _hasErrors |= CheckPassword();
+
+            SignInButton.IsEnabled = !_hasErrors;
         }
+
+        private bool CheckName()
+        {
+            if (TextBoxName.Text.IsNullOrEmpty())
+            {
+                TextBoxName.ErrorText = "Please input your name";
+                return true;
+            }
+
+            TextBoxName.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckLastName()
+        {
+            if (TextBoxLastNames.Text.IsNullOrEmpty())
+            {
+                TextBoxLastNames.ErrorText = "Please input your last names";
+                return true;
+            }
+
+            TextBoxLastNames.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckDNI()
+        {
+            if (TextBoxDNI.Text.IsNullOrEmpty())
+            {
+                TextBoxDNI.ErrorText = "Please input your DNI";
+                return true;
+            }
+
+            string pattern = @"^\d{8}[A-Za-z]$";
+            if (!Regex.IsMatch(TextBoxDNI.Text, pattern))
+            {
+                TextBoxDNI.ErrorText = ("Incorrect DNI. Must be 8 digits followed by a letter");
+                return true;
+            }
+
+            TextBoxDNI.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckEmail()
+        {
+            if (TextBoxEmail.Text.IsNullOrEmpty())
+            {
+                TextBoxEmail.ErrorText = "Please input your Email";
+                return true;
+            }
+
+            string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
+            if (!Regex.IsMatch(TextBoxEmail.Text, pattern))
+            {
+                TextBoxEmail.ErrorText = "Invalid email. Please enter a valid email";
+            }
+
+            TextBoxEmail.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckBirthDate()
+        {
+            string date = TextBoxDateBirth.FindDescendantOfType<TextBox>().Text;
+
+            if (date.IsNullOrEmpty())
+            {
+                BirthDateError.Text = "Please input your birth date";
+                BirthDateError.IsVisible = true;
+                return true;
+            }
+
+            string pattern = @"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$";
+            if (!Regex.IsMatch(TextBoxDateBirth.Text, pattern))
+            {
+                BirthDateError.Text = "Invalid format. Please enter a date with the format dd/MM/yyyy";
+                return true;
+            }
+
+            BirthDateError.Text = "";
+            BirthDateError.IsVisible = false;
+            return false;
+        }
+
+        private bool CheckPassword()
+        {
+            if (TextBoxPassword.Text.IsNullOrEmpty())
+            {
+                TextBoxPassword.ErrorText = "Please input a password";
+                return true;
+            }
+
+            TextBoxPassword.ErrorText = "";
+            return false;
+        }
+
+        private void CheckAddressErrors(object? sender, TextChangedEventArgs e)
+        {
+            if (--_start >= 0)
+            {
+                SignInButton.IsEnabled = false;
+                return;
+            }
+            _hasErrors = false | CheckProvince();
+            _hasErrors |= CheckMunicipality();
+            _hasErrors |= CheckPostalCode();
+            _hasErrors |= CheckStreet();
+            _hasErrors |= CheckNumber();
+            _hasErrors |= CheckDoor();
+
+            SignInButton.IsEnabled = !_hasErrors;
+        }
+
+        private bool CheckProvince()
+        {
+            if (TextBoxProvince.Text.IsNullOrEmpty())
+            {
+                TextBoxProvince.ErrorText = "Please input a province";
+                return true;
+            }
+
+            TextBoxProvince.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckStreet()
+        {
+            if (TextBoxStreet.Text.IsNullOrEmpty())
+            {
+                TextBoxStreet.ErrorText = "Please input a street";
+                return true;
+            }
+
+            TextBoxStreet.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckMunicipality()
+        {
+            if (TextBoxMunicipality.Text.IsNullOrEmpty())
+            {
+                TextBoxMunicipality.ErrorText = "Please input a municipality";
+                return true;
+            }
+
+            TextBoxMunicipality.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckPostalCode()
+        {
+            if (TextBoxPostalCode.Text.IsNullOrEmpty())
+            {
+                TextBoxPostalCode.ErrorText = "Please input a postal code";
+                return true;
+            }
+
+            if (TextBoxPostalCode.TextBox.Text.Length != 5)
+            {
+                TextBoxPostalCode.ErrorText = "Invalid postal code. Write at least 5 numbers";
+                return true;
+            }
+
+            TextBoxPostalCode.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckNumber()
+        {
+            if (TextBoxNumber.Text.IsNullOrEmpty())
+            {
+                TextBoxNumber.ErrorText = "Please input the street number";
+                return true;
+            }
+
+            TextBoxNumber.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckDoor()
+        {
+            if (TextBoxDoor.Text.IsNullOrEmpty())
+            {
+                TextBoxDoor.ErrorText = "Please input the door number";
+                return true;
+            }
+
+            TextBoxDoor.ErrorText = "";
+            return false;
+        }
+
+        #endregion
+
         private async void SignInButton_click(object? sender, RoutedEventArgs e)
         {
-            ClearErrors();
-            bool hasErrors = false;
-            if (_model.Name.IsNullOrEmpty())
-            {
-                TextBoxName.BringIntoView();
-                TextBoxName.Focus();
-                TextBoxName.ErrorText = "Name cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.Email.IsNullOrEmpty())
-            {
-                TextBoxEmail.BringIntoView();
-                TextBoxEmail.Focus();
-                TextBoxEmail.ErrorText = "Email cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.Password.IsNullOrEmpty())
-            {
-                TextBoxPassword.BringIntoView();
-                TextBoxPassword.Focus();
-                TextBoxPassword.ErrorText = "Password cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.DNI.IsNullOrEmpty())
-            {
-                TextBoxDNI.BringIntoView();
-                TextBoxDNI.Focus();
-                TextBoxDNI.ErrorText = "DNI cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.DateBirth == null)
-            {
-                BirthDateError.IsVisible = true;
-                hasErrors = true;
-            }
-            if (_model.LastNames.IsNullOrEmpty())
-            {
-                TextBoxLastNames.BringIntoView();
-                TextBoxLastNames.Focus();
-                TextBoxLastNames.ErrorText = "Last Names cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.Province.IsNullOrEmpty())
-            {
-                TextBoxProvince.BringIntoView();
-                TextBoxProvince.Focus();
-                TextBoxProvince.ErrorText = "Province cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.PostalCode.IsNullOrEmpty())
-            {
-                TextBoxPostalCode.BringIntoView();
-                TextBoxPostalCode.Focus();
-                TextBoxPostalCode.ErrorText = "Postal Code cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.Municipality.IsNullOrEmpty())
-            {
-                TextBoxMunicipality.BringIntoView();
-                TextBoxMunicipality.Focus();
-                TextBoxMunicipality.ErrorText = "Municipality cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.Street.IsNullOrEmpty())
-            {
-                TextBoxStreet.BringIntoView();
-                TextBoxStreet.Focus();
-                TextBoxStreet.ErrorText = "Street cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.Number.IsNullOrEmpty())
-            {
-                TextBoxNumber.BringIntoView();
-                TextBoxNumber.Focus();
-                TextBoxNumber.ErrorText = "Number cannot be empty";
-                hasErrors = true;
-            }
-            if (_model.Door.IsNullOrEmpty())
-            {
-                TextBoxDoor.BringIntoView();
-                TextBoxDoor.Focus();
-                TextBoxDoor.ErrorText = "Door cannot be empty";
-                hasErrors = true;
-            }
-            try
-            {
-                if (hasErrors) return;
-                await _model.RegisterConsumer();
-                await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("You cannot select future dates"))
-                {
-                    BirthDateError.IsVisible = true;
-                    hasErrors = true;
-
-                }
-                if (ex.Message.Contains("Existing user"))
-                {
-                    TextBoxEmail.BringIntoView();
-                    TextBoxEmail.ErrorText = ex.Message;
-                }
-                if (ex.Message.Contains("Incorrect DNI. Must be 8 digits followed by a letter"))
-                {
-                    TextBoxDNI.BringIntoView();
-                    TextBoxDNI.ErrorText = ex.Message;
-                }
-                if (ex.Message.Contains("Wrong email. Please enter a valid email"))
-                {
-                    TextBoxEmail.BringIntoView();
-                    TextBoxEmail.ErrorText = ex.Message;
-                }
-                if (ex.Message.Contains("Wrong phone number. Only digits are allowed"))
-                {
-                    TextBoxNumber.BringIntoView();
-                    TextBoxNumber.ErrorText = ex.Message;
-                }
-            }
+            await _model.RegisterConsumer();
+            await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
         }
        
     }

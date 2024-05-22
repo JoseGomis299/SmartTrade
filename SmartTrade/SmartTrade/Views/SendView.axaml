@@ -18,7 +18,7 @@
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding DeliveryStreet}" Margin="20 0 0 0">hola</TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding DeliveryDoor}" Margin="20 0 0 0"></TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding DeliveryMunicipality}" Margin="20 0 0 0"></TextBlock>
-			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 15 0 8">Facturation address:</TextBlock>
+			<TextBlock Classes="h2" HorizontalAlignment="Left" Margin="20 15 0 8">Billing address:</TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding FacturationStreet}" Margin="20 0 0 0"></TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding FacturationDoor}" Margin="20 0 0 0"></TextBlock>
 			<TextBlock Classes="h3" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding FacturationMunicipality}" Margin="20 0 0 0"></TextBlock>			<StackPanel Name="RatingPanel">
