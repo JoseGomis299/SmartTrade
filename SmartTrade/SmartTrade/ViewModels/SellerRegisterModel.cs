@@ -16,17 +16,7 @@ namespace SmartTrade.ViewModels
 
         public async Task RegisterSeller()
         {
-            ValidarDniCif();
             await Service.RegisterSellerAsync(Email, Password, Name, LastNames,CIF, Company, IBAN);
-        }
-        public void ValidarDniCif()
-        {
-            string patternDni = @"^\d{8}[A-Za-z]$";
-            string patternCif = @"^[A-Z]\d{8}$";
-            if (!Regex.IsMatch(CIF, patternDni) & !Regex.IsMatch(CIF, patternCif))
-            {
-                throw new ArgumentException("Incorrect CIF/DNI. Please enter a valid CIF/DNI");
-            }
         }
     }
 }

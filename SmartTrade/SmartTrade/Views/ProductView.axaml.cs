@@ -193,8 +193,10 @@ namespace SmartTrade.Views
 
         public async Task AddGiftPopup(string giftListName)
         {
-            await this.AddGift(giftListName);
-            SmartTradeNavigationManager.Instance.NavigateWithButton(typeof(GiftsView), 1, 1, out _, true);
+            await AddGift(giftListName);
+            var view = new GiftsView();
+            view.SetIndexOnList(giftListName);
+            SmartTradeNavigationManager.Instance.NavigateTo(view);
         }
 
         private void AddToGiftsButtonOnClick(object? sender, RoutedEventArgs e)
