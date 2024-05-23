@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SmartTrade.Entities;
 
 namespace SmartTradeDTOs;
@@ -20,29 +21,27 @@ public class PostDTO
     public List<OfferDTO> Offers { get; set; }
     public string? SellerCompanyName { get; set; }
     public List<RatingDTO> Ratings { get; set; } = new();
-    public int? NumRatings { get; set; } = 0;
-    public int? AveragePoints { get; set; } = 0;
+    public int NumRatings { get; set; } = 0;
+    public float AveragePoints => GetAveragePoints();
 
     public void AddRating(RatingDTO rating)
     {
         Ratings.Add(rating);
         NumRatings++;
-        AveragePoints = GetAveragePoints();
     }
 
     public void AddRating(RatingDTO rating, int i)
     {
         Ratings[i] = rating;
-        AveragePoints = GetAveragePoints();
     }
 
-    private int GetAveragePoints()
+    private float GetAveragePoints()
     {
         int sum = 0;
         foreach (var rating in Ratings)
         {
             sum += rating.Points;
         }
-        return sum / (int)NumRatings;
+        return MathF.Round(sum / (float)NumRatings, 2);
     }
 }

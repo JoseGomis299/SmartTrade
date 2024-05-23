@@ -167,7 +167,7 @@ namespace SmartTrade.Services;
             (Logged as ConsumerDTO).Addresses.RemoveAt(addressIndex);
         }
     */
-        public async Task<List<PurchaseDTO>?> GetPurchasesAsync()
+        public virtual async Task<List<PurchaseDTO>?> GetPurchasesAsync()
         {
             if(_cache.Purchases == null)
             {
@@ -226,7 +226,7 @@ namespace SmartTrade.Services;
             
         }
 
-        public async Task<List<SimplePostDTO>?> RefreshPostsAsync()
+        public virtual async Task<List<SimplePostDTO>?> RefreshPostsAsync()
         {
             var posts = await _broker.PostClient.GetPostsAsync();
 

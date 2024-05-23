@@ -89,7 +89,7 @@ namespace SmartTrade.ViewModels
             return false;
         }
 
-        private float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
+        public float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
         {
             float similarity = Fuzz.PartialTokenSortRatio(productNamePost, namePurchase);
             float scoreIncrement = MathF.Max(0, (similarity - threshold)) / (100 - threshold);
@@ -97,7 +97,7 @@ namespace SmartTrade.ViewModels
         }
 
 
-        private float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
+        public float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
         {
             float score = 0;
 
@@ -136,7 +136,7 @@ namespace SmartTrade.ViewModels
             UpdateProducts(OriginalProducts, category);
         }
 
-        private List<ProductModel> Filtering(Category category)
+        public List<ProductModel> Filtering(Category category)
         {
             List<ProductModel> FilteredProducts = new List<ProductModel>();
             foreach (var product in OriginalProducts)
@@ -149,6 +149,8 @@ namespace SmartTrade.ViewModels
 
             return FilteredProducts;
         }
+
+
     }
 
 }

@@ -8,7 +8,6 @@ using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Utilities;
@@ -49,9 +48,9 @@ namespace SmartTrade.ViewModels
                 this.RaisePropertyChanged(nameof(Quantity));
             }
         }
-        private Bitmap? _alertActivated {  get; set; }
-        private Bitmap? _alertDeactivated {  get; set; }
-        private ToggleButton? _alertToggle;
+
+        private Bitmap? _alertActivated;
+        private Bitmap? _alertDeactivated;
         private OfferDTO _currentOffer;
 
         public UserDTO? Logged => Service.Logged;
@@ -91,23 +90,8 @@ namespace SmartTrade.ViewModels
             Title = post.Title;
             Seller = "Vendido por: " + post.SellerCompanyName;
             Description = post.Description;
-            if (post.NumRatings.HasValue)
-            {
-                NumRatings = post.NumRatings.ToString();
-            }
-            else
-            {
-                NumRatings = "0";
-            }
-            if (post.AveragePoints.HasValue)
-            {
-                AverageRating = post.AveragePoints.ToString() + "/5";
-            }
-            else
-            {
-                AverageRating = "0/5";
-            }
-            
+            NumRatings = post.NumRatings.ToString();
+            AverageRating = post.AveragePoints + "/5";
 
             LoadData(post.Offers[0]);
 
