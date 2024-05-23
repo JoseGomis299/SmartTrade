@@ -136,7 +136,7 @@ namespace SmartTrade.ViewModels
             UpdateProducts(OriginalProducts, category);
         }
 
-        private List<ProductModel> Filtering(Category category)
+        public List<ProductModel> Filtering(Category category)
         {
             List<ProductModel> FilteredProducts = new List<ProductModel>();
             foreach (var product in OriginalProducts)
@@ -149,6 +149,8 @@ namespace SmartTrade.ViewModels
 
             return FilteredProducts;
         }
+
+
     }
 
 }

@@ -1,12 +1,14 @@
 ﻿using SmartTrade.Entities;
 using SmartTrade.ViewModels;
 using SmartTradeDTOs;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SmartTrade.Services;
 
 namespace Tests
 {
@@ -15,12 +17,18 @@ namespace Tests
     public class ProductCatalogModelTest
     {
         ProductCatalogModel _model;
+        private Mock<SmartTradeService> _serviceMock;
 
         [SetUp]
         public void SetUp()
         {
             _model = new ProductCatalogModel();
+            _serviceMock = new Mock<SmartTradeService>();
 
+        }
+        public class MockService
+        {
+            public List<PurchaseDTO> Purchases { get; set; }
         }
 
         [Test]
@@ -175,7 +183,7 @@ namespace Tests
                 new ProductModel(new SimplePostDTO { Id = 4, Category = Category.Clothing, ProductName = "T-Shirt", EcologicPrint = "8" })
             };
 
-            int categoryId = (int)Category.Toy; // Assuming this category does not exist in the products list
+            int categoryId = (int)Category.Toy;
             _model.SortByCategory(categoryId);
 
             Assert.That(_model.OtherProducts, Is.Not.Empty);
@@ -183,5 +191,126 @@ namespace Tests
             Assert.That(_model.RelatedProducts, Is.Empty);
         }
 
+        [Test]
+        public void Filtering_ShouldReturnProductsFilteredByCategory()
+        {
+            _model.OriginalProducts = new List<ProductModel>
+            {
+                new ProductModel(new SimplePostDTO { Id = 1, Category = Category.Nutrition }),
+                new ProductModel(new SimplePostDTO { Id = 2, Category = Category.Toy }),
+                new ProductModel(new SimplePostDTO { Id = 3, Category = Category.Nutrition }),
+                new ProductModel(new SimplePostDTO { Id = 4, Category = Category.Book })
+            };
+
+            Category categoryToFilter = Category.Nutrition;
+
+            List<ProductModel> filteredProducts = _model.Filtering(categoryToFilter);
+
+            Assert.That(filteredProducts, Is.Not.Null);
+
+            foreach (var product in filteredProducts)
+            {
+                Assert.That(product.Post.Category, Is.EqualTo(categoryToFilter));
+            }
+
+            Assert.That(filteredProducts.Count, Is.EqualTo(2));
+        }
+        [Test]
+        public void IsRelated_ShouldReturnTrue_WhenPostIsRelatedToPurchase()
+        {
+            var post = new SimplePostDTO
+            {
+                Id = 1,
+                Category = Category.Nutrition,
+                ProductName = "Apple",
+                SellerID = "123",
+                Title = "Fresh Apples"
+            };
+
+            _serviceMock.Setup(service => service.GetPurchasesAsync()).ReturnsAsync(new List<PurchaseDTO>
+            {
+                new PurchaseDTO
+                {
+                    Post = new PostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", Title="Fresh Apples" },
+                    EmailSeller = "123"
+                }
+            });
+
+            bool isRelated = _model.IsRelated(post);
+
+            Assert.That(isRelated,Is.True);
+        }
+
+        [Test]
+        public void IsRelated_ShouldReturnFalse_WhenPostIsNotRelatedToPurchase()
+        {
+            var post = new SimplePostDTO
+            {
+                Id = 1,
+                Category = Category.Nutrition,
+                ProductName = "Apple",
+                SellerID = "123",
+                Title = "Fresh Apples"
+            };
+
+            _serviceMock.Setup(service => service.GetPurchasesAsync()).ReturnsAsync(new List<PurchaseDTO>
+            {
+                new PurchaseDTO
+                {
+                    Post = new PostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt" },
+                    EmailSeller = "seller@example.com"
+                }
+            });
+
+            bool isRelated = _model.IsRelated(post);
+
+            Assert.That(isRelated,Is.Not.True);
+        }
+        [Test]
+        public async Task LoadProductsAsync_ShouldAddProductsToCollections()
+        {
+            // Arrange
+            var posts = new List<SimplePostDTO>
+            {
+                new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", EcologicPrint = "5" },
+                new SimplePostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt", EcologicPrint = "8" }
+            };
+
+            _serviceMock.Setup(service => service.RefreshPostsAsync()).ReturnsAsync(posts);
+
+            // Act
+            await _model.LoadProductsAsync();
+
+            // Assert
+            Assert.That(_model.OriginalProducts.Count, Is.EqualTo(posts.Count));
+            Assert.That(_model.OtherProducts.Count, Is.EqualTo(1));
+            Assert.That(_model.RecommendedProducts.Count, Is.EqualTo(1));
+            Assert.That(_model.RelatedProducts.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public async Task LoadProductsAsync_ShouldAddRelatedProducts_WhenUserIsLoggedIn()
+        {
+            var posts = new List<SimplePostDTO>
+            {
+                new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", EcologicPrint = "5" },
+                new SimplePostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt", EcologicPrint = "8" }
+            };
+
+            _serviceMock.Setup(service => service.RefreshPostsAsync()).ReturnsAsync(posts);
+            _serviceMock.SetupGet(service => service.Logged).Returns(new UserDTO());
+
+            _serviceMock.SetupGet(service => service.Purchases).Returns(new List<PurchaseDTO>
+            {
+                new PurchaseDTO { Post = new PostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", Title = "Fresh Apples" }, EmailSeller = "seller@example.com" },
+                new PurchaseDTO { Post = new PostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt", Title = "Comfy T-Shirt" }, EmailSeller = "seller@example.com" }
+            });
+
+            await _model.LoadProductsAsync();
+            Assert.That(_model.RelatedProducts.Count, Is.EqualTo(2));
+        }
     }
 }
+
+
+
