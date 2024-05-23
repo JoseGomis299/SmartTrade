@@ -47,7 +47,7 @@ namespace SmartTrade.Views
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
         }
 
-        private void CheckEmail()
+        private void CheckEmail(object? sender, RoutedEventArgs e)
         {
             if (TextBoxEmail.Text.IsNullOrEmpty())
             {

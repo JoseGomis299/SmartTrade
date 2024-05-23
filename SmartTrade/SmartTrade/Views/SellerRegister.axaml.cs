@@ -83,7 +83,7 @@ namespace SmartTrade.Views
             return false;
         }
 
-        private bool CheckDNI()
+        private bool CheckCIF()
         {
             if (TextBoxCIF.Text.IsNullOrEmpty())
             {
