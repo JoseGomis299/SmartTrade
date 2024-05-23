@@ -89,7 +89,7 @@ namespace SmartTrade.ViewModels
             return false;
         }
 
-        private float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
+        public float CalculateProductNameScore(string productNamePost, string namePurchase, int threshold)
         {
             float similarity = Fuzz.PartialTokenSortRatio(productNamePost, namePurchase);
             float scoreIncrement = MathF.Max(0, (similarity - threshold)) / (100 - threshold);
@@ -97,7 +97,7 @@ namespace SmartTrade.ViewModels
         }
 
 
-        private float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
+        public float CalculateCategoryAndSellerScore(Category categoryPost, Category categoryPurchase, string sellerIdPost, string emailSellerPurchase)
         {
             float score = 0;
 

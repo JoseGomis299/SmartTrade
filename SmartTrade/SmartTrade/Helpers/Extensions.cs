@@ -27,15 +27,11 @@ namespace SmartTrade
 
         public static Bitmap? ToBitmap(this Byte[] bytes)
         {
-            Bitmap? image = null;
+           if (bytes == null || bytes.Length == 0)
+                return null;
 
-            if (bytes.Length > 0)
-            {
-                var ms = new MemoryStream(bytes);
-                image = new Bitmap(ms);
-            }
-
-            return image;
+            using var ms = new MemoryStream(bytes);
+            return new Bitmap(ms);
         }
 
         public static byte[] ToByteArray(this Bitmap bitmap)
