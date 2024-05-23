@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Avalonia.Interactivity;
 using SmartTrade.Services;
+using Avalonia;
+using DynamicData;
 
 
 namespace SmartTrade.Views
@@ -21,7 +23,8 @@ namespace SmartTrade.Views
         private PostDTO _post;
         private Bitmap? _isEco;
         private Bitmap? _isNotEco;
-        private Bitmap? _starSelected; 
+        private Bitmap? _starSelected;
+        private Bitmap? _halfStar;
 
         private bool _isAlertActivated;
         private bool _isWishActivated;
@@ -45,6 +48,7 @@ namespace SmartTrade.Views
             _isNotEco = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/IconoNOSostenible.png")));
             _wishListDeactivated = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/WishListHeart.png")));
             _starSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Star.png")));
+            _halfStar = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/HalfStar.png")));
             AlertImage.Source = _alertDeactivated;
             WishListImage.Source = _wishListDeactivated;
             EcoImage.Source = _isNotEco;
@@ -82,36 +86,20 @@ namespace SmartTrade.Views
 
         private void SetStars()
         {   
-            if(_post.AveragePoints == null) return;
-            switch (_post.AveragePoints)
+            var stars = new List<Image> { Star1, Star2, Star3, Star4, Star5 };
+
+            float rating = _post.AveragePoints;
+            var fullStars = (int)rating;
+            var halfStar = rating - fullStars >= 0.5;
+
+            for (int i = 0; i < fullStars; i++)
             {
-                case 0:
-                    break;
-                case 1:
-                    Star1.Source = _starSelected;
-                    break;
-                case 2:
-                    Star1.Source = _starSelected;
-                    Star2.Source = _starSelected;
-                    break;
-                case 3:
-                    Star1.Source = _starSelected;
-                    Star2.Source = _starSelected;
-                    Star3.Source = _starSelected;
-                    break;
-                case 4:
-                    Star1.Source = _starSelected;
-                    Star2.Source = _starSelected;
-                    Star3.Source = _starSelected;
-                    Star4.Source = _starSelected;
-                    break;
-                case 5:
-                    Star1.Source = _starSelected;
-                    Star2.Source = _starSelected;
-                    Star3.Source = _starSelected;
-                    Star4.Source = _starSelected;
-                    Star5.Source = _starSelected;
-                    break;
+                stars[i].Source = _starSelected;
+            }
+
+            if (halfStar)
+            {
+                stars[fullStars].Source = _halfStar;
             }
         }
 

@@ -174,7 +174,6 @@ public class SmartTradeService : ISmartTradeService
         }
         post.Offers = offers;
 
-        //TODO: Si el postInfo está validado creamos la notificación pertinente si toca crear
        if (postInfo.Validated) CreateNotifications(post);
 
         _dal.Commit();
