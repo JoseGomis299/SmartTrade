@@ -226,7 +226,7 @@ namespace SmartTrade.Views
             string pattern = @"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$";
             if (!Regex.IsMatch(TextBoxDateBirth.Text, pattern))
             {
-                BirthDateError.Text = "Please enter a date with the format dd/MM/yyyy";
+                BirthDateError.Text = "Please enter a valid date with format dd/MM/yyyy";
                 return true;
             }
 

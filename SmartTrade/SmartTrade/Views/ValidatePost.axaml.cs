@@ -10,6 +10,8 @@ namespace SmartTrade.Views
     public partial class ValidatePost : UserControl
     {
         private ValidatePostModel? _model;
+        private bool _hasErrors;
+        private int _start = 6;
 
         public ValidatePost()
         {
@@ -18,7 +20,7 @@ namespace SmartTrade.Views
 
             var categories = new[] { "Nutrition", "Clothing", "Toys", "Books" };
             CategoryComboBox.ComboBox.ItemsSource = categories;
-            CategoryComboBox.SelectedItem = categories[(int) _model.Category];
+            CategoryComboBox.SelectedItem = categories[(int)_model.Category];
         }
 
         public ValidatePost(PostDTO post)
@@ -46,6 +48,12 @@ namespace SmartTrade.Views
                 ConfirmButton.Content = "Confirm";
                 ViewTitle.Text = "Edit Post";
             }
+
+            Title.TextBox.TextChanged += CheckErrors;
+            Description.TextBox.TextChanged += CheckErrors;
+            Use.TextBox.TextChanged += CheckErrors;
+            ProductName.TextBox.TextChanged += CheckErrors;
+            MinAge.TextBox.TextChanged += CheckErrors;
         }
 
         private void Cancel(object? sender, RoutedEventArgs e)
@@ -60,61 +68,83 @@ namespace SmartTrade.Views
 
         private async void ValidateAsync(object? sender, RoutedEventArgs e)
         {
-            ClearErrors();
-            bool hasErrors = false;
-
-            if (_model.Title.IsNullOrEmpty())
-            {
-                Title.BringIntoView();
-                Title.Focus();
-                Title.ErrorText = "Title cannot be empty";
-                hasErrors = true;
-            }
-
-            if (_model.Description.IsNullOrEmpty())
-            {
-                Description.BringIntoView();
-                Description.Focus();
-                Description.ErrorText = "Description cannot be empty";
-                hasErrors = true;
-            }
-
-            if (_model.Description.IsNullOrEmpty())
-            {
-                Use.BringIntoView();
-                Use.Focus();
-                Use.ErrorText = "How to use/consume cannot be empty";
-                hasErrors = true;
-            }
-
-            if (_model.ProductName.IsNullOrEmpty())
-            {
-                ProductName.BringIntoView();
-                ProductName.Focus();
-                ProductName.ErrorText = "ProductView name cannot be empty";
-                hasErrors = true;
-            }
-
-            if (_model.MinimumAge.IsNullOrEmpty())
-            {
-                MinAge.BringIntoView();
-                MinAge.Focus();
-                MinAge.ErrorText = "Minimum age cannot be empty";
-                hasErrors = true;
-            }
-
-            if (hasErrors) return;
-
-           await _model.EditPostAsync();
+            await _model.EditPostAsync();
         }
 
-        private void ClearErrors()
+        private void CheckErrors(object? sender, TextChangedEventArgs e)
         {
+            if (--_start >= 0)
+            {
+                ConfirmButton.IsEnabled = false;
+                return;
+            }
+            _hasErrors = false | CheckTitle();
+            _hasErrors |= CheckDescription();
+            _hasErrors |= CheckUse();
+            _hasErrors |= CheckProductName();
+            _hasErrors |= CheckMinimumAge();
+
+            ConfirmButton.IsEnabled = !_hasErrors;
+        }
+
+        private bool CheckTitle()
+        {
+            if (Title.Text.IsNullOrEmpty())
+            {
+                Title.ErrorText = "Please enter a Title";
+                return true;
+            }
+
             Title.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckDescription()
+        {
+            if (Description.Text.IsNullOrEmpty())
+            {
+                Description.ErrorText = "Please enter a Title";
+                return true;
+            }
+
             Description.ErrorText = "";
-            ProductName.ErrorText = "";
-            MinAge.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckUse()
+        {
+            if (Use.Text.IsNullOrEmpty())
+            {
+                Use.ErrorText = "Please enter a Title";
+                return true;
+            }
+
             Use.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckProductName()
+        {
+            if (ProductName.Text.IsNullOrEmpty())
+            {
+                ProductName.ErrorText = "Please enter a Title";
+                return true;
+            }
+
+            ProductName.ErrorText = "";
+            return false;
+        }
+
+        private bool CheckMinimumAge()
+        {
+            if (MinAge.Text.IsNullOrEmpty())
+            {
+                MinAge.ErrorText = "Please enter a Title";
+                return true;
+            }
+
+            MinAge.ErrorText = "";
+            return false;
         }
     }
 }

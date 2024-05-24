@@ -40,7 +40,7 @@
 				</Border>
 
 
-				<ItemsControl ItemsSource="{Binding Stocks}" HorizontalAlignment="Stretch">
+				<ItemsControl Name="StockItemsControl" ItemsSource="{Binding Stocks}" HorizontalAlignment="Stretch">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border BorderThickness="0 0 0 1" BorderBrush="#32C378">
