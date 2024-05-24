@@ -11,6 +11,8 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Utilities;
+using DynamicData;
+using FluentAvalonia.Core;
 using FuzzySharp;
 using ReactiveUI;
 using SmartTrade.Entities;
@@ -138,6 +140,8 @@ namespace SmartTrade.ViewModels
 
             foreach(var post in posts)
             {
+                if(post.Id == Post.Id) continue;
+
                 if (OtherSellersSameProduct(post))
                 {
                     OtherSellers.Add(new ProductModel(post));

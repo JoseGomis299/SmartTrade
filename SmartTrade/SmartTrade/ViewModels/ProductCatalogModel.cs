@@ -45,6 +45,25 @@ namespace SmartTrade.ViewModels
             }
         }
 
+        public void LoadProducts(List<SimplePostDTO> posts)
+        {
+            foreach (var post in posts)
+            {
+
+                OriginalProducts.Add(new ProductModel(post));
+
+                if (IsEcologic(post))
+                {
+                    RecommendedProducts.Add(new ProductModel(post));
+                }
+                else if (Service.Logged != null && IsRelated(post))
+                {
+                    RelatedProducts.Add(new ProductModel(post));
+                }
+                else OtherProducts.Add(new ProductModel(post));
+            }
+        }
+
         public bool IsEcologic(SimplePostDTO post)
         {
             return int.TryParse(post.EcologicPrint, out int ecologicPrint) && ecologicPrint < 10;

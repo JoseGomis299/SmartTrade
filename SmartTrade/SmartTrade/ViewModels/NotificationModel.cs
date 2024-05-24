@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
 using ReactiveUI;
+using SmartTrade.Helpers;
 using SmartTrade.Services;
 using SmartTrade.Views;
 using SmartTradeDTOs;
