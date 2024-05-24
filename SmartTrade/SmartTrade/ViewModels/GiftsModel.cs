@@ -135,7 +135,7 @@ public class GiftsModel : ViewModelBase
 
     public void AddGiftList(string name, DateOnly? date)
     {
-        if(GiftLists.FindIndex(gl => gl.Name == name) != -1) { throw new Exception("A gift list with the same name already exists"); }
+        if(GiftLists.FindIndex(gl => gl.Name == name) != -1) { throw new Exception("A list with this name already exists"); }
         Service.AddGiftListAsync(name,date);
         UpdateView();
     }
