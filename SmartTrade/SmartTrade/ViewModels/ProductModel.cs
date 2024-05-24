@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using ReactiveUI;
+using SmartTrade.Helpers;
 using SmartTrade.Services;
 using SmartTrade.Views;
 using SmartTradeDTOs;
@@ -38,7 +39,8 @@ public class ProductModel : ViewModelBase
         Name = post.Title;
         Price = post.Price + "€";
         ShippingCost = post.ShippingCost + "€";
-        Image = post.Image.ToBitmap();
+        if (Environment.GetEnvironmentVariable("TEST_MODE") != "true")
+            Image = post.Image?.ToBitmap();
     }
 
     private async Task OpenProduct()

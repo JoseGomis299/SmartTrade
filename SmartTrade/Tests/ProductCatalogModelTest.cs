@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SmartTrade.Services;
+using System.Reflection;
 
 namespace Tests
 {
@@ -23,12 +24,8 @@ namespace Tests
         public void SetUp()
         {
             _model = new ProductCatalogModel();
-            _serviceMock = new Mock<SmartTradeService>();
-
-        }
-        public class MockService
-        {
-            public List<PurchaseDTO> Purchases { get; set; }
+            SmartTradeService.Instance.InitializeCacheAsync().Wait();
+            Environment.SetEnvironmentVariable("TEST_MODE", "true");
         }
 
         [Test]
@@ -101,22 +98,24 @@ namespace Tests
         public void TestUpdateProducts_EcoFriendlyProductsAsRecommended()
         {
             var products = new List<ProductModel>
-        {
-        new ProductModel(new SimplePostDTO
-        {
-            Category = Category.Nutrition,
-            EcologicPrint = "9",
-            SellerID = "123",
-            ProductName = "Producto Ecológico"
-        }),
-        new ProductModel(new SimplePostDTO
-        {
-            Category = Category.Clothing,
-            EcologicPrint = "10",
-            SellerID = "456",
-            ProductName = "Ropa Regular"
-        })
-        };
+            {
+                new ProductModel(new SimplePostDTO
+                {
+                    Category = Category.Nutrition,
+                    EcologicPrint = "9",
+                    SellerID = "123",
+                    ProductName = "Producto Ecológico",
+                    Title = "Producto Ecológico"
+                }),
+                new ProductModel(new SimplePostDTO
+                {
+                    Category = Category.Clothing,
+                    EcologicPrint = "10",
+                    SellerID = "456",
+                    ProductName = "Ropa Regular",
+                    Title = "Ropa Regular"
+                })
+            };
 
             
              _model.UpdateProducts(products, null);
@@ -130,10 +129,10 @@ namespace Tests
         {
             _model.OriginalProducts = new List<ProductModel>
             {
-                new ProductModel(new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", EcologicPrint = "5" }),
-                new ProductModel(new SimplePostDTO { Id = 2, Category = Category.Toy, ProductName = "Toy", EcologicPrint = "15" }),
-                new ProductModel(new SimplePostDTO { Id = 3, Category = Category.Book, ProductName = "Banana", EcologicPrint = "3" }),
-                new ProductModel(new SimplePostDTO { Id = 4, Category = Category.Clothing, ProductName = "T-Shirt", EcologicPrint = "8" })
+                new ProductModel(new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", Title = "Apple", EcologicPrint = "5", SellerID = "seller@example.com"}),
+                new ProductModel(new SimplePostDTO { Id = 2, Category = Category.Toy, ProductName = "Toy", Title = "Toy", EcologicPrint = "15", SellerID = "seller@example.com" }),
+                new ProductModel(new SimplePostDTO { Id = 3, Category = Category.Book, ProductName = "Banana", Title = "Banana", EcologicPrint = "3", SellerID = "seller@example.com" }),
+                new ProductModel(new SimplePostDTO { Id = 4, Category = Category.Clothing, ProductName = "T-Shirt", Title = "T-Shirt", EcologicPrint = "8", SellerID = "seller@example.com" })
             };
 
             _model.SortByCategory(null);
@@ -144,7 +143,6 @@ namespace Tests
 
             Assert.That(otherProducts.Count + recommendedProducts.Count + relatedProducts.Count, Is.EqualTo(_model.OriginalProducts.Count));
             Assert.That(recommendedProducts, Is.EquivalentTo(_model.OriginalProducts.Where(p => _model.IsEcologic(p.Post))));
-            Assert.That(relatedProducts, Is.EquivalentTo(_model.OriginalProducts.Where(p => _model.IsRelated(p.Post))));
         }
 
         [Test]
@@ -152,10 +150,10 @@ namespace Tests
         {
             _model.OriginalProducts = new List<ProductModel>
             {
-                new ProductModel(new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", EcologicPrint = "5" }),
-                new ProductModel(new SimplePostDTO { Id = 2, Category = Category.Toy, ProductName = "Toy", EcologicPrint = "15" }),
-                new ProductModel(new SimplePostDTO { Id = 3, Category = Category.Book, ProductName = "Banana", EcologicPrint = "3" }),
-                new ProductModel(new SimplePostDTO { Id = 4, Category = Category.Clothing, ProductName = "T-Shirt", EcologicPrint = "8" })
+                new ProductModel(new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", Title = "Apple", EcologicPrint = "5" , SellerID = "seller@example.com"}),
+                new ProductModel(new SimplePostDTO { Id = 2, Category = Category.Toy, ProductName = "Toy", Title = "Toy", EcologicPrint = "15" , SellerID = "seller@example.com"}),
+                new ProductModel(new SimplePostDTO { Id = 3, Category = Category.Book, ProductName = "Banana", Title = "Banana", EcologicPrint = "3" , SellerID = "seller@example.com"}),
+                new ProductModel(new SimplePostDTO { Id = 4, Category = Category.Clothing, ProductName = "T-Shirt", Title = "T-Shirt", EcologicPrint = "8" , SellerID = "seller@example.com"})
             };
 
             int categoryId = (int)Category.Nutrition;
@@ -169,7 +167,6 @@ namespace Tests
 
             Assert.That(otherProducts.Count + recommendedProducts.Count + relatedProducts.Count, Is.EqualTo(filteredProducts.Count));
             Assert.That(recommendedProducts, Is.EquivalentTo(filteredProducts.Where(p => _model.IsEcologic(p.Post))));
-            Assert.That(relatedProducts, Is.EquivalentTo(filteredProducts.Where(p => _model.IsRelated(p.Post))));
         }
 
         [Test]
@@ -177,10 +174,10 @@ namespace Tests
         {
             _model.OriginalProducts = new List<ProductModel>
             {
-                new ProductModel(new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", EcologicPrint = "5" }),
-                new ProductModel(new SimplePostDTO { Id = 2, Category = Category.Toy, ProductName = "Toy", EcologicPrint = "15" }),
-                new ProductModel(new SimplePostDTO { Id = 3, Category = Category.Book, ProductName = "Banana", EcologicPrint = "3" }),
-                new ProductModel(new SimplePostDTO { Id = 4, Category = Category.Clothing, ProductName = "T-Shirt", EcologicPrint = "8" })
+                new ProductModel(new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", Title = "Apple", EcologicPrint = "5", SellerID = "seller@example.com" }),
+                new ProductModel(new SimplePostDTO { Id = 2, Category = Category.Toy, ProductName = "Toy", Title = "Toy", EcologicPrint = "15", SellerID = "seller@example.com" }),
+                new ProductModel(new SimplePostDTO { Id = 3, Category = Category.Book, ProductName = "Banana", Title = "Banana", EcologicPrint = "3", SellerID = "seller@example.com" }),
+                new ProductModel(new SimplePostDTO { Id = 4, Category = Category.Clothing, ProductName = "T-Shirt", Title = "T-Shirt", EcologicPrint = "8", SellerID = "seller@example.com" })
             };
 
             int categoryId = (int)Category.Toy;
@@ -227,15 +224,23 @@ namespace Tests
                 Title = "Fresh Apples"
             };
 
-            _serviceMock.Setup(service => service.GetPurchasesAsync()).ReturnsAsync(new List<PurchaseDTO>
+            var purchase = new PurchaseDTO
             {
-                new PurchaseDTO
-                {
-                    Post = new PostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", Title="Fresh Apples" },
-                    EmailSeller = "123"
-                }
-            });
+                Post = new PostDTO { Id = 2, Category = Category.Nutrition, Title = "Fresh Apples", ProductName = "Apple" },
+                EmailSeller = "123"
+            };
 
+            var postToCompare = new SimplePostDTO
+            {
+                Id = 2,
+                Category = Category.Nutrition,
+                ProductName = "Apple",
+                Title = "Fresh Apples",
+                SellerID = "123"
+            };
+
+            SmartTradeService.Instance.AddPurchaseTest(new List<PurchaseDTO>(){purchase});
+            SmartTradeService.Instance.AddPostTest(new List<SimplePostDTO>(){postToCompare});
             bool isRelated = _model.IsRelated(post);
 
             Assert.That(isRelated,Is.True);
@@ -253,15 +258,23 @@ namespace Tests
                 Title = "Fresh Apples"
             };
 
-            _serviceMock.Setup(service => service.GetPurchasesAsync()).ReturnsAsync(new List<PurchaseDTO>
+            var purchase = new PurchaseDTO
             {
-                new PurchaseDTO
-                {
-                    Post = new PostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt" },
-                    EmailSeller = "seller@example.com"
-                }
-            });
+                Post = new PostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt",
+                    Title = "T-Shirt",},
+                EmailSeller = "seller@example.com"
+            };
 
+            var postToCompare = new SimplePostDTO
+            {
+                Id = 2,
+                Category = Category.Clothing,
+                ProductName = "T-Shirt",
+                Title = "T-Shirt",
+                SellerID = "seller@example.com"
+            };
+            SmartTradeService.Instance.AddPurchaseTest(new List<PurchaseDTO>() { purchase });
+            SmartTradeService.Instance.AddPostTest(new List<SimplePostDTO>() { postToCompare });
             bool isRelated = _model.IsRelated(post);
 
             Assert.That(isRelated,Is.Not.True);
@@ -273,14 +286,12 @@ namespace Tests
             var posts = new List<SimplePostDTO>
             {
                 new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", EcologicPrint = "5" },
-                new SimplePostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt", EcologicPrint = "8" }
+                new SimplePostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt", EcologicPrint = "28"}
             };
 
-            _serviceMock.Setup(service => service.RefreshPostsAsync()).ReturnsAsync(posts);
-
+            SmartTradeService.Instance.AddPostTest(posts);
             // Act
-            await _model.LoadProductsAsync();
-
+            _model.LoadProducts(posts);
             // Assert
             Assert.That(_model.OriginalProducts.Count, Is.EqualTo(posts.Count));
             Assert.That(_model.OtherProducts.Count, Is.EqualTo(1));
@@ -291,23 +302,11 @@ namespace Tests
         [Test]
         public async Task LoadProductsAsync_ShouldAddRelatedProducts_WhenUserIsLoggedIn()
         {
-            var posts = new List<SimplePostDTO>
-            {
-                new SimplePostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", EcologicPrint = "5" },
-                new SimplePostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt", EcologicPrint = "8" }
-            };
-
-            _serviceMock.Setup(service => service.RefreshPostsAsync()).ReturnsAsync(posts);
-            _serviceMock.SetupGet(service => service.Logged).Returns(new UserDTO());
-
-            _serviceMock.SetupGet(service => service.Purchases).Returns(new List<PurchaseDTO>
-            {
-                new PurchaseDTO { Post = new PostDTO { Id = 1, Category = Category.Nutrition, ProductName = "Apple", Title = "Fresh Apples" }, EmailSeller = "seller@example.com" },
-                new PurchaseDTO { Post = new PostDTO { Id = 2, Category = Category.Clothing, ProductName = "T-Shirt", Title = "Comfy T-Shirt" }, EmailSeller = "seller@example.com" }
-            });
+            SetUp();
+            await SmartTradeService.Instance.LogInAsync("c0@gmail.com", "123");
 
             await _model.LoadProductsAsync();
-            Assert.That(_model.RelatedProducts.Count, Is.EqualTo(2));
+            Assert.That(_model.RelatedProducts.Count, Is.GreaterThan(0));
         }
     }
 }

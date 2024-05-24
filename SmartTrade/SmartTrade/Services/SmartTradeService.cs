@@ -245,8 +245,12 @@ namespace SmartTrade.Services;
             PostDTO? post = _cache.GetPost(postId);
             if (post != null) return post;
 
+            int i = LoadingScreenManager.Instance.StartLoading();
+
             post = await _broker.PostClient.GetPostAsync(postId);
             _cache.StorePost(post);
+
+            LoadingScreenManager.Instance.StopLoading(i);
             return post;
         }
 
@@ -487,5 +491,20 @@ namespace SmartTrade.Services;
         public void ClearPostCache()
         {
             _cache.ClearPostCache();
+        }
+
+        public void AddPurchaseTest(List<PurchaseDTO> purchases)
+        {
+            _cache.Purchases = purchases;
+        }
+
+        public void AddPostTest(List<SimplePostDTO> posts)
+        {
+            _cache.SetPosts(posts);
+        }
+
+        public void SetLoggedTest(UserDTO user)
+        {
+            _broker.Logged = user;
         }
     }

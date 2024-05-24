@@ -4,7 +4,7 @@ namespace SmartTrade.Helpers;
 
 public class LoadingScreenManager
 {
-    private readonly MainView _mainView;
+    private readonly MainView? _mainView;
     public bool IsLoadingHome = false;
     public bool IsLoadingCart = false;
     public bool IsLoadingUser = false;
@@ -29,6 +29,8 @@ public class LoadingScreenManager
 
     public int StartLoading()
     {
+        if (_mainView == null) return -1;
+
         ShowLoadingScreen();
 
         if (_mainView.SelectedButton == 0)  
@@ -43,18 +45,24 @@ public class LoadingScreenManager
 
     public void ShowLoadingScreen()
     {
+        if (_mainView == null) return;
+
         _mainView.Loading.IsVisible = true;
         _mainView.ViewContent.IsVisible = false;
     }
 
     public void HideLoadingScreen()
     {
+        if (_mainView == null) return;
+
         _mainView.Loading.IsVisible = false;
         _mainView.ViewContent.IsVisible = true;
     }
 
     public void StopLoading(int i)
     {
+        if (_mainView == null) return;
+
         if (i == 0)
             IsLoadingHome = false;
         else if (i == 1)
