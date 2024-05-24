@@ -192,9 +192,16 @@ namespace SmartTrade.Views
             List<String> giftListNames = _model.GetGiftListNames();
             if (giftListNames.Count == 0)
             {
-                GiftsButtonErrorText.Text = "Make a gift list first";
+                SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new AddGiftListView(new GiftsView()));
+            }
+
+            giftListNames = _model.GetGiftListNames();
+
+            if (giftListNames.Count == 0)
+            {
                 return;
             }
+
             SmartTradeNavigationManager.Instance.MainView.ShowPopUp(new AddGiftView(this, giftListNames));
         }
 

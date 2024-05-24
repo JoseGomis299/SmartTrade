@@ -387,7 +387,15 @@ namespace SmartTrade.Services;
                 return;
             }
             _cache.AddGiftList(name, date, Logged.Email);
+            if(date == null)
+            {
+                await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(name, null, Logged.Email));
+            }
+            else
+            {
             await _broker.UserClient.AddGiftListAsync(new SimpleGiftListDTO(name, date.Value.ToDateTime(new TimeOnly()), Logged.Email));
+            }
+            
         }
 
         public async Task EditGiftListAsync(string name, string newName, DateOnly? date)
