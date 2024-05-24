@@ -4,9 +4,13 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.IdentityModel.Tokens;
 using SmartTrade.Services;
 using SmartTrade.ViewModels;
+using SmartTradeDTOs;
+using DynamicData;
 
 namespace SmartTrade.Views
 {
@@ -27,7 +31,8 @@ namespace SmartTrade.Views
         {
             DataContext = _model = new SendViewModel(purchase);
             _purchase = purchase;
-
+            RatingDTO? ratingData = _model.GetRatingFromPurchase(purchase);
+            
             InitializeComponent();
 
             RatingStar1.Click += Star1Click;
@@ -42,12 +47,36 @@ namespace SmartTrade.Views
             _starSelected = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/Star.png")));
             _starVoid = new Bitmap(AssetLoader.Open(new Uri("avares://SmartTrade/Assets/VoidStar.png")));
 
-            SetVoidStars();
-            _rating = 0;
+            InitializeRating(ratingData);
 
             if (purchase.CalculateState() != "Received")
             {
                 RatingPanel.IsVisible = false;
+            }
+        }
+
+        private void InitializeRating(RatingDTO? ratingData)
+        {
+            if (ratingData == null)
+            {
+                SetVoidStars();
+                _rating = 0;
+            }
+            else
+            {
+                _rating = ratingData.Points;
+                Review.Text = ratingData.Description;
+                var stars = new List<Image> { Star1, Star2, Star3, Star4, Star5 };
+
+                for (int i = 0; i < ratingData.Points; i++)
+                {
+                    stars[i].Source = _starSelected;
+                }
+
+                for (int i = ratingData.Points; i < 5; i++)
+                {
+                    stars[i].Source = _starVoid;
+                }
             }
         }
 

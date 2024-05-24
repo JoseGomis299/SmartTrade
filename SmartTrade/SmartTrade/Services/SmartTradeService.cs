@@ -254,6 +254,16 @@ namespace SmartTrade.Services;
             return post;
         }
 
+        public void CachePost(PostDTO post)
+        {
+            _cache.StorePost(post);
+        }
+
+        public PostDTO? GetPost(int postId)
+        {
+            return _cache.GetPost(postId);
+        }
+
         public async Task EditPostAsync(int postId, PostDTO postInfo)
         {
             await _broker.PostClient.EditPostAsync(postId, postInfo);

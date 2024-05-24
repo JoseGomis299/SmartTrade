@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Media.Imaging;
@@ -28,8 +29,6 @@ namespace SmartTrade.ViewModels
         public string FacturationStreet { get; set; }
         public string FacturationDoor { get; set; }
         public string FacturationMunicipality { get; set; }
-
-
 
         public PostDTO Post { get; set; }
 
@@ -64,6 +63,12 @@ namespace SmartTrade.ViewModels
             var view = new ProductView(await Service.GetPostAsync((int)Post.Id));
             SmartTradeNavigationManager.Instance.NavigateTo(view);
             ((ProductViewModel)view.DataContext).LoadProducts();
+        }
+
+        public RatingDTO? GetRatingFromPurchase(PurchaseModel purchase)
+        {
+            PostDTO? post = Service.GetPost((int)purchase.Post.Id) ?? purchase.Post;
+            return post.Ratings.FirstOrDefault(r => r.UserId == Service.Logged.Email);
         }
     }
 }

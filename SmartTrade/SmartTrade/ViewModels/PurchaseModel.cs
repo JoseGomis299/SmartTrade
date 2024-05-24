@@ -30,6 +30,7 @@ public class PurchaseModel : ViewModelBase
     {
         Post = purchaseDTO.Post;
         Offer = purchaseDTO.Offer;
+        Service.CachePost(Post);
 
         OpenProductCommand = ReactiveCommand.Create(OpenProduct);
 
