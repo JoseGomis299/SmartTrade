@@ -48,27 +48,14 @@ namespace SmartTrade.ViewModels
             }
         }
 
-        public void Validar()
-        {
-            ValidarDni();
-            ValidarEmail();
-        }
         public string CreditCardNumber { get;set; }
         public string CreditCardName { get; set; }
         public string CreditCardExpiryDate { get; set; }
         public string CreditCardCVV { get; set; } 
         public string BizumNumber { get; set; }
 
-        public void ValidarFecha()
+        public DateTime ConvertExpiryDate()
         {
-            var hoy = DateTime.Today;
-            if (DateBirth > hoy)
-            {
-                throw new ArgumentException("You cannot select future dates");
-            }
-        }
-            public DateTime ConvertExpiryDate()
-            {
             DateTime resultado;
             string formato = "MM/yy";
 
@@ -81,29 +68,8 @@ namespace SmartTrade.ViewModels
                 throw new ArgumentException("Incorrect format");
             }
         }
-
-        public void ValidarDni()
-        {
-            string pattern = @"^\d{8}[A-Za-z]$";
-            if (!Regex.IsMatch(DNI, pattern))
-            {
-                throw new ArgumentException("Incorrect DNI. Must be 8 digits followed by a letter");
-            }
-        }
-
-
-        public void ValidarEmail()
-        {
-            string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
-            if (!Regex.IsMatch(Email, pattern))
-            {
-                throw new ArgumentException("Wrong email. Please enter a valid email");
-            }
-        }
-
         public async Task RegisterConsumer()
         {
-            Validar();
             Address consumerAddress = new Address(Province, Street, Municipality, PostalCode, Number, Door);
 
             await Service.RegisterConsumerAsync(Email, Password, Name, LastNames, DNI, (DateTime)DateBirth, consumerAddress, consumerAddress);
@@ -112,12 +78,6 @@ namespace SmartTrade.ViewModels
             {
                 PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);
             }
-            string pattern = @"^\d+$";
-            if (!Regex.IsMatch(BizumNumber, pattern))
-            {
-                throw new ArgumentException("Wrong phone number. Only digits are allowed");
-            }
-
             if (!_Paypalemail.IsNullOrEmpty() && !_Paypalpassword.IsNullOrEmpty())
             {
                 PayPalInfo paypalData = new PayPalInfo(_Paypalemail, _Paypalpassword);

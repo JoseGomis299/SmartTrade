@@ -24,8 +24,6 @@ namespace SmartTrade.Views
       
         private RegisterModel _model;
         private bool _hasErrors;
-        private int _startUserInfo = 6;
-        private int _startAddressInfo = 6;
         private int _start = 12;
 
         public Register()
@@ -33,6 +31,7 @@ namespace SmartTrade.Views
             DataContext = _model = new RegisterModel();
 
             InitializeComponent();
+
             SignInButton.Click += SignInButton_click;
             RegisterSellerButton.Click += RegisterSellerButton_click;
             LoginButton.Click += LoginButton_click;
@@ -47,26 +46,26 @@ namespace SmartTrade.Views
             Bizumadd.IsVisible = false;
             CreditCardadd.IsVisible = false;
 
-            TextBoxName.TextBox.TextChanged += CheckUserErrors;
-            TextBoxLastNames.TextBox.TextChanged += CheckUserErrors;
-            TextBoxDNI.TextBox.TextChanged += CheckUserErrors;
-            TextBoxEmail.TextBox.TextChanged += CheckUserErrors;
+            TextBoxName.TextBox.TextChanged += CheckErrors;
+            TextBoxLastNames.TextBox.TextChanged += CheckErrors;
+            TextBoxDNI.TextBox.TextChanged += CheckErrors;
+            TextBoxEmail.TextBox.TextChanged += CheckErrors;
             TextBoxDateBirth.TemplateApplied += SetComponentsCalendarDatePicker;
-            TextBoxPassword.TextBox.TextChanged += CheckUserErrors;
+            TextBoxPassword.TextBox.TextChanged += CheckErrors;
 
-            TextBoxProvince.TextBox.TextChanged += CheckAddressErrors;
-            TextBoxMunicipality.TextBox.TextChanged += CheckAddressErrors;
-            TextBoxPostalCode.TextBox.TextChanged += CheckAddressErrors;
-            TextBoxStreet.TextBox.TextChanged += CheckAddressErrors;
-            TextBoxNumber.TextBox.TextChanged += CheckAddressErrors;
-            TextBoxDoor.TextBox.TextChanged += CheckAddressErrors;
+            TextBoxProvince.TextBox.TextChanged += CheckErrors;
+            TextBoxMunicipality.TextBox.TextChanged += CheckErrors;
+            TextBoxPostalCode.TextBox.TextChanged += CheckErrors;
+            TextBoxStreet.TextBox.TextChanged += CheckErrors;
+            TextBoxNumber.TextBox.TextChanged += CheckErrors;
+            TextBoxDoor.TextBox.TextChanged += CheckErrors;
         }
 
         private void SetComponentsCalendarDatePicker(object? sender, Avalonia.Controls.Primitives.TemplateAppliedEventArgs e)
         {
             var textBoxField = sender.GetType().GetField("_textBox", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             TextBox textBox = (TextBox) textBoxField.GetValue(sender);
-            textBox.TextChanged += CheckUserErrors;
+            textBox.TextChanged += CheckErrors;
 
             TextBoxDateBirth.BlackoutDates.Add(new CalendarDateRange(DateTime.Today, DateTime.MaxValue));
         }
@@ -128,7 +127,7 @@ namespace SmartTrade.Views
 
         #region ErrorChecking
 
-        private void CheckUserErrors(object? sender, TextChangedEventArgs e)
+        private void CheckErrors(object? sender, TextChangedEventArgs e)
         {
             if (--_start >= 0)
             {
@@ -141,6 +140,12 @@ namespace SmartTrade.Views
             _hasErrors |= CheckEmail();
             _hasErrors |= CheckBirthDate();
             _hasErrors |= CheckPassword();
+            _hasErrors |= CheckProvince();
+            _hasErrors |= CheckMunicipality();
+            _hasErrors |= CheckPostalCode();
+            _hasErrors |= CheckStreet();
+            _hasErrors |= CheckNumber();
+            _hasErrors |= CheckDoor();
 
             SignInButton.IsEnabled = !_hasErrors;
         }
@@ -177,7 +182,7 @@ namespace SmartTrade.Views
                 return true;
             }
 
-            string pattern = @"^\d{8}[A-Za-z]$";
+            string pattern = @"^\d{8}[A-HJ-NP-TV-Z]$";
             if (!Regex.IsMatch(TextBoxDNI.Text, pattern))
             {
                 TextBoxDNI.ErrorText = ("Incorrect DNI. Must be 8 digits followed by a letter");
@@ -196,10 +201,11 @@ namespace SmartTrade.Views
                 return true;
             }
 
-            string pattern = @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$";
+            string pattern = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
             if (!Regex.IsMatch(TextBoxEmail.Text, pattern))
             {
                 TextBoxEmail.ErrorText = "Invalid email. Please enter a valid email";
+                return true;
             }
 
             TextBoxEmail.ErrorText = "";
@@ -220,7 +226,7 @@ namespace SmartTrade.Views
             string pattern = @"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$";
             if (!Regex.IsMatch(TextBoxDateBirth.Text, pattern))
             {
-                BirthDateError.Text = "Invalid format. Please enter a date with the format dd/MM/yyyy";
+                BirthDateError.Text = "Please enter a date with the format dd/MM/yyyy";
                 return true;
             }
 
@@ -239,23 +245,6 @@ namespace SmartTrade.Views
 
             TextBoxPassword.ErrorText = "";
             return false;
-        }
-
-        private void CheckAddressErrors(object? sender, TextChangedEventArgs e)
-        {
-            if (--_start >= 0)
-            {
-                SignInButton.IsEnabled = false;
-                return;
-            }
-            _hasErrors = false | CheckProvince();
-            _hasErrors |= CheckMunicipality();
-            _hasErrors |= CheckPostalCode();
-            _hasErrors |= CheckStreet();
-            _hasErrors |= CheckNumber();
-            _hasErrors |= CheckDoor();
-
-            SignInButton.IsEnabled = !_hasErrors;
         }
 
         private bool CheckProvince()
@@ -340,8 +329,21 @@ namespace SmartTrade.Views
 
         private async void SignInButton_click(object? sender, RoutedEventArgs e)
         {
-            await _model.RegisterConsumer();
-            await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
+            try
+            {
+                await _model.RegisterConsumer();
+                await SmartTradeNavigationManager.Instance.MainView.ShowCatalogReinitializingAsync();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Existing user"))
+                {
+                    TextBoxEmail.BringIntoView();
+                    TextBoxEmail.ErrorText = ex.Message;
+                    _hasErrors = true;
+                    SignInButton.IsEnabled = false;
+                }
+            }
         }
        
     }

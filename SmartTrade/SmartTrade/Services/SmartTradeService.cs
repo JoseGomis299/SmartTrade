@@ -407,11 +407,12 @@ namespace SmartTrade.Services;
 
         public async Task<List<GiftListDTO>?> LoadGiftListsAsync()
         {
-            if (Logged == null)
+            if (_cache.GiftLists == null)
             {
-                return null;
+                var res = await _broker.UserClient.GetGiftListsAsync();
+                _cache.GiftLists = res ?? new List<GiftListDTO>();
             }
-            return _cache.GiftLists ??= new List<GiftListDTO>();
+            return _cache.GiftLists;
         }
 
         public List<String> GetGiftListNames()

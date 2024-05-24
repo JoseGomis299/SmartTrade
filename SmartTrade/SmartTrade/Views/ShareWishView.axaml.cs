@@ -8,13 +8,16 @@ using System.Net.Mail;
 using System.Net;
 using SmartTrade.Services;
 using SmartTradeDTOs;
+using Microsoft.IdentityModel.Tokens;
+using System.Text.RegularExpressions;
 
 namespace SmartTrade.Views
 {
     public partial class ShareWishView : UserControl
     {
-        private Popup _popup;
         private List<WishDTO>? _wishList;
+        private bool _hasErrors;
+        private bool _start;
         public ShareWishView()
         {
             InitializeComponent();
@@ -22,11 +25,7 @@ namespace SmartTrade.Views
             _wishList = SmartTradeService.Instance.WishList;
             AcceptButton.Click += AcceptButton_Click;
             CancelButton.Click += CancelButton_Click;
-            _popup = new Popup
-            {
-                Child = this,
-                IsLightDismissEnabled = true
-            };
+            TextBoxEmail.TextBox.TextChanged += CheckEmail;
         }
 
         private void CancelButton_Click(object? sender, RoutedEventArgs e)
@@ -46,6 +45,27 @@ namespace SmartTrade.Views
             }
 
             SmartTradeNavigationManager.Instance.MainView.HidePopUp();
+        }
+
+        private void CheckEmail(object? sender, RoutedEventArgs e)
+        {
+            if (TextBoxEmail.Text.IsNullOrEmpty())
+            {
+                TextBoxEmail.ErrorText = "Please input an Email";
+                AcceptButton.IsEnabled = false;
+                return;
+            }
+
+            string pattern = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
+            if (!Regex.IsMatch(TextBoxEmail.Text, pattern))
+            {
+                TextBoxEmail.ErrorText = "Invalid email. Please enter a valid email";
+                AcceptButton.IsEnabled = false;
+                return;
+            }
+
+            TextBoxEmail.ErrorText = "";
+            AcceptButton.IsEnabled = true;
         }
 
         public void SendEmail(string email)

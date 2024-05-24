@@ -83,7 +83,7 @@ namespace SmartTrade.Views
         {
             ComboBoxGiftList.SelectedIndex = -1;
             _model.AddGiftList(name, date);
-            ComboBoxGiftList.SelectedIndex = _model.ComboBoxIndex;
+            ComboBoxGiftList.SelectedIndex = _model.GiftListsNames.Count - 1;
         }
 
         public void EditGiftList(string name, DateOnly? date)
@@ -93,6 +93,11 @@ namespace SmartTrade.Views
             ComboBoxGiftList.SelectedIndex = -1;
             _model.EditGiftList(oldName, name, date);
             ComboBoxGiftList.SelectedIndex = _model.ComboBoxIndex;
+        }
+
+        public void SetIndexOnList(string giftListName)
+        {
+            ComboBoxGiftList.SelectedIndex = _model.GiftLists.FindIndex(g => g.Name == giftListName);
         }
     }
 }

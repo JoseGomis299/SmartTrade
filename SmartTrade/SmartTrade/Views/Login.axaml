@@ -13,6 +13,9 @@
 	<Grid RowDefinitions="Auto Auto" ColumnDefinitions="*" HorizontalAlignment="Stretch">
 		<StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="10" Margin="0 0 0 0">
 			<TextBlock Classes="h1" HorizontalAlignment="Center" Margin="0 50 0 20">LOGIN</TextBlock>
+			<!--textbox for code purposes-->
+			<controls:ST_TextBox Name="ResetStartTextBox"></controls:ST_TextBox>
+			
 			<controls:ST_TextBox LabelText="Email" Text="{Binding Email, Mode=OneWayToSource}" TextHeight="40" Margin="0 0 0 10" Name="TextBoxEmail"/>
 			<controls:ST_TextBoxPassword LabelText="Password" PasswordText="•"  Margin="0 0 0 20" Text="{Binding Password, Mode=OneWayToSource}" TextHeight="40" Name="TextBoxPassword"/>
 			<Button HorizontalAlignment="Center" Height="40" Width="200" Margin="0 0 0 0" Classes="White" Name="SignUpButton">SIGN IN!</Button>

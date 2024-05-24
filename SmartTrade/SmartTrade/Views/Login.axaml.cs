@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Microsoft.IdentityModel.Tokens;
 using SmartTrade.Entities;
@@ -12,22 +13,35 @@ namespace SmartTrade.Views
         private LoginModel? _model;
         private bool _EmailError;
         private bool _PasswordError;
-        private int _start = 2;
+        private int _start;
         public Login()
         {
             DataContext = _model = new LoginModel();
             InitializeComponent();
+            _start = 2;
             SignUpButton.Click += SignUpButton_click;
             RegisterButton.Click += RegisterButton_click;
 
+            //Se hace este binding aparentemente inútil para que cuando se cambie de vista y
+            //se regrese no salten los mensajes de error solos
+            ResetStartTextBox.TextBox.TextChanged += resetStart;
+
             TextBoxEmail.TextBox.TextChanged += CheckEmail;
             TextBoxPassword.TextBox.TextChanged += CheckPassword;
+            
+            
         }
 
        
         private void RegisterButton_click(object? sender, RoutedEventArgs e)
         {
             SmartTradeNavigationManager.Instance.NavigateTo(new ChooseProfile());
+        }
+
+        private void resetStart(object? sender, TextChangedEventArgs e)
+        {
+            _start = 2;
+            ResetStartTextBox.IsVisible = false;
         }
 
         private void CheckEmail(object? sender, TextChangedEventArgs e)
