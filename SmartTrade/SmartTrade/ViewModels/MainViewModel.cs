@@ -42,7 +42,7 @@ public class MainViewModel : ViewModelBase
         await mainView.ShowCatalogAsync();
         await Service.InitializeCacheAsync();
 
-        foreach (var name in Service.Posts.Select(x => x.Title))
+        foreach (var name in Service.Posts.Select(x => x.Title).Distinct())
         {
             SearchAutoComplete.Add(name);
         }

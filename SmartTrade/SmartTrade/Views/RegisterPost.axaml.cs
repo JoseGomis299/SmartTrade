@@ -89,7 +89,7 @@ namespace SmartTrade.Views
             }
             _hasErrors = false | CheckTitle();
             _hasErrors |= CheckDescription();
-            _hasErrors |= CheckUse();
+            //_hasErrors |= CheckUse();
             _hasErrors |= CheckProductName();
             _hasErrors |= CheckMinimumAge();
 
@@ -100,7 +100,7 @@ namespace SmartTrade.Views
         {
             if (Title.Text.IsNullOrEmpty())
             {
-                Title.ErrorText = "Please enter a Title";
+                Title.ErrorText = "Please enter a title";
                 return true;
             }
 
@@ -112,7 +112,7 @@ namespace SmartTrade.Views
         {
             if (Description.Text.IsNullOrEmpty())
             {
-                Description.ErrorText = "Please enter a Title";
+                Description.ErrorText = "Please enter a description";
                 return true;
             }
 
@@ -136,7 +136,7 @@ namespace SmartTrade.Views
         {
             if (ProductName.Text.IsNullOrEmpty())
             {
-                ProductName.ErrorText = "Please enter a Title";
+                ProductName.ErrorText = "Please enter a name";
                 return true;
             }
 
@@ -148,7 +148,7 @@ namespace SmartTrade.Views
         {
             if (MinAge.Text.IsNullOrEmpty())
             {
-                MinAge.ErrorText = "Please enter a Title";
+                MinAge.ErrorText = "Please enter an age";
                 return true;
             }
 
