@@ -11,7 +11,7 @@ namespace SmartTrade.Views
     {
         private RegisterPostModel? _model;
         private bool _hasErrors;
-        private int _start = 6;
+        private int _start = 7;
         public RegisterPost()
         {
             DataContext = _model = new RegisterPostModel();
