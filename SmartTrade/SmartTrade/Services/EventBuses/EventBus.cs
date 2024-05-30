@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class EventBus
+public static class EventBus
 {
     private static Dictionary<object, List<string>> _subscriptions = new();
     private static Dictionary<string, List<Event>> _events = new();
@@ -63,7 +63,7 @@ public class EventBus
         }
 
         _subscriptions[subscriber].Remove(eventName);
-        _events[eventName].FindAll(x => x.Delegate == (Delegate?)onEventTriggered).First().ShouldBeDeleted = true;
+        _events[eventName].First(x => x.Delegate.Method.Name == onEventTriggered.Method.Name).ShouldBeDeleted = true;
     }
 
     public static void Unsubscribe<T>(object subscriber, string eventName, Action<T> onEventTriggered)
@@ -87,7 +87,7 @@ public class EventBus
         }
 
         _subscriptions[subscriber].Remove(eventName);
-        _events[eventName].FindAll(x => x.Delegate == (Delegate?)onEventTriggered).First().ShouldBeDeleted = true;
+        _events[eventName].First(x => x.Delegate.Method.Name == onEventTriggered.Method.Name).ShouldBeDeleted = true;
     }
 
     public static void UnsubscribeFromAllEvents(object subscriber)
@@ -100,7 +100,7 @@ public class EventBus
 
         foreach (var eventName in _subscriptions[subscriber].Distinct())
         {
-            //Mark all actions for removal
+            //Mark all events for removal
             for (var i = 0; i < _events[eventName].Count; i++)
             {
                 if (_events[eventName][i].Delegate.Target == subscriber)

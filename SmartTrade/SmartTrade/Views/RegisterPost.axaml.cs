@@ -31,6 +31,9 @@ namespace SmartTrade.Views
             Use.TextBox.TextChanged += CheckErrors;
             ProductName.TextBox.TextChanged += CheckErrors;
             MinAge.TextBox.TextChanged += CheckErrors;
+
+            CheckErrors(null, null);
+            
         }
 
         private void OnCancelButtonOnClick(object? sender, RoutedEventArgs e)
@@ -82,7 +85,7 @@ namespace SmartTrade.Views
 
         private void CheckErrors(object? sender, TextChangedEventArgs e)
         {
-            if (--_start >= 0)
+            if (--_start > 0)
             {
                 ConfirmButton.IsEnabled = false;
                 return;

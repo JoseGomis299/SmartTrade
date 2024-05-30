@@ -104,7 +104,7 @@
                             <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="•" TextWrapping="Wrap"/>
 							<StackPanel>
                                 <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Dir1}" TextWrapping="Wrap"/>
-                                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Dir2}"/>
+                                <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Dir2}" TextWrapping="Wrap"/>
                                 <TextBlock Classes="h2" FontSize="20" Foreground="#32C378" Text="{Binding Dir3}" TextWrapping="Wrap"/>
                             </StackPanel>
                         </StackPanel>

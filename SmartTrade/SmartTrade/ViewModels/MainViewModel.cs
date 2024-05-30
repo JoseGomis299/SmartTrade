@@ -27,11 +27,11 @@ public class MainViewModel : ViewModelBase
     {
         SearchAutoComplete = new ObservableCollection<string>();
 
-        EventBus.Subscribe(this, "OnCartChanged", OnServiceOnOnCartChanged);
-        OnServiceOnOnCartChanged();
+        EventBus.Subscribe(this, "OnCartChanged", UpdateCartItemsNumber);
+        UpdateCartItemsNumber();
     }
 
-    private void OnServiceOnOnCartChanged()
+    private void UpdateCartItemsNumber()
     {
         CartItems = Service.CartItemsCount.ToString();
         this.RaisePropertyChanged(nameof(CartItems));

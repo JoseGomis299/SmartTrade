@@ -11,7 +11,7 @@ namespace SmartTrade.Views
     {
         private ValidatePostModel? _model;
         private bool _hasErrors;
-        private int _start = 6;
+        private int _start = 5;
 
         public ValidatePost()
         {
@@ -54,6 +54,8 @@ namespace SmartTrade.Views
             Use.TextBox.TextChanged += CheckErrors;
             ProductName.TextBox.TextChanged += CheckErrors;
             MinAge.TextBox.TextChanged += CheckErrors;
+
+            CheckErrors(null, null);
         }
 
         private void Cancel(object? sender, RoutedEventArgs e)
@@ -73,7 +75,7 @@ namespace SmartTrade.Views
 
         private void CheckErrors(object? sender, TextChangedEventArgs e)
         {
-            if (--_start >= 0)
+            if (--_start > 0)
             {
                 ConfirmButton.IsEnabled = false;
                 return;

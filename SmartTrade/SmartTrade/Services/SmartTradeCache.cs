@@ -34,7 +34,7 @@ namespace SmartTrade.Services
 
             EventBus.Publish("OnCartChanged");
         }
-        public void LoadCartItems(List<CartItemDTO> items)
+        public void SetCartItems(List<CartItemDTO> items)
         {
             CartItems = items;
             EventBus.Publish("OnCartChanged");

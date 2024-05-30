@@ -202,7 +202,7 @@ namespace SmartTrade.Services;
 
             if (userItems == null) return;
 
-            _cache.LoadCartItems(userItems);
+            _cache.SetCartItems(userItems);
             foreach (var cartItem in guestItems)
             {
                 if (userItems.Any(x => x.Post.ProductName == cartItem.Post.ProductName)) continue;
@@ -469,7 +469,7 @@ namespace SmartTrade.Services;
         }
     #endregion
 
-    #region Product
+        #region Product
 
 
     #endregion
